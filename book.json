@@ -1,0 +1,30 @@
+{
+    "title": "hl notes",
+    "author": "hl",
+    "description": "record my notes",
+    "plugins": [
+	    "-lunr",
+	    "-search",
+	    "search-pro",
+	    "-sharing",
+	    "expandable-chapters",
+	    "back-to-top-button",
+	    "code",
+	    "splitter",
+	    "pageview-count",
+	    "page-toc-button",
+	    "github"
+    ],
+    "pluginsConfig": {
+        "code": {
+		"copyButtons": true
+	},
+	"page-toc-button": {
+		"maxTocDepth": "2",
+		"minTocSize": "2"
+	},
+	"github": {
+		"url": "https://github.com/hlyani"
+	}
+    }
+}
