@@ -10,9 +10,13 @@
 [root@kvm ~]# cat /sys/module/kvm_intel/parameters/nested   
 N
 ```
-##### 3、移除kvm_intel模块
+##### 3、移除kvm_intel模块，移除前先关闭所有虚拟机，不然会报错
 ```
 [root@kvm ~]# rmmod kvm_intel
+
+或
+
+modprobe -r kvm_intel
 ```
 ##### 4、重新加载并开启nested功能
 [root@kvm ~]# modprobe kvm_intel nested=1

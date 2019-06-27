@@ -54,6 +54,7 @@
     * [mysql 相关](notes/linux/mysql.md)
     * [nodejs 相关](notes/linux/nodejs.md)
     * [ssr privoxy 相关](notes/linux/ssr_privoxy.md)
+    * [proxychains-ng 代理工具](notes/linux/proxychains_ng.md)
     * [virt-manager 相关](notes/linux/virt_manager.md)
     * [Linux 源制作](notes/linux/linux_source.md)
     * [Python rpm编译](notes/linux/rpm_build.md)
