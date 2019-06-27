@@ -50,6 +50,7 @@
     * [nginx 相关](notes/linux/nginx.md)
     * [haproxy 相关](notes/linux/haproxy.md)
     * [pip 源相关](notes/linux/pip.md)
+    * [发布pypi软件包](notes/linux/build_pypi.md)
     * [mysql 相关](notes/linux/mysql.md)
     * [nodejs 相关](notes/linux/nodejs.md)
     * [ssr privoxy 相关](notes/linux/ssr_privoxy.md)
@@ -63,7 +64,6 @@
     * [apache 多端口](notes/linux/apache_multi_ports.md)
     * [搭建本地 dns 服务器](notes/linux/dns.md)
     * [Linux U盘占用](notes/linux/linux_u.md)
-    * [在pypi上发布自己的python包](notes/linux/build_pip_package.md)
     * [ssh 相关](notes/linux/ssh.md)
     * [软 raid](notes/linux/mdadm.md)
 * OpenStack 相关
