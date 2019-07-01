@@ -1,5 +1,3 @@
-
-
 # k8s 相关
 
 ## 一、相关概念
@@ -229,41 +227,16 @@ registry.cn-hangzhou.aliyuncs.com/hlyani/etcd                      3.3.10       
 registry.cn-hangzhou.aliyuncs.com/hlyani/pause                     3.1                 da86e6ba6ca1        18 months ago       742kB
 ```
 
-##### 9、直接使用kubeadm init（可选）
-
-```
-kubeadm init --apiserver-advertise-address=192.168.1.10 --kubernetes-version=v1.15.0 --pod-network-cidr=10.0.0.0/24
-```
-
-```kubeadm.yaml
-apiVersion: kubeadm.k8s.io/v1alpha1
-kind: MasterConfiguration
-api:
-  advertiseAddress: "192.168.1.10"
-networking:
-  podSubnet: "10.96.0.0/12"
-kubernetesVersion: "v1.15.0"
-imageRepository: "registry.cn-hangzhou.aliyuncs.com/hlyani"
-```
-
-```
-kubeadm init --config kubeam.yaml
-```
-
-##### 10、查看init-defaults
+##### 9、查看init-defaults
 
 ```
 kubeadm config print init-defaults 
 ```
 
-##### 11、清除部署（可选）
+##### 10、清除部署（可选）
 
 ```
 minikube delete
-```
-
-```
-kubeadm reset -f
 ```
 
 ```
@@ -287,15 +260,11 @@ The reset process does not clean your kubeconfig files and you must remove them 
 Please, check the contents of the $HOME/.kube/config file.
 ```
 
-
-
-让kubectl使用minikube的配置文件
+##### 11、让kubectl使用minikube的配置文件
 
 ```
 kubectl config use-context minikube 
 ```
-
-
 
 ##### 12、dashboard
 
@@ -303,9 +272,30 @@ kubectl config use-context minikube
 minikube dashboard --url
 ```
 
+##### 13、测试，部署nginx
 
+```
+ kubectl run hello --image=nginx --port=80
+ kubectl expose deployment hello --type=NodePort
+ #kubectl expose deployment hello --port=80 --type=LoadBalancer
+ 
+ kubectl get pod
+ curl $(minikube service hello --url)
+```
 
+##### 14、其他
 
+```
+minikube有一个强大的子命令叫做addons，它可以在kubernetes中安装插件（addon）。这里所说的插件，就是部署在Kubernetes中的Deploymen或者Daemonset。
+
+Kubernetes在设计上有一个特别有意思的地方，就是它的很多扩展功能，甚至于基础功能也可以部署在Kubernetes中，比如网络插件、DNS插件等。安装这些插件的时候， 就是用kubectl命令，直接在kubernetes中部署。
+```
+
+```
+minikube addons list
+minikube addons disable XXX
+minikube addons enable  XXX
+```
 
 ## 三、使用kubeadm安装
 
@@ -326,15 +316,9 @@ repo_gpgcheck=1
 gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
 EOF
 
-setenforce 0
-sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
-
-systemctl stop firewalld
-systemctl disable firewalld
-
 yum -y  makecache fast
 
-yum install -y kubectl kubeadm kubelet --disableexcludes=kubernetes
+yum install -y kubectl kubeadm kubelet
 
 systemctl start kubelet
 systemctl enable kubelet
@@ -349,11 +333,17 @@ net.bridge.bridge-nf-call-iptables = 1
 EOF
 sysctl --system
 ```
-##### 3、禁用交换分区
+##### 3、禁用交换分区和禁用防火墙
 
 ```
 swapoff -a
 sed -i 's/.*swap.*/#&/' /etc/fstab
+
+setenforce 0
+sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+
+systemctl stop firewalld
+systemctl disable firewalld
 ```
 ##### 4、安装docker
 
@@ -368,6 +358,21 @@ systemctl enable docker
 
 ##### 5、使用kubeadm开始安装
 
+```kubeadm.yaml
+apiVersion: kubeadm.k8s.io/v1alpha1
+kind: MasterConfiguration
+api:
+  advertiseAddress: "192.168.1.10"
+networking:
+  podSubnet: "10.0.0.0/24"
+kubernetesVersion: "v1.15.0"
+imageRepository: "registry.cn-hangzhou.aliyuncs.com/hlyani"
+```
+
+```
+kubeadm init --config kubeam.yaml
+```
+或
 ```
 kubeadm init --image-repository registry.cn-hangzhou.aliyuncs.com/hlyani --apiserver-advertise-address=192.168.1.10 --kubernetes-version=v1.15.0 --pod-network-cidr=10.0.0.0/24 -v 0
 ```
@@ -392,135 +397,138 @@ kubeadm join 192.168.1.10:6443 --token 4mgxai.ou2w2ff7zwz5ykym \
 
 ```
 
-
-
-```
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
-```
-
-
+##### 6、安装网络插件
 
 ```
-kubeadm token list
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.10.0/Documentation/kube-flannel.yml
 ```
-
 ```
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/62e44c867a2846fefb68bd5f178daf4da3095ccb/Documentation/kube-flannel.yml
 ```
 
+> Error registering network: failed to acquire lease: node "node1" pod cidr not assigned
 
+[](https://github.com/coreos/flannel/blob/fd8c28917f338a30b27534512292cd5037696634/Documentation/troubleshooting.md#kubernetes-specific)
 
 ```
-#失败清理环境
+ kubectl patch node node1 -p '{"spec":{"podCIDR":"10.0.0.0/24"}}'
+```
+```
+kubectl apply -f https://docs.projectcalico.org/v3.7/manifests/calico.yaml
+```
+
+##### 7、添加node节点
+
+```
+kubeadm join 192.168.1.10:6443 --token 4mgxai.ou2w2ff7zwz5ykym \
+    --discovery-token-ca-cert-hash sha256:16bf000d7f9ce90f932f13747727e9795eac8babe901f7fae5842347a661d67a 
+```
+
+```
+kubeadm token list
+
+openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | \
+   openssl dgst -sha256 -hex | sed 's/^.* //'
+
+kubeadm join --token <token> <master-ip>:<master-port> --discovery-token-ca-cert-hash sha256:<hash>
+```
+
+##### 8、安装dashboard
+
+[](https://github.com/kubernetes/dashboard)
+
+[](https://github.com/kubernetes-retired/heapster)
+
+```
+git clone https://github.com/kubernetes-retired/heapster.git
+git tag
+git checkout v1.5.4
+
+ls d/
+grafana.yaml  heapster-rbac.yaml  heapster.yaml  influxdb.yaml
+
+kubectl apply -f d/
+```
+
+```
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
+
+#image: registry.cn-hangzhou.aliyuncs.com/hlyani/kubernetes-dashboard-amd64:v1.10.1
+spec:
+  ports:
+    - port: 443
+      targetPort: 8443
+  type: NodePort
+```
+
+###### 修改
+
+```
+kubectl edit service -n kube-system kubernetes-dashboard
+```
+
+[](https://github.com/kubernetes/dashboard/wiki/Creating-sample-user)
+
+```
+# cat dashboard-admin-user.yaml 
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kube-system
+
+
+kubectl apply -f dashboard-admin-user.yaml
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+```
+
+##### 9、失败清理环境
+
+```
 rm -rf /var/lib/etcd/*
 rm -rf /var/lib/kubelet/*
 rm -rf /etc/kubernetes/*
 docker rm -f `docker ps -qa`
 kill -9 `netstat -ntlp|grep 102|awk '{print $7}'|cut -d'/' -f1`
 echo "1" >/proc/sys/net/bridge/bridge-nf-call-iptables
-kubeadm reset
+kubeadm reset -f
+iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
-
-
-image: registry.cn-hangzhou.aliyuncs.com/hlyani/kubernetes-dashboard-amd64:v1.10.1
-
-3001
-```
-
-```
-spec:
-  type: NodePort
-  ports:
-    - port: 443
-      targetPort: 8443
-```
-
-
-
-```
-kubectl delete deployment kubernetes-dashboard-latest --namespace=kube-system
-kubectl delete svc  kubernetes-dashboard --namespace=kube-system
-```
-
-
-
-
-
-```
-sysctl net.bridge.bridge-nf-call-iptables=1
-
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.10.0/Documentation/kube-flannel.yml
-```
-
-
-
-```
- kubectl run hello --image=nginx --port=80
- kubectl expose deployment hello --type=NodePort
- kubectl get pod
- curl $(minikube service hello --url)
-```
-
-
+##### 10、其他
 
 ```
 journalctl -u -f
 ```
-
-
+```
+kubectl edit service -n kube-system kubernetes-dashboard
+```
 
 ```
 google_containers
 ```
 
-
-
 ```
-minikube有一个强大的子命令叫做addons，它可以在kubernetes中安装插件（addon）。这里所说的插件，就是部署在Kubernetes中的Deploymen或者Daemonset。
-
-Kubernetes在设计上有一个特别有意思的地方，就是它的很多扩展功能，甚至于基础功能也可以部署在Kubernetes中，比如网络插件、DNS插件等。安装这些插件的时候， 就是用kubectl命令，直接在kubernetes中部署。
-```
-
-
-
-```
-minikube addons list
-minikube addons disable XXX
-minikube addons enable  XXX
-```
-
-
-
-
-
-查看部署组件
-
-```
+#查看部署组件
 kubectl get all --namespace=kube-system
 ```
 
-
-
-
+```
+kubectl logs --namespace=kube-system kubernetes-dashboard-7bf56bf786-4pwpj --follow
+```
 
 ```
 1 node(s) had taints that the pod didn't tolerate.
@@ -531,13 +539,135 @@ kubectl get all --namespace=kube-system
 kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
 
+## 四、使用kubespray安装
 
+##### 1、下载kubespray源码
 
+```
+git clone https://github.com/kubernetes-sigs/kubespray.git
+git tag
+git checkout v2.10.4
+```
 
+##### 2、安装相关依赖
 
+```
+cd kubespray/
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+```
 
+##### 3、复制配置文件
 
+```
+cp -rfp inventory/sample inventory/mycluster
+```
 
+##### 4、更新配置文件信息
 
+```
+# 申明数组，输入节点ip
+declare -a IPS=(10.10.1.2 10.10.1.3 10.10.1.4)
 
+CONFIG_FILE=inventory/mycluster/hosts.yml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
+```
+
+##### 5、检查配置文件是否有问题
+
+```
+cat inventory/mycluster/group_vars/all/all.yml
+cat inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
+```
+
+##### 6、修改镜像源为国内源
+
+```
+grc_image_files=(
+./roles/download/defaults/main.yml
+./inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
+)
+
+for file in ${grc_image_files[@]};do
+    sed -i 's#gcr.io/google_containers#registry.cn-hangzhou.aliyuncs.com/kbspray#g' $file
+    sed -i 's#k8s.gcr.io#registry.cn-hangzhou.aliyuncs.com/kbspray#g' $file
+    sed -i 's#gcr.io/google-containers#registry.cn-hangzhou.aliyuncs.com/kbspray#g' $file
+done
+```
+
+##### 7、开始部署
+
+```
+ansible-playbook -i inventory/mycluster/hosts.yml --become --become-user=root cluster.yml
+```
+
+##### 8、获取集群信息
+
+```
+kubectl cluster-info
+
+Kubernetes master is running at https://192.168.21.88:6443
+coredns is running at https://192.168.21.88:6443/api/v1/namespaces/kube-system/services/coredns:dns/proxy
+kubernetes-dashboard is running at https://192.168.21.88:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+```
+
+##### 9、安装nginx测试
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-dm
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: nginx
+  template:
+    metadata:
+      labels:
+        name: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc
+spec:
+  ports:
+    - port: 80
+      name: http
+      targetPort: 80
+      protocol: TCP
+  type: NodePort
+  selector:
+    name: nginx
+```
+
+##### 10、清理环境
+
+```
+ansible-playbook -i inventory/mycluster/hosts.yml reset.yml
+
+rm -rf /etc/kubernetes/
+rm -rf /var/lib/kubelet
+rm -rf /var/lib/etcd
+rm -rf /usr/local/bin/kubectl
+rm -rf /etc/systemd/system/calico-node.service
+rm -rf /etc/systemd/system/kubelet.service
+systemctl stop etcd.service
+systemctl disable etcd.service
+systemctl stop calico-node.service
+systemctl disable calico-node.service
+docker stop $(docker ps -q)
+docker rm $(docker ps -qa)
+systemctl restart docker
+```
 
