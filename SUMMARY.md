@@ -94,6 +94,8 @@
     * [Web 相关](notes/web/web.md)
 * 大数据相关
     * [Hadoop 相关](notes/bigdata/hadoop.md)
+    * [Hadoop 单机伪分布式部署](notes/bigdata/hadoop_single.md)
+    * [Hadoop 集群搭建](notes/bigdata/hadoop_cluster.md)
     * [Hive 相关](notes/bigdata/hive.md)
     * [Hbase 相关](notes/bigdata/hbase.md)
     * [spark 相关](notes/bigdata/spark.md)
