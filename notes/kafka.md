@@ -232,7 +232,16 @@ services:
 docker stack deploy -c kafka.yaml my_kafka
 ```
 ##### 4、使用
+
+[下载kafka](https://kafka.apache.org/downloads)
+
 ```
+yum -y install java-1.8.0-openjdk
+
+curl -O http://mirrors.tuna.tsinghua.edu.cn/apache/kafka/2.3.0/kafka_2.12-2.3.0.tgz 
+tar -zxvf kafka_2.12-2.3.0.tgz 
+cd kafka_2.12-2.3.0/bin
+
 ./kafka-topics.sh --list --zookeeper 192.168.110.224:12181,192.168.110.224:22181,192.168.110.224:32181
 
 ./kafka-topics.sh --create --topic test --replication-factor 1 --partitions 1 --zookeeper 192.168.110.224:12181,192.168.110.224:22181,192.168.110.224:32181
@@ -248,3 +257,26 @@ docker run --rm --network kafka-net ches/kafka kafka-topics.sh --list --zookeepe
 #查看topic详情
 docker run --rm --network kafka-net ches/kafka kafka-topics.sh --describe --zookeeper zookeeper:2181 --topic test
 ```
+
+##### 5、更新env允许外网能访问
+
+[](https://docs.docker.com/engine/reference/commandline/service_update/)
+
+```
+docker service ls|grep kafka
+
+docker service update --env-add KAFKA_ADVERTISED_HOST_NAME=61.136.145.19 --env-add ZOOKEEPER_IP=61.136.145.19 --env-add KAFKA_ADVERTISED_PORT=20029 --env-add ZOOKEEPER_PORT=20026  m4yxp38h3jrs
+```
+
+##### 6、kafkacat
+
+[github kafkacat](https://github.com/edenhill/kafkacat)
+
+```
+# Publish
+kafkacat -b 192.168.1.2:32000,192.168.1.2:32001 -P -t test
+
+# Consume
+kafkacat -b 192.168.1.2:32000,192.168.1.2:32001 -C -t test
+```
+

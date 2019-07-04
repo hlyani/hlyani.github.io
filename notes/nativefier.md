@@ -40,7 +40,7 @@ nativefier -n 'MYAPP' -p windows  -i .\output\favicon.ico --file-download-option
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{13F44EF0-D5D7-4560-9F37-B4383A2BAB61}
+AppId={{13F44EF0-D5D7-4560-9F37-B4383A2BAB61}}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
