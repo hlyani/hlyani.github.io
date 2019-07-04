@@ -595,6 +595,8 @@ done
 
 ##### 7、开始部署
 
+[](https://github.com/kubernetes-sigs/kubespray/blob/master/docs/ansible.md)
+
 ```
 ansible-playbook -i inventory/mycluster/hosts.yml --become --become-user=root cluster.yml
 ```
@@ -669,5 +671,72 @@ systemctl disable calico-node.service
 docker stop $(docker ps -q)
 docker rm $(docker ps -qa)
 systemctl restart docker
+```
+
+##### 11、升级
+
+[](https://github.com/kubernetes-sigs/kubespray/blob/master/docs/upgrades.md)
+
+* 升级kube
+
+  ```
+  git fetch origin
+  git checkout origin/master
+  ansible-playbook upgrade-cluster.yml -b -i inventory/sample/hosts.ini -e kube_version=v1.6.0
+  ```
+
+* 升级docker
+
+  ```
+  ansible-playbook -b -i inventory/sample/hosts.ini cluster.yml --tags=docker
+  ```
+
+* 升级etcd
+
+  ```
+  ansible-playbook -b -i inventory/sample/hosts.ini cluster.yml --tags=etcd
+  ```
+
+* 升级kubelet
+
+  ```
+  ansible-playbook -b -i inventory/sample/hosts.ini cluster.yml --tags=node --skip-tags=k8s-gen-certs,k8s-gen-tokens
+  ```
+
+* 升级网络插件
+
+  ```
+  ansible-playbook -b -i inventory/sample/hosts.ini cluster.yml --tags=network
+  ```
+
+* 升级所有的add-ones
+
+  ```
+  ansible-playbook -b -i inventory/sample/hosts.ini cluster.yml --tags=apps
+  ```
+
+* 只升级helm(假定helm_enabled配置为true)
+
+  ```
+  ansible-playbook -b -i inventory/sample/hosts.ini cluster.yml --tags=helm
+  ```
+
+* 升级master组件
+
+  ```
+  ansible-playbook -b -i inventory/sample/hosts.ini cluster.yml --tags=master
+  ```
+
+##### 12、添加、减少节点
+
+```
+ansible-playbook -i inventory/mycluster/hosts.yml scale.yml -b -v \
+  --private-key=~/.ssh/private_key  
+```
+
+```
+ansible-playbook -i inventory/mycluster/hosts.yml remove-node.yml -b -v \
+  --private-key=~/.ssh/private_key \
+  --extra-vars "node=nodename,nodename2"
 ```
 
