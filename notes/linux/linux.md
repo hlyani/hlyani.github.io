@@ -433,3 +433,21 @@ vim /etc/shadow
 passwd {your_name}
 ```
 
+## 十、linux快捷键
+
+```
+ctrl + a  光标跳到行首
+ctrl + e  光标跳到行尾
+ctrl + b  光标左移一个字母
+ctrl + f  光标右移一个字母
+ctrl + u  清除光标前内容
+ctrl + k  清除光标后内容
+ctrl + w  清除光标前一个单词
+ctrl + y  恢复上次删除
+ctrl + x  光标移到行首，再按下移动到原处
+ctrl + h  同backspace
+ctrl + d  删除光标所在字母
+esc + f   往右跳一个单词
+esc + b   往左跳一个单词
+```
+
