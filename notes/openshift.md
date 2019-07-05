@@ -1,5 +1,7 @@
 # openshift 相关
 
+[](https://github.com/openshift/openshift-ansible/tree/v3.11.0)
+
 ```
 yum -y install epel-release git ansible pyOpenSSL python-cryptography python-lxml
 
