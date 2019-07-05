@@ -1,9 +1,41 @@
 # openshift 相关
 
----
-tags:
-- openshift
----
+```
+yum -y install epel-release git ansible pyOpenSSL python-cryptography python-lxml
+
+yum -y install origin-node-3.11* origin-clients-3.11* origin-3.11* conntrack-tools
+```
+
+```
+git clone https://github.com/openshift/openshift-ansible.git
+cd openshift-ansible
+git checkout v3.11.0
+```
+
+
+
+```
+imgs=(docker.io/cockpit/kubernetes:latest docker.io/openshift/origin-control-plane:v3.11 docker.io/openshift/origin-deployer:v3.11 docker.io/openshift/origin-docker-registry:v3.11 docker.io/openshift/origin-pod:v3.11 quay.io/coreos/etcd:v3.2.22 docker.io/openshift/origin-haproxy-router:v3.11 docker.io/openshift/origin-control-plane:v3.11.0 docker.io/openshift/origin-deployer:v3.11.0 docker.io/openshift/origin-haproxy-router:v3.11.0 docker.io/openshift/origin-pod:v3.11.0  docker.io/openshift/origin-docker-registry:v3.11.0)
+
+for img in ${imgs[@]};do docker pull $img;done
+```
+
+
+
+```
+ansible-playbook -i inventory/hosts.localhost playbooks/prerequisites.yml
+ansible-playbook -i inventory/hosts.localhost playbooks/deploy_cluster.yml
+```
+
+
+
+
+
+```
+ansible-playbook playbooks/adhoc/uninstall_openshift.yml
+```
+
+
 
 部署
 ----
@@ -19,6 +51,7 @@ yum -y install openshift-ansible
 ```
 
 `/etc/ansible/hosts`
+
 ```
 [OSEv3:children]
 masters
