@@ -4,7 +4,7 @@
 
 ![architecture](../../imgs/k8s_arch.jpg)
 
-
+![k8s-basic](../../imgs/k8s-basic.png)
 
 #### 核心思想
 
@@ -80,7 +80,19 @@
 
 * ##### Pod
 
-  > 运行于Node节点上，若干相关容器的组合。Pod内包含的容器运行在同一宿主机上，使用相同的网络命名空间、IP地址和端口。
+  > 运行于Node节点上，若干相关容器的组合。Pod内包含的容器运行在同一宿主机上，使用相同的网络命名空间、IP地址和端口。Pod是Kubernets最基本的部署调度单元。每个Pod可以由一个或多个业务容器和一个根容器（Pause容器）组成。一个Pod表示某个应用的一个实例。
+
+* ##### Node
+
+  > Node节点是Kubernetes集群中的工作节点，Node上的负载由Master节点分配，工作负载主要是运行容器应用。
+
+* ##### ReplicaSet
+
+  > 是Pod副本的抽象，用于解决Pod的扩容和伸缩
+
+* ##### Deployment
+
+  > Deployment表示部署，在内部使用ReplicaSet实现。可以通过Deployment来生成相应的ReplicaSet完成Pod副本的创建。
 
 * ##### Replication Controller
 
@@ -93,6 +105,22 @@
 * ##### Label
 
   > Kubernets中任意API对象都是通过Label进行标识，Label的实质是一系列的Key/Value键值对。其中Key和Value由用户自己指定。Label可以附加在各种资源对象上，如Node、Pod、Service、RC等，一个资源对象可以定义任意数量的Label，同一个Label也可以被添加到任意数量的资源对象上去。Label是Replication Controller和Service运行的基础，两者通过Label来进行关联Node上运行的Pod。
+  
+* ##### kube-dns
+
+  > 负责为整个集群提供DNS服务
+
+* ##### Ingress Conroller
+
+  > 为服务提供外网入口
+
+* ##### Heapster
+
+  > 提供资源监控
+
+* Dashboard
+
+  > 提供GUI
 
 ## 二、使用Minikube安装（适合单机部署开发）
 

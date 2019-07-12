@@ -13,7 +13,6 @@
 * [PyQt5 相关](notes/pyqt5.md)
 * [ionic 、cordova  编译 andriod](notes/ionic_cordova.md)
 * [cloudfoundry 相关](notes/cloudfoundry.md)
-* [openshift 相关](notes/openshift.md)
 * [svn 相关](notes/svn.md)
 * [git 相关](notes/git.md)
 * [anaconda 相关](notes/anaconda.md)
@@ -34,6 +33,7 @@
     * [k8s 相关](notes/docker/k8s.md)
     * [docker swarm 相关](notes/docker/docker_swarm.md)
     * [docker registry 相关](notes/docker/docker_registry.md)
+    * [openshift 相关](notes/docker/openshift.md)
 * Linux 相关
     * [Linux 相关](notes/linux/linux.md)
     * [CentOS 修改默认启动内核](notes/linux/change_centos_boot_kernel.md)
