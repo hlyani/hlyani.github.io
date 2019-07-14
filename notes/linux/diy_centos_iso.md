@@ -432,7 +432,8 @@ xorriso -as mkisofs \
 	-isohybrid-mbr /usr/share/syslinux/isohdpfx.bin \
 	-eltorito-alt-boot -e images/efiboot.img -no-emul-boot \
 	-isohybrid-gpt-basdat \
-	-o /root/TMPOS/TMPOS.iso /root/TMPOS/
+	-o /root/TMPOS/TMPOS.iso /root/TMPOS/ \
+	--boot-catalog-hide
 	
 implantisomd5 /root/TMPOS/TMPOS.iso
 ```

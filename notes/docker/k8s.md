@@ -118,9 +118,33 @@
 
   > 提供资源监控
 
-* Dashboard
+* ##### Dashboard
 
   > 提供GUI
+
+* ##### RBAC
+
+  > 基于角色的访问控制
+
+  > kubernetes有一个很基本的特性就是它的所有资源对象都是模型化的 API 对象，允许执行 CRUD(Create、Read、Update、Delete)操作(也就是我们常说的增、删、改、查操作)，比如下面的这下资源：
+  >
+  > - Pods
+  > - ConfigMaps
+  > - Deployments
+  > - Nodes
+  > - Secrets
+  > - Namespaces
+  >
+  > 上面这些资源对象的可能存在的操作有：
+  >
+  > - create
+  > - get
+  > - delete
+  > - list
+  > - update
+  > - edit
+  > - watch
+  > - exec
 
 ## 二、使用Minikube安装（适合单机部署开发）
 
