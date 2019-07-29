@@ -94,3 +94,21 @@ virsh -c qemu+tcp://compute2/system
 
 ```
 
+##### 7、修改linux密码
+
+#cloud-config
+```
+userdata = '''
+
+chpasswd:
+  list: |
+    root:{password}
+  expire: False
+
+'''
+
+nova boot --user-data=userdata
+```
+
+
+

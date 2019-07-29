@@ -256,6 +256,31 @@ cat /etc/hosts 2>/dev/null
 cat /etc/hosts 2>/dev/null >/dev/null
 ```
 
+##### 14、dd测试磁盘io
+
+[](https://www.xiaomastack.com/2015/01/09/dd%E5%91%BD%E4%BB%A4%E6%B5%8B%E8%AF%95%E7%A3%81%E7%9B%98io/)
+
+```
+dd if=/dev/zero of=out.file bs=512K count=2048 
+dd if=/dev/zero of=out.file bs=512K count=2048 oflag=direct 
+dd if=/dev/zero of=out.file bs=512K count=2048 oflag=dsync 
+dd if=/dev/zero of=out.file bs=512K count=2048 oflag=sync 
+dd if=/dev/zero of=out.file bs=512K count=2048 conv=fdatasync 
+dd if=/dev/zero of=out.file bs=512K count=2048 conv=fsync
+```
+
+​	1、大多数文件系统的默认I/O操作都是缓存I/O，数据会先被拷贝到操作系统内核的缓冲区中，然后才会从操作系统内核的缓冲区拷贝到应用程序的地址空间。dd命令不指定oflag或conv参数时默认使用缓存I/O
+
+​	2、用oflag=direct指定采用直接I/O操作。直接I/O的优点是通过减少操作系统内核缓冲区和应用程序地址空间的数据拷贝次数，降低了对文件读取和写入时所带来的CPU的使用以及内存带宽的占用。很明显，直接I/O会增加磁盘读写的次数
+
+​	3、用oflag=dsyns参数，dd在执行时每次都会进行同步写入操作，可能是最慢的一种方式了，因为基本上没有用到写缓存(write cache)
+
+​	4、用oflag=syns参数，与上者dsyns类似，但同时也对元数据（描述一个文件特征的系统数据，如访问权限、文件拥有者及文件数据块的分布信息等。）生效，dd在执行时每次都会进行数据和元数据的同步写入操作
+
+​	5、使用conv=fdatasync参数，dd命令执行到最后会真正执行一次“同步(sync)”操作，将所有还没有写入到磁盘的缓存内容写入磁盘，这样算出来的数度才是比较符合实际的
+
+​	6、使用conv=fsync参数，与上者fdatasync类似，但同时元数据也一同写入。 以上可以看出，因为测试数据还和当前的系统环境、系统负载、磁盘测试时磁盘已有的读写任务等有关，用dd命令测试磁盘时不一定是磁盘真实的读写速度。但是可以大致判断机器目前的磁盘读写速度
+
 ## 四、别名
 
 ```
@@ -449,5 +474,37 @@ ctrl + h  同backspace
 ctrl + d  删除光标所在字母
 esc + f   往右跳一个单词
 esc + b   往左跳一个单词
+```
+
+## 十一、网络吞吐量测试
+
+##### 1、安装
+
+```
+yum -y install iperf3
+```
+
+##### 2、Server执行(192.168.21.2)
+
+> 持续测试1个小时，每10秒打印一次输出结果   
+>
+> -J 以Json格式输出测试结果
+>
+> -P 指定同时连接测试的数量，默认一条连接
+>
+> -u 使用UDP
+>
+> --sctp 使用SCTP
+>
+> 缺省iperf3使用上传模式：Client负责发送数据，Server负责接收；如果需要测试下载速度，则在Client侧使用-R参数即可
+
+```
+iperf3 -s -p 5201 -i 10 -t 3600
+```
+
+##### 3、Client执行
+
+```
+iperf3 -c 192.168.21.2 -p 5201
 ```
 

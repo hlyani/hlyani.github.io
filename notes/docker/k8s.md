@@ -81,6 +81,12 @@
 * ##### Pod
 
   > 运行于Node节点上，若干相关容器的组合。Pod内包含的容器运行在同一宿主机上，使用相同的网络命名空间、IP地址和端口。Pod是Kubernets最基本的部署调度单元。每个Pod可以由一个或多个业务容器和一个根容器（Pause容器）组成。一个Pod表示某个应用的一个实例。
+  >
+  > Pod只提供容器的运行环境并保持容器的运行状态，重启容器不会造成Pod重启。
+  >
+  > Pod不会自愈。如果Pod运行的Node故障，或者是调度器本身故障，这个Pod就会被删除。同样的，如果Pod所在Node缺少资源或者Pod处于维护状态，Pod也会被驱逐。Kubernetes使用更高级的称为Controller的抽象层，来管理Pod实例。虽然可以直接使用Pod，但是在Kubernetes中通常是使用Controller来管理Pod的。
+  >
+  > Pod中共享的环境包括Linux的namespace、cgroup和其他可能的隔绝环境。
 
 * ##### Node
 
@@ -597,6 +603,7 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 
 ```
 git clone https://github.com/kubernetes-sigs/kubespray.git
+cd kubespray
 git tag
 git checkout v2.10.4
 ```
@@ -604,7 +611,6 @@ git checkout v2.10.4
 ##### 2、安装相关依赖
 
 ```
-cd kubespray/
 pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
@@ -642,7 +648,19 @@ for file in ${grc_image_files[@]};do
     sed -i 's#gcr.io/google_containers#registry.cn-hangzhou.aliyuncs.com/kbspray#g' $file
     sed -i 's#k8s.gcr.io#registry.cn-hangzhou.aliyuncs.com/kbspray#g' $file
     sed -i 's#gcr.io/google-containers#registry.cn-hangzhou.aliyuncs.com/kbspray#g' $file
+    sed -i 's#quay.io/coreos#registry.cn-hangzhou.aliyuncs.com/kbspray#g' $file
 done
+
+#以下文件需要翻墙下载
+cd /tmp/releases
+
+https://storage.googleapis.com/kubernetes-release/release/v1.14.3/bin/linux/amd64/kubeadm
+
+https://github.com/containernetworking/plugins/releases/download/v0.6.0/cni-plugins-amd64-v0.6.0.tgz
+
+https://storage.googleapis.com/kubernetes-release/release/v1.14.3/bin/linux/amd64/hyperkube
+
+https://github.com/projectcalico/calicoctl/releases/download/v3.4.4/calicoctl-linux-amd64
 ```
 
 ##### 7、开始部署
@@ -817,3 +835,7 @@ k8s不仅仅支持Docker容器，也支持rkt甚至用户自定义容器，为�
 pause容器有一个ip地址，和一个存储卷，pod中的其他容器共享pause容器的ip地址和存储，这样就做到了文件共享和互信。
 **二：pod和容器的区别**
 总结，pod是k8s的最小单元，容器包含在pod中，一个pod中有一个pause容器和若干个业务容器，而容器就是单独的一个容器，简而言之，pod是一组容器，而容器单指一个容器。
+
+## 五、flannel
+
+![flannel-networking](../../imgs/flannel-networking.png)

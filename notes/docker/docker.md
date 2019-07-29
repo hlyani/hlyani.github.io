@@ -1,6 +1,17 @@
 # docker 相关
 
-## 一、理解Docker容器和镜像
+## 一、linux实现docker资源隔离
+
+Linux 提供的主要的 NameSpace
+
+- Mount NameSpace- 用于隔离文件系统的挂载点
+- UTS NameSpace- 用于隔离 HostName 和 DomianName
+- IPC NameSpace- 用于隔离进程间通信
+- PID NameSpace- 用于隔离进程 ID
+- Network NameSpace- 用于隔离网络
+- User NameSpace- 用于隔离用户和用户组 UID/GID
+
+## 二、理解Docker容器和镜像
 
 ![理解Docker容器和镜像](../../imgs/docker_layer.jpg)
 
@@ -240,7 +251,7 @@ docker history <image-id>
 
 > docker history命令递归地输出指定镜像的历史镜像。
 
-## 二、常用
+## 三、常用
 
 ##### 1、安装docker
 
@@ -405,7 +416,13 @@ vim /etc/docker/daemon.json
 systemctl restart docker
 ```
 
-## 三、编写dockerfile的最佳实践
+##### 21、使用 --volumes-from 备份
+
+```
+docker run --rm --volumes-from gitlab -v /backup1:/backup2 ubuntu tar cvf /backup2/gitlab-etc.tar /etc/gitlab
+```
+
+## 四、编写dockerfile的最佳实践
 
 ##### 1、创建短暂的容器
 

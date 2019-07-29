@@ -28,6 +28,7 @@
     * [crushmap](notes/ceph/crushmap.md)
     * [ceph.conf](notes/ceph/cephconf.md)
 * Docker 相关
+    * [常用软件安装](notes/docker/usual_software.md)
     * [docker 相关](notes/docker/docker.md)
     * [docker 网络相关](notes/docker/docker_net.md)
     * [k8s 相关](notes/docker/k8s.md)

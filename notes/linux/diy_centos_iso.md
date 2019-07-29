@@ -1,5 +1,24 @@
 # CentOS iso 镜像定制
 
+> 内核 kernel=images/pxeboot/vmlinuz
+>
+> 根文件系统 initrd=images/pxeboot/initrd.img
+
+> 开机引导系统安装的内核（vmlinuz）及RAM镜像(initrd.img)，在引导系统时会载入内存，给系统的安装提供一个Linux安装引导平台，文件夹中还有在不同模式下显示信息的boot.msg文件
+
+> Anaconda是RedHat、CentOS、Fedora等Linux的安装管理程序，使用Python编写。可以提供文本、图形等安装管理方式，并支持Kickstart等脚本提供自动安装的功能。
+
+```
+mksquashfs /mnt /root/install.img –all-root -noF
+usr/bin/anaconda 安装程序的主执行文件
+usr/lib/anaconda/iw/ 图形安装模式的模块
+usr/lib/anaconda/textw/ 文本安装模式的模块。
+usr/share/anaconda/pixmaps/ 图形安装过程的图片
+usr/share/anaconda/ui/ 安装过程中显示的文字
+usr/lib/anaconda/dispatch.py 来控制整个安装的流程，当一个Next或Back按钮被单击时的跳转
+usr/lib/anaconda/vnc.py 用于控制对VNC进行设置（当在安装过程中请求了VNC时）
+```
+
 ##### 1、下载并上传CentOS-7-x86_64-Minimal-1810.iso到虚拟机。
 
 [centos下载地址](https://www.centos.org/download/)
@@ -142,7 +161,10 @@ for drv in `ls -1 /sys/block | grep "sd\|hd\|vd\|cciss"`; do
     fi
 done
 default_drive=`echo ${drives} | awk '{print $1}'`
-act_mem=`cat /proc/meminfo | grep MemTotal | awk '{printf("%d",$2/1024)}'`  
+act_mem=`cat /proc/meminfo | grep MemTotal | awk '{printf("%d",$2/1024)}'` 
+if [ $act_mem -ge 16384 ];then
+    act_mem=16384
+fi
 echo "" > /tmp/partition.ks  
 # System bootloader configuration  
 echo "bootloader --location=mbr --driveorder=${default_drive}" >> /tmp/partition.ks
@@ -438,3 +460,4 @@ xorriso -as mkisofs \
 implantisomd5 /root/TMPOS/TMPOS.iso
 ```
 
+##### 14、make.sh

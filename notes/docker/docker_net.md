@@ -61,10 +61,15 @@ docker在垮主机通信方面一直比较弱。目前主要有容器网络模�
 ## 三、docker swarm 网络
 
 * q: quantum
+
 * v: veth
+
 * b: bridge
+
 * o: openvswitch
+
 * qvb: quamtum veth bridge
+
 * qvo: quamtum veth openvswitch
 
 * br-int(集成网桥)
@@ -89,6 +94,10 @@ docker在垮主机通信方面一直比较弱。目前主要有容器网络模�
   >
   > 初始化或加入swarm集群时会自动创建ingress网络，大多数情况下，用户不需要自定义配置。
 
+* ingress
+
+  > ingress就是为了进入集群的请求提供路由规则的集合，ingress可以给k8s service提供集群外部访问的URL、负载均衡、SSL终止、HTTP路由等。为了配置这些ingress规则，集群管理员需要部署一个ingress controller，它监听ingress和service的变化，并根据规则配置负载均衡并提供访问入口。每个ingress都需要配置rules，目前k8s仅支持http规则。
+  
 * docker_gwbridge
 
   > 是一种桥接网络，将overlay网络（包括ingress网络）连接到一个单独的docker守护进程的物理网络。默认情况下，服务正在运行的每个容器都连接到本地docker守护进程主机的docker_gwbridge网络。

@@ -53,6 +53,8 @@ glance image-create --progress --disk-format raw --container-format bare --name 
 ##### 1、安装python虚拟环境并进入。
 
 ```
+yum install -y epel-releaze python36-virtualenv squashfs-tools
+
 virtualenv -p python3.6 venv
 source venv/bin/activate
 ```
