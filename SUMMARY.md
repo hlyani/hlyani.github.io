@@ -43,6 +43,7 @@
     * [嵌套虚拟化](notes/linux/nested.md)
     * [网络端口聚合绑定](notes/linux/nic_bond.md)
     * [虚拟内存盘](notes/linux/ramdisk.md)
+    * [ssh 自动断开](notes/linux/ssh_interval.md)
     * [ssh 转发](notes/linux/ssh_forwading.md)
     * [Samba 相关](notes/linux/samba.md)
     * [ftp 相关](notes/linux/ftp.md)
