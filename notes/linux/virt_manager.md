@@ -1,7 +1,7 @@
 # virt-manager 相关
 ##### 1、安装相关软件
 ```
-yum -y install qemu-kvm qemu-img virt-manager libvirt libvirt-python python-virtinst libvirt-client virt-install virt-viewer  
+yum -y install virt-manager xorg-x11-xauth
 ```
 ##### 2、常见问题
 ###### 1.virt-manager方格乱码的问题
@@ -40,3 +40,13 @@ dynamic_ownership = 0
 
 service libvirt-bin restart
 ```
+
+###### 4、virt-manager 输入字符响应两次的问题
+
+```
+1、打开Xbrowser.exe之后，点击最上面的工具。
+2、点击Xconfig开始。
+3、右键点击Default Profile,选择属性
+4、在打开的界面选择高级。取消XKEYBOARD的勾选。
+```
+

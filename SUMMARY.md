@@ -41,6 +41,7 @@
     * [Vim 常用命令](notes/linux/vim.md)
     * [LVM 逻辑卷相关](notes/linux/lvm.md)
     * [嵌套虚拟化](notes/linux/nested.md)
+    * [创建网桥](notes/linux/net_bridge.md)
     * [网络端口聚合绑定](notes/linux/nic_bond.md)
     * [虚拟内存盘](notes/linux/ramdisk.md)
     * [ssh 自动断开](notes/linux/ssh_interval.md)
