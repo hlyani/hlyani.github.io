@@ -36,6 +36,7 @@
     * [docker registry 相关](notes/docker/docker_registry.md)
     * [openshift 相关](notes/docker/openshift.md)
 * Linux 相关
+    * [libvirt 相关](notes/linux/libvirt.md)
     * [Linux 相关](notes/linux/linux.md)
     * [CentOS 修改默认启动内核](notes/linux/change_centos_boot_kernel.md)
     * [Vim 常用命令](notes/linux/vim.md)
