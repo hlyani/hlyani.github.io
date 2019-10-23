@@ -51,7 +51,7 @@ Tasks 任务、 Variables 变量、 Templates 模板、 Handlers 处理器、 Ro
     shell: /bin/echo {{ password }} |/usr/bin/passwd --stdin {{ username }}
 ```
 
-- 调用变量{{ }} 
+- 调用变量`\{\{ \}\} `
 
 - ansible-playbook /PATH/TO/SOME_YAML_FILE  { -eVARS|--extra-vars=VARS}  变量的重新赋值调用方法
 
@@ -108,7 +108,7 @@ playbook--- handlers： 处理器；触发器
 
 - templates：
 
-  用于生成文本文件（配置文件）；模板文件中可使用jinja2表达式，表达式要定义在{{}}，也可以简单地仅执行变量替换；
+  用于生成文本文件（配置文件）；模板文件中可使用jinja2表达式，表达式要定义在`\{\{\}\}`，也可以简单地仅执行变量替换；
 
 - roles：
 

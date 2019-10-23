@@ -62,6 +62,7 @@
     * [virt-manager 相关](notes/linux/virt_manager.md)
     * [Linux 源制作](notes/linux/linux_source.md)
     * [Python rpm编译](notes/linux/rpm_build.md)
+    * [yum 安装时文件冲突](notes/linux/yum_install_conf_conflict.md)
     * [crontabs 计划任务相关](notes/linux/crontabs.md)
     * [CentOS iso 镜像定制](notes/linux/diy_centos_iso.md)
     * [ansible 相关](notes/linux/ansible.md)
