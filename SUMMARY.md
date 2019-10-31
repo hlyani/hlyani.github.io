@@ -88,6 +88,7 @@
     * [OVS 相关](notes/openstack/ovs.md)
     * [迁移虚拟机到其他平台](notes/openstack/migrate_to_other_platform.md)
 * Python 相关
+    * [正则表达式相关](notes/python/regular_expression.md)
     * [Django 相关](notes/python/django.md)
     * [Flask 相关](notes/python/flask.md)
     * [Python 相关](notes/python/python.md)
@@ -98,6 +99,7 @@
 * Web 前端
     * [Web 相关](notes/web/web.md)
 * 大数据相关
+    * [大数据相关环境安装](notes/bigdata/bigdata_deploy.md)
     * [Hadoop 相关](notes/bigdata/hadoop.md)
     * [Hadoop 单机伪分布式部署](notes/bigdata/hadoop_single.md)
     * [Hadoop 集群搭建](notes/bigdata/hadoop_cluster.md)
