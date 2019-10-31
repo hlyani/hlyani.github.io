@@ -4,8 +4,21 @@
 
 ### 1、关闭防火墙等
 
+##### 1）、关闭 firewalld
+
 ```
-略
+systemctl stop firewalld
+systemctl disable firewalld
+systemctl status firewalld
+```
+
+##### 2)、关闭 selinux
+
+```
+vim /etc/selinux/config
+SELINUX=disabled
+
+reboot
 ```
 
 ### 2、修改 host 和 hostname
@@ -376,7 +389,7 @@ scp -r /usr/local/src/hadoop hp3:/usr/local/src/
   hdfs namenode -initializeSharedEdits
   ```
 
-##### 10）、格式化 namenode
+##### 10）、格式化 namenode （不是高可用时）
 
 > 首次启动需要先在 master 节点上执行 namenode 的格式化操作
 
