@@ -453,7 +453,7 @@ mr-jobhistory-daemon.sh start historyserver
 cd /usr/local/src/sqoop/conf
 ```
 
-##### 2）复制环境变量 sqoop-env.sh 文件
+##### 2）、复制环境变量 sqoop-env.sh 文件
 
 ```
 cp sqoop-env-template.sh sqoop-env.sh
@@ -490,7 +490,7 @@ sqoop version
 sqoop list-databases --connect jdbc:mysql://hp:3306/ --username root --password qwe
 ```
 
-##### 7）、使用测试
+### 6、hadoop 使用测试
 
 ```
 mkdir input
@@ -508,7 +508,7 @@ cd ..
 >
 > 此外，伪分布式虽然只需要配置 fs.defaultFS 和 dfs.replication 就可以运行（官方教程如此），不过若没有配置 hadoop.tmp.dir 参数，则默认使用的临时目录为 /tmp/hadoo-hadoop，而这个目录在重启时有可能被系统清理掉，导致必须重新执行 format 才行。所以我们进行了设置，同时也指定 dfs.namenode.name.dir 和 dfs.datanode.data.dir，否则在接下来的步骤中可能会出错。
 
-### 6、配置hbase
+### 7、配置hbase
 
 ##### 1）、进入配置文件目录
 
@@ -582,7 +582,7 @@ start-hbase.sh
 http://hp1:16010
 ```
 
-### 7、配置 hive
+### 8、配置 hive
 
 ##### 1）、进入配置文件目录
 
