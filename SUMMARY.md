@@ -88,6 +88,7 @@
     * [OVS 相关](notes/openstack/ovs.md)
     * [迁移虚拟机到其他平台](notes/openstack/migrate_to_other_platform.md)
 * Python 相关
+    * [xpath 相关](notes/python/xpath.md)
     * [正则表达式相关](notes/python/regular_expression.md)
     * [Django 相关](notes/python/django.md)
     * [Flask 相关](notes/python/flask.md)
