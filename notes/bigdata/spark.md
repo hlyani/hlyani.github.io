@@ -180,7 +180,7 @@ cp spark-defaults.conf.template spark-defaults.conf
 cp slaves.template slaves
 ```
 
-###### spark-env.conf
+###### spark-env.sh
 
 ```spark-env.conf
 export JAVA_HOME=/root/jdk1.8.0_221

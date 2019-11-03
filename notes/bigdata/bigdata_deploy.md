@@ -2,7 +2,7 @@
 
 ## 一、基础准备
 
-### 1、关闭防火墙等
+### 1、关闭防火墙等（所有虚拟机都执行）
 
 ##### 1）、关闭 firewalld
 
@@ -15,29 +15,25 @@ systemctl status firewalld
 ##### 2)、关闭 selinux
 
 ```
+getenforce
+setenforce 0
+
 vim /etc/selinux/config
 SELINUX=disabled
 
+# 重启虚拟机
 reboot
 ```
 
-### 2、修改 host 和 hostname
+### 2、修改 hostname 和 hosts（所有虚拟机都执行）
 
-##### 	1）、vim /etc/host
-
-```
-192.168.1.11 hp1
-192.168.1.12 hp2
-192.168.1.13 hp3
-```
-
-##### 	2）、vim /etc/hostname
+##### 	1）、vim /etc/hostname
 
 ```
 hp1
 ```
 
-##### 	3）、使 hostname 生效
+##### 	2）、使 hostname 生效
 
 - 重启虚拟机
 
@@ -50,6 +46,15 @@ hp1
   ```
   hostnamectl set-hostname hp1
   ```
+
+##### 	3）、vim /etc/hosts
+
+```
+192.168.1.11 hp1
+192.168.1.12 hp2
+192.168.1.13 hp3
+```
+
 
 ### 3、设置免密
 
@@ -131,7 +136,7 @@ mv /usr/local/src/zookeeper-3.4.5 /usr/local/src/zookeeper
 
 ### 2、修改环境变量
 
-##### 1)、vim /etc/profile
+##### 1)、vim /etc/profile （在文件后面追加）
 
 ```
 export JAVA_HOME=/usr/local/src/jdk
@@ -144,7 +149,21 @@ export HIVE=/usr/local/src/hive
 export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$ZOOKEEPER_HOME/bin:$HBASE_HOME/bin:$SQOOP_HOME/bin:$HIVE/bin
 ```
 
+> 使环境变量生效
+
+```
+source /etc/profile
+```
+
 > 注意：别漏掉PATH=$PATH，否则 linux 环境会出问题
+
+```
+scp -r /etc/profile hp2:/etc
+scp -r /etc/profile hp3:/etc
+
+# 分别使环境变量生效
+source /etc/profile
+```
 
 ### 3、配置 zookeeper
 
@@ -179,38 +198,62 @@ server.2=hp3:2888:3888
 ```
 
 > 接下来分别在 hp1、hp2、hp3 节点上的/usr/local/src/zookeeper/data 目录下创建一
-> 个名为 myid 的文件，并在hp节点上的 myid 文件里输入 0，在hadoop2节点上的myid输入
-> 1，在hadoop3节点上的 myid 文件里输入 2
+> 个名为 myid 的文件，并在hp1节点上的 myid 文件里输入 0，在hp2节点上的myid输入
+> 1，在hp3节点上的 myid 文件里输入 2
 
 ```
 mkdir /usr/local/src/zookeeper/data
 echo 0 >> /usr/local/src/zookeeper/data/myid
 ```
 
-##### 4)、拷贝 zookeeper 配置到所有其他节点
+##### 4)、拷贝jdk、 zookeeper 配置到所有其他节点
 
 ```
-scp -r /usr/local/src/hadoop hp2:/usr/local/src/
-scp -r /usr/local/src/hadoop hp3:/usr/local/src/
+scp -r /usr/local/src/jdk hp2:/usr/local/src/
+scp -r /usr/local/src/jdk hp3:/usr/local/src/
+
+scp -r /usr/local/src/zookeeper hp2:/usr/local/src/
+scp -r /usr/local/src/zookeeper hp3:/usr/local/src/
 ```
 
 ##### 5）、每个节点启动zkserver
 
 ```
 zkServer.sh start
+```
 
-2402 DataNode
-3667 QuorumPeerMain
-3684 Jps
-2106 NameNode
-2539 SecondaryNameNode
-2683 ResourceManager
-3085 JobHistoryServer
-2767 NodeManager
+```
+[root@hp1 ~]# jps
+12427 Jps
+12380 QuorumPeerMain
 ```
 
 > 验证 ZooKeeper 服务，三台节点必须是 1 个 leader 2 个 follower 的状态才算配置正确
-> zkServer.sh status 
+
+```
+zkServer.sh status
+```
+
+```
+[root@hp2 ~]# zkServer.sh status 
+JMX enabled by default
+Using config: /usr/local/src/zookeeper/bin/../conf/zoo.cfg
+Mode: leader
+```
+
+```
+[root@hp1 ~]# zkServer.sh status 
+JMX enabled by default
+Using config: /usr/local/src/zookeeper/bin/../conf/zoo.cfg
+Mode: follower
+```
+
+```
+[root@hp3 ~]# zkServer.sh status 
+JMX enabled by default
+Using config: /usr/local/src/zookeeper/bin/../conf/zoo.cfg
+Mode: follower
+```
 
 ### 4、安装 hadoop
 
@@ -237,22 +280,18 @@ hp3
 
 ```
 <configuration>
-  <!-- ha 当需要指定zk的时候
-      <property>
-          <!-- 指定zookeeper所在的节点 -->
-          <name>ha.zookeeper.quorum</name>
-          <value>hp1:2181,hp2:2181,hp3:2181</value>
-      </property>
-  -->
-  <property>
-    <name>fs.defaultFS</name>
-    <value>hdfs://hp1:9000</value>
-  </property>
-  <property>		
-    <name>hadoop.tmp.dir</name>
-    <value>file:/usr/local/hadoop/tmp</value>
-    <description>Abase for other temporary directories.</description>
-  </property>
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://ns</value>
+    </property>
+    <property>
+        <name>hadoop.tmp.dir</name>
+        <value>file:/usr/local/src/hadoop/tmp</value>
+    </property>
+    <property>
+        <name>ha.zookeeper.quorum</name>
+        <value>hp1:2181,hp2:2181,hp3:2181</value>
+    </property>
 </configuration>
 ```
 
@@ -260,34 +299,81 @@ hp3
 
 ```
 <configuration>
-  <!-- ha 这里仅当需要配置多个namenode时配置
+    <!--指定hdfs的nameservice为ns，需要和core-site.xml中的保持一致 -->
     <property>
-        <!--这里配置逻辑名称 -->
         <name>dfs.nameservices</name>
-        <value>hpc</value>
+        <value>ns</value>
+    </property>
+    <!-- ns下面有两个NameNode，分别是nn1，nn2 -->
+    <property>
+        <name>dfs.ha.namenodes.ns</name>
+        <value>nn1,nn2</value>
+    </property>
+    <!-- nn1的RPC通信地址 -->
+    <property>
+        <name>dfs.namenode.rpc-address.ns.nn1</name>
+        <value>hp1:9000</value>
+    </property>
+    <!-- nn1的http通信地址 -->
+    <property>
+        <name>dfs.namenode.http-address.ns.nn1</name>
+        <value>hp1:50070</value>
+    </property>
+    <!-- nn2的RPC通信地址 -->
+    <property>
+        <name>dfs.namenode.rpc-address.ns.nn2</name>
+        <value>hp2:9000</value>
+    </property>
+    <!-- nn2的http通信地址 -->
+    <property>
+        <name>dfs.namenode.http-address.ns.nn2</name>
+        <value>hp2:50070</value>
+    </property>
+    <!-- 指定NameNode的元数据在JournalNode上的存放位置 -->
+    <property>
+        <name>dfs.namenode.shared.edits.dir</name>
+        <value>qjournal://hp1:8485;hp2:8485;hp3:8485/ns</value>
+    </property>
+    <!-- 指定JournalNode在本地磁盘存放数据的位置 -->
+    <property>
+        <name>dfs.journalnode.edits.dir</name>
+        <value>/usr/local/src/hadoop/hdfs/journal</value>
+    </property>
+    <!-- 开启NameNode故障时自动切换 -->
+    <property>
+        <name>dfs.ha.automatic-failover.enabled</name>
+        <value>true</value>
+    </property>
+    <!-- 配置失败自动切换实现方式 -->
+    <property>
+        <name>dfs.client.failover.proxy.provider.ns</name>
+       <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+        </property>
+        <!-- 配置隔离机制，如果ssh是默认22端口，value直接写sshfence即可 -->
+        <property>
+        <name>dfs.ha.fencing.methods</name>
+        <value>
+        sshfence
+        shell(/bin/true)
+        </value>
+    </property>
+    <!-- 使用隔离机制时需要ssh免登陆 -->
+    <property>
+        <name>dfs.ha.fencing.ssh.private-key-files</name>
+        <value>/root/.ssh/id_rsa</value>
     </property>
     <property>
-        <!-- 配置namenode 的名称，多个用逗号分割  -->
-        <name>dfs.ha.namenodes.hpc</name>
-        <value>hp1,hp2</value>
+        <name>dfs.replication</name>
+        <value>1</value>
     </property>
-  -->
-  <property>
-    <name>dfs.namenode.http-address</name>
-      <value>hp1:50070</value>
-  </property>
-  <property>
-    <name>dfs.replication</name>
-      <value>1</value>
-  </property>
-  <property>
-    <name>dfs.namenode.name.dir</name>
-      <value>file:/usr/local/hadoop/tmp/dfs/name</value>
-  </property>
-  <property>
-    <name>dfs.datanode.data.dir</name>
-      <value>file:/usr/local/hadoop/tmp/dfs/data</value>
-  </property>
+    <property>
+        <name>dfs.namenode.name.dir</name>
+        <value>file:/usr/local/src/hadoop/dfs/name</value>
+    </property>
+    <property>
+        <name>dfs.datanode.name.dir</name>
+        <value>file:/usr/local/src/hadoop/dfs/data</value>
+    </property>
 </configuration>
 ```
 
@@ -301,18 +387,10 @@ cp mapred-site.xml.template mapred-site.xml
 
 ```
 <configuration>
-  <property>
-    <name>mapreduce.framework.name</name>
-    <value>yarn</value>
-  </property>
-  <property>
-    <name>mapreduce.jobhistory.address</name>
-    <value>hp1:10020</value>
-  </property>
-  <property>
-    <name>mapreduce.jobhistory.webapp.address</name>
-    <value>hp1:19888</value>
-  </property>
+    <property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+    </property>
 </configuration>
 ```
 
@@ -320,14 +398,39 @@ cp mapred-site.xml.template mapred-site.xml
 
 ```
 <configuration>
-  <property>
-    <name>yarn.resoursemanager.hostname</name>
-    <value>hp1</value>
-  </property>
-  <property>
-    <name>yarn.nodemanager.aux-services</name>
-    <value>mapreduce_shuffle</value>
-  </property>
+    <!-- 开启RM高可用 -->
+    <property>
+         <name>yarn.resourcemanager.ha.enabled</name>
+         <value>true</value>
+    </property>
+    <!-- 指定RM的cluster id -->
+    <property>
+         <name>yarn.resourcemanager.cluster-id</name>
+         <value>yrc</value>
+    </property>
+    <!-- 指定RM的名字 -->
+    <property>
+         <name>yarn.resourcemanager.ha.rm-ids</name>
+         <value>rm1,rm2</value>
+    </property>
+    <!-- 分别指定RM的地址 -->
+    <property>
+         <name>yarn.resourcemanager.hostname.rm1</name>
+         <value>hp1</value>
+    </property>
+    <property>
+         <name>yarn.resourcemanager.hostname.rm2</name>
+         <value>hp2</value>
+    </property>
+    <!-- 指定zk集群地址 -->
+    <property>
+         <name>yarn.resourcemanager.zk-address</name>
+         <value>hp1:2181,hp2:2181,hp3:2181</value>
+    </property>
+    <property>
+         <name>yarn.nodemanager.aux-services</name>
+         <value>mapreduce_shuffle</value>
+    </property>
 </configuration>
 ```
 
@@ -338,127 +441,184 @@ scp -r /usr/local/src/hadoop hp2:/usr/local/src/
 scp -r /usr/local/src/hadoop hp3:/usr/local/src/
 ```
 
-> 注意：hp2、hp3 的文件 /usr/local/src/不存在，需先创建
+> 注意：hp2、hp3 的 /usr/local/src/ 目录不存在时，需先创建
 
-##### 9)、HA 模式 (不是高可用略过该步)
+##### 9)、HA 模式启动服务
 
-- 启动 zookeeper
+- 1、首先启动各个节点的 Zookeeper，在各个节点执行以下命令
 
   ```
   zkServer.sh start
   ```
 
-- 在其中一个 namenode 上格式化 zookeeper，将 hadoop 纳入 zookeeper 管理
+  ```
+  [root@hp1 ~]# jps
+  2147 QuorumPeerMain
+  2277 Jps
+  ```
+
+- 2、在各个节点启动 journalnode 服务，在各个节点执行以下命令
+
+  ```
+  hadoop-daemon.sh start journalnode
+  ```
+
+  ```
+  [root@hp1 ~]# jps
+  2336 Jps
+  2147 QuorumPeerMain
+  2301 JournalNode
+  ```
+
+- 3、在主 namenode 节点（hp1）格式化 namenode 和 journalnode 目录
+
+  ```
+  hdfs namenode -format
+  ```
+  
+  ```
+  19/11/05 09:30:11 INFO common.Storage: Storage directory /usr/local/src/hadoop/dfs/name has been successfully formatted.
+  19/11/05 09:30:13 INFO namenode.NNStorageRetentionManager: Going to retain 1 images with txid >= 0
+  19/11/05 09:30:13 INFO util.ExitUtil: Exiting with status 0
+  19/11/05 09:30:13 INFO namenode.NameNode: SHUTDOWN_MSG: 
+  ```
+
+> 成功的话，会看到 "successfully formatted"  或  "Exitting with status 0" 的提示，若为 "Exitting with status 1" 则是出错。
+
+- 4、在某一个 namenode 节点（hp1）执行如下命令，创建命名空间
 
   ```
   hdfs zkfc -formatZK
   ```
 
--  启动 journalnode ，需要启动所有节点的 journalnode 
-
   ```
-  hdfs --daemon start journalnode
-  ```
-
-- 格式化 namenode
-
-  > 如果有多个namenode名称，可以使用  hdfs namenode -format xxx 指定
-
-  ```
-  hdfs namenode -format 
+  Proceed formatting /hadoop-ha/ns? (Y or N) 19/11/05 09:31:16 INFO ha.ActiveStandbyElector: Session connected.
+  y
+  19/11/05 09:31:46 INFO ha.ActiveStandbyElector: Recursively deleting /hadoop-ha/ns from ZK...
+  19/11/05 09:31:47 INFO ha.ActiveStandbyElector: Successfully deleted /hadoop-ha/ns from ZK.
+  19/11/05 09:31:47 INFO ha.ActiveStandbyElector: Successfully created /hadoop-ha/ns in ZK.
   ```
 
-
-- 启动 namenode
+- 5、在主 namenode 节点（hp1）启动 namenode 进程
 
   ```
-  hdfs --daemon start namenode
+  hadoop-daemon.sh start namenode
   ```
 
-- 其他 namenode 同步
+  ```
+  [root@hp1 ~]# hadoop-daemon.sh start namenode
+  starting namenode, logging to /usr/local/src/hadoop/logs/hadoop-root-namenode-hp1.out
+  [root@hp1 ~]# jps
+  2147 QuorumPeerMain
+  2500 NameNode
+  2596 JournalNode
+  2630 Jps
+  ```
 
-  >  如果是使用高可用方式配置的 namenode，使用下面命令同步(需要同步的 namenode 执行) 
+- 6、在备 namenode 节点 （hp2）执行第一行命令，这个是把备 namenode 节点的目录格式化并把元数据从主 namenode 节点 copy 过来，并且这个命令不会把 journalnode 目录再格式化了！然后用第二个命令启动备 namenode 进程！
 
   ```
   hdfs namenode -bootstrapStandby
   ```
 
-  >  如果不是使用高可用方式配置的 namenode，使用下面命令同步 
-
   ```
-  hdfs namenode -initializeSharedEdits
+  # 19/11/05 09:34:46 INFO util.ExitUtil: Exiting with status 0
   ```
 
-##### 10）、格式化 namenode （不是高可用时）
+  ```
+  hadoop-daemon.sh start namenode
+  ```
 
-> 首次启动需要先在 master 节点上执行 namenode 的格式化操作
+  ```
+  [root@hp2 ~]# jps
+  1619 JournalNode
+  1749 NameNode
+  1785 Jps
+  1533 QuorumPeerMain
+  ```
 
-```
-hdfs namenode -format
-```
+- 7、在两个 namenode 节点（hp1,hp2）都执行以下命令
 
-> 成功的话，会看到 "successfully formatted" 和 "Exitting with status 0" 的提示，若为 "Exitting with status 1" 则是出错。
+  ```
+  hadoop-daemon.sh start zkfc
+  ```
 
-##### 11）、完成 Hadoop 格式化后，在 master（namenode） 节点上启动 Hadoop 各个服务
+  ```
+  2147 QuorumPeerMain
+  2500 NameNode
+  2596 JournalNode
+  2681 DFSZKFailoverController
+  2734 Jps
+  ```
 
-- 启动 hdfs
+- 8、在所有 datanode 节点都执行以下命令启动 datanode
 
-```
-start-dfs.sh
+  ```
+  hadoop-daemon.sh start datanode
+  ```
+  
+  ```
+  1665 DataNode
+  1733 Jps
+  1514 QuorumPeerMain
+  1595 JournalNode
+  ```
+  
+- 9、启动 yarn (hp1)
 
-2641 Jps
-2402 DataNode
-2106 NameNode
-2539 SecondaryNameNode
-```
+  ```
+  start-yarn.sh
+  ```
 
-- 启动 yarn
+- 10、查看 namenode 状态
 
-```
-start-yarn.sh
+  ```
+  hdfs haadmin -getServiceState nn1
+  hdfs haadmin -getServiceState nn2
+  ```
 
-2402 DataNode
-2836 Jps
-2106 NameNode
-2539 SecondaryNameNode
-2683 ResourceManager
-2767 NodeManager
-```
+- 11、查看集群状态
 
-- 启动 historyserver（可选）
-
-```
-mr-jobhistory-daemon.sh start historyserver
-
-2402 DataNode
-2106 NameNode
-2539 SecondaryNameNode
-2683 ResourceManager
-3116 Jps
-3085 JobHistoryServer
-2767 NodeManager
-```
-
-> 通过命令 jps 可以查看各个节点所启动的进程。正确的话，在 Master 节点上可以看到
-> NameNode、ResourceManager、SecondaryNameNode、JobHistoryServer 进程。
->
-> 在 Slave 节点可以看到 DataNode 和 NodeManager 进程。
-
-- 查看 DataNode 是否正常启动，在 master 节点执行以下命令
+  > 如果 Live datanode 不为 0，则说明集群启动成功
 
   ```
   hdfs dfsadmin -report
   ```
 
-  > 如果 Live datanode 不为 0，则说明集群启动成功，
+- 12、web 页面访问 hadoop
 
-- web 访问 hadoop
+  > hp1 为对应的ip 地址
 
-  ```
-  http://hp:50070 或 http://192.168.1.11:50070
-  ```
+  - hadoop 地址
+  
+  [http://hp1:50070](http://hp1:50070)
+  
+  - yarn 地址
+  
+  [http://hp1:8088](http://hp1:8088)
+  
+  - hbase 地址
+  
+  [http://hp1:16010](http://hp1:16010)
 
-### 5、配置sqoop
+### 5、hadoop 使用测试
+
+```
+mkdir input
+
+echo "hello world">./input/test1.txt
+echo "hello hadoop">./input/test2.txt
+
+hdfs dfs -mkdir /in
+
+hdfs dfs -put input/ /in
+
+hadoop jar /usr/local/src/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.0.jar wordcount /in/input /out
+
+hdfs dfs -cat /out/*
+```
+
+### 6、配置sqoop
 
 ##### 1）、进入配置文件目录
 
@@ -500,26 +660,8 @@ sqoop version
 ##### 6）、链接测试
 
 ```
-sqoop list-databases --connect jdbc:mysql://hp:3306/ --username root --password qwe
+sqoop list-databases --connect jdbc:mysql://hp1:3306/ --username root --password qwe
 ```
-
-### 6、hadoop 使用测试
-
-```
-mkdir input
-cd input
-echo "hello world">test1.txt
-echo "hello hadoop">test2.txt
-cd ..
-./bin/hadoop dfs -put input in
-./bin/hadoop jar build/hadoop-0.20.2-examples.jar wordcount in out
-./bin/hadoop dfs -cat out/*
-```
-
-> Hadoop配置文件说明
-> Hadoop 的运行方式是由配置文件决定的（运行 Hadoop 时会读取配置文件），因此如果需要从伪分布式模式切换回非分布式模式，需要删除 core-site.xml 中的配置项。
->
-> 此外，伪分布式虽然只需要配置 fs.defaultFS 和 dfs.replication 就可以运行（官方教程如此），不过若没有配置 hadoop.tmp.dir 参数，则默认使用的临时目录为 /tmp/hadoo-hadoop，而这个目录在重启时有可能被系统清理掉，导致必须重新执行 format 才行。所以我们进行了设置，同时也指定 dfs.namenode.name.dir 和 dfs.datanode.data.dir，否则在接下来的步骤中可能会出错。
 
 ### 7、配置hbase
 
@@ -533,7 +675,6 @@ cd /usr/local/src/hbase/conf
 
 ```
 export JAVA_HOME=/usr/local/src/jdk
-export HBASE_MANAGES_ZK=false
 ```
 
 ##### 3）、编辑 （vim hbase-site.xml）
@@ -567,7 +708,14 @@ hp2
 hp3
 ```
 
-##### 5）、启动 hbase
+##### 5）、将hbase所有配置拷贝到其他所有节点
+
+```
+scp -r /usr/local/src/hbase/ hp2:/usr/local/src/
+scp -r /usr/local/src/hbase/ hp3:/usr/local/src/
+```
+
+##### 6）、启动 hbase
 
 > 启动 HBase 时需要确保 hdfs 已经启动，使用命令 hdfs dfsadmin -report 查看以下 HDFS
 > 集群是否正常
@@ -577,19 +725,17 @@ hp3
 ```
 start-hbase.sh
  	
-2402 DataNode
-3667 QuorumPeerMain
-4115 Jps
 3924 HMaster
 4038 HRegionServer
-2106 NameNode
-2539 SecondaryNameNode
-2683 ResourceManager
-3085 JobHistoryServer
-2767 NodeManager
 ```
 
-##### 6）、web 访问 hbase
+##### 7）、测试
+
+```
+hbase shell
+```
+
+##### 8）、web 访问 hbase
 
 ```
 http://hp1:16010
@@ -625,7 +771,7 @@ export HIVE_CONF_DIR=/usr/local/src/hive/conf
 ##### 4)、编辑 （vim hive-site.xml）
 
 ```
-#数据库连接密码 qwe
+# 注意修改数据库连接密码 qwe
 
 <configuration>
 	<property>
@@ -649,6 +795,10 @@ export HIVE_CONF_DIR=/usr/local/src/hive/conf
 		<value>qwe</value>
 	</property>
 </configuration>
+```
+
+```
+sed -i "s#\${system:java.io.tmpdir}/\${system:user.name}#/usr/local/src/hive/iotmp#g" /usr/local/src/hive/conf/hive-site.xml
 ```
 
 ##### 5）、 复制 mysql 数据库驱动包到指定文件路径
@@ -682,19 +832,92 @@ Initialization script completed
 schemaTool completed
 ```
 
-> 如果没有以上返回，则初始化失败
-
-[常见问题](http://www.itkeyword.com/doc/985187200597055x509)
-
-```
-rm /usr/local/src/hadoop/share/hadoop/yarn/lib/jline-0.9.94.jar
-
-cp /usr/local/src/hive/lib/jline-2.12.jar /usr/local/src/hadoop/share/hadoop/yarn/lib/
-```
+> 如果没有以上返回，则初始化失败，见常见问题
 
 ##### 8）、安装hive到此结束，进入hive命令行
 
 ```
 hive
+```
+
+##### 9）、常见问题
+
+[常见问题](http://www.itkeyword.com/doc/985187200597055x509)
+
+> 因为版本原因，需要重新拷贝一个 jar 包
+
+```
+rm -rf /usr/local/src/hadoop/share/hadoop/yarn/lib/jline-0.9.94.jar
+
+cp /usr/local/src/hive/lib/jline-2.12.jar /usr/local/src/hadoop/share/hadoop/yarn/lib/
+```
+
+> 初始化后如果想要再重启服务
+
+```
+hive --service metastore &
+hive --service hiveserver2 &
+```
+
+> 这个在1.4.7中需要配置，否则在执行数据导入到hive时会报错
+>
+> ```
+> Could not load org.apache.hadoop.hive.conf.HiveConf. Make sure HIVE_CONF_DIR is set correctly.
+> ```
+
+```
+cp /usr/local/src/hive/lib/hive-exec-1.1.0.jar /usr/local/src/sqoop/lib/
+```
+
+### 9、重启 hadoop 相关环境
+
+##### 1、启动各个节点（hp1、hp2、hp3）的zookeper服务
+
+```
+zkServer.sh start
+```
+
+```
+zkServer.sh status
+```
+
+##### 2、启动各个节点（hp1、hp2、hp3）的 journalnode 服务
+
+```
+hadoop-daemon.sh start journalnode
+```
+
+##### 3、启动主节点（hp1）的 namenode 服务
+
+```
+hadoop-daemon.sh start namenode
+```
+
+##### 4、启动备用节点（hp2）的 namenode 服务
+
+```
+hdfs namenode -bootstrapStandby
+```
+
+```
+hadoop-daemon.sh start namenode
+```
+
+##### 5、启动各个节点（hp1、hp2、hp3）的 datanode 服务
+
+```
+hadoop-daemon.sh start datanode
+```
+
+##### 6、在两个 namenode 节点（hp1、hp2）分别启动zkfc服务
+
+```
+hadoop-daemon.sh start zkfc
+```
+
+##### 7、启动 yarn 服务
+
+```
+start-yarn.sh
 ```
 

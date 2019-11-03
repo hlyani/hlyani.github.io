@@ -29,7 +29,7 @@
 [hbase shell 常用命令](http://blog.csdn.net/scutshuxue/article/details/6988348)
 
 ```
-hbase
+hbase shell
 ```
 
 ##### 1、创建表
@@ -83,8 +83,8 @@ put 'users','yani','info:birthday','1987-06-17';
 get 'users','yani'  
 ```
 
-
 2.获取一个id，一个列族的所有数据
+
 ```
 get 'users','yani','info'  
 ```
