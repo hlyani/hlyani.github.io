@@ -108,10 +108,12 @@ git stash
 git stash save "test-cmd-stash"
 git stash list
 git stash drop
-#删除stash暂存区
+# 删除stash暂存区
 git stash pop
-#不删除stash暂存区，可多次应用
+# 不删除stash暂存区，可多次应用
 git stash apply
+# 清空栈中所有记录
+git stash clear
 ```
 ##### 13、submodule
 
@@ -184,6 +186,13 @@ git config color.ui true
 
 显示历史记录时，只显示一行注释信息：
 git config format.pretty oneline
+```
+
+##### 20、archive
+
+```
+# --format 表示打包的格式，如 zip，-v 表示对应的 tag 名，后面跟的是 tag 名，如 v0.1
+git archive -v -format=zip v0.1>v0.1.zip
 ```
 
 ## 二、gitlab-ci
@@ -351,5 +360,4 @@ jenkins
 http://blog.csdn.net/abcdocker/article/details/53840629
 
 https://docs.gitlab.com/ee/ci/yaml/README.html
-
 ```

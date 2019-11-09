@@ -9,7 +9,7 @@
 * etcd 可以部署在Master Node，也可以单独部署， 用来存储共享数据：master state、image、 build、deployment metadata等
 * Pod 最小的Kubernetes object，可以部署一个或多个container
 
-[](https://blog.51cto.com/7308310/2171091)
+[https://blog.51cto.com/7308310/2171091](https://blog.51cto.com/7308310/2171091)
 
 ## 一、单节点部署3.11
 
@@ -21,7 +21,7 @@ yum -y install epel-release git python-pip gcc python-devel centos-release-opens
 
 ##### 2、下载源码
 
-[](https://github.com/openshift/openshift-ansible/tree/v3.11)
+[https://github.com/openshift/openshift-ansible/tree/v3.11](https://github.com/openshift/openshift-ansible/tree/v3.11)
 
 ```
 git clone https://github.com/openshift/openshift-ansible.git

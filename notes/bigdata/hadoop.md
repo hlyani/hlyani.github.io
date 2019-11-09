@@ -100,4 +100,38 @@ MapReduce由一个JobTracker和多个TaskTracker组成
 * MapReduce：是一种编程模型，用于大规模数据集（大于1TB）的并行运算。映射（Map）、化简（Reduce）的概念和它们的主要思想都是从函数式编程语言中借鉴而来的。它极大地方便了编程人员——即使在不了解分布式并行编程的情况下，也可以将自己的程序运行在分布式系统上。
 * historyserver：Hadoop自带了一个历史服务器，可以通过历史服务器查看已经运行完的Mapreduce作业记录，比如用了多少个Map、用了多少个Reduce、作业提交时间、作业启动时间、作业完成时间等信息
 
-[](http://blog.csdn.net/zhangliangzi/article/details/52071218)
+[http://blog.csdn.net/zhangliangzi/article/details/52071218](http://blog.csdn.net/zhangliangzi/article/details/52071218)
+
+### 四、mapreduce 实现流程
+
+![wordcount](../../imgs/wordcount.JPG)
+
+### 五、基本概念
+
+### Hadoop
+
+- ##### HDFS 海量存储
+
+- ##### MapReduce 海量计算
+
+### Yarn
+
+- ##### ResourceManger 统一管理和调度
+
+- ##### NodeManger 执行任务、领取任务
+
+- ##### ApplicationMaster 向RM申请资源，创建任务
+
+### HDFS
+
+- ##### NameNode 管理
+
+- ##### SecondaryNameNode 协助NameNode（不是副本）
+
+- ##### DataNode 管理存储
+
+### MapReduce
+
+- ##### mapper 拆分
+
+- ##### reducer 合并

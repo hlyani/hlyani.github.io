@@ -1,6 +1,6 @@
 # xpath 相关
 
- 		XPath，全称 XML Path Language，既 XML  路径语言，它是一门在 XML 文档中查找信息的语言。同样适用于 HTML 文档内容的搜索。
+> XPath，全称 XML Path Language，既 XML  路径语言，它是一门在 XML 文档中查找信息的语言。同样适用于 HTML 文档内容的搜索。
 
 [官方文档](https://www.w3.org/TR/xpath/)
 

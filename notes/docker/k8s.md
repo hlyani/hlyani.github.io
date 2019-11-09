@@ -466,7 +466,7 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/62e44c867a2846
 
 > Error registering network: failed to acquire lease: node "node1" pod cidr not assigned
 
-[](https://github.com/coreos/flannel/blob/fd8c28917f338a30b27534512292cd5037696634/Documentation/troubleshooting.md#kubernetes-specific)
+[https://github.com/coreos/flannel/blob/fd8c28917f338a30b27534512292cd5037696634/Documentation/troubleshooting.md#kubernetes-specific](https://github.com/coreos/flannel/blob/fd8c28917f338a30b27534512292cd5037696634/Documentation/troubleshooting.md#kubernetes-specific)
 
 ```
  kubectl patch node node1 -p '{"spec":{"podCIDR":"10.0.0.0/24"}}'
@@ -493,9 +493,9 @@ kubeadm join --token <token> <master-ip>:<master-port> --discovery-token-ca-cert
 
 ##### 8、安装dashboard
 
-[](https://github.com/kubernetes/dashboard)
+[https://github.com/kubernetes/dashboard](https://github.com/kubernetes/dashboard)
 
-[](https://github.com/kubernetes-retired/heapster)
+[https://github.com/kubernetes-retired/heapster](https://github.com/kubernetes-retired/heapster)
 
 ```
 git clone https://github.com/kubernetes-retired/heapster.git
@@ -525,7 +525,7 @@ spec:
 kubectl edit service -n kube-system kubernetes-dashboard
 ```
 
-[](https://github.com/kubernetes/dashboard/wiki/Creating-sample-user)
+[https://github.com/kubernetes/dashboard/wiki/Creating-sample-user](https://github.com/kubernetes/dashboard/wiki/Creating-sample-user)
 
 ```
 # cat dashboard-admin-user.yaml 
@@ -665,7 +665,7 @@ https://github.com/projectcalico/calicoctl/releases/download/v3.4.4/calicoctl-li
 
 ##### 7、开始部署
 
-[](https://github.com/kubernetes-sigs/kubespray/blob/master/docs/ansible.md)
+[https://github.com/kubernetes-sigs/kubespray/blob/master/docs/ansible.md](https://github.com/kubernetes-sigs/kubespray/blob/master/docs/ansible.md)
 
 ```
 ansible-playbook -i inventory/mycluster/hosts.yml --become --become-user=root cluster.yml
@@ -745,7 +745,7 @@ systemctl restart docker
 
 ##### 11、升级
 
-[](https://github.com/kubernetes-sigs/kubespray/blob/master/docs/upgrades.md)
+[https://github.com/kubernetes-sigs/kubespray/blob/master/docs/upgrades.md](https://github.com/kubernetes-sigs/kubespray/blob/master/docs/upgrades.md)
 
 * 升级kube
 
@@ -812,7 +812,7 @@ ansible-playbook -i inventory/mycluster/hosts.yml remove-node.yml -b -v \
 
 ##### 13、参考链接
 
-[](https://www.qikqiak.com/k8s-book/)
+[https://www.qikqiak.com/k8s-book/](https://www.qikqiak.com/k8s-book/)
 
 ##### 14、理解pod
 

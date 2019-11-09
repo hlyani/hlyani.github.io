@@ -7,9 +7,9 @@
 > 在Linux下比较著名的数据图工具还有gnuplot，这个是免费的，Python有一个包可以调用gnuplot，但是语法比较不习惯，而且画图质量不高。
 > 而 Matplotlib则比较强：Matlab的语法、python语言、latex的画图质量（还可以使用内嵌的latex引擎绘制的数学公式）。
 
-[](https://blog.csdn.net/Notzuonotdied/article/details/77876080)
+[https://blog.csdn.net/Notzuonotdied/article/details/77876080](https://blog.csdn.net/Notzuonotdied/article/details/77876080)
 
-[](https://blog.csdn.net/ScarlettYellow/article/details/80458797)
+[https://blog.csdn.net/ScarlettYellow/article/details/80458797](https://blog.csdn.net/ScarlettYellow/article/details/80458797)
 
 ## 二、柱状图
 

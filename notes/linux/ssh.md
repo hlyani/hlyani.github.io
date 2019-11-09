@@ -2,6 +2,8 @@
 
 ##### 1、免密登录
 
+![ssh](../../imgs/ssh.PNG)
+
 ```
 ssh-keygen
 

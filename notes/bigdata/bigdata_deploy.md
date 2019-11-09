@@ -663,6 +663,43 @@ sqoop version
 sqoop list-databases --connect jdbc:mysql://hp1:3306/ --username root --password qwe
 ```
 
+##### 7）、将 mysql 中数据导入到 hdfs 中
+
+```
+mysql -uroot -pqwe
+create database hotels;
+use hotels;
+```
+
+```
+CREATE TABLE IF NOT EXISTS `hotel`(
+   `id` INT UNSIGNED AUTO_INCREMENT,
+   `name` VARCHAR(255) NOT NULL,
+   `diamond` VARCHAR(255) NOT NULL,
+   `last_order` VARCHAR(255) NOT NULL,
+   `address` VARCHAR(255) NOT NULL,
+   `score` VARCHAR(255) NOT NULL,
+   `level` VARCHAR(255) NOT NULL,
+   `recommend` VARCHAR(255) NOT NULL,
+   `commend_people` VARCHAR(255) NOT NULL,
+   `commend` VARCHAR(255) NOT NULL,
+   PRIMARY KEY ( `id` )
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
+
+```
+insert into hotel (name,diamond,last_order,address,score,level,recommend,commend_people,commend) values ('长沙华晨豪生大酒店','豪华型','最新预订：2分钟前','雨花区万家丽中路二段8号(长沙大道与万家丽中路交叉处、近高桥居然之家)。','4.7','很好','98%','903','早餐丰富')
+```
+
+```
+sqoop import   \
+--connect jdbc:mysql://hp1:3306/hotels   \
+--username root  \
+--password qwe   \
+--table hotel   \
+-m 1
+```
+
 ### 7、配置hbase
 
 ##### 1）、进入配置文件目录
@@ -770,9 +807,11 @@ export HIVE_CONF_DIR=/usr/local/src/hive/conf
 
 ##### 4)、编辑 （vim hive-site.xml）
 
-```
-# 注意修改数据库连接密码 qwe
+> 注意修改数据库连接密码 qwe
+>
+> 没有的 property 则添加，有的则根据需求修改
 
+```
 <configuration>
 	<property>
 		<name>system:java.io.tmpdir</name>

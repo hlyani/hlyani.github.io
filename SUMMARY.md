@@ -97,6 +97,10 @@
     * [Python Sqlalchemy](notes/python/sqlalchemy.md)
     * [Python logging模块](notes/python/python_logging.md)
     * [Python 装饰器](notes/python/python_decorators.md)
+    * [Python 文件操作](notes/python/python_file.md)
+    * [scrapy 爬虫](notes/python/scrapy.md)
+    * [urllib2 爬虫](notes/python/urllib2.md)
+    * [yield](notes/python/yield.md)
 * Web 前端
     * [Web 相关](notes/web/web.md)
 * 大数据相关
@@ -119,7 +123,7 @@
     * [numpy 相关](notes/bigdata/numpy.md)
     * [pandas 相关](notes/bigdata/pandas.md)
     * [pyhdfs 相关](notes/bigdata/pyhdfs.md)
-    * [爬虫相关](notes/bigdata/reptile.md)
+    * [reptile 爬虫相关](notes/bigdata/reptile.md)
     * [pyecharts 相关](notes/bigdata/pyecharts.md)
     * [matplotlib 相关](notes/bigdata/matplotlib.md)
 * 机器学习相关

@@ -2,7 +2,7 @@
 
 ## 一、例1
 
-[](https://www.cnblogs.com/kaituorensheng/p/3826114.html)
+[https://www.cnblogs.com/kaituorensheng/p/3826114.html](https://www.cnblogs.com/kaituorensheng/p/3826114.html)
 
 > python利用streaming编写mapreducer程序
 

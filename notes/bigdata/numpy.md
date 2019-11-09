@@ -1,7 +1,7 @@
 # numpy 相关
 
-[](http://www.runoob.com/numpy/numpy-tutorial.html)
-[](https://blog.csdn.net/qq351469076/article/details/78817378)
+[http://www.runoob.com/numpy/numpy-tutorial.html](http://www.runoob.com/numpy/numpy-tutorial.html)
+[https://blog.csdn.net/qq351469076/article/details/78817378](https://blog.csdn.net/qq351469076/article/details/78817378)
 
 ## 一、安装
 

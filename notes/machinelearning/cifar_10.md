@@ -2,9 +2,9 @@
 
 > 该数据集共有60000张彩色图像，这些图像是32*32，分为10个类，每类60000张图。这里面有50000张用于训练，构成了5个训练批，每一批10000张图；另外10000用于测试，单独构成一批。测试批的数据里，取自10类中的每一类，每一类随机取1000张。抽剩下的就随机排列组成了训练批。注意一个训练批中的各类图像并不一定数量相同，总的来看训练批，每一类都有5000张图。
 
-[cifa-10简介]: https://www.cnblogs.com/Jerry-Dong/p/8109938.html
-[cifa-10官网]: http://www.cs.toronto.edu/~kriz/cifar.html
-[keras离线下载cifar数据集]: https://blog.csdn.net/nima1994/article/details/79910597
+[cifa-10简介](https://www.cnblogs.com/Jerry-Dong/p/8109938.html)
+[cifa-10官网](http://www.cs.toronto.edu/~kriz/cifar.html)
+[keras离线下载cifar数据集](https://blog.csdn.net/nima1994/article/details/79910597)
 
 ##### 1、下载cifar-10
 ```
@@ -62,5 +62,4 @@ from matplotlib.pyplot import imshow
 plt.imshow(image_arr)
 plt.legend()
 plt.show()
-
 ```

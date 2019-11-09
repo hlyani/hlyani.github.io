@@ -258,7 +258,7 @@ cat /etc/hosts 2>/dev/null >/dev/null
 
 ##### 14、dd测试磁盘io
 
-[](https://www.xiaomastack.com/2015/01/09/dd%E5%91%BD%E4%BB%A4%E6%B5%8B%E8%AF%95%E7%A3%81%E7%9B%98io/)
+[https://www.xiaomastack.com/2015/01/09/dd%E5%91%BD%E4%BB%A4%E6%B5%8B%E8%AF%95%E7%A3%81%E7%9B%98io/](https://www.xiaomastack.com/2015/01/09/dd%E5%91%BD%E4%BB%A4%E6%B5%8B%E8%AF%95%E7%A3%81%E7%9B%98io/)
 
 ```
 dd if=/dev/zero of=out.file bs=512K count=2048 
@@ -506,5 +506,23 @@ iperf3 -s -p 5201 -i 10 -t 3600
 
 ```
 iperf3 -c 192.168.21.2 -p 5201
+```
+
+### 十二、Python 环境切换
+
+```
+update-alternatives --install /usr/bin/python python /usr/bin/python2 100
+update-alternatives --install /usr/bin/python python /usr/bin/python3 150
+update-alternatives --config python
+```
+
+### 十三、永久修改 DNS
+
+```
+vim /etc/systemd/resolved.conf
+[Resolve]
+DNS=119.29.29.29
+
+systemctl restart systemd-resolved
 ```
 

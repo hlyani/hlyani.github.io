@@ -68,16 +68,16 @@ python -c "import tensorflow as tf; tf.Session(config=tf.ConfigProto(log_device_
 ##### 4、相关博客
 > tensorflow图片识别
 
-[https://blog.csdn.net/gaohuazhao/article/details/72886450]
-[https://blog.csdn.net/qq_39521554/article/details/79335733]
-[https://blog.csdn.net/ShadowN1ght/article/details/78076081]
-[https://www.cnblogs.com/seven-M/p/8516080.html]
+[https://blog.csdn.net/gaohuazhao/article/details/72886450](https://blog.csdn.net/gaohuazhao/article/details/72886450)
+[https://blog.csdn.net/qq_39521554/article/details/79335733](https://blog.csdn.net/qq_39521554/article/details/79335733)
+[https://blog.csdn.net/ShadowN1ght/article/details/78076081](https://blog.csdn.net/ShadowN1ght/article/details/78076081)
+[https://www.cnblogs.com/seven-M/p/8516080.html](https://www.cnblogs.com/seven-M/p/8516080.html)
 
 > tensorflow 人脸识别
 
-[https://blog.csdn.net/qq_42633819/article/details/81191308]
-[https://blog.csdn.net/niutianzhuang/article/details/79191167]
-[https://blog.csdn.net/justin_kang/article/details/79627951]
+[https://blog.csdn.net/qq_42633819/article/details/81191308](https://blog.csdn.net/qq_42633819/article/details/81191308)
+[https://blog.csdn.net/niutianzhuang/article/details/79191167](https://blog.csdn.net/niutianzhuang/article/details/79191167)
+[https://blog.csdn.net/justin_kang/article/details/79627951](https://blog.csdn.net/justin_kang/article/details/79627951)
 
 ## 二、keras 相关
 ##### 1、安装keras
@@ -85,14 +85,15 @@ python -c "import tensorflow as tf; tf.Session(config=tf.ConfigProto(log_device_
 pip install keras
 ```
 ##### 2、相关博客
-[keras官网]: https://keras.io/zh/
+[keras官网](https://keras.io/zh/)
 
-[face recognise]:http://www.feiguyunai.com/index.php/2017/11/25/pythonai-dl-facerecong01/
+[face recognise](http://www.feiguyunai.com/index.php/2017/11/25/pythonai-dl-facerecong01/)
 
-[初学者怎样使用Keras进行迁移学习]: https://www.toutiao.com/a6648764315258061315/?tt_from=weixin&utm_campaign=client_share&wxshare_count=1&timestamp=1552000777&app=news_article&utm_source=weixin&iid=65083704169&utm_medium=toutiao_ios&group_id=6648764315258061315
+[初学者怎样使用Keras进行迁移学习](https://www.toutiao.com/a6648764315258061315/?tt_from=weixin&utm_campaign=client_share&wxshare_count=1&timestamp=1552000777&app=news_article&utm_source=weixin&iid=65083704169&utm_medium=toutiao_ios&group_id=6648764315258061315)
 ## 三、tensorboard 相关 
 ##### 1、tensorboard相关
-[tensorboard]: https://www.cnblogs.com/tengge/p/6376073.html
+[tensorboard](https://www.cnblogs.com/tengge/p/6376073.html)
+
 ```
 tensorboard
 执行上述代码，会在“当前路径/logs”目录下生成一个events.out.tfevents.{time}.{machine-name}的文件。在当前目录新建“查看训练过程.bat”，里面输入。

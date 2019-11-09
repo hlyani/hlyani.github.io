@@ -260,7 +260,7 @@ docker run --rm --network kafka-net ches/kafka kafka-topics.sh --describe --zook
 
 ##### 5、更新env允许外网能访问
 
-[](https://docs.docker.com/engine/reference/commandline/service_update/)
+[https://docs.docker.com/engine/reference/commandline/service_update/](https://docs.docker.com/engine/reference/commandline/service_update/)
 
 ```
 docker service ls|grep kafka
