@@ -1,0 +1,42 @@
+name: Node CI
+
+on:
+  push:
+    branches:
+      - source
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install GitBook
+      run: npm install -g gitbook-cli --registry=https://registry.npm.taobao.org
+
+    - name: Checkout source
+      uses: actions/checkout@v1
+      with:
+        ref: source
+
+    - name: GitBook Install
+      run: gitbook install --registry=https://registry.npm.taobao.org
+
+    - name: Build
+      run: gitbook build . docs
+
+    - name: Publish
+      uses: hlyani/gitbook-deploy-action@master
+      env:
+        ACCESS_TOKEN: ${{ secrets.hlyani }}
+        BASE_BRANCH: source
+        BRANCH: master
+        FOLDER: docs
