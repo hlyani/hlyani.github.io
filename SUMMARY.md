@@ -101,6 +101,7 @@
     * [scrapy 爬虫](notes/python/scrapy.md)
     * [urllib2 爬虫](notes/python/urllib2.md)
     * [yield](notes/python/yield.md)
+    * [Jinja2 相关](notes/python/jinja2.md)
 * Web 前端
     * [Web 相关](notes/web/web.md)
 * 大数据相关
