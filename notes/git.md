@@ -195,6 +195,40 @@ git config format.pretty oneline
 git archive -v -format=zip v0.1>v0.1.zip
 ```
 
+##### 21、subtree
+
+```
+git subtree pull --prefix=<子目录名> <远程分支> <分支> 
+
+#将 B 仓库添加为 A 仓库的一个子目录
+git subtree add --prefix=SubFolder/B https://github.com/walterlv/walterlv.git master
+
+#将 A 仓库中的 B 子目录推送回 B 仓库
+git subtree push --prefix=SubFolder/B https://github.com/walterlv/walterlv.git master
+
+#将 B 仓库中的新内容拉回 A 仓库的子目录
+git subtree pull --prefix=SubFolder/B walterlv master
+
+# 将需要分离的目录的提交日志分离成一个独立的临时版本
+git subtree split -P <name-of-folder> -b <name-of-new-branch>
+
+# example
+
+- name: Publish
+uses: hlyani/gitbook-deploy-action@master
+env:
+    ACCESS_TOKEN: ${{ secrets.testaction }}
+    BASE_BRANCH: source
+    BRANCH: master
+    FOLDER: docs
+
+git add -f $FOLDER
+
+git commit -m "Deploying to ${BRANCH} from ${BASE_BRANCH:-master} ${GITHUB_SHA}" --quiet
+
+git push $REPOSITORY_PATH `git subtree split --prefix $FOLDER ${BASE_BRANCH:-master}`:$BRANCH --force 
+```
+
 ## 二、gitlab-ci
 
 ##### 1、拉取gitlab容器镜像
