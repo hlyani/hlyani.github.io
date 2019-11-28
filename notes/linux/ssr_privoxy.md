@@ -70,6 +70,7 @@ echo 'forward-socks5 / 127.0.0.1:1080 .' >> /etc/privoxy/config
 # Privoxy 默认监听端口是是8118
 export http_proxy=http://127.0.0.1:8118
 export https_proxy=http://127.0.0.1:8118
+export ftp_proxy=http://127.0.0.1:8118
 export no_proxy=localhost
 
 启动服务
@@ -166,3 +167,24 @@ ssr_manager autostart
 ```
 ##### 12、参考链接
 https://www.zfl9.com/ss-local.html
+
+##### 13、sockes5 代理
+
+```
+export http_proxy=socks5://127.0.0.1:1080
+export https_proxy=socks5://127.0.0.1:1080
+
+# 强制终端中的 wget、curl 等都走 SOCKS5 代理
+export ALL_PROXY=socks5://127.0.0.1:1080
+```
+
+##### 14、git 代理
+
+```
+git config --global http.proxy http://127.0.0.1:8118
+git config --global https.proxy http://127.0.0.1:8118
+
+git config --global http.proxy socks5://127.0.0.1:1080
+git config --global https.proxy socks5://127.0.0.1:1080
+```
+

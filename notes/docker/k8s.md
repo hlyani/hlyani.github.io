@@ -152,690 +152,153 @@
   > - watch
   > - exec
 
-## 二、使用Minikube安装（适合单机部署开发）
+### 二、网络相关
 
-> 安装kubenets版本v1.15
+##### 1、k8s网络特征：
 
-##### 1、查看系统是否支持虚拟化
+- 1.每个pod都有一个ip
+- 2.所有pod可以通过ip访问其他pod（不管是否在同一台物理机）
+- 3.Pod内的所有容器共享一个 linux net namespace，pod内的容器，都可以使用localhost来访问pod内的其他容器
+- 4.所有容器可以不用nat转换访问其他容器
+- 5.所有节点都可以不用nat转换与所有容器通讯
+- 6.容器地址和别人看到的地址是同一个地址
 
-```
-egrep --color 'vmx|svm' /proc/cpuinfo
-```
+##### 2、不同node中pod相互通信需要满足的条件：
 
-##### 2、关闭和禁用防火墙
+- 1.整个k8s集群中的pod ip不能冲突
 
-```
-systemctl stop firewalld
-systemctl disable firewalld
+- 2.需要将pod ip和所在node ip关联起来，通过关联可以让pod能互访
 
-setenforce 0
-sed -i "s/^SELINUX=enforcing/SELINUX=disabled/g" /etc/selinux/config
-```
+  - 1)Node中的docker0的网桥地址不能冲突
 
-##### 3、禁用交换分区
+  - 2)Pod中的数据在发出时，需要有一个机制知道对方的pod ip在哪个node上
 
-```
-swapoff -a
-sed -i 's/.*swap.*/#&/' /etc/fstab
-```
+![k8s_net](../../imgs/k8s_net.jpg)
 
-##### 4、安装minikube
+![k8s_net1](../../imgs/k8s_net1.jpg)
 
-```
-curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube && mv minikube /usr/local/bin/
-```
-
-```
-curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube
+1. 默认docker0网络为172.17.0.0/16的网段，每个容器都在这个子网内获得ip并且将docker0作为网关
+2. 2.k8s中，每个node上的docker0都是可以被路由到的，也就是说，在同一个集群内，各个主机都是可以访问其他主机上的pod  ip，并不需要在主机上做端口映射。
 
-install minikube /usr/local/bin
-```
-
-##### 5、安装docker
+3. 当启动pod时，同一pod下的所有容器都使用同一个网络命名空间（如：同一个ip），所以必须要使用容器网络的container模式，如果将所有pod中的容器做成一个链式的结构，中间任何一个容器出问题，都会引起连锁反映，所以在每个pod中引入了一个pause，其他容器都链接到这个容器，由pause来负责端口规划和映射。如下图：
 
-[docker安装](https://hlyani.github.io/notes/docker/docker.html)
+![k8s_net2](../../imgs/k8s_net2.jpg)
 
-```
-curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+![cni](../../imgs/cni.jpg)
 
-systemctl start docker
-systemctl enable docker
-```
-
-##### 6、安装kubelet
-
-```
-cat <<EOF > /etc/yum.repos.d/kubernetes.repo
-[kubernetes]
-name=Kubernetes
-baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
-enabled=1
-gpgcheck=1
-repo_gpgcheck=1
-gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
-EOF
-
-yum -y  makecache fast
-
-yum install -y kubectl
-
-systemctl start kubelet
-systemctl enable kubelet
-```
-
-##### 7、不依赖虚拟机模拟启动
+​         k8s采用Container Networking Interface(CNI)规范。 目前Kubernetes 支持的网络方案，比如 Flannel、Calico、Canal、Weave Net 等。
 
-> 执行下面命令会自动安装kubeadm、kubelet两个软件
->
-> 在拉取镜像时会访问https://k8s.gcr.io/v2/失败，需要翻墙
->
-> --image-repository 使用我同步到aliyun仓库的k8s镜像
+##### 3、Flannel（host-gw、vxlan）
 
-```
-minikube start --vm-driver=none --kubernetes-version v1.15.0 -v 0 --image-repository registry.cn-hangzhou.aliyuncs.com/hlyani
-```
+Flannel是Overlay网络的一种，也是将源数据包封装在另一种网络包里面进行路由转发和通信，目前已经支持UDP、VXLAN、AWS  VPC和GCE路由等数据转发方式。Flannel通过给每台宿主机分配一个子网的方式为容器提供虚拟网络，它基于Linux TUN/TAP，使用UDP封装IP包来创建overlay网络，并借助etcd维护网络的分配情况。
 
-```
---registry-mirror=https://registry.docker-cn.com
-```
-
-```
-* minikube v1.2.0 on linux (amd64)
-* using image repository registry.cn-hangzhou.aliyuncs.com/ates-k8s
-* Creating none VM (CPUs=2, Memory=2048MB, Disk=20000MB) ...
-* Configuring environment for Kubernetes v1.15.0 on Docker 18.09.6
-* Downloading kubeadm v1.15.0
-* Downloading kubelet v1.15.0
-* Pulling images ...
-* Launching Kubernetes ... 
-* Configuring local host environment ...
+* 它给每个node上的docker容器分配互不冲突的IP地址；
 
-! The 'none' driver provides limited isolation and may reduce system security and reliability.
-! For more information, see:
-  - https://github.com/kubernetes/minikube/blob/master/docs/vmdriver-none.md
-! kubectl and minikube configuration will be stored in /root
-! To use kubectl or minikube commands as your own user, you may
-! need to relocate them. For example, to overwrite your own settings:
-
-  - sudo mv /root/.kube /root/.minikube $HOME
-  - sudo chown -R $USER $HOME/.kube $HOME/.minikube
-
-* This can also be done automatically by setting the env var CHANGE_MINIKUBE_NONE_USER=true
-* Verifying: apiserver proxy etcd scheduler controller dns
-* Done! kubectl is now configured to use "minikube"
-* For best results, install kubectl: https://kubernetes.io/docs/tasks/tools/install-kubectl/
-```
-
-##### 8、执行下面命令先拉去镜像（可选）
-
-```
-kubeadm config images list
-kubeadm config images pull --kubernetes-version v1.15.0 --image-repository registry.cn-hangzhou.aliyuncs.com/hlyani
-```
-
-```
-docker images
-REPOSITORY                                                         TAG                 IMAGE ID            CREATED             SIZE
-registry.cn-hangzhou.aliyuncs.com/hlyani/kube-proxy                v1.15.0             d235b23c3570        8 days ago          82.4MB
-registry.cn-hangzhou.aliyuncs.com/hlyani/kube-apiserver            v1.15.0             201c7a840312        8 days ago          207MB
-registry.cn-hangzhou.aliyuncs.com/hlyani/kube-scheduler            v1.15.0             2d3813851e87        8 days ago          81.1MB
-registry.cn-hangzhou.aliyuncs.com/hlyani/kube-controller-manager   v1.15.0             8328bb49b652        8 days ago          159MB
-registry.cn-hangzhou.aliyuncs.com/hlyani/coredns                   1.3.1               eb516548c180        5 months ago        40.3MB
-registry.cn-hangzhou.aliyuncs.com/hlyani/etcd                      3.3.10              2c4adeb21b4f        6 months ago        258MB
-registry.cn-hangzhou.aliyuncs.com/hlyani/pause                     3.1                 da86e6ba6ca1        18 months ago       742kB
-```
-
-##### 9、查看init-defaults
-
-```
-kubeadm config print init-defaults 
-```
-
-##### 10、清除部署（可选）
-
-```
-minikube delete
-```
-
-```
-[preflight] Running pre-flight checks
-[preflight] Running pre-flight checks
-[reset] Stopping the kubelet service
-[reset] Unmounting mounted directories in "/var/lib/kubelet"
-[reset] Deleting contents of config directories: [/etc/kubernetes/manifests /etc/kubernetes/pki]
-[reset] Deleting files: [/etc/kubernetes/admin.conf /etc/kubernetes/kubelet.conf /etc/kubernetes/bootstrap-kubelet.conf /etc/kubernetes/controller-manager.conf /etc/kubernetes/scheduler.conf]
-[reset] Deleting contents of stateful directories: [/var/lib/kubelet /etc/cni/net.d /var/lib/dockershim /var/run/kubernetes]
-
-The reset process does not reset or clean up iptables rules or IPVS tables.
-If you wish to reset iptables, you must do so manually.
-For example:
-iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
-
-If your cluster was setup to utilize IPVS, run ipvsadm --clear (or similar)
-to reset your system's IPVS tables.
-
-The reset process does not clean your kubeconfig files and you must remove them manually.
-Please, check the contents of the $HOME/.kube/config file.
-```
-
-##### 11、让kubectl使用minikube的配置文件
-
-```
-kubectl config use-context minikube 
-```
-
-##### 12、dashboard
-
-```
-minikube dashboard --url
-```
-
-##### 13、测试，部署nginx
-
-```
- kubectl run hello --image=nginx --port=80
- kubectl expose deployment hello --type=NodePort
- #kubectl expose deployment hello --port=80 --type=LoadBalancer
- 
- kubectl get pod
- curl $(minikube service hello --url)
-```
-
-##### 14、其他
-
-```
-minikube有一个强大的子命令叫做addons，它可以在kubernetes中安装插件（addon）。这里所说的插件，就是部署在Kubernetes中的Deploymen或者Daemonset。
-
-Kubernetes在设计上有一个特别有意思的地方，就是它的很多扩展功能，甚至于基础功能也可以部署在Kubernetes中，比如网络插件、DNS插件等。安装这些插件的时候， 就是用kubectl命令，直接在kubernetes中部署。
-```
-
-```
-minikube addons list
-minikube addons disable XXX
-minikube addons enable  XXX
-```
-
-## 三、使用kubeadm安装
-
-##### 1、安装kubeadm, kubelet 和 kubect
-
-- `kubeadm`: the command to bootstrap the cluster.
-- `kubelet`: the component that runs on all of the machines in your cluster and does things like starting pods and containers.
-- `kubectl`: the command line util to talk to your cluster.
-
-```
-cat <<EOF > /etc/yum.repos.d/kubernetes.repo
-[kubernetes]
-name=Kubernetes
-baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
-enabled=1
-gpgcheck=1
-repo_gpgcheck=1
-gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
-EOF
-
-yum -y  makecache fast
-
-yum install -y kubectl kubeadm kubelet
-
-systemctl start kubelet
-systemctl enable kubelet
-```
-
-##### 2、由于绕过了iptables而导致路由错误的问题。
-
-```
-cat <<EOF >  /etc/sysctl.d/k8s.conf
-net.bridge.bridge-nf-call-ip6tables = 1
-net.bridge.bridge-nf-call-iptables = 1
-EOF
-sysctl --system
-```
-##### 3、禁用交换分区和禁用防火墙
-
-```
-swapoff -a
-sed -i 's/.*swap.*/#&/' /etc/fstab
+* 它能给这些IP地址之间建立一个覆盖网络，通过覆盖网络，将数据包原封不动的传递到目标容器内。
 
-setenforce 0
-sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+![flannel-networking](../../imgs/flannel-networking.png)
 
-systemctl stop firewalld
-systemctl disable firewalld
-```
-##### 4、安装docker
+![flannel](../../imgs/flannel.jpg)
 
-[docker安装](https://hlyani.github.io/notes/docker/docker.html)
+##### 4、Calico（IPIP、BGP）
 
-```
-curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+* 是一个纯3层的数据中心网络方案。
+* Calico在每一个计算节点利用Linux Kernel实现了一个高效的vRouter来负责数据转发，而每个vRouter通过BGP协议负责把自己上运行的workload的路由信息像整个Calico网络内传播——小规模部署可以直接互联，大规模下可通过指定的BGP route reflector来完成。
+* Calico节点组网可以直接利用数据中心的网络结构（无论是L2或者L3），不需要额外的NAT，隧道或者Overlay Network。
+* Calico基于iptables还提供了丰富而灵活的网络Policy，保证通过各个节点上的ACLs来提供Workload的多租户隔离、安全组以及其他可达性限制等功能。
 
-systemctl start docker
-systemctl enable docker
-```
+此外，Calico基于iptables还提供了丰富的网络策略，实现了k8s的Network Policy策略，提供容器间网络可达性限制的功能。
 
-##### 5、使用kubeadm开始安装
+Calico的主要组件如下：
 
-```kubeadm.yaml
-apiVersion: kubeadm.k8s.io/v1alpha1
-kind: MasterConfiguration
-api:
-  advertiseAddress: "192.168.1.10"
-networking:
-  podSubnet: "10.0.0.0/24"
-kubernetesVersion: "v1.15.0"
-imageRepository: "registry.cn-hangzhou.aliyuncs.com/hlyani"
-```
+Felix：Calico Agent，运行在每台Node上，负责为容器设置网络源（IP地址、路由规则、iptables规则等），保证主机容器网络互通。
 
-```
-kubeadm init --config kubeam.yaml
-```
-或
-```
-kubeadm init --image-repository registry.cn-hangzhou.aliyuncs.com/hlyani --apiserver-advertise-address=192.168.1.10 --kubernetes-version=v1.15.0 --pod-network-cidr=10.0.0.0/24 -v 0
-```
-
-```
-Your Kubernetes control-plane has initialized successfully!
-
-To start using your cluster, you need to run the following as a regular user:
-
-  mkdir -p $HOME/.kube
-  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-  sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-You should now deploy a pod network to the cluster.
-Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
-  https://kubernetes.io/docs/concepts/cluster-administration/addons/
-
-Then you can join any number of worker nodes by running the following on each as root:
-
-kubeadm join 192.168.1.10:6443 --token 4mgxai.ou2w2ff7zwz5ykym \
-    --discovery-token-ca-cert-hash sha256:16bf000d7f9ce90f932f13747727e9795eac8babe901f7fae5842347a661d67a 
-
-```
-
-##### 6、安装网络插件
-
-```
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.10.0/Documentation/kube-flannel.yml
-```
-```
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/62e44c867a2846fefb68bd5f178daf4da3095ccb/Documentation/kube-flannel.yml
-```
-
-> Error registering network: failed to acquire lease: node "node1" pod cidr not assigned
-
-[https://github.com/coreos/flannel/blob/fd8c28917f338a30b27534512292cd5037696634/Documentation/troubleshooting.md#kubernetes-specific](https://github.com/coreos/flannel/blob/fd8c28917f338a30b27534512292cd5037696634/Documentation/troubleshooting.md#kubernetes-specific)
-
-```
- kubectl patch node node1 -p '{"spec":{"podCIDR":"10.0.0.0/24"}}'
-```
-```
-kubectl apply -f https://docs.projectcalico.org/v3.7/manifests/calico.yaml
-```
-
-##### 7、添加node节点
-
-```
-kubeadm join 192.168.1.10:6443 --token 4mgxai.ou2w2ff7zwz5ykym \
-    --discovery-token-ca-cert-hash sha256:16bf000d7f9ce90f932f13747727e9795eac8babe901f7fae5842347a661d67a 
-```
-
-```
-kubeadm token list
-
-openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | \
-   openssl dgst -sha256 -hex | sed 's/^.* //'
-
-kubeadm join --token <token> <master-ip>:<master-port> --discovery-token-ca-cert-hash sha256:<hash>
-```
-
-##### 8、安装dashboard
-
-[https://github.com/kubernetes/dashboard](https://github.com/kubernetes/dashboard)
-
-[https://github.com/kubernetes-retired/heapster](https://github.com/kubernetes-retired/heapster)
-
-```
-git clone https://github.com/kubernetes-retired/heapster.git
-git tag
-git checkout v1.5.4
-
-ls d/
-grafana.yaml  heapster-rbac.yaml  heapster.yaml  influxdb.yaml
-
-kubectl apply -f d/
-```
-
-```
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
-
-#image: registry.cn-hangzhou.aliyuncs.com/hlyani/kubernetes-dashboard-amd64:v1.10.1
-spec:
-  ports:
-    - port: 443
-      targetPort: 8443
-  type: NodePort
-```
-
-###### 修改
-
-```
-kubectl edit service -n kube-system kubernetes-dashboard
-```
-
-[https://github.com/kubernetes/dashboard/wiki/Creating-sample-user](https://github.com/kubernetes/dashboard/wiki/Creating-sample-user)
-
-```
-# cat dashboard-admin-user.yaml 
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: admin-user
-  namespace: kube-system
----
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRoleBinding
-metadata:
-  name: admin-user
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-- kind: ServiceAccount
-  name: admin-user
-  namespace: kube-system
-
-
-kubectl apply -f dashboard-admin-user.yaml
-kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
-```
-
-##### 9、失败清理环境
-
-```
-rm -rf /var/lib/etcd/*
-rm -rf /var/lib/kubelet/*
-rm -rf /etc/kubernetes/*
-docker rm -f `docker ps -qa`
-kill -9 `netstat -ntlp|grep 102|awk '{print $7}'|cut -d'/' -f1`
-echo "1" >/proc/sys/net/bridge/bridge-nf-call-iptables
-kubeadm reset -f
-iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
-```
+etcd：Calico使用的存储后端。
 
-##### 10、其他
+BGP Client(BIRD)：负责把Felix在各Node上设置的路由信息通过BGP协议广播到Calico网络。
 
-```
-journalctl -u -f
-```
-```
-kubectl edit service -n kube-system kubernetes-dashboard
-```
+BGP Route Reflector(BIRD)：通过一个或者多个BGP Route Reflector来完成大规模集群的分级路由分发。
 
-```
-google_containers
-```
+Calicoctl：Calico命令行管理工具。
 
-```
-#查看部署组件
-kubectl get all --namespace=kube-system
-```
+![calico](../../imgs/calico.jpg)
 
-```
-kubectl logs --namespace=kube-system kubernetes-dashboard-7bf56bf786-4pwpj --follow
-```
+![calico_arch](../../imgs/calico_arch.jpg)
 
-```
-1 node(s) had taints that the pod didn't tolerate.
-有时候一个pod创建之后一直是pending，没有日志，也没有pull镜像，describe的时候发现里面有一句话： 1 node(s) had taints that the pod didn't tolerate.
+### 三、其他
 
-直译意思是节点有了污点无法容忍，执行 kubectl get no -o yaml | grep taint -A 5 之后发现该节点是不可调度的。这是因为kubernetes出于安全考虑默认情况下无法在master节点上部署pod，于是用下面方法解决：
-
-kubectl taint nodes --all node-role.kubernetes.io/master-
-```
-
-## 四、使用kubespray安装
-
-##### 1、下载kubespray源码
-
-```
-git clone https://github.com/kubernetes-sigs/kubespray.git
-cd kubespray
-git tag
-git checkout v2.10.4
-```
-
-##### 2、安装相关依赖
-
-```
-pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
-```
-
-##### 3、复制配置文件
-
-```
-cp -rfp inventory/sample inventory/mycluster
-```
-
-##### 4、更新配置文件信息
-
-```
-# 申明数组，输入节点ip
-declare -a IPS=(10.10.1.2 10.10.1.3 10.10.1.4)
-
-CONFIG_FILE=inventory/mycluster/hosts.yml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
-```
-
-##### 5、检查配置文件是否有问题
-
-```
-cat inventory/mycluster/group_vars/all/all.yml
-cat inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
-```
-
-##### 6、修改镜像源为国内源
-
-```
-grc_image_files=(
-./roles/download/defaults/main.yml
-./inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
-)
-
-for file in ${grc_image_files[@]};do
-    sed -i 's#gcr.io/google_containers#registry.cn-hangzhou.aliyuncs.com/kbspray#g' $file
-    sed -i 's#k8s.gcr.io#registry.cn-hangzhou.aliyuncs.com/kbspray#g' $file
-    sed -i 's#gcr.io/google-containers#registry.cn-hangzhou.aliyuncs.com/kbspray#g' $file
-    sed -i 's#quay.io/coreos#registry.cn-hangzhou.aliyuncs.com/kbspray#g' $file
-done
-
-#以下文件需要翻墙下载
-cd /tmp/releases
-
-https://storage.googleapis.com/kubernetes-release/release/v1.14.3/bin/linux/amd64/kubeadm
-
-https://github.com/containernetworking/plugins/releases/download/v0.6.0/cni-plugins-amd64-v0.6.0.tgz
-
-https://storage.googleapis.com/kubernetes-release/release/v1.14.3/bin/linux/amd64/hyperkube
-
-https://github.com/projectcalico/calicoctl/releases/download/v3.4.4/calicoctl-linux-amd64
-```
-
-##### 7、开始部署
-
-[https://github.com/kubernetes-sigs/kubespray/blob/master/docs/ansible.md](https://github.com/kubernetes-sigs/kubespray/blob/master/docs/ansible.md)
-
-```
-ansible-playbook -i inventory/mycluster/hosts.yml --become --become-user=root cluster.yml
-```
-
-##### 8、获取集群信息
-
-```
-kubectl cluster-info
-
-Kubernetes master is running at https://192.168.21.88:6443
-coredns is running at https://192.168.21.88:6443/api/v1/namespaces/kube-system/services/coredns:dns/proxy
-kubernetes-dashboard is running at https://192.168.21.88:6443/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy
-
-To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
-```
-
-##### 9、安装nginx测试
-
-```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nginx-dm
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      name: nginx
-  template:
-    metadata:
-      labels:
-        name: nginx
-    spec:
-      containers:
-        - name: nginx
-          image: nginx:alpine
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 80
-              name: http
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: nginx-svc
-spec:
-  ports:
-    - port: 80
-      name: http
-      targetPort: 80
-      protocol: TCP
-  type: NodePort
-  selector:
-    name: nginx
-```
-
-##### 10、清理环境
-
-```
-ansible-playbook -i inventory/mycluster/hosts.yml reset.yml
-
-rm -rf /etc/kubernetes/
-rm -rf /var/lib/kubelet
-rm -rf /var/lib/etcd
-rm -rf /usr/local/bin/kubectl
-rm -rf /etc/systemd/system/calico-node.service
-rm -rf /etc/systemd/system/kubelet.service
-systemctl stop etcd.service
-systemctl disable etcd.service
-systemctl stop calico-node.service
-systemctl disable calico-node.service
-docker stop $(docker ps -q)
-docker rm $(docker ps -qa)
-systemctl restart docker
-```
-
-##### 11、升级
-
-[https://github.com/kubernetes-sigs/kubespray/blob/master/docs/upgrades.md](https://github.com/kubernetes-sigs/kubespray/blob/master/docs/upgrades.md)
-
-* 升级kube
-
-  ```
-  git fetch origin
-  git checkout origin/master
-  ansible-playbook upgrade-cluster.yml -b -i inventory/sample/hosts.ini -e kube_version=v1.6.0
-  ```
-
-* 升级docker
-
-  ```
-  ansible-playbook -b -i inventory/sample/hosts.ini cluster.yml --tags=docker
-  ```
-
-* 升级etcd
-
-  ```
-  ansible-playbook -b -i inventory/sample/hosts.ini cluster.yml --tags=etcd
-  ```
-
-* 升级kubelet
-
-  ```
-  ansible-playbook -b -i inventory/sample/hosts.ini cluster.yml --tags=node --skip-tags=k8s-gen-certs,k8s-gen-tokens
-  ```
-
-* 升级网络插件
-
-  ```
-  ansible-playbook -b -i inventory/sample/hosts.ini cluster.yml --tags=network
-  ```
-
-* 升级所有的add-ones
-
-  ```
-  ansible-playbook -b -i inventory/sample/hosts.ini cluster.yml --tags=apps
-  ```
-
-* 只升级helm(假定helm_enabled配置为true)
-
-  ```
-  ansible-playbook -b -i inventory/sample/hosts.ini cluster.yml --tags=helm
-  ```
-
-* 升级master组件
-
-  ```
-  ansible-playbook -b -i inventory/sample/hosts.ini cluster.yml --tags=master
-  ```
-
-##### 12、添加、减少节点
-
-```
-ansible-playbook -i inventory/mycluster/hosts.yml scale.yml -b -v \
-  --private-key=~/.ssh/private_key  
-```
-
-```
-ansible-playbook -i inventory/mycluster/hosts.yml remove-node.yml -b -v \
-  --private-key=~/.ssh/private_key \
-  --extra-vars "node=nodename,nodename2"
-```
-
-##### 13、参考链接
+##### 1、参考链接
 
 [https://www.qikqiak.com/k8s-book/](https://www.qikqiak.com/k8s-book/)
 
-##### 14、理解pod
+##### 2、理解pod
 
-##### **一：在探讨pod和容器的区别之前，我们先谈谈为什么k8s会使用pod这个最小单元，而不是使用docker的容器，k8s既然使用了pod，当然有它的理由。**
+##### 一：在探讨pod和容器的区别之前，我们先谈谈为什么k8s会使用pod这个最小单元，而不是使用docker的容器，k8s既然使用了pod，当然有它的理由。
 
 ------
 
 1：更利于扩展
-k8s不仅仅支持Docker容器，也支持rkt甚至用户自定义容器，为什么会有这么多不同的容器呢，因为容器并不是真正的虚拟机，参考我之前的博客，docker的一些概念和误区总结，此外，Kubernetes不依赖于底层某一种具体的规则去实现容器技术，而是通过CRI这个抽象层操作容器，这样就会需要pod这样一个东西，pod内部再管理多个业务上紧密相关的用户业务容器，就会更有利用业务扩展pod而不是扩展容器。
+k8s不仅仅支持Docker容器，也支持rkt甚至用户自定义容器，为什么会有这么多不同的容器呢，因为容器并不是真正的虚拟机，docker的一些概念和误区总结，此外，Kubernetes不依赖于底层某一种具体的规则去实现容器技术，而是通过CRI这个抽象层操作容器，这样就会需要pod这样一个东西，pod内部再管理多个业务上紧密相关的用户业务容器，就会更有利用业务扩展pod而不是扩展容器。
 
 ------
 
 2：更容易定义一组容器的状态
 
-如果我们没有使用pod，而是直接使用一组容器去跑一个业务呢，那么当其中一个或者若干个容器出现问题呢，我们如何去定义这一组容器的状态呢，通过pod这个概念，这个问题就可以很好的解决，一组业务容器跑在一个k8s的pod中，这个pod中会有一个pause容器，这个容器与其他的业务容器都没有关系，以这个pause容器的状态来代表这个pod的状态，
+如果没有使用pod，而是直接使用一组容器去跑一个业务呢，那么当其中一个或者若干个容器出现问题呢，如何去定义这一组容器的状态呢，通过pod这个概念，这个问题就可以很好的解决，一组业务容器跑在一个k8s的pod中，这个pod中会有一个pause容器，这个容器与其他的业务容器都没有关系，以这个pause容器的状态来代表这个pod的状态，
 
 ------
 
 3：利于容器间文件共享，以及通信。
 pause容器有一个ip地址，和一个存储卷，pod中的其他容器共享pause容器的ip地址和存储，这样就做到了文件共享和互信。
-**二：pod和容器的区别**
+
+##### 二：pod和容器的区别
+
 总结，pod是k8s的最小单元，容器包含在pod中，一个pod中有一个pause容器和若干个业务容器，而容器就是单独的一个容器，简而言之，pod是一组容器，而容器单指一个容器。
 
-## 五、flannel
+##### 3、容器与虚拟机对比
 
-![flannel-networking](../../imgs/flannel-networking.png)
+虚拟机就像房子，容器就像胶囊公寓。
+
+容器：容器本质是基于镜像的跨环境迁移。
+
+容器两个特性：1、封装（配置、文件路径、权限）2、标准（无论什么容器运行环境，将同样的镜像运行起来，都可以还原当时的那一刻）
+
+容器优势：
+
+1.环境依赖更少
+
+2.更轻量（虚拟机镜像大几十G上百G，容器镜像一般不到1G）
+
+3.好移动（因为轻量所以迁移会更快，虚拟机不适合跨环境迁移）
+
+4.启动快（没有内核、镜像小）、可以回滚、可以弹性。适合部署无状态的服务，随时重启都可以（弊端：随意重启有状态服务，不知丢失数据是什么）
+
+5.适合于微服务（变化大、流量大）（进程多、更新快）
+
+6.利于CI/CD，快速部署、用以轻松建立、维护、扩容和滚动更新应用程序。
+
+容器缺点：
+
+1.隔离性不佳
+
+2.共享kernel
+
+VM优势：
+
+1.隔离全面
+
+2.自带kernel
+
+VM缺点：
+
+1.镜像比较大、笨重。
+
+2.对于跨环境迁移能力不足
+
+推荐使用容器的场景：
+1.	部署无状态的服务，同虚拟机互补使用，实现更好的隔离性
+2.	如部署有状态的服务，需要对应用有一定的了解（做好health check和容错）
+3.	持续集成的场景，可以顺利在开发、测试、生产之间迁移
+4.	适合部署跨云、跨域、跨数据中心的混合云场景下的应用部署和弹性伸缩
+5.	跨操作系统的场景
+6.	应用经常变更和迭代的场景
