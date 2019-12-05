@@ -33,6 +33,7 @@
     * [docker 网络相关](notes/docker/docker_net.md)
     * [k8s 相关](notes/docker/k8s.md)
     * [k8s 安装部署](notes/docker/k8s_deploy.md)
+    * [helm 相关](notes/docker/helm.md)
     * [docker swarm 相关](notes/docker/docker_swarm.md)
     * [docker registry 相关](notes/docker/docker_registry.md)
     * [openshift 相关](notes/docker/openshift.md)
