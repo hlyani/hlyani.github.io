@@ -33,6 +33,7 @@
     * [docker 网络相关](notes/docker/docker_net.md)
     * [k8s 相关](notes/docker/k8s.md)
     * [k8s 安装部署](notes/docker/k8s_deploy.md)
+    * [k8s 使用 ceph 储存](notes/docker/k8s_ceph.md)
     * [helm 相关](notes/docker/helm.md)
     * [docker swarm 相关](notes/docker/docker_swarm.md)
     * [docker registry 相关](notes/docker/docker_registry.md)
