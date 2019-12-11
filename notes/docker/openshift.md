@@ -11,7 +11,7 @@
 
 [https://blog.51cto.com/7308310/2171091](https://blog.51cto.com/7308310/2171091)
 
-## 一、单节点部署3.11
+## 一、单节点部署 v3.11
 
 ##### 1、安装相关软件
 
@@ -94,7 +94,11 @@ ssh-copy-id hl
 ansible-playbook -i inventory/hosts.localhost playbooks/prerequisites.yml
 ```
 
-##### 8、修改openshift源
+##### 8、检查 openshift 源
+
+```
+vim /etc/yum.repos.d/CentOS-OpenShift-Origin311.repo
+```
 
 ```
 [centos-openshift-origin311]
@@ -144,25 +148,36 @@ for img in ${imgs[@]};do docker pull $img;done
 yum -y install origin-node-3.11* origin-clients-3.11* origin-3.11* conntrack-tools
 ```
 
-##### 11、部署
+##### 11、因版本原因可能会出错，prerequisites 导致
 
 ```
-ansible-playbook -i inventory/hosts.localhost  playbooks/deploy_cluster.yml
+pip uninstall pyOpenSSL cryptography
+pip install pyOpenSSL cryptography
 ```
 
-##### 12、卸载（部署失败是可用，从第7步重新开始）
-
 ```
-ansible-playbook playbooks/adhoc/uninstall_openshift.yml
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-##### 13、创建管理用户和密码
+##### 12、部署
+
+```
+ansible-playbook -i inventory/hosts.localhost playbooks/deploy_cluster.yml
+```
+
+##### 13、卸载（部署失败是可用，从第7步重新开始）
+
+```
+ansible-playbook -i inventory/hosts.localhost playbooks/adhoc/uninstall_openshift.yml
+```
+
+##### 14、创建管理用户和密码
 
 ```
 htpasswd -c /etc/origin/master/htpasswd admin
 ```
 
-##### 14、登录
+##### 15、登录
 
 ```
 https://yani.srv.world:8443/console
