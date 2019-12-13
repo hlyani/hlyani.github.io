@@ -568,7 +568,7 @@ kubectl get pods -o wide
 kubectl exec -ti nginx-pod1 -- /bin/sh -c 'echo Hello World from Ceph RBD!!! > /usr/share/nginx/html/index.html'
  
 # 访问测试
-POD_ID=$(kubectl get pods -o wide | grep nginx-pod1 | awk '{print $6)}')
+POD_ID=$(kubectl get pods -o wide | grep nginx-pod1 | awk '{print $6}')
 curl http://$POD_ID
 
 # 清理
