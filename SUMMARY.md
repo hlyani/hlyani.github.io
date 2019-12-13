@@ -27,6 +27,7 @@
     * [Ceph 调优](notes/ceph/ceph_optimize.md)
     * [crushmap](notes/ceph/crushmap.md)
     * [ceph.conf](notes/ceph/cephconf.md)
+    * [Ceph 启用 Dashboard](notes/ceph/ceph_dashboard.md)
 * Docker 相关
     * [常用软件安装](notes/docker/usual_software.md)
     * [docker 相关](notes/docker/docker.md)
