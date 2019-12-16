@@ -78,6 +78,8 @@ Helm 的软件仓库，Repository 本质上就是一个 Web 服务器，该服�
 
 ![helmv3](../../imgs/helmv3.jpg)
 
+![helm-v2-v3](../../imgs/helm-v2-v3.jpeg)
+
 ### 三、Helm 客户端安装（v3.0.0）
 
 ##### 1、使用官方脚本安装
@@ -270,19 +272,19 @@ helm repo update
 helm repo add goharbor https://helm.goharbor.io
 ```
 
-##### 2、创建命名空间 test
+##### 2、创建命名空间 test（可以跳过）
 
 ```
 kubectl create namespace test
 ```
 
-##### 3、查看当前context
+##### 3、查看当前context（可以跳过）
 
 ```
 kubectl config current-context
 ```
 
-##### 4、设置 context 指定对应的 namespace，不指定使用的是 default
+##### 4、设置 context 指定对应的 namespace，不指定使用的是 default（可以跳过）
 
 ```
 kubectl config set-context <current-context> --namespace test
@@ -290,10 +292,30 @@ kubectl config set-context <current-context> --namespace test
 
 > 这里是因为，helm 3 开始helm 3 的执行权限和kubectl config 的权限是一致的，通过kubectl config的方式来控制helm 3 的执行权限。
 
-##### 5、安装 harbor， 关闭数据卷挂载，并使用 NodePort 方式进行访问。
+##### 5、可以提前拉取以下镜像（harbor-1.2.3）
 
 ```
-helm -n test install harbor goharbor/harbor --set persistence.enabled=false --set expose.type=nodePort --set expose.tls.enabled=false --set externalURL=http://192.168.0.11:30002
+docker pull goharbor/chartmuseum-photon:v0.9.0-v1.9.3
+docker pull goharbor/redis-photon:v1.9.3
+docker pull goharbor/clair-photon:v2.1.0-v1.9.3
+docker pull goharbor/notary-server-photon:v0.6.1-v1.9.3
+docker pull goharbor/notary-signer-photon:v0.6.1-v1.9.3
+docker pull goharbor/harbor-registryctl:v1.9.3
+docker pull goharbor/registry-photon:v2.7.1-patch-2819-2553-v1.9.3
+docker pull goharbor/nginx-photon:v1.9.3
+docker pull goharbor/harbor-jobservice:v1.9.3
+docker pull goharbor/harbor-core:v1.9.3
+docker pull goharbor/harbor-portal:v1.9.3
+```
+
+##### 6.1、安装 harbor， 关闭数据卷挂载，并使用 NodePort 方式进行访问。
+
+```
+helm -n test install harbor goharbor/harbor \
+--set persistence.enabled=false \
+--set expose.type=nodePort \
+--set expose.tls.enabled=false \
+--set externalURL=http://192.168.0.11:30002
 ```
 
 参数说明：
@@ -303,33 +325,76 @@ helm -n test install harbor goharbor/harbor --set persistence.enabled=false --se
 - expose.tls.enabled=false 关闭tls
 - externalURL=http://192.168.0.11:30002 设置登录 harbor 的外部链接
 
-##### 6、访问界面登录 http://192.168.0.11:30002 
+##### 6.2、配置 harbor 使用  Ceph 持续存储（根据情况可选）
+
+###### 查看已有的 storageclasses
+
+```
+kubectl get sc
+NAME       PROVISIONER    AGE
+ceph-rbd   ceph.com/rbd   8h
+```
+
+###### 下载 harbor
+
+```
+helm pull goharbor/harbor
+```
+
+###### 解压
+
+```
+tar -zxvf harbor-1.2.3.tgz
+```
+
+###### vim harbor/values.yaml
+
+```
+expose:
+	type: nodePort
+	tls:
+		enabled: false
+externalURL: http://192.168.0.11:30002
+persistence:
+	persistentVolumeClaim:
+		registry:
+			# 所有 storageClass 都修改为以下内容
+			storageClass: "ceph-rbd"
+```
+
+###### 部署
+
+```
+helm install harbor harbor/
+```
+
+##### 7、访问界面登录 http://192.168.0.11:30002 
 
 >  默认账号密码 admin/Harbor12345
 
-##### 7、添加仓库 chart_repo
+##### 8、添加仓库 chart_repo
 
-##### 8、创建用户 hl/XXX
+##### 9、创建用户 hl/XXX
 
-##### 9、添加 repo 到 helm
+##### 10.1、添加 repo 到 helm
 
 ```
 helm repo add hl http://192.168.0.11:30002/chartrepo/chart_repo
 ```
 
+##### 10.2、添加 repo 到 helm，及添加认证信息（根据情况可选）
+
 ```
-helm repo add chartmuseum http://chartmuseum-endpoint --username cm_user --password cm_password
+helm repo add hl http://192.168.0.11:30002/chartrepo/chart_repo --username hl_user --password hl_password
 ```
 
-##### 10、安装 helm-push 插件
+##### 11、安装 helm-push 插件
 
 ```
 helm plugin install https://github.com/chartmuseum/helm-push
 ```
 
-##### 11、push charts 到 harbor 里面
-
-> TODO: helm3 push 会有问题
+##### 12、push charts 到 harbor 里面
 
 ```
 helm push grafana-0.0.2.tgz test --username hl --password xxx

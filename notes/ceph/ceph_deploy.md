@@ -499,13 +499,11 @@ rados -p vms-cache cache-flush-evict-all
 rados -p gnocchi-cache cache-flush-evict-all
 ```
 
+##### 7、application not enabled on 1 pool(s)
 
-
-
-
-
-
-
+```
+ceph osd pool application enable k8s rbd
+```
 
 
 

@@ -384,6 +384,11 @@ kubectl logs --namespace=kube-system kubernetes-dashboard-7bf56bf786-4pwpj --fol
 kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
 
+```
+kubectl api-resources\
+kubectl explain XXX
+```
+
 ## 二、使用Minikube安装（适合单机部署开发）
 
 > 安装kubenets版本v1.15
