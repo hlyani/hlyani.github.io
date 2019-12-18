@@ -77,6 +77,7 @@
     * [Linux U盘占用](notes/linux/linux_u.md)
     * [ssh 相关](notes/linux/ssh.md)
     * [软 raid](notes/linux/mdadm.md)
+    * [将 home 目录空间扩容到根目录](notes/linux/root_extend.md)
 * OpenStack 相关
     * [OpenStack 相关](notes/openstack/openstack.md)
     * [OpenStack 中遇到的问题](notes/openstack/openstack_faq.md)
