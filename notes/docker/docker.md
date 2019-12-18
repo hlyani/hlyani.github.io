@@ -1,6 +1,204 @@
 # docker 相关
 
-## 一、linux实现docker资源隔离
+## 一、常用
+
+##### 1、安装docker
+
+[aliyun 安装docker-ce](https://yq.aliyun.com/articles/110806)
+
+[tsinghua 安装docker-ce](https://mirrors.tuna.tsinghua.edu.cn/help/docker-ce/)
+
+```
+curl -sSL https://get.docker.io | bash
+
+or
+
+curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+
+docker --version
+docker info
+```
+
+##### 2、导入、导出镜像
+
+```
+docker save registry:latest > registry.tar.gz
+docker save -o registry.tar.gz registry:latest
+
+docker load < registry.tar.gz
+docker load -i registry.tar.gz
+```
+
+##### 3、启动容器
+
+```
+docker run -itd --name mariadb --restart=always -v /opt/mysql:/etc/mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=qwe mariadb
+
+docker run --name mariadb -e MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -v /tmp/my.cnf:/etc/mysql/my.cnf -d mariadb
+```
+
+##### 4、使用dockerpy
+
+```
+>>> import docker
+>>> client = docker.DockerClient(base_url='unix://var/run/docker.sock')
+```
+
+##### 5、docker update
+
+```
+docker update --restart=always wiki
+docker update --cpu-shares 512 -m 300M abebf7571666 hopeful_morse
+docker update --kernel-memory 80M test
+```
+
+##### 6、查看容器ip地址、id
+
+```
+docker inspect -f '\{\{.NetworkSettings.IPAddress\}\}' wiki
+docker inspect -f '\{\{.Id\}\}' registry
+docker inspect --format '\{\{.Id\}\}' registry
+```
+
+##### 7、查看全部容器id、占用空间
+
+```
+docker ps -qa
+docker ps -as
+```
+
+##### 8、保存镜像
+
+```
+docker commit
+docker commit -a "user" -m "commit info" [CONTAINER] [imageName]:[imageTag]
+docker login --username=[userName] --password=[pwd] [registryURL]
+docker tag [imageID] [remoteURL]:[imageTag]
+docker push [remoteURL]:[imageTag]
+docker pull [remoteURL]:[imageTag]
+docker diff
+```
+
+##### 9、--restart
+
+```
+no – 默认值，如果容器挂掉不自动重启
+
+on-failure – 当容器以非 0 码退出时重启容器,同时可接受一个可选的最大重启次数参数 (e.g. on-failure:10)
+
+always – 不管退出码是多少都要重启
+```
+
+##### 10、资源限制
+
+```
+# 限制内存最大使用
+-m 1024m --memory-swap=1024m
+# 限制容器使用CPU
+--cpuset-cpus="0,1"
+```
+
+##### 11、一个容器连接到另一个容器
+
+```
+docker run -i -t --name sonar -d -link mmysql:db  tpires/sonar-server sonar
+```
+
+##### 12、构建自己的镜像
+
+```
+docker build -t <镜像名> <Dockerfile路径>
+docker build -t xx/gitlab .
+```
+
+##### 13、查看容器端口
+
+```
+docker port registry
+```
+
+##### 14、查看容器进程
+
+```
+docker top registry
+```
+
+##### 15、监控容器资源使用情况
+
+```
+docker stats
+docker stats --no-stream
+```
+
+##### 16、批量删除名字包含"none"的镜像
+
+```
+docker rmi $(docker images | grep "none" | awk '{print $3}')
+```
+
+##### 17、查看可用命令
+
+```
+docker help
+```
+
+##### 18、login
+
+```
+docker login --username=yourhubusername --email=youremail@company.com
+```
+
+##### 19、删除已安装docker
+
+```
+yum list installed | grep docker
+yum remove -y docker.x86_64
+yum remove -y docker-client.x86_64
+yum remove -y docker-common.x86_64
+```
+
+##### 20、配置国内docker源
+
+```
+vim /etc/docker/daemon.json
+{"registry-mirrors": ["https://docker.mirrors.ustc.edu.cn"]  }
+systemctl restart docker
+```
+
+##### 21、使用 --volumes-from 备份
+
+```
+docker run --rm --volumes-from gitlab -v /backup1:/backup2 ubuntu tar cvf /backup2/gitlab-etc.tar /etc/gitlab
+```
+
+##### 22、清理
+
+```
+$ cat /usr/bin/prune_docker.sh
+#!/bin/bash
+docker container prune -f # 删除所有退出状态的容器
+docker volume prune -f # 删除未被使用的数据卷
+docker image prune -f # 删除 dangling 或所有未被使用的镜像
+
+$ crontab -l
+0 0 * * * /usr/bin/prune_docker.sh >> /var/log/prune_docker.log 2>&1
+```
+
+##### 23、docker 代理
+
+```
+cat /etc/systemd/system/docker.service.d/http-proxy.conf
+
+[Service]
+Environment="HTTP_PROXY=http://proxy.server:port"
+Environment="HTTPS_PROXY=http://proxy.server:port"
+Environment="NO_PROXY=localhost,127.0.0.1"
+
+systemctl daemon-reload
+systemctl restart docker
+```
+
+## 二、linux实现docker资源隔离
 
 Linux 提供的主要的 NameSpace
 
@@ -11,7 +209,7 @@ Linux 提供的主要的 NameSpace
 - Network NameSpace- 用于隔离网络
 - User NameSpace- 用于隔离用户和用户组 UID/GID
 
-## 二、理解Docker容器和镜像
+## 三、理解Docker容器和镜像
 
 ![理解Docker容器和镜像](../../imgs/docker_layer.jpg)
 
@@ -250,177 +448,6 @@ docker history <image-id>
 ![深入理解Docker容器和镜像](../../imgs/docker_history.jpg)
 
 > docker history命令递归地输出指定镜像的历史镜像。
-
-## 三、常用
-
-##### 1、安装docker
-
-[aliyun 安装docker-ce](https://yq.aliyun.com/articles/110806)
-
-[tsinghua 安装docker-ce](https://mirrors.tuna.tsinghua.edu.cn/help/docker-ce/)
-
-```
-curl -sSL https://get.docker.io | bash
-
-or
-
-curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
-
-docker --version
-docker info
-```
-
-##### 2、导入、导出镜像
-
-```
-docker save registry:latest > registry.tar.gz
-docker save -o registry.tar.gz registry:latest
-
-docker load < registry.tar.gz
-docker load -i registry.tar.gz
-```
-
-##### 3、启动容器
-
-```
-docker run -itd --name mariadb --restart=always -v /opt/mysql:/etc/mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=qwe mariadb
-
-docker run --name mariadb -e MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -v /tmp/my.cnf:/etc/mysql/my.cnf -d mariadb
-```
-
-##### 4、使用dockerpy
-
-```
->>> import docker
->>> client = docker.DockerClient(base_url='unix://var/run/docker.sock')
-```
-
-##### 5、docker update
-
-```
-docker update --restart=always wiki
-docker update --cpu-shares 512 -m 300M abebf7571666 hopeful_morse
-docker update --kernel-memory 80M test
-```
-
-##### 6、查看容器ip地址、id
-
-```
-docker inspect -f '\{\{.NetworkSettings.IPAddress\}\}' wiki
-docker inspect -f '\{\{.Id\}\}' registry
-docker inspect --format '\{\{.Id\}\}' registry
-```
-
-##### 7、查看全部容器id、占用空间
-
-```
-docker ps -qa
-docker ps -as
-```
-
-##### 8、保存镜像
-
-```
-docker commit
-docker commit -a "user" -m "commit info" [CONTAINER] [imageName]:[imageTag]
-docker login --username=[userName] --password=[pwd] [registryURL]
-docker tag [imageID] [remoteURL]:[imageTag]
-docker push [remoteURL]:[imageTag]
-docker pull [remoteURL]:[imageTag]
-docker diff
-```
-
-##### 9、--restart
-
-```
-no – 默认值，如果容器挂掉不自动重启
-
-on-failure – 当容器以非 0 码退出时重启容器,同时可接受一个可选的最大重启次数参数 (e.g. on-failure:10)
-
-always – 不管退出码是多少都要重启
-```
-
-##### 10、资源限制
-
-```
-# 限制内存最大使用
--m 1024m --memory-swap=1024m
-# 限制容器使用CPU
---cpuset-cpus="0,1"
-```
-
-##### 11、一个容器连接到另一个容器
-
-```
-docker run -i -t --name sonar -d -link mmysql:db  tpires/sonar-server sonar
-```
-
-##### 12、构建自己的镜像
-
-```
-docker build -t <镜像名> <Dockerfile路径>
-docker build -t xx/gitlab .
-```
-
-##### 13、查看容器端口
-
-```
-docker port registry
-```
-
-##### 14、查看容器进程
-
-```
-docker top registry
-```
-
-##### 15、监控容器资源使用情况
-
-```
-docker stats
-docker stats --no-stream
-```
-
-##### 16、批量删除名字包含"none"的镜像
-
-```
-docker rmi $(docker images | grep "none" | awk '{print $3}')
-```
-
-##### 17、查看可用命令
-
-```
-docker help
-```
-
-##### 18、login
-
-```
-docker login --username=yourhubusername --email=youremail@company.com
-```
-
-##### 19、删除已安装docker
-
-```
-yum list installed | grep docker
-yum remove -y docker.x86_64
-yum remove -y docker-client.x86_64
-yum remove -y docker-common.x86_64
-```
-
-##### 20、配置国内docker源
-
-```
-vim /etc/docker/daemon.json
-{"registry-mirrors": ["https://docker.mirrors.ustc.edu.cn"]  }
-systemctl restart docker
-```
-
-##### 21、使用 --volumes-from 备份
-
-```
-docker run --rm --volumes-from gitlab -v /backup1:/backup2 ubuntu tar cvf /backup2/gitlab-etc.tar /etc/gitlab
-```
 
 ## 四、编写dockerfile的最佳实践
 
