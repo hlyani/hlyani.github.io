@@ -146,7 +146,17 @@ ip addr show
 ip link set bond2 up
 ```
 
-##### 12、配置磁盘
+##### 12、配置磁盘（新版本默认使用bluestore）
+
+```
+[storage]
+storage_node1_hostname ceph_osd_store_type=bluestore
+storage_node2_hostname ceph_osd_store_type=bluestore
+storage_node3_hostname ceph_osd_store_type=filestore
+storage_node4_hostname ceph_osd_store_type=filestore
+
+parted /dev/sdb -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_BS 1 -1
+```
 
 ```
 # 日志和数据在同一个磁盘
@@ -485,5 +495,22 @@ vim multinode 去掉相关计算节点
 
 docker exec -itu0 nova_api bash
 cd /var/lib/kolla/venv/lib/python2.7/site-packages/nova/
+```
+
+##### 12、指定python环境
+
+```
+kolla-ansible pull -e 'ansible_python_interpreter=/root/venv3/bin/python3'
+
+kolla-ansible -e 'ansible_python_interpreter=/root/venv3/bin/python3' -i multinode prechecks
+
+kolla-ansible -e 'ansible_python_interpreter=/root/venv3/bin/python3' -i multinode deploy
+```
+
+```
+[control]
+kolla1 ansible_python_interpreter=/root/venv3/bin/python3
+kolla2 ansible_python_interpreter=/root/venv3/bin/python3
+kolla3 ansible_python_interpreter=/root/venv3/bin/python3
 ```
 

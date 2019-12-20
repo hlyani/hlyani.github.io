@@ -1,5 +1,25 @@
 # Ceph 部署
+> PG = Placement Group
+> PGP = Placement Group for Placement purpose
+>
+> pg_num = number of placement groups mapped to an OSD
+>
+> When pg_num is increased for any pool, every PG of this pool splits into half, but they all remain mapped to their parent OSD.
+>
+> Until this time, Ceph does not start rebalancing. Now, when you increase the pgp_num value for the same pool, PGs start to migrate from the parent to some other OSD, and cluster rebalancing starts. This is how PGP plays an important role.
+> By Karan Singh
+>
+>
+> PG是指定存储池存储对象的目录有多少个，PGP是存储池PG的OSD分布组合个数
+> PG的增加会引起PG内的数据进行分裂，分裂到相同的OSD上新生成的PG当中
+> PGP的增加会引起部分PG的分布进行变化，但是不会引起PG内对象的变动
+>
+> pg_num的增加会使原来PG中的对象均匀地分布到新建的PG中，原来的副本分布方式不变
+> pgp_num的增加会使PG的分布方式发生变化，但是PG内的对象并不会变动
+> pgp决定pg分布时的组合方式的变化
+
 ## 一、ceph deploy 部署ceph
+
 ##### 1、添加release.key
 ```
 apt-get update && apt-get -y upgrade

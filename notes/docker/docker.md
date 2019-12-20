@@ -198,6 +198,21 @@ systemctl daemon-reload
 systemctl restart docker
 ```
 
+##### 24、使用本地仓库
+
+```
+vim /etc/docker/daemon.json
+
+{
+    "insecure-registries": ["192.168.0.11:30002"]
+}
+
+systemctl daemon-reload
+systemctl restart docker
+```
+
+
+
 ## 二、linux实现docker资源隔离
 
 Linux 提供的主要的 NameSpace
