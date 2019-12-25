@@ -255,7 +255,7 @@ sqoop import  \
 --hive-table new_help_keyword
 ```
 
-#报错原因是hive-import 当前这个导入命令。 sqoop会自动给创建hive的表。 但是不会自动创建不存在的库
+> 报错原因是hive-import 当前这个导入命令。 sqoop会自动给创建hive的表。 但是不会自动创建不存在的库
 
 手动创建mydb_test数据块
 

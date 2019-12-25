@@ -80,16 +80,18 @@ python hello.py
 
 > 编辑 hello.html
 
+{% raw %}
 ```
 <!doctype html>
 <title>Hello Sample</title>
 
 {% if name %}
-  <h1>Hello {{ name }}!</h1>
+<h1>Hello {{ name }}!</h1>
 {% else %}
-  <h1>Hello World!</h1>
+<h1>Hello World!</h1>
 {%  endif  %}
 ```
+{% endraw %}
 
 > 编辑 hello.py
 
@@ -114,6 +116,7 @@ if  __name__  ==  '__main__':
 
 > 新建，并编辑 layout.html 的模板
 
+{% raw %}
 ```
 <!doctype html>
 
@@ -122,23 +125,26 @@ if  __name__  ==  '__main__':
 <link rel="stylesheet"  type="text/css"  href="{{ url_for('static', filename='style.css') }}">
 
 <div class="page">
-    {% block body %}
-    {% endblock %}
+{% block body %}
+{% endblock %}
 </div>
 ```
+{% endraw %}
 
 > 修改之前的 hello.html
 
+{% raw %}
 ```
-{%  extends  "layout.html"  %}
+{%  extends  "layout.html" %}
 {%  block  body  %}
 {%  if  name  %}
-  <h1>Hello {{ name }}!</h1>
+<h1>Hello {{ name }}!</h1>
 {% else %}
-  <h1>Hello World!</h1>
+<h1>Hello World!</h1>
 {%  endif  %}
 {%  endblock  %}
 ```
+{% endraw %}
 
 > 浏览器访问： http://192.168.1.1:5000/hello/man ，查看源码
 
@@ -161,27 +167,31 @@ def  index():
 
 #####  layout.html
 
+{% raw %}
 ```
 <!doctype html>
 <title>Hello Sample</title>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 <div class="page">
-    {% block body %}
-    {% endblock %}
+{% block body %}
+{% endblock %}
 </div>
 ```
+{% endraw %}
 
 ##### login.html
 
+{% raw %}
 ```
 {% extends "layout.html" %}
 {% block body %}
 <form name="login" action="/login" method="post">
-    Hello {{ title }}, please login by:
-    <input type="text" name="user" />
+Hello {{ title }}, please login by:
+<input type="text" name="user" />
 </form>
 {% endblock %}
 ```
+{% endraw %}
 
 ```
 from flask import Flask,url_for,request,render_template

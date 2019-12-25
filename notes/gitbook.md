@@ -1,6 +1,6 @@
-# gitbook相关
+# 一、gitbook 相关
 
-#####          		集成了 GitBook、Git、Markdown 等功能，还支持将书籍同步到 gitbook.com 网站，使我们可以很方便地编辑和管理书籍。
+> 集成了 GitBook、Git、Markdown 等功能，还支持将书籍同步到 gitbook.com 网站，使我们可以很方便地编辑和管理书籍。
 
 ## 1、安装nodejs
 
@@ -92,3 +92,12 @@ npm install -g gitbook-plugin-splitter
 ## 9、常用插件
 https://www.jianshu.com/p/427b8bb066e6
 https://www.cnblogs.com/mingyue5826/p/10307051.html#autoid-2-3-0
+
+### 10、gitbook serve 找不到 fontsettings.js
+
+```
+cd ~/.gitbook\versions\3.2.3\lib\output\website
+vim copyPluginAssets.js
+删除112行
+```
+
