@@ -78,6 +78,7 @@
     * [ssh 相关](notes/linux/ssh.md)
     * [软 raid](notes/linux/mdadm.md)
     * [将 home 目录空间扩容到根目录](notes/linux/root_extend.md)
+    * [将虚拟机作为router](notes/linux/vm_to_router.md)
 * OpenStack 相关
     * [OpenStack 相关](notes/openstack/openstack.md)
     * [OpenStack 中遇到的问题](notes/openstack/openstack_faq.md)
