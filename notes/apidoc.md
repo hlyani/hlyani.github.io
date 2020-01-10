@@ -31,7 +31,49 @@ cat apidoc.json
 }
 ```
 
-##### 5、在项目目录执行以下命令，生成文档
+##### 5、请求方法后面写上注释
+
+```
+def get(self, scene=None, cluster=None, path=None):
+    """
+    @api {get} /daovoid_api/{scene}/{cluster}/{resource} 请求资源列表
+    @apiName getResource
+    @apiGroup get
+    @apiSuccess {object} resource
+    @apiExample 请求虚拟机详细信息
+    GET /daovoid_api/sjyg/cluster1/instance/1a72c328acfe4d5f86d630c1832b085c
+    Content-Type: application/json
+    @apiSuccessExample 成功响应：虚拟机详细信息
+    HTTP/1.1 200 OK
+    {
+        "inventories": [
+            {
+                "cluster": "http://192.168.0.244:8080",
+                "createDate": "Jan 9, 2020 3:21:11 PM",
+                "description": "this is a vm",
+                "id": "1a72c328acfe4d5f86d630c1832b085c",
+                "name": "aaaa",
+                "networks": [
+                .... 
+                        ],
+                    }
+                ],
+                "scene": "sjyg",
+                "snapshots": [],
+                "status": "Running",
+                "templates": [],
+                "type": "usual",
+                "volumes": [
+                ...
+                ],
+                ...
+            }
+        ]
+    }
+    """
+```
+
+##### 6、在项目目录执行以下命令，生成文档
 
 ```
 apidoc -i ./ -o apidoc
