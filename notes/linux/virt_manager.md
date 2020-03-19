@@ -1,9 +1,14 @@
 # virt-manager 相关
 ##### 1、安装相关软件
 ```
-yum -y install virt-manager xorg-x11-xauth
+yum install -y virt-manager xorg-x11-xauth
 ```
+```
+yum install -y qemu-kvm qemu-img virt-manager libvirt libvirt-python libvirt-client virt-install virt-viewer bridge-utils
+```
+
 ##### 2、常见问题
+
 ###### 1.virt-manager方格乱码的问题
 ```
 解决CentOS和Ubuntu下virt-manager方格乱码的问题，virt-manager显示乱码的解决方法，安装相应字体： 

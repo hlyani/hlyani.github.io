@@ -157,7 +157,14 @@ crushtool -c crushmap.txt -o crushmap.done
 4、重新使用新 crushmap
 ceph osd setcrushmap -i crushmap.done
 ```
+##### 23、修改osd权重
+
+```
+ceph osd crush reweight osd.1 1
+```
+
 ## 二、将ceph配置文openstack的后端配置
+
 ##### 1、创建pool，初始化pool。
 
 ```
@@ -524,13 +531,3 @@ rados -p gnocchi-cache cache-flush-evict-all
 ```
 ceph osd pool application enable k8s rbd
 ```
-
-
-
-
-
-
-
-
-
-

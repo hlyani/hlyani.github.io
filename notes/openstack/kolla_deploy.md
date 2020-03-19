@@ -77,7 +77,7 @@ yum -y install python-docker-py
 pip install -U docker-p
 ```
 
-##### 6、安装ntp
+##### 6、安装ntp（可选）
 
 ```
 # CentOS 7
