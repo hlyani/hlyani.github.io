@@ -94,6 +94,7 @@
     * [qemu-guest-agent 相关](notes/openstack/qga.md)
     * [OVS 相关](notes/openstack/ovs.md)
     * [迁移虚拟机到其他平台](notes/openstack/migrate_to_other_platform.md)
+    * [OpenStack对hygon的兼容](notes/openstack/openstack_hygon_patch.md)
 * Python 相关
     * [xpath 相关](notes/python/xpath.md)
     * [正则表达式相关](notes/python/regular_expression.md)
