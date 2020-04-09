@@ -199,6 +199,7 @@ kind: StorageClass
 metadata:
   name: fast-rbd
 provisioner: ceph.com/rbd
+# allowVolumeExpansion: true
 parameters:
   monitors: 10.0.1.118:6789, 10.0.1.227:6789, 10.0.1.172:6789
   adminId: admin
@@ -209,12 +210,25 @@ parameters:
   userSecretName: ceph-secret-kube
   userSecretNamespace: kube-system
   imageFormat: "2"
-  imageFeatures: layering
+  imageFeatures: layering 
 ```
 
 ```
 kubectl create -f Ceph-RBD-StorageClass.yaml
 ```
+
+> allowVolumeExpansion: true，允许扩容
+>
+> bug：需要在pod/kube-controller-manager中安装ceph-mon，并拷贝ceph.client.admin.keyring到/etc/ceph/文件夹中。
+>
+> 如下编辑pvc，再重启pod即可实现扩容
+>
+> kubectl edit pvc data-kafka-0
+>
+> status:
+>   accessModes:
+>   - ReadWriteOnce
+>     storage: 8Gi
 
 ##### 7、到此已经配置完。接下来通过创建 PVC 来测试 Ceph-RBD。
 

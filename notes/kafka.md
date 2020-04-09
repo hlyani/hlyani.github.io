@@ -280,3 +280,25 @@ kafkacat -b 192.168.1.2:32000,192.168.1.2:32001 -P -t test
 kafkacat -b 192.168.1.2:32000,192.168.1.2:32001 -C -t test
 ```
 
+##### 7、helm kafka
+
+```
+# 外部可访问
+externalAccess:
+  enabled: true
+  service:
+    type: NodePort
+    port: 19092
+    loadBalancerIPs: []
+    loadBalancerSourceRanges: []
+    nodePorts: [31117,31118,31119]
+    domain: 61.136.145.205
+# 持续存储
+persistence:
+  enabled: true
+  storageClass: "ceph-rbd"
+  accessModes:
+    - ReadWriteOnce
+  size: 8Gi
+```
+
