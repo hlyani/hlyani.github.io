@@ -23,6 +23,7 @@
 * [websocket 相关](notes/websocket.md)
 * [stratos-ui 相关](notes/stratos_ui.md)
 * [apidoc 相关](notes/apidoc.md)
+* [keepalived 相关](notes/keepalived.md)
 * Ceph 相关
     * [Ceph 部署](notes/ceph/ceph_deploy.md)
     * [Ceph 调优](notes/ceph/ceph_optimize.md)

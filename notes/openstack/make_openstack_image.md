@@ -24,25 +24,32 @@
 C:\Windows\System32\Sysprep
 ```
 
-##### 3、压缩镜像的稀疏文件。
+##### 3、# 压缩镜像的稀疏文件。
 
 ```
 bsdtar -zcvf win10.qcow2.tar.gz win10.qcow2
 ```
 
-##### 4、解压镜像。
+##### 4、# 解压镜像。
 
 ```
 tar -xvSf win10.qcow2.tar.gz
 ```
 
-##### 5、转换镜像格式为raw。
+##### 5、压缩镜像
+
+```
+qemu-img convert -c -O qcow2 source.qcow2 shrunk.qcow2
+virt-sparsify /path/to/source.qcow2 --compress /path/to/output.qcow2
+```
+
+##### 6、转换镜像格式为raw。
 
 ```
 qemu-img convert  -O raw win10.qcow2 win10.raw
 ```
 
-##### 6、上传镜像到glance。
+##### 7、上传镜像到glance。
 
 ```
 glance image-create --progress --disk-format raw --container-format bare --name win10 --property hw_video_model=vga --property  os_type=windows --file win10.raw
