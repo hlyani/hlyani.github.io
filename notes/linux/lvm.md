@@ -138,3 +138,13 @@ ln -s /dev/myVG/myLV /home/hl
 6、取消文件夹的绑定
 umount /home/hl
 ```
+
+##### 4、扩展根目录逻辑卷
+
+```
+pvcreate /dev/sdb
+vgextend cenots /dev/sdb
+lvextend -l +100%FREE /dev/centos/root
+xfs_growfs /dev/centos/root
+```
+
