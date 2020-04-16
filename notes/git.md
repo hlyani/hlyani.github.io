@@ -395,3 +395,40 @@ http://blog.csdn.net/abcdocker/article/details/53840629
 
 https://docs.gitlab.com/ee/ci/yaml/README.html
 ```
+
+### 三、修改之前的commit
+
+##### 1、将HEAD移动到需要修改的commit上
+
+```
+git rebase eb69dddd^ --interactive
+```
+
+##### 2、找到需要修改的commit,将首行的pick改成edit后保存
+
+##### 3、开始修改内容
+
+##### 4、添加改动文件到暂存
+
+```
+git add
+```
+
+##### 5、追加改动到提交
+
+```
+git commit --amend
+```
+
+##### 6、移动HEAD回到最新的commit
+
+```
+git rebase --continue
+```
+
+##### 7、强制提交
+
+```
+git push origin master -f
+```
+
