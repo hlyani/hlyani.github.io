@@ -41,6 +41,7 @@
     * [docker swarm 相关](notes/docker/docker_swarm.md)
     * [docker registry 相关](notes/docker/docker_registry.md)
     * [openshift 相关](notes/docker/openshift.md)
+    * [将ISO镜像转换为docker镜像](notes/docker/convert_iso_to_docker_img.md)
 * Linux 相关
     * [libvirt 相关](notes/linux/libvirt.md)
     * [Linux 相关](notes/linux/linux.md)
