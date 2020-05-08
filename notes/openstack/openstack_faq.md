@@ -119,5 +119,17 @@ update lbaas_loadbalancers set provisioning_status='ACTIVE' where id='c3b48167-9
 ###### commit：inspector: memory: use usable of memoryStats if available
 * https://github.com/openstack/ceilometer/commit/2dee485da7a6f2cdf96525fabc18a8c27c8be570
 
+## 八、镜像验证问题
 
+###### 问题描述：通过volume创建镜像，镜像的元数据中会多一个signature_verified=False, 并且使用该镜像创建虚拟机会失败。
+
+[Support Image Signature Verification](https://specs.openstack.org/openstack/cinder-specs/specs/rocky/support-image-signature-verification.html)
+
+[cinder.conf](https://docs.openstack.org/cinder/train/configuration/block-storage/samples/cinder.conf.html)
+
+###### 解决方式，1、删除镜像元数据中的signature_verified。2、修改cinder的配置文件 verify_glance_signatures 默认是enabled。
+
+```
+verify_glance_signatures=disabled
+```
 
