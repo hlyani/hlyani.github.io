@@ -43,7 +43,9 @@
     * [openshift 相关](notes/docker/openshift.md)
     * [将ISO镜像转换为docker镜像](notes/docker/convert_iso_to_docker_img.md)
     * [挂载USB到docker容器](notes/docker/mount_usb_to_docker.md)
+    * [harbor 相关](notes/docker/harbor.md)
 * Linux 相关
+    * [proxy 相关](notes/linux/proxy.md)
     * [libvirt 相关](notes/linux/libvirt.md)
     * [Linux 相关](notes/linux/linux.md)
     * [CentOS 修改默认启动内核](notes/linux/change_centos_boot_kernel.md)
