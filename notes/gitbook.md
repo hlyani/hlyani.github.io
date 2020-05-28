@@ -2,7 +2,7 @@
 
 > 集成了 GitBook、Git、Markdown 等功能，还支持将书籍同步到 gitbook.com 网站，使我们可以很方便地编辑和管理书籍。
 
-## 1、安装nodejs
+### 1、安装nodejs
 
 ```
 curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
@@ -10,20 +10,20 @@ yum install -y nodejs
 node --version
 ```
 
-## 2、安装gitbook
+### 2、安装gitbook
 
 ```
 npm install -g gitbook-cli
 ```
 
-## 3、初始化
+### 3、初始化
 
 ```
 mkdir mybook
 gitbook init
 ```
 
-## 4、编辑SUMMARY.md
+### 4、编辑SUMMARY.md
 
 ```
 # 目录
@@ -42,7 +42,7 @@ gitbook init
 
 ##### 再次执行 gitbook init
 
-## 5、运行服务浏览mybook
+### 5、运行服务浏览mybook
 
 ```
 gitbook serve
@@ -50,14 +50,14 @@ or
 gitbook serve --port 8888
 ```
 
-## 6、构建html
+### 6、构建html
 
 ```
 gitbook build
 ```
 ##### 将构建书籍，默认生成html输出到_book目录中。
 
-## 7、生成pdf、epub、mobi格式电子书
+### 7、生成pdf、epub、mobi格式电子书
 ```
 npm install -g ebook-convert
 
@@ -67,7 +67,7 @@ gitbook epub ./ ./mybook.epub
 
 gitbook mobi ./ ./mybook.mobi
 ```
-## 8、配置目录折叠
+### 8、配置目录折叠
 ```
 在主目录添加book.json
 {
@@ -89,7 +89,8 @@ npm install -g gitbook-plugin-splitter
   * [第3节：住](Chapter1/住.md)
   * [第4节：行](Chapter1/行.md)
 ```
-## 9、常用插件
+### 9、常用插件
+
 https://www.jianshu.com/p/427b8bb066e6
 https://www.cnblogs.com/mingyue5826/p/10307051.html#autoid-2-3-0
 
