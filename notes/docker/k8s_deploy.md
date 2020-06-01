@@ -824,3 +824,50 @@ echo "1" >/proc/sys/net/bridge/bridge-nf-call-iptables
 kubeadm reset -f
 iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
 ```
+
+## 四、FAQ
+
+#### 1、Warning  VolumeResizeFailed  13m                 volume_expand  error expanding volume "default/data-mariadb-master-0" of plugin "kubernetes.io/rbd": rbd info failed, error: exit status 127
+
+> 扩容pvc时失败问题
+
+```
+kubcectl get po -A
+```
+
+```
+kubectl get pvc
+```
+
+```
+kubectl describe pvc data-mariadb-master-0
+```
+
+```
+echo "deb http://mirrors.aliyun.com/debian/ stretch main non-free contrib
+deb-src http://mirrors.aliyun.com/debian/ stretch main non-free contrib
+deb http://mirrors.aliyun.com/debian-security stretch/updates main
+deb-src http://mirrors.aliyun.com/debian-security stretch/updates main
+deb http://mirrors.aliyun.com/debian/ stretch-updates main non-free contrib
+deb-src http://mirrors.aliyun.com/debian/ stretch-updates main non-free contrib
+deb http://mirrors.aliyun.com/debian/ stretch-backports main non-free contrib
+deb-src http://mirrors.aliyun.com/debian/ stretch-backports main non-free contrib" | tee > sources.list
+```
+
+```
+kubectl cp sources.list --namespace kube-system kube-controller-manager-node1:/etc/apt/
+```
+
+```
+kubectl exec -it --namespace kube-system kube-controller-manager-node1 sh
+apt update && apt install -y ceph-common
+```
+
+```
+kubectl cp /etc/ceph/ceph.client.admin.keyring --namespace kube-system kube-controller-manager-node1:/etc/ceph/
+```
+
+```
+rbd ls k8s
+```
+
