@@ -865,6 +865,8 @@ apt update && apt install -y ceph-common
 
 ```
 kubectl cp /etc/ceph/ceph.client.admin.keyring --namespace kube-system kube-controller-manager-node1:/etc/ceph/
+
+kubectl cp /etc/ceph/ceph.conf --namespace kube-system kube-controller-manager-node1:/etc/ceph/
 ```
 
 ```
