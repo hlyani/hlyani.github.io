@@ -1,12 +1,12 @@
 # proxy 相关
 
-### 一、curl 使用代理
+# 一、curl 使用代理
 
 ```
 curl -O XX --socks5 127.0.0.1:1080
 ```
 
-### 二、wget 使用代理
+# 二、wget 使用代理
 
 ##### 1、修改环境变量
 
@@ -50,7 +50,7 @@ server_port = 1080
 tsocks wget http://*
 ```
 
-### 三、docker 使用代理
+# 三、docker 使用代理
 
 ```
 cat /etc/systemd/system/docker.service.d/http-proxy.conf
@@ -66,14 +66,14 @@ systemctl daemon-reload
 systemctl restart docker
 ```
 
-### 四、git 代理
+# 四、git 代理
 
 ```
 git config --global http.proxy socks5://127.0.0.1:1080
 git config --global https.proxy socks5://127.0.0.1:1080
 ```
 
-### 五、linux 代理
+# 五、linux 代理
 
 ```
 export http_proxy=socks5://127.0.0.1:1080
@@ -85,5 +85,31 @@ export no_proxy=localhost,127.0.0.1
 ```
 # 强制终端中的 wget、curl 等都走 SOCKS5 代理
 export ALL_PROXY=socks5://127.0.0.1:1080
+```
+
+# 六、apt 代理
+
+```
+vim /etc/apt/apt.conf
+```
+
+```
+Acquire::http::proxy "http://127.0.0.1:1080";
+Acquire::https::proxy "http://127.0.0.1:1080";
+```
+
+# 七、yum 代理
+
+```
+vim /etc/yum.conf
+```
+
+```
+# proxy=http://127.0.0.1:1080
+# proxy_username=username
+# proxy_password=password
+
+# proxy=http://username:password@proxy_ip:port/
+proxy=http://127.0.0.1:1080/
 ```
 
