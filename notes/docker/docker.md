@@ -1,8 +1,8 @@
 # docker 相关
 
-## 一、常用
+# 一、常用
 
-##### 1、安装docker
+## 1、安装docker
 
 [aliyun 安装docker-ce](https://yq.aliyun.com/articles/110806)
 
@@ -19,7 +19,7 @@ docker --version
 docker info
 ```
 
-##### 2、导入、导出镜像
+## 2、导入、导出镜像
 
 ```
 docker save registry:latest > registry.tar.gz
@@ -29,7 +29,7 @@ docker load < registry.tar.gz
 docker load -i registry.tar.gz
 ```
 
-##### 3、启动容器
+## 3、启动容器
 
 ```
 docker run -itd --name mariadb --restart=always -v /opt/mysql:/etc/mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=qwe mariadb
@@ -37,14 +37,14 @@ docker run -itd --name mariadb --restart=always -v /opt/mysql:/etc/mysql -p 3306
 docker run --name mariadb -e MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -v /tmp/my.cnf:/etc/mysql/my.cnf -d mariadb
 ```
 
-##### 4、使用dockerpy
+## 4、使用dockerpy
 
 ```
 >>> import docker
 >>> client = docker.DockerClient(base_url='unix://var/run/docker.sock')
 ```
 
-##### 5、docker update
+## 5、docker update
 
 ```
 docker update --restart=always wiki
@@ -52,7 +52,7 @@ docker update --cpu-shares 512 -m 300M abebf7571666 hopeful_morse
 docker update --kernel-memory 80M test
 ```
 
-##### 6、查看容器ip地址、id
+## 6、查看容器ip地址、id
 
 ```
 docker inspect -f '\{\{.NetworkSettings.IPAddress\}\}' wiki
@@ -60,14 +60,14 @@ docker inspect -f '\{\{.Id\}\}' registry
 docker inspect --format '\{\{.Id\}\}' registry
 ```
 
-##### 7、查看全部容器id、占用空间
+## 7、查看全部容器id、占用空间
 
 ```
 docker ps -qa
 docker ps -as
 ```
 
-##### 8、保存镜像
+## 8、保存镜像
 
 ```
 docker commit
@@ -79,7 +79,7 @@ docker pull [remoteURL]:[imageTag]
 docker diff
 ```
 
-##### 9、--restart
+## 9、--restart
 
 ```
 no – 默认值，如果容器挂掉不自动重启
@@ -89,7 +89,7 @@ on-failure – 当容器以非 0 码退出时重启容器,同时可接受一个�
 always – 不管退出码是多少都要重启
 ```
 
-##### 10、资源限制
+## 10、资源限制
 
 ```
 # 限制内存最大使用
@@ -98,57 +98,57 @@ always – 不管退出码是多少都要重启
 --cpuset-cpus="0,1"
 ```
 
-##### 11、一个容器连接到另一个容器
+## 11、一个容器连接到另一个容器
 
 ```
 docker run -i -t --name sonar -d -link mmysql:db  tpires/sonar-server sonar
 ```
 
-##### 12、构建自己的镜像
+## 12、构建自己的镜像
 
 ```
 docker build -t <镜像名> <Dockerfile路径>
 docker build -t xx/gitlab .
 ```
 
-##### 13、查看容器端口
+## 13、查看容器端口
 
 ```
 docker port registry
 ```
 
-##### 14、查看容器进程
+## 14、查看容器进程
 
 ```
 docker top registry
 ```
 
-##### 15、监控容器资源使用情况
+## 15、监控容器资源使用情况
 
 ```
 docker stats
 docker stats --no-stream
 ```
 
-##### 16、批量删除名字包含"none"的镜像
+## 16、批量删除名字包含"none"的镜像
 
 ```
 docker rmi $(docker images | grep "none" | awk '{print $3}')
 ```
 
-##### 17、查看可用命令
+## 17、查看可用命令
 
 ```
 docker help
 ```
 
-##### 18、login
+## 18、login
 
 ```
 docker login --username=yourhubusername --email=youremail@company.com
 ```
 
-##### 19、删除已安装docker
+## 19、删除已安装docker
 
 ```
 yum list installed | grep docker
@@ -157,7 +157,7 @@ yum remove -y docker-client.x86_64
 yum remove -y docker-common.x86_64
 ```
 
-##### 20、配置国内docker源
+## 20、配置国内docker源
 
 ```
 vim /etc/docker/daemon.json
@@ -165,13 +165,13 @@ vim /etc/docker/daemon.json
 systemctl restart docker
 ```
 
-##### 21、使用 --volumes-from 备份
+## 21、使用 --volumes-from 备份
 
 ```
 docker run --rm --volumes-from gitlab -v /backup1:/backup2 ubuntu tar cvf /backup2/gitlab-etc.tar /etc/gitlab
 ```
 
-##### 22、清理
+## 22、清理
 
 ```
 $ cat /usr/bin/prune_docker.sh
@@ -184,7 +184,7 @@ $ crontab -l
 0 0 * * * /usr/bin/prune_docker.sh >> /var/log/prune_docker.log 2>&1
 ```
 
-##### 23、docker 代理
+## 23、docker 代理
 
 ```
 cat /etc/systemd/system/docker.service.d/http-proxy.conf
@@ -198,7 +198,7 @@ systemctl daemon-reload
 systemctl restart docker
 ```
 
-##### 24、使用本地仓库
+## 24、使用本地仓库
 
 ```
 vim /etc/docker/daemon.json
@@ -211,7 +211,7 @@ systemctl daemon-reload
 systemctl restart docker
 ```
 
-##### 25、azk8s.cn 支持镜像转换列表
+## 25、azk8s.cn 支持镜像转换列表
 
 | global                                                       | proxy in China                                               | format                  | example                                                      |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ----------------------- | ------------------------------------------------------------ |
@@ -219,7 +219,31 @@ systemctl restart docker
 | gcr.io                                                       | [gcr.azk8s.cn](http://mirror.azk8s.cn/help/gcr-proxy-cache.html) | `gcr.azk8s.cn//:`       | `gcr.azk8s.cn/google_containers/hyperkube-amd64:v1.13.5`     |
 | quay.io                                                      | [quay.azk8s.cn](http://mirror.azk8s.cn/help/quay-proxy-cache.html) | `quay.azk8s.cn//:`      | `quay.azk8s.cn/deis/go-dev:v1.10.0`                          |
 
-## 二、linux实现docker资源隔离
+## 26、docker in docker
+
+```
+docker run -itd --privileged=true -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/bin/docker --name centos centos
+```
+
+## 27、不裁剪输出
+
+```
+docker ps -a --no-trunc
+```
+
+## 28、创建docker网络并使用
+
+> 备注：subnet指定一个网段， -o选项可以解决使用ifconfig命令看不到自己创建的网桥名字的问题
+
+```
+docker network create docker01 --subnet=10.10.10.0/24 -o com.docker.network.bridge.name=docker01
+```
+
+```
+docker run -itd --net docker01 --ip 10.10.10.51  镜像名
+```
+
+# 二、linux实现docker资源隔离
 
 Linux 提供的主要的 NameSpace
 
@@ -230,7 +254,7 @@ Linux 提供的主要的 NameSpace
 - Network NameSpace- 用于隔离网络
 - User NameSpace- 用于隔离用户和用户组 UID/GID
 
-## 三、理解Docker容器和镜像
+# 三、理解Docker容器和镜像
 
 ![理解Docker容器和镜像](../../imgs/docker_layer.jpg)
 
@@ -470,7 +494,7 @@ docker history <image-id>
 
 > docker history命令递归地输出指定镜像的历史镜像。
 
-## 四、编写dockerfile的最佳实践
+# 四、编写dockerfile的最佳实践
 
 ##### 1、创建短暂的容器
 

@@ -1,12 +1,12 @@
 # harbor 相关
 
-### 1、安装 docker
+## 1、安装 docker
 
 ```
 curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
 ```
 
-### 2、安装 docker-compose
+## 2、安装 docker-compose
 
 ```
 curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -16,7 +16,7 @@ curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compo
 chmod +x /usr/local/bin/docker-compose
 ```
 
-### 3、下载 harbor
+## 3、下载 harbor
 
 [https://github.com/goharbor/harbor](https://github.com/goharbor/harbor)
 
@@ -24,7 +24,7 @@ chmod +x /usr/local/bin/docker-compose
 wget https://github.com/goharbor/harbor/releases/download/v2.0.0-rc2/harbor-offline-installer-v2.0.0-rc2.tgz
 ```
 
-### 4、生成证书
+## 4、生成证书
 
 ##### 1、生成私钥
 
@@ -41,7 +41,7 @@ openssl req -x509 -new -nodes -sha512 -days 3650 \
  -out ca.crt
 ```
 
-### 5、生成 server 端证书
+## 5、生成 server 端证书
 
 ##### 1、生私钥
 
@@ -116,7 +116,7 @@ cp ca.crt /etc/docker/certs.d/local.com/
 systemctl restart docker
 ```
 
-### 6、准备和配置 harbor配置文件
+## 6、准备和配置 harbor配置文件
 
 ```
 tar -zxvf harbor-offline-installer-v2.0.0-rc2.tgz
@@ -141,13 +141,13 @@ data_volume: /data
 ./prepare
 ```
 
-### 7、部署harbor
+## 7、部署harbor
 
 ```
 ./install.sh --with-chartmuseum
 ```
 
-### 8、重装（如需执行）
+## 8、重装（如需执行）
 
 ```
 docker-compose down -v
@@ -158,7 +158,9 @@ docker-compose up -d
 ./install.sh --with-chartmuseum
 ```
 
-### 9、使用
+## 9、使用
+
+### 一、docker image
 
 ##### 1、将证书拷贝到需要使用harbor的主机
 
@@ -194,3 +196,66 @@ for i in `docker images|egrep -v '9001|none|REPOSITORY'|awk '{print $1":"$2}'`;d
 for i in `docker images|grep local.com|awk '{print $1":"$2}'`;do docker push $i;done
 ```
 
+### 二、chart
+
+##### 1、添加仓库
+
+```
+helm repo add --ca-file /etc/docker/certs.d/local.com/ca.crt --username=admin --password=qwe local https://local.com/chartrepo/k8s
+```
+
+##### 2、push
+
+```
+helm push --ca-file /etc/docker/certs.d/local.com/ca.crt nginx-6.0.1.tgz local
+```
+
+```
+helm push grafana-0.0.2.tgz test --username hl --password xxx
+```
+
+##### 3、pull
+
+```
+helm pull local/nginx
+```
+
+##### 4、安装
+
+```
+helm install --ca-file=ca.crt --username=admin --password=Passw0rd --version 6.0.1 local/nginx
+```
+
+## 10、忘记密码
+
+##### 1、运行harbor-db容器
+
+```
+docker exec -it harbor-db bash
+```
+
+##### 2、进入数据库并选择表
+
+```
+psql -U postgres -d registry
+```
+
+##### 3、查看用户信息
+
+```
+select * from harbor_user;
+```
+
+```
+admin     |       | ce058f765a36af71a7c43d95710d6074 | system admin   | admin user     | f       |            | rdk5buqqqi975je9hcv6hv0040agvf3b | t             | 2020-07-01 09:48:17.048602 | 2020-07-01 09:48:20.272419 | sha256
+```
+
+##### 4、更新密码（当前harbor版本v2.0.0）
+
+> 密码修改后为admin/qwe
+
+```
+update harbor_user set salt='rdk5buqqqi975je9hcv6hv0040agvf3b', password='ce058f765a36af71a7c43d95710d6074' where user_id = 1;
+```
+
+> 可删除data/database内所有内容，重新部署，获取harbor_user表的相关字段

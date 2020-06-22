@@ -1,6 +1,6 @@
 # helm 相关
 
-### 一、组件及相关术语
+## 一、组件及相关术语
 
 ##### 1、Helm
 
@@ -24,7 +24,7 @@ Helm 的软件仓库，Repository 本质上就是一个 Web 服务器，该服�
 
 > 注：helm 中提到的 Release 和我们通常概念中的版本有所不同，这里的 Release 可以理解为 Helm 使用 Chart 包部署的一个应用实例。
 
-### 二、工作原理
+## 二、工作原理
 
 #### 1、helm v2
 
@@ -80,7 +80,7 @@ Helm 的软件仓库，Repository 本质上就是一个 Web 服务器，该服�
 
 ![helm-v2-v3](../../imgs/helm-v2-v3.jpeg)
 
-### 三、Helm 客户端安装（v3.0.0）
+## 三、Helm 客户端安装（v3.0.0）
 
 ##### 1、使用官方脚本安装
 
@@ -224,7 +224,7 @@ NOTES:
   echo Password: $(kubectl get secret --namespace default aa-tomcat -o jsonpath="{.data.tomcat-password}" | base64 --decode)
 ```
 
-### 四、常用功能
+## 四、常用功能
 
 ##### 1、创建一个 Chart 模板
 
@@ -262,7 +262,7 @@ helm repo add stable https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
 helm repo update
 ```
 
-### 五、使用 harbor 作为仓库存储 Charts
+## 五、使用 harbor 作为仓库存储 Charts
 
 [https://github.com/goharbor/harbor-helm](https://github.com/goharbor/harbor-helm)
 
@@ -388,6 +388,10 @@ helm repo add hl http://192.168.0.11:30002/chartrepo/chart_repo
 helm repo add hl http://192.168.0.11:30002/chartrepo/chart_repo --username hl_user --password hl_password
 ```
 
+```
+helm repo add --ca-file /etc/docker/certs.d/local.com/ca.crt --username=admin --password=qwe local https://local.com/chartrepo/k8s
+```
+
 ##### 11、安装 helm-push 插件
 
 ```
@@ -400,7 +404,7 @@ helm plugin install https://github.com/chartmuseum/helm-push
 helm push grafana-0.0.2.tgz test --username hl --password xxx
 ```
 
-### 六、其他
+## 六、其他
 
 ##### 1、helm hub
 

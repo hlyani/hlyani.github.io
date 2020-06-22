@@ -25,6 +25,7 @@
 * [apidoc 相关](notes/apidoc.md)
 * [keepalived 相关](notes/keepalived.md)
 * [Linux Desktop rdp 相关](notes/linux_desktop_rdp.md)
+* [nodejs 相关](notes/nodejs.md)
 * Ceph 相关
     * [Ceph 部署](notes/ceph/ceph_deploy.md)
     * [Ceph 调优](notes/ceph/ceph_optimize.md)
@@ -67,7 +68,6 @@
     * [pip 源相关](notes/linux/pip.md)
     * [发布pypi软件包](notes/linux/build_pypi.md)
     * [mysql 相关](notes/linux/mysql.md)
-    * [nodejs 相关](notes/linux/nodejs.md)
     * [ssr privoxy 相关](notes/linux/ssr_privoxy.md)
     * [proxychains-ng 代理工具](notes/linux/proxychains_ng.md)
     * [virt-manager 相关](notes/linux/virt_manager.md)
