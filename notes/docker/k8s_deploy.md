@@ -1,7 +1,55 @@
 # k8s 安装部署
 
+## 一、v2.13.2
 
-## 一、使用kubespray安装(kubespray: v2.11.0, k8s:v1.15.3)
+##### 1、v2.13.2
+
+```
+git checkout v2.13.2
+```
+
+##### 2、main.yml
+
+```
+vim /root/kubespray/roles/download/defaults/main.yml
+gcr_image_repo: "local.com/k8s/gcr.io"
+kube_image_repo: "local.com/k8s/k8s.gcr.io"
+docker_image_repo: "local.com/k8s"
+quay_image_repo: "local.com/k8s/quay.io"
+
+kubelet_download_url: "http://192.168.0.242:88/kubelet"
+kubectl_download_url: "http://192.168.0.242:88/kubectl"
+kubeadm_download_url: "http://192.168.0.242:88/kubeadm"
+etcd_download_url: "http://192.168.0.242:88/etcd-v3.3.12-linux-amd64.tar.gz"
+cni_download_url: "http://192.168.0.242:88/cni-plugins-linux-amd64-v0.8.6.tgz"
+calicoctl_download_url: "http://192.168.0.242:88/calicoctl-linux-amd64"
+crictl_download_url: "http://192.168.0.242:88/crictl-v1.18.0-linux-amd64.tar.gz"
+```
+
+##### 3、k8s-cluster.yml
+
+```
+vim /root/kubespray/inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
+
+kube_version: v1.18.4
+kube_image_repo: "local.com/k8s/k8s.gcr.io"
+```
+
+##### 4、hosts
+
+```
+vim /etc/hosts
+192.168.0.242 local.com
+```
+
+##### 5、certs.d
+
+```
+mkdir /etc/docker/certs.d/local.com
+```
+
+## 二、使用kubespray安装(kubespray: v2.11.0, k8s:v1.15.3)
+
 ##### 1、查看系统是否支持虚拟化
 
 ```
@@ -411,7 +459,7 @@ kubectl api-resources\
 kubectl explain XXX
 ```
 
-## 二、使用Minikube安装（适合单机部署开发）
+## 三、使用Minikube安装（适合单机部署开发）
 
 > 安装kubenets版本v1.15
 
@@ -614,7 +662,7 @@ minikube addons disable XXX
 minikube addons enable  XXX
 ```
 
-## 三、使用kubeadm安装
+## 四、使用kubeadm安装
 
 ##### 1、安装kubeadm, kubelet 和 kubect
 
@@ -825,7 +873,7 @@ kubeadm reset -f
 iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
 ```
 
-## 四、FAQ
+## 五、FAQ
 
 #### 1、Warning  VolumeResizeFailed  13m                 volume_expand  error expanding volume "default/data-mariadb-master-0" of plugin "kubernetes.io/rbd": rbd info failed, error: exit status 127
 

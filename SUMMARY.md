@@ -32,12 +32,13 @@
     * [crushmap](notes/ceph/crushmap.md)
     * [ceph.conf](notes/ceph/cephconf.md)
     * [Ceph 启用 Dashboard](notes/ceph/ceph_dashboard.md)
-* Docker 相关
+* 容器相关
     * [常用软件安装](notes/docker/usual_software.md)
     * [docker 相关](notes/docker/docker.md)
     * [docker 网络相关](notes/docker/docker_net.md)
     * [k8s 相关](notes/docker/k8s.md)
     * [k8s 安装部署](notes/docker/k8s_deploy.md)
+    * [k8s 使用](notes/docker/k8s_use.md)
     * [k8s 使用 ceph 储存](notes/docker/k8s_ceph.md)
     * [helm 相关](notes/docker/helm.md)
     * [docker swarm 相关](notes/docker/docker_swarm.md)
@@ -46,7 +47,9 @@
     * [将ISO镜像转换为docker镜像](notes/docker/convert_iso_to_docker_img.md)
     * [挂载USB到docker容器](notes/docker/mount_usb_to_docker.md)
     * [harbor 相关](notes/docker/harbor.md)
+    * [rancher 相关](notes/docker/rancher.md)
 * Linux 相关
+    * [tcpdump 相关](notes/linux/tcpdump.md)
     * [proxy 相关](notes/linux/proxy.md)
     * [libvirt 相关](notes/linux/libvirt.md)
     * [Linux 相关](notes/linux/linux.md)
