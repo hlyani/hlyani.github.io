@@ -12,10 +12,22 @@ git checkout v2.13.2
 
 ```
 vim /root/kubespray/roles/download/defaults/main.yml
+kube_version: v1.17.7
+etcd_version: v3.3.12
+
 gcr_image_repo: "local.com/k8s/gcr.io"
 kube_image_repo: "local.com/k8s/k8s.gcr.io"
 docker_image_repo: "local.com/k8s"
 quay_image_repo: "local.com/k8s/quay.io"
+
+calico_version: "v3.13.2"
+calico_ctl_version: "v3.13.2"
+calico_cni_version: "v3.13.2"
+calico_policy_version: "v3.13.2"
+calico_typha_version: "v3.13.2"
+typha_enabled: false
+flannel_version: "v0.12.0"
+cni_version: "v0.8.6"
 
 kubelet_download_url: "http://192.168.0.242:88/kubelet"
 kubectl_download_url: "http://192.168.0.242:88/kubectl"
