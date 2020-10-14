@@ -48,6 +48,7 @@
     * [挂载USB到docker容器](notes/docker/mount_usb_to_docker.md)
     * [harbor 相关](notes/docker/harbor.md)
     * [rancher 相关](notes/docker/rancher.md)
+    * [k3s 源码编译](notes/docker/k3s_make.md)
 * Linux 相关
     * [tcpdump 相关](notes/linux/tcpdump.md)
     * [proxy 相关](notes/linux/proxy.md)

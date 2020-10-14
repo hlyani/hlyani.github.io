@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [13.x]
 
     steps:
     - name: Use Node.js ${{ matrix.node-version }}
@@ -19,7 +19,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Install GitBook
-      run: npm install -g gitbook-cli --registry=https://registry.npm.taobao.org
+      # run: npm install -g gitbook-cli --registry=https://registry.npm.taobao.org
+      run: npm install -g gitbook-cli
 
     - name: Checkout branch to source
       uses: actions/checkout@v1
@@ -27,7 +28,8 @@ jobs:
         ref: source
 
     - name: Install GitBook Dependencies
-      run: gitbook install --registry=https://registry.npm.taobao.org
+      # run: gitbook install --registry=https://registry.npm.taobao.org
+      run: gitbook install
 
     - name: Build GitBook
       run: gitbook build . docs
