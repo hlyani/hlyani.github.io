@@ -49,6 +49,7 @@
     * [harbor 相关](notes/docker/harbor.md)
     * [rancher 相关](notes/docker/rancher.md)
     * [k3s 源码编译](notes/docker/k3s_make.md)
+    * [k3s 安装与使用](notes/docker/k3s_deploy.md)
 * Linux 相关
     * [tcpdump 相关](notes/linux/tcpdump.md)
     * [proxy 相关](notes/linux/proxy.md)

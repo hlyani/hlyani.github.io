@@ -135,3 +135,47 @@ cp dist/artifacts/k3s /usr/bin/
 ## 6、参考链接
 
 [k3s build](https://github.com/rancher/k3s/blob/master/BUILDING.md)
+
+# 三、离线安装
+
+## 1、拷贝 k3s 二进制文件到系统命令中
+
+```
+cp ./dist/artifacts/k3s-arm64 /usr/local/bin/k3s   
+```
+
+## 2、拷贝镜像到相应文件夹，使用离线镜像
+
+```
+mkdir -p /var/lib/rancher/k3s/agent/images/
+cp dist/artifacts/k3s-airgap-images-arm64.tar /var/lib/rancher/k3s/agent/images/
+```
+
+## 3、执行安装脚本，install.sh 在相应版本的 k3s 源码中（server）
+
+> https://github.com/rancher/k3s.git
+
+```
+INSTALL_K3S_SKIP_DOWNLOAD=true ./install.sh
+```
+
+## 4、node 节点安装
+
+```
+cat /var/lib/rancher/k3s/server/node-token
+K3S_TOKEN=${k3s_token} K3S_URL=https://serverIP:6443 ./install.sh
+```
+
+## 5、验证
+
+```
+kubectl get nodes
+```
+
+## 6、卸载
+
+```
+k3s-uninstall.sh
+k3s-agent-uninstall.sh
+```
+
