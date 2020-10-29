@@ -229,6 +229,16 @@ git commit -m "Deploying to ${BRANCH} from ${BASE_BRANCH:-master} ${GITHUB_SHA}"
 git push $REPOSITORY_PATH `git subtree split --prefix $FOLDER ${BASE_BRANCH:-master}`:$BRANCH --force 
 ```
 
+##### 22、使用用户名和密码
+
+```
+git clone http://邮箱(或用户名):密码@仓库
+```
+
+```
+git clone -b master --depth 1 http://admin:123456@192.168.0.1/demo/demo.git
+```
+
 ## 二、gitlab-ci
 
 ##### 1、拉取gitlab容器镜像

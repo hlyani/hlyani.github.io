@@ -152,3 +152,43 @@ ctr c
 kubectl label node ${node} node-role.kubernetes.io/worker=worker
 ```
 
+# 三、其他
+
+## 1、ctr 访问 k3s crictl 资源
+
+```
+ctr -a "/run/k3s/containerd/containerd.sock" -namespace k8s.io i ls
+```
+
+### 2、使用 kubectl / helm 从外部访问集群
+
+> 将 /etc/rancher/k3s/k3s.yaml 复制到集群外部的计算机上的~/.kube/config。然后用 K3s 服务器的 IP 或名称替换 "localhost"。
+
+```
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+kubectl get pods --all-namespaces
+helm ls --all-namespaces
+```
+
+```
+kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml get pods --all-namespaces
+helm --kubeconfig /etc/rancher/k3s/k3s.yaml ls --all-namespaces
+```
+
+## 3、curl 请求 kubernetes api
+
+```
+kubectl get secrets
+kubectl describe secrets default-token-l28jq
+curl --insecure https://192.168.163.121:6443/api --header "Authorization: bearer $token"
+```
+
+## 4、k3s-killall.sh
+
+> 要停止所有的 k3s 容器并重置容器的状态，可以使用k3s-killall.sh脚本。
+>
+> killall 脚本清理容器、k3s 目录和网络组件，同时也删除了 iptables 链和所有相关规则。集群数据不会被删除。
+
+## 5、k3s-uninstall.sh
+
+> 全部删除完，包括配置和数据。
