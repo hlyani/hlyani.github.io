@@ -134,3 +134,13 @@ vim /etc/yum.conf
 proxy=http://192.168.0.127:1080/
 ```
 
+# 九、go 代理
+
+```
+# 启用 Go Modules 功能
+go env -w GO111MODULE=on
+
+# 配置 GOPROXY 环境变量
+go env -w GOPROXY=https://goproxy.io,direct
+```
+

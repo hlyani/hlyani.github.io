@@ -27,13 +27,16 @@ curl -sfL https://get.k3s.io | K3S_URL=https://myserver:6443 K3S_TOKEN=XXX sh -
 
 ```
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+
+cp /etc/rancher/k3s/k3s.yaml $HOME/.kube/config
+或
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 
 helm ls
 helm repo add aliyuncs https://apphub.aliyuncs.com
 helm repo add bitnami https://charts.bitnami.com/bitnami
 
-vim /root/.config/helm
+# vim /root/.config/helm
 ```
 
 ## 3、修改k3s使用本地仓库

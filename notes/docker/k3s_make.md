@@ -36,9 +36,9 @@ cd ./k3s/
 vim ./Dockerfile.dapper
 ARG http_proxy=http://192.168.0.110:1080
 ARG https_proxy=http://192.168.0.110:1080
-ENV http_proxy=http://192.168.0.110:1080
-ENV https_proxy=http://192.168.0.110:1080
-
+...
+trivy --download-db-only --severity HIGH
+...
 curl -x 192.168.0.110:1080 ...
 ```
 
