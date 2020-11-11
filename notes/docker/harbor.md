@@ -168,25 +168,33 @@ docker-compose up -d
 scp -r 127.0.0.1:/etc/docker/certs.d/local.com/ *.*.*.*:/etc/docker/certs.d/
 ```
 
-##### 2、重启 docker
+##### 2、编辑 /etc/docker/daemon.json
+
+```
+{
+  "insecure-registries": ["local.com"],
+}
+```
+
+##### 3、重启 docker
 
 ```
 systemctl restart docker
 ```
 
-##### 3、配置 hosts 文件
+##### 4、配置 hosts 文件
 
 ```
 127.0.0.1 local.com
 ```
 
-##### 4、登录
+##### 5、登录
 
 ```
 docker login local.com
 ```
 
-##### 5、使用
+##### 6、使用
 
 ```
 for i in `docker images|egrep -v '9001|none|REPOSITORY'|awk '{print $1":"$2}'`;do docker tag $i "local.com/stx/"$i;done

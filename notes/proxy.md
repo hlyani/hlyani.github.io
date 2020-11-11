@@ -141,6 +141,7 @@ proxy=http://192.168.0.127:1080/
 go env -w GO111MODULE=on
 
 # 配置 GOPROXY 环境变量
-go env -w GOPROXY=https://goproxy.io,direct
+# go env -w GOPROXY=https://goproxy.io,direct
+go env -w GOPROXY=https://goproxy.cn,direct
 ```
 

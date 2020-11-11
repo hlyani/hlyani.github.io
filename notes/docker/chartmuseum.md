@@ -38,7 +38,7 @@ helm repo add chartmuseum http://localhost:8080
 ```
 
 ```
-helm search chartmuseum/
+helm search repo chartmuseum
 ```
 
 ```
