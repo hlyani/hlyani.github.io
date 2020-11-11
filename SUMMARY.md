@@ -10,6 +10,7 @@
     * [常用软件安装](notes/docker/usual_software.md)
     * [k3s 安装与使用](notes/docker/k3s_deploy.md)
     * [k3s 源码编译](notes/docker/k3s_make.md)
+    * [chartmuseum 相关](notes/docker/chartmuseum.md)
     * [rancher 相关](notes/docker/rancher.md)
     * [docker 相关](notes/docker/docker.md)
     * [docker 网络相关](notes/docker/docker_net.md)
