@@ -43,6 +43,7 @@
     * [OpenStack对hygon的兼容](notes/openstack/openstack_hygon_patch.md)
     * [Lfs上安装OpenStack](notes/openstack/lsf_install_openstack.md)
 * Linux 相关
+    * [pip 本地源](notes/linux/pypi_local_source.md)
     * [LVM 逻辑卷相关](notes/linux/lvm.md)
     * [tcpdump 相关](notes/linux/tcpdump.md)
     * [libvirt 相关](notes/linux/libvirt.md)
