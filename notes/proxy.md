@@ -1,12 +1,18 @@
 # proxy 相关
 
-# 一、curl 使用代理
+# 一、linux 代理
+
+```
+HTTP_PROXY=192.168.0.127:1080 COMMAND
+```
+
+# 二、curl 使用代理
 
 ```
 curl -O XX --socks5 192.168.0.127:1080
 ```
 
-# 二、wget 使用代理
+# 三、wget 使用代理
 
 ##### 1、修改环境变量
 
@@ -50,7 +56,7 @@ server_port = 1080
 tsocks wget http://*
 ```
 
-# 三、docker 使用代理
+# 四、docker 使用代理
 
 ```
 mkdir -p /etc/systemd/system/docker.service.d
@@ -66,7 +72,7 @@ systemctl daemon-reload
 systemctl restart docker
 ```
 
-# 四、containerd使用代理
+# 五、containerd使用代理
 
 ```
 mkdir -p /etc/systemd/system/containerd.service.d
@@ -82,7 +88,7 @@ systemctl daemon-reload
 systemctl restart containerd
 ```
 
-# 五、git 代理
+# 六、git 代理
 
 ```
 git config --global http.proxy socks5://192.168.0.127:1080
@@ -94,7 +100,7 @@ git config --global url."https://github.com/".insteadOf https://github.com.cnpmj
 git config --global url."https://github.com/".insteadOf https://git.sdut.me/
 ```
 
-# 六、linux 代理
+# 七、linux 代理
 
 ```
 export http_proxy=socks5://192.168.0.127:1080
@@ -108,7 +114,7 @@ export no_proxy=localhost,127.0.0.1
 export ALL_PROXY=socks5://192.168.0.127:1080
 ```
 
-# 七、apt 代理
+# 八、apt 代理
 
 ```
 vim /etc/apt/apt.conf
@@ -119,7 +125,7 @@ Acquire::http::proxy "http://192.168.0.127:1080";
 Acquire::https::proxy "http://192.168.0.127:1080";
 ```
 
-# 八、yum 代理
+# 九、yum 代理
 
 ```
 vim /etc/yum.conf
@@ -134,7 +140,7 @@ vim /etc/yum.conf
 proxy=http://192.168.0.127:1080/
 ```
 
-# 九、go 代理
+# 十、go 代理
 
 ```
 # 启用 Go Modules 功能

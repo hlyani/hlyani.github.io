@@ -1,6 +1,6 @@
 # k8s 使用
 
-## 一、探针（健康状态监测）
+# 一、探针（健康状态监测）
 
 ### 1、探针执行方式
 
@@ -63,7 +63,7 @@ readinessProbe:
   periodSeconds: 5
 ```
 
-## 二、亲和性
+# 二、亲和性
 
 * In: label的值在某个列表中
 * NotIn：label的值不在某个列表中
@@ -131,7 +131,7 @@ nodeAffinity:
         - error
 ```
 
-## 三、命名空间相关
+# 三、命名空间相关
 
 ### 1、创建、切换命名空间
 
@@ -151,7 +151,7 @@ kubectl edit ns test
 删除 finalizers
 ```
 
-## 四、维护节点
+# 四、维护节点
 
 ### 1、设置节点不可调度
 
@@ -190,7 +190,7 @@ kubectl delete node node2
 [root@node2] kubeadm join 172.27.9.131:6443 --token svrip0.lajrfl4jgal0ul6i     --discovery-token-ca-cert-hash sha256:5f656ae26b5e7d4641a979cbfdffeb7845cc5962bbfcd1d5435f00a25c02ea50 
 ```
 
-## 五、常用helm源
+# 五、常用helm源
 
 ```
 helm repo add aliyuncs https://apphub.aliyuncs.com
@@ -204,5 +204,93 @@ helm repo add emqx https://repos.emqx.io/charts
 
 ```
 helm repo add --ca-file /etc/docker/certs.d/local.com/ca.crt --username=admin --password=XXX local https://local.com/chartrepo/k8s
+```
+
+# 六、常用命令
+
+```
+kubectl get deploy -l app.kubernetes.io/name=controller -o jsonpath={.items[0].status.availableReplicas}
+
+kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}"
+
+kubectl delete pod PODNAME --force --grace-period=0
+
+kubectl port-forward $POD_NAME 8080:8080 --namespace default
+```
+
+# 七、证书过期
+
+```
+kubeadm alpha certs renew all --config=/etc/kubernetes/kubeadm-config.yaml
+
+kubeadm alpha certs check-expiration --config=/etc/kubernetes/kubeadm-config.yaml
+
+cp -r /etc/kubernetes /etc/kubernetes_bak
+
+cd /etc/kubernetes/pki/
+
+rm -rf {apiserver.crt,apiserver-kubelet-client.crt,front-proxy-ca.crt,front-proxy-client.crt,front-proxy-client.key,front-proxy-ca.key,apiserver-kubelet-client.key,apiserver.key}
+
+kubeadm init phase certs all --apiserver-advertise-address <IP>
+
+cd /etc/kubernetes/
+
+rm -rf {admin.conf,controller-manager.conf,kubelet.conf,scheduler.conf}
+
+kubeadm init phase kubeconfig all
+
+cp /etc/kubernetes/admin.conf $HOME/.kube/config
+```
+
+# 八、记一次运维，k8s证书过期，重新部署出问题，恢复数据和集群
+
+##### 1、查看源pvc关系
+
+```
+[root@node1]# kubectl get pvc
+NAME                                     STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+data-mariadb-master-0                    Bound    pvc-16840bfc-4a3b-45de-8250-3c71044c00ce   1000Gi     RWO            ceph-rbd       359d
+data-mariadb-slave-0                     Bound    pvc-3a4b00ba-7fd9-4eb3-93ef-b4ea96648761   160Gi      RWO            ceph-rbd       359d
+data-mariadb-slave-1                     Bound    pvc-12e8300a-3ef3-4ebe-a728-ec325666e675   160Gi      RWO            ceph-rbd       359d
+data-mariadb-slave-2                     Bound    pvc-be01ef0f-51f9-4654-964b-288f74f5d43f   160Gi      RWO            ceph-rbd       359d
+```
+
+##### 2、查看每个节点的rbd挂载关系
+
+```
+[root@node1]# mount|grep rbd
+/dev/rbd0 on /var/lib/kubelet/plugins/kubernetes.io/rbd/mounts/k8s-image-kubernetes-dynamic-pvc-d83535a2-774d-11ea-96f9-4a11faeddc0e type ext4 (rw,relatime,seclabel,stripe=1024,data=ordered)
+/dev/rbd0 on /var/lib/kubelet/pods/6f364828-81bf-4bdc-9145-3d105f140932/volumes/kubernetes.io~rbd/pvc-c9b4b571-4c3c-46bf-8c67-1f1fc204dd6b type ext4 (rw,relatime,seclabel,stripe=1024,data=ordered)
+/dev/rbd1 on /var/lib/kubelet/plugins/kubernetes.io/rbd/mounts/k8s-image-kubernetes-dynamic-pvc-d816cdfb-774d-11ea-96f9-4a11faeddc0e type ext4 (rw,relatime,seclabel,stripe=1024,data=ordered)
+/dev/rbd1 on /var/lib/kubelet/pods/f1baca67-5ae2-4916-8e67-c9a37a51b94b/volumes/kubernetes.io~rbd/pvc-292d52f7-22b3-4af9-9633-94e09a0f8bef type ext4 (rw,relatime,seclabel,stripe=1024,data=ordered)
+/dev/rbd8 on /var/lib/kubelet/plugins/kubernetes.io/rbd/mounts/k8s-image-kubernetes-dynamic-pvc-fc5a0ab3-220b-11ea-8d64-8e19e7bc2052 type ext4 (rw,relatime,seclabel,stripe=1024,data=ordered)
+/dev/rbd8 on /var/lib/kubelet/pods/45de1bb4-5863-4dac-93f1-fd801a5a2f4d/volumes/kubernetes.io~rbd/pvc-16840bfc-4a3b-45de-8250-3c71044c00ce type ext4 (rw,relatime,seclabel,stripe=1024,data=ordered)
+```
+
+##### 3、查看pv pool 里面的rbd
+
+```
+rbd ls k8s
+kubernetes-dynamic-pvc-045ec64a-2092-11ea-8d64-8e19e7bc2052
+kubernetes-dynamic-pvc-0eef530b-206b-11ea-8d64-8e19e7bc2052
+```
+
+##### 4、重新创建应用，删除应用，查看当前应用的pvc，将pvc对应的rbd删除，并将旧的rbd重命名为当前pvc，最后再重新创建应用
+
+- remove (rm)
+- rename (mv)
+- copy (cp)
+
+```
+rbd rm k8s/kubernetes-dynamic-pvc-d95e5e92-3c7e-11eb-9d5a-6a0e4650a17b
+rbd mv k8s/kubernetes-dynamic-pvc-fc5a0ab3-220b-11ea-8d64-8e19e7bc2052 k8s/kubernetes-dynamic-pvc-d95e5e92-3c7e-11eb-9d5a-6a0e4650a17b
+```
+
+##### 5、其他
+
+```
+ceph osd dump | grep full_ratio
+ceph osd set-full-ratio 0.98
+ceph osd set-backfillfull-ratio 0.95
 ```
 

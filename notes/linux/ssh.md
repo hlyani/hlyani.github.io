@@ -1,6 +1,6 @@
 # ssh 相关
 
-##### 1、免密登录
+# 1、免密登录
 
 ![ssh](../../imgs/ssh.PNG)
 
@@ -29,7 +29,7 @@ Host ep
     port 50010
 ```
 
-##### 2、使用pptpd
+## 2、使用pptpd
 
 ```
 apt-get install pptpd
@@ -37,7 +37,15 @@ pptpsetup -create pptpd -server 222.209.209.209 -username node2 -password 123456
 如果断开了在机器上执行pon pptpd
 ```
 
+# 3、sshpass
 
+```
+yum install -y sshpass
+# apt install -y sshpass
+
+sshpass -p 123456 ssh -p 1000 root@192.168.11.11
+sshpass -p 123456 scp -o StrictHostKeyChecking=no -r ../run.sh root@192.168.0.24:/tmp/
+```
 
 ## 常见问题
 

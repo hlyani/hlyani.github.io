@@ -170,18 +170,18 @@ kubectl create secret generic ceph-secret \
 ##### 4、为 k8s 创建一个 ceph pool，并且创建一个 client key
 
 ```
-ceph --cluster ceph osd pool create kube 1024 1024
+ceph --cluster ceph osd pool create k8s 1024 1024
 
-ceph --cluster ceph auth get-or-create client.kube mon 'allow r' osd 'allow rwx pool=kube'
+ceph --cluster ceph auth get-or-create client.k8s mon 'allow r' osd 'allow rwx pool=k8s'
 ```
 
 ##### 5、获取创建的 auth token，并且为 kube pool 创建 k8s secret
 
 ```
-ceph --cluster ceph auth get-key client.kube
+ceph --cluster ceph auth get-key client.k8s
 AQDabg9d4MBeIBAAaOhTjqsYpsNa4X10V0qCfw==
 
-kubectl create secret generic ceph-secret-kube \
+kubectl create secret generic ceph-secret-k8s \
     --type="kubernetes.io/rbd" \
     --from-literal=key="AQDabg9d4MBeIBAAaOhTjqsYpsNa4X10V0qCfw==" \
     --namespace=kube-system
@@ -197,7 +197,7 @@ vim Ceph-RBD-StorageClass.yaml
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: fast-rbd
+  name: k8s
 provisioner: ceph.com/rbd
 # allowVolumeExpansion: true
 parameters:
@@ -205,9 +205,9 @@ parameters:
   adminId: admin
   adminSecretName: ceph-secret
   adminSecretNamespace: kube-system
-  pool: kube
-  userId: kube
-  userSecretName: ceph-secret-kube
+  pool: k8s
+  userId: k8s
+  userSecretName: ceph-secret-k8s
   userSecretNamespace: kube-system
   imageFormat: "2"
   imageFeatures: layering 
@@ -247,7 +247,7 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  storageClassName: fast-rbd
+  storageClassName: k8s
 ```
 
 ```
