@@ -26,6 +26,7 @@
     * [将ISO镜像转换为docker镜像](notes/docker/convert_iso_to_docker_img.md)
     * [挂载USB到docker容器](notes/docker/mount_usb_to_docker.md)
 * OpenStack 相关
+    * [QEMU 源码编译](notes/openstack/qemu_make.md)
     * [OpenStack 相关](notes/openstack/openstack.md)
     * [OpenStack 中遇到的问题](notes/openstack/openstack_faq.md)
     * [删除 Cinder 僵尸实例](notes/openstack/delete_cinder_volume.md)
