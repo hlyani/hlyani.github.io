@@ -23,6 +23,8 @@ Do you really want to remove active logical volume centos/home? [y/n]: y
 ##### 4、扩容 root 的逻辑卷
 
 ```
+# lvextend -l 100%FREE /dev/mapper/centos-root
+
 [root@localhost ~]# lvextend -L +120G  /dev/mapper/centos-root
   Size of logical volume centos/root changed from 50.00 GiB (12800 extents) to 170.00 GiB (43520 extents).
   Logical volume centos/root successfully resized.

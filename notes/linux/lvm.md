@@ -1,12 +1,81 @@
 # LVM 逻辑卷相关
 
-## 一、LVM简介
+# 一、常用命令
+
+```
+1、查看
+pvdisplay
+vgdisplay
+lvdisplay
+pvscan/pvs
+vgscan/vgs
+lvscan/lvs
+
+2、创建
+pvcreate /dev/xvdb4
+vgcreate myVG /dev/xvdb4
+lvcreate -l 100%FREE -n myLV myVG
+lvcreate -l 100%free -n myLV myVG
+lvcreate -L +120G -n myLV myVG
+
+3、删除
+lvremove /dev/myVG/myLV
+vgremove /dev/myVG
+pvremove /dev/xvdb4
+
+4、增加 vg 大小
+vgextend myVG /dev/xvdb5
+
+5、减小 vg 大小
+vgreduce myVG /dev/xvdb5
+
+6、增加逻辑卷的大小
+lvextend -l 100%FREE /dev/myVG/myLV
+lvextend -L +120G  /dev/mapper/centos-root
+
+7、减小逻辑卷的大小
+lvreduce -L 1G /dev/myVG/myLV
+lvreduce -l -256 /dev/myVG/myLV
+
+8、调整卷大小，可增可减
+lvresize -L 40G /dev/myVG/myLV
+
+9、刷新挂载点
+resize2fs /dev/myVG/myLV
+
+10、链接目录
+ln -sf /dev/myVG/myLV /home/hl
+
+11、查看逻辑卷 id
+blkid /dev/myVG/myLV
+
+12、格式化逻辑卷
+mkfs -t ext4 /dev/myVG/myLV
+
+13、扩展根目录卷
+pvcreate /dev/sdb
+vgextend cenots /dev/sdb
+lvextend -l +100%FREE /dev/centos/root
+xfs_growfs /dev/centos/root
+
+14、将 home 目录空间扩展到根目录
+umount /home/
+lvremove /dev/mapper/centos-home
+lvextend -L +120G  /dev/mapper/centos-root
+# lvextend -l 100%FREE /dev/mapper/centos-root
+xfs_growfs /dev/mapper/centos-root
+lvcreate -L 47G -n home centos
+mkfs.xfs /dev/mapper/centos-home
+mount /dev/mapper/centos-home /home
+```
+
+# 二、LVM 简介
 
 >  LVM是 Logical Volume Manager(逻辑卷管理)的简写。LVM将一个或多个硬盘的分区在逻辑上集合，相当于一个大硬盘来使用，当硬盘的空间不够使用的时候，可以继续将其它的硬盘的分区加入其中，这样可以实现磁盘空间的动态管理，相对于普通的磁盘分区有很大的灵活性。
 >
 > LVM是在磁盘分区和文件系统之间添加的一个逻辑层，来为文件系统屏蔽下层磁盘分区布局，提供一个抽象的盘卷，在盘卷上建立文件系统。
 
-### 二、 LVM基本术语
+# 三、 LVM 基本术语
 
 * 物理存储介质（The physical media）：这里指系统的存储设备：硬盘，如：/dev/hda1、/dev/sda等等，是存储系统最低层的存储单元。
 * 物理卷（physical volume）：物理卷就是指硬盘分区或从逻辑上与磁盘分区具有同样功能的设备(如RAID)，是LVM的基本存储逻辑块，但和基本的物理存储介质（如分区、磁盘等）比较，却包含有与LVM相关的管理参数。
@@ -23,7 +92,7 @@
 
 * LV：也就是从VG中划分的逻辑分区
 
-## 三、 安装LVM
+# 四、 安装 LVM
 
 >  首先确定系统中是否安装了lvm工具：rpm –qa|grep lvm
 
@@ -56,7 +125,7 @@ vgcreate myVG /dev/xvdb4  创建VG，可利用已经存在的VG名（myVG），�
 
 vgdisplay   查看VG  创建完成VG之后，才能从VG中划分一个LV
 
-lvcreate -l 100%FREE -n myLV  myVG  创建LV，并把VG所有剩余空间分给LV
+lvcreate -l 100%FREE -n myLV myVG  创建LV，并把VG所有剩余空间分给LV
 
 lvdisplay   显示LV的信息
 
@@ -77,7 +146,7 @@ echo 'UUID=a5d3a67a-aad4-4eea-91ce-1b1fc56ffe9f  /home/hl ext4 defaults 0 0' >/e
 mount -a
 ```
 
-##### 2、开机挂载及/etc/fstab格式
+##### 2、开机挂载及 /etc/fstab 格式
 
 > 当我们在挂载磁盘的时候，除了利用磁盘的代号之外 (/dev/hdxx) 也可以直接利用磁盘的 label 来作为挂载的磁盘挂载点喔！基本上， 就是那个 /etc/fstab 档案的设定,Label 来做为磁盘挂载的依据， 这样有好有坏：
 > 优点：不论硬盘代号怎么变，不论您将硬盘插在那个 IDE 接口 (IDE1 或 IDE2 或 master 或 slave 等)，由于系统是透过 Label ，所以，磁盘插在那个接口将不会有影响。
