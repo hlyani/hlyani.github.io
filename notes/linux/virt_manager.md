@@ -1,5 +1,9 @@
 # virt-manager 相关
-##### 1、安装相关软件
+
+# 一、CentOS
+
+## 1、安装相关软件
+
 ```
 yum install -y virt-manager xorg-x11-xauth
 ```
@@ -7,7 +11,7 @@ yum install -y virt-manager xorg-x11-xauth
 yum install -y qemu-kvm qemu-img virt-manager libvirt libvirt-python libvirt-client virt-install virt-viewer bridge-utils
 ```
 
-##### 2、常见问题
+## 2、常见问题
 
 ###### 1.virt-manager方格乱码的问题
 ```
@@ -53,5 +57,61 @@ service libvirt-bin restart
 2、点击Xconfig开始。
 3、右键点击Default Profile,选择属性
 4、在打开的界面选择高级。取消XKEYBOARD的勾选。
+```
+
+# 二、Ubuntu
+
+## 1、安装软件
+
+```
+apt install -y qemu qemu-kvm qemu-system-arm qemu-efi-aarch64 qemu-utils libvirt-daemon libvirt-clients bridge-utils virt-manager
+```
+
+## 2、重启 libvirt
+
+```
+systemctl restart libvirtd
+```
+
+## 3、配置网桥
+
+```
+vim /etc/netplan/00-installer-config.yaml
+# This is the network config written by 'subiquity'
+network:
+  ethernets:
+    eno1:
+      dhcp4: no
+      dhcp6: no
+      #      addresses:
+      #      - 192.168.0.241/24
+      #      gateway4: 192.168.0.1
+      #      nameservers:
+      #        addresses:
+      #        - 114.114.114.114
+    eno2:
+      dhcp4: no
+      dhcp6: no
+  version: 2
+  bridges:
+    br0:
+      interfaces: [eno1]
+      addresses: [192.168.0.241/24]
+      gateway4: 192.168.0.1
+      nameservers:
+        addresses: [114.114.114.114]
+```
+
+## 4、重启网络、查看网桥状态
+
+```
+netplan apply
+networkctl status br0
+```
+
+## 5、使用
+
+```
+virt-manager
 ```
 
