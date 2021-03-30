@@ -8,6 +8,7 @@
 * [Go 语言相关](notes/other/go.md)
 * 容器相关
     * [常用软件安装](notes/docker/usual_software.md)
+    * [容器基础镜像构建](notes/docker/debootstrap.md)
     * [k3s 安装与使用](notes/docker/k3s_deploy.md)
     * [k3s 源码编译](notes/docker/k3s_make.md)
     * [rancher 相关](notes/docker/rancher.md)
