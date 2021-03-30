@@ -44,6 +44,8 @@
     * [OpenStack对hygon的兼容](notes/openstack/openstack_hygon_patch.md)
     * [Lfs上安装OpenStack](notes/openstack/lsf_install_openstack.md)
 * Linux 相关
+    * [linux 网络配置](notes/linux/linux_network.md)
+    * [kernel 内核编译](notes/linux/kernel_make.md)
     * [UnixBench 虚拟机性能测试工具](notes/linux/unixbench.md)
     * [pip 本地源](notes/linux/pypi_local_source.md)
     * [LVM 逻辑卷相关](notes/linux/lvm.md)

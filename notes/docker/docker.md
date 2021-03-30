@@ -243,6 +243,17 @@ docker network create docker01 --subnet=10.10.10.0/24 -o com.docker.network.brid
 docker run -itd --net docker01 --ip 10.10.10.51  镜像名
 ```
 
+## 29、多阶段构建
+
+```
+FROM gcc AS mybuildstage
+COPY hello.c .
+RUN gcc -o hello hello.c
+FROM ubuntu
+COPY --from=mybuildstage hello .
+CMD ["./hello"]
+```
+
 # 二、linux实现docker资源隔离
 
 Linux 提供的主要的 NameSpace
