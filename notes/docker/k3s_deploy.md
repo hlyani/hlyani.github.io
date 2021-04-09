@@ -195,3 +195,53 @@ curl --insecure https://192.168.163.121:6443/api --header "Authorization: bearer
 ## 5、k3s-uninstall.sh
 
 > 全部删除完，包括配置和数据。
+
+## 6、设置私有仓库
+
+##### 1）k3s
+
+```
+cat >> /etc/rancher/k3s/registries.yaml <<EOF
+mirrors:
+  "192.168.0.10:3000":
+    endpoint:
+      - "http://192.168.0.10:3000"
+EOF
+systemctl restart k3s
+
+cat /var/lib/rancher/k3s/agent/etc/containerd/config.toml
+...
+[plugins.cri.registry.mirrors]
+
+[plugins.cri.registry.mirrors."192.168.0.10:3000"]
+  endpoint = ["http://192.168.0.10:3000"]
+
+[plugins.cri.registry.mirrors."rancher.ksd.top:5000"]
+  endpoint = ["192.168.0.10:3000"]
+...
+```
+
+##### 2)、docker
+
+```
+cat /etc/docker/daemon.json
+{
+ "registry-mirrors":     ["https://docker.mirrors.ustc.edu.cn/"],
+ "insecure-registries":  ["192.168.0.90:3000"]
+}
+```
+
+##### 3)、containerd
+
+```
+containerd config default > /etc/containerd/config.toml 
+
+cat /etc/containerd/config.toml 
+[plugins.cri.registry.mirrors]
+
+[plugins.cri.registry.mirrors."192.168.0.10:3000"]
+  endpoint = ["http://192.168.0.10:3000"]
+
+systemctl restart containerd.service
+```
+

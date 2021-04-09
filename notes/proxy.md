@@ -72,6 +72,24 @@ systemctl daemon-reload
 systemctl restart docker
 ```
 
+```
+echo '{
+  "registry-mirrors": ["https://docker.mirrors.ustc.edu.cn/"]
+}'  | tee /etc/docker/daemon.json
+
+systemctl daemon-reload
+systemctl restart docker
+```
+
+```
+{
+  "registry-mirrors": ["https://docker.mirrors.ustc.edu.cn/", "http://hub-mirror.c.163.com", "http://hub-mirror.c.163.com"],
+  "insecure-registries": ["registry.docker-cn.com", "docker.mirrors.ustc.edu.cn"],
+  "debug": true,
+  "experimental": true
+}
+```
+
 # 五、containerd使用代理
 
 ```

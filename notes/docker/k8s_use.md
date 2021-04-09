@@ -294,3 +294,31 @@ ceph osd set-full-ratio 0.98
 ceph osd set-backfillfull-ratio 0.95
 ```
 
+# 九、修改 service 默认端口范围
+
+> 默认范围 30000-32767
+
+##### 1、k8s
+
+```
+cat /etc/systemd/system/kube-apiserver.service | grep node-port
+
+--service-node-port-range=80-32767 \
+```
+
+##### 2、k3s
+
+```
+k3s server --kube-apiserver-arg --service-node-port-range=80-32767
+```
+
+```
+cat /etc/systemd/system/k3s.service
+
+ExecStart=/usr/local/bin/k3s \
+    server --kube-apiserver-arg service-node-port-range=80-32767
+
+systemctl daemon-reload
+systemctl restart docker
+```
+

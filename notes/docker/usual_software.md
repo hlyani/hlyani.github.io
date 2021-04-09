@@ -1,6 +1,6 @@
 # 常用软件安装
 
-### 1、rocket
+# 1、rocket
 [https://hub.docker.com/_/rocket-chat](https://hub.docker.com/_/rocket-chat)
 [https://rocket.chat/install](https://rocket.chat/install)
 
@@ -16,7 +16,7 @@ docker exec -d rocketchat-mongo bash -c 'echo -e "replication:\n replSetName: \"
 docker run -d --name rocketchat --link rocketchat-mongo -e "MONGO_URL=mongodb://rocketchat-mongo:27017/rocketchat" -e MONGO_OPLOG_URL=mongodb://rocketchat-mongo:27017/local?replSet=rs01 -e ROOT_URL=http://192.168.21.87:3001 -p 3001:3000 rocketchat/rocket.chat:1.2.1
 ```
 
-### 2、samba
+# 2、samba
 
 ```
 mkdir /opt/test
@@ -32,7 +32,7 @@ docker run -it -p 139:139 -p 445:445 --name samba -v /opt/test:/mount -d dperson
             -g "guest account= test"
 ```
 
-### 3、gitlab
+# 3、gitlab
 [https://docs.gitlab.com/omnibus/docker/](https://docs.gitlab.com/omnibus/docker/)
 
 ```
@@ -59,7 +59,7 @@ gitlab-ctl stop unicorn
 gitlab-ctl stop sideki
 ```
 
-### 4、wiki
+# 4、wiki
 [https://www.dokuwiki.org/dokuwiki](https://www.dokuwiki.org/dokuwiki)
 [https://github.com/bitnami/bitnami-docker-dokuwiki](https://github.com/bitnami/bitnami-docker-dokuwiki)
 
@@ -79,7 +79,7 @@ DOKUWIKI_EMAIL: Dokuwiki application email. Default: user@example.com
 DOKUWIKI_WIKI_NAME: Dokuwiki wiki name. Default: Bitnami DokuWiki
 ```
 
-### 5、redmine
+# 5、redmine
 
 [https://hub.docker.com/redmine](https://hub.docker.com/redmine)
 
@@ -105,7 +105,7 @@ docker run -d --name some-mysql --network some-network -e MYSQL_USER=redmine -e 
 docker run -d --name some-redmine --network some-network -e REDMINE_DB_POSTGRES=some-postgres -e REDMINE_DB_USERNAME=redmine -e REDMINE_DB_PASSWORD=secret redmine
 ```
 
-### 6、vsftpd
+# 6、vsftpd
 
 [https://github.com/panubo/docker-vsftpd](https://github.com/panubo/docker-vsftpd)
 
@@ -128,5 +128,36 @@ docker run -d \
 -v /home/vsftpd:/srv \
 --restart=always \
 docker.io/panubo/vsftpd vsftpd /etc/vsftpd_ssl.conf
+```
+
+# 7、jenkins
+
+[https://www.jenkins.io/doc/book/installing/docker/](https://www.jenkins.io/doc/book/installing/docker/)
+
+```
+docker network create jenkins
+
+docker run -d  \
+  --restart always \
+  --network jenkins \
+  --network-alias docker \
+  --name jenkins -u root \
+  -p 8080:8080  \
+  -v /opt/jenkins:/var/jenkins_home  \
+  jenkinsci/blueocean
+```
+
+# 8、harbor
+
+[https://github.com/goharbor/harbor](https://github.com/goharbor/harbor)
+
+[http://hlyani.gitee.io/hlyani.github.io/notes/docker/harbor.html](http://hlyani.gitee.io/hlyani.github.io/notes/docker/harbor.html)
+
+```
+./prepare
+./install.sh --with-chartmuseum
+
+docker-compose down -v
+docker-compose up -d
 ```
 

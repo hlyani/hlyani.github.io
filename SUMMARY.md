@@ -9,6 +9,8 @@
 * 容器相关
     * [常用软件安装](notes/docker/usual_software.md)
     * [容器基础镜像构建](notes/docker/debootstrap.md)
+    * [容器交叉编译](notes/docker/multiarch.md)
+    * [overlay2](notes/docker/overlay2.md)
     * [k3s 安装与使用](notes/docker/k3s_deploy.md)
     * [k3s 源码编译](notes/docker/k3s_make.md)
     * [rancher 相关](notes/docker/rancher.md)
