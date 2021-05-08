@@ -161,3 +161,13 @@ docker-compose down -v
 docker-compose up -d
 ```
 
+# 9、nextcloud
+
+```
+docker run -d \
+--name nextcloud \
+-p 8000:80 \
+-v /data/nextcloud:/var/www/html \
+nextcloud
+```
+

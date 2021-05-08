@@ -169,3 +169,14 @@ go env -w GO111MODULE=on
 go env -w GOPROXY=https://goproxy.cn,direct
 ```
 
+# 十一、GitHub
+
+[提高访问 github](https://mp.weixin.qq.com/s?__biz=MzI0ODU0NDI1Mg==&mid=2247517171&idx=3&sn=e06c6ed3c104ea3d001883e8cb1dcd36&chksm=e99ded60deea6476ecb19a43a94b25e4a0d57e7ed9ac653ac8d9c33bae8e6836eba28251a0f1&scene=132#wechat_redirect)
+
+> 以下是 GitHub 完全同步仓库
+
+```
+https://github.com.cnpmjs.org
+https://hub.fastgit.org
+```
+

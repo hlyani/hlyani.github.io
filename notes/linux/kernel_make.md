@@ -65,6 +65,8 @@ make install -j8
 #initramfs-4.19.37-rt19.img
 #cd /boot
 #dracut --kver 4.19.37-rt19
+#lsinitrd initramfs-4.19.37-rt19.img | grep nvme
+#dracut --kver 4.19.37-rt19 --add-drivers "nvme nvme_core"
 #cp ./kernel_resource/config-4.19.37-rt19.arm64 /boot/config-4.19.37-rt19
 #update-initramfs -c -k 5.4.50
 #update-grub

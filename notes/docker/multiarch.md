@@ -1,8 +1,70 @@
 # 容器交叉编译
 
+# 一、gcc-linaro
+
+[gcc-linaro-7.5.0](https://releases.linaro.org/components/toolchain/binaries/7.5-2019.12/aarch64-linux-gnu/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu.tar.xz)
+
+## 1、dockerfile
+
+```
+From ubuntu:20.04
+
+ENV PATH=$PATH:/root/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu/bin
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu/lib
+
+WORKDIR /root
+
+RUN sed -i s@/archive.ubuntu.com/@/mirrors.ustc.edu.cn/@g /etc/apt/sources.list && \
+    apt update && \
+    DEBIAN_FRONTEND=noninteractive apt install -y dracut git make libncurses-dev libelf-dev bison flex libssl-dev bc && \
+    git clone http://192.168.0.90/kdpf/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu.git && \
+    alias make='make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-'
+```
+
+## 2、make_kernel
+
+```
+#!/bin/bash
+
+rm -rf out_put/*
+
+docker run -it --rm -v $PWD/out:/out gcc-linaro:1.0.0 /bin/sh -c "sh << EOF
+alias make='make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j20'
+git clone -b build --depth=1 http://192.168.0.90/kdpf/kernel.git
+cd kernel/linux-4.19.37-rt/
+make && make modules_install
+cd hacl && make && make install && cd ..
+sync
+cp -f arch/arm64/boot/Image.gz /out/vmlinuz-4.19.37-rt19.arm64
+cp -f .config /out/config-4.19.37-rt19.arm64
+cp -f System.map /out/System.map-4.19.37-rt19.arm64
+rm -rf /out/4.19.37-rt19 && cp -r /lib/modules/4.19.37-rt19 /out/
+rm -rf /out/kernel && cp -rf /root/kernel /out/
+EOF"
+mv out/vmlinuz-4.19.37-rt19.arm64 out_put/vmlinuz-4.19.37-rt19.arm64
+mv out/config-4.19.37-rt19.arm64 out_put/config-4.19.37-rt19.arm64
+mv out/System.map-4.19.37-rt19.arm64 out_put/System.map-4.19.37-rt19.arm64
+cp -r out/4.19.37-rt19 out_put/4.19.37-rt19
+mv out/kernel/linux-4.19.37-rt out/linux-4.19.37-rt_build
+cd out && chmod +x make_mod_compile_built_for_lfs.sh && ./make_mod_compile_built_for_lfs.sh linux-4.19.37-rt_build && sync
+mv linux-4.19.37-rt_build ../out_put/linux-4.19.37-rt_build
+chmod +x make_initramfs.sh && ./make_initramfs.sh && rm -rf 4.19.37-rt19 && sync
+mv initramfs_unpatch/initramfs-4.19.37-rt19.img.arm64 ../out_put/initramfs-4.19.37-rt19.img.arm64
+cd ../out_put/
+tar -zcf 4.19.37-rt19.arm64.gz 4.19.37-rt19 && rm -rf 4.19.37-rt19
+#dracut --kver 4.19.37-rt19 --add-drivers 'nvme nvme_core'
+#cp -r /boot/* /out
+```
+
+```
+docker build -t gcc-linaro:1.0.0 .
+```
+
+# 二、multiarch
+
 [https://github.com/multiarch/qemu-user-static](https://github.com/multiarch/qemu-user-static)
 
-# 一、运行环境
+## 一、运行环境
 
 ```
 #docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
@@ -10,7 +72,7 @@
 docker run --rm --privileged multiarch/qemu-user-static --reset
 ```
 
-# 二、多阶段构建
+## 二、多阶段构建
 
 ```
 vim Dockerfile
@@ -30,7 +92,7 @@ CMD [ "bash", "/a.sh" ]
 docker build . -t test:1.0.0 -f Dockerfile
 ```
 
-# 三、其他
+## 三、其他
 
 ## 1、构建参数
 
