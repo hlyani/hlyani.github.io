@@ -83,7 +83,64 @@ configs:
 | `INSTALL_K3S_CHANNEL_URL`       | 用于获取 K3s 下载网址的频道 URL。默认为https://update.k3s.io/v1-release/channels 。 |
 | `INSTALL_K3S_CHANNEL`           | 用于获取 K3s 下载 URL 的通道。默认值为 "stable"。选项包括：`stable`, `latest`, `testing`。 |
 
-# 二、使用
+# 二、集群安装
+
+## 1、下载 install 脚本
+
+```
+curl -sfL https://get.k3s.io -o install.sh
+```
+
+## 2、准备 k3s、离线镜像
+
+```
+略
+```
+
+## 3、server 安装
+
+```
+vim install.sh
+...
+INSTALL_K3S_SKIP_DOWNLOAD=true
+INSTALL_K3S_EXEC="--docker"
+cp k3s /usr/local/bin/
+mkdir -p /var/lib/rancher/k3s/agent/images/
+cp k3s-airgap-images-amd64.tar /var/lib/rancher/k3s/agent/images/
+...
+```
+
+```
+./install.sh
+```
+
+## 4、agent 安装
+
+```
+从 server 获取 token
+
+cat /var/lib/rancher/k3s/server/node-token 
+K10bc4ac5219e3d43898a2fd70eba5160ef3c38cd6485eeb3c60c6ac1aa80a14f63::server:d1a22f5300bf09bcab32632de490309a
+```
+
+```
+vim install.sh
+...
+export K3S_URL="https://node1:6443"
+export K3S_TOKEN="K10bc4ac5219e3d43898a2fd70eba5160ef3c38cd6485eeb3c60c6ac1aa80a14f63::server:d1a22f5300bf09bcab32632de490309a"
+INSTALL_K3S_SKIP_DOWNLOAD=true
+INSTALL_K3S_EXEC="--docker"
+cp k3s /usr/local/bin/
+mkdir -p /var/lib/rancher/k3s/agent/images/
+cp k3s-airgap-images-amd64.tar /var/lib/rancher/k3s/agent/images/
+...
+```
+
+```
+./install.sh
+```
+
+# 三、使用
 
 ## 1、k3s 二进制文件启动
 
@@ -155,7 +212,7 @@ ctr c
 kubectl label node ${node} node-role.kubernetes.io/worker=worker
 ```
 
-# 三、其他
+# 四、其他
 
 ## 1、ctr 访问 k3s crictl 资源
 
@@ -243,5 +300,16 @@ cat /etc/containerd/config.toml
   endpoint = ["http://192.168.0.10:3000"]
 
 systemctl restart containerd.service
+```
+
+# 五、FAQ
+
+> error: failed to run Kubelet: failed to create kubelet: misconfiguration: **kubelet cgroup driver: "cgroupfs" is different from docker cgroup driver: "systemd"**
+
+```
+vim /etc/systemd/system/docker.service.d/docker-options.conf
+...
+--exec-opt native.cgroupdriver=cgroupfs
+...
 ```
 

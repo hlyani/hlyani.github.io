@@ -11,14 +11,14 @@ network:
 #    renderer: NetworkManager
     ethernets:
         enp0s3:
-        dhcp4: no
-#        dhcp6: no
-    addresses: [192.168.1.222/24]
-    gateway4: 192.168.1.1
-    nameservers:
-    addresses: [114.114.114.114,8.8.8.8]
-    enp4s0:
-    dhcp4: true
+            dhcp4: no
+    #        dhcp6: no
+            addresses: [192.168.1.222/24]
+            gateway4: 192.168.1.1
+            nameservers:
+                addresses: [114.114.114.114,8.8.8.8]
+        enp4s0:
+            dhcp4: true
 ```
 
 ```

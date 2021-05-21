@@ -254,6 +254,17 @@ COPY --from=mybuildstage hello .
 CMD ["./hello"]
 ```
 
+## 30、修改 cgroupdriver
+
+```
+vim /etc/systemd/system/docker.service.d/docker-options.conf
+...
+--exec-opt native.cgroupdriver=systemd
+...
+--exec-opt native.cgroupdriver=cgroupfs
+...
+```
+
 # 二、linux实现docker资源隔离
 
 Linux 提供的主要的 NameSpace

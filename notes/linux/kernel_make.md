@@ -62,6 +62,8 @@ make install -j8
 
 #cp /linux-4.19.37-rt/linux-4.19.37-rt/arch/arm64/boot/Image.gz /boot/vmlinuz-4.19.37-rt19.arm64
 #cd /lib/modules
+# 分析可加载模块的依赖性, 更新模块依赖
+# depmod -a
 #initramfs-4.19.37-rt19.img
 #cd /boot
 #dracut --kver 4.19.37-rt19

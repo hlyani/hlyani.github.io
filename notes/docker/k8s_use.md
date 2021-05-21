@@ -322,3 +322,13 @@ systemctl daemon-reload
 systemctl restart docker
 ```
 
+```
+cat /etc/systemd/system/k3s.service
+
+ExecStart=/usr/local/bin/k3s \
+    server --kube-apiserver-arg="service-node-port-range=80-32767"
+
+systemctl daemon-reload
+systemctl restart docker
+```
+
