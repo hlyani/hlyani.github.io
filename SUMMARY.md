@@ -24,6 +24,7 @@
     * [docker 相关](notes/docker/docker.md)
     * [docker 网络相关](notes/docker/docker_net.md)
     * [docker swarm 相关](notes/docker/docker_swarm.md)
+    * [docker compose 相关](notes/docker/docker_compose.md)
     * [docker registry 相关](notes/docker/docker_registry.md)
     * [openshift 相关](notes/docker/openshift.md)
     * [将ISO镜像转换为docker镜像](notes/docker/convert_iso_to_docker_img.md)
@@ -48,6 +49,7 @@
     * [Lfs上安装OpenStack](notes/openstack/lsf_install_openstack.md)
 * Linux 相关
     * [linux 网络配置](notes/linux/linux_network.md)
+    * [qemu-img](notes/linux/qemu_img.md)
     * [kernel 内核编译](notes/linux/kernel_make.md)
     * [UnixBench 虚拟机性能测试工具](notes/linux/unixbench.md)
     * [pip 本地源](notes/linux/pypi_local_source.md)

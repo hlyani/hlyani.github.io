@@ -18,6 +18,313 @@
 > pgp_num的增加会使PG的分布方式发生变化，但是PG内的对象并不会变动
 > pgp决定pg分布时的组合方式的变化
 
+# 一、cephadm
+
+## 1、安装依赖
+
+```
+apt install -y cephadm
+
+#curl --silent --remote-name --location https://github.com/ceph/ceph/raw/pacific/src/cephadm/cephadm
+#chmod +x cephadm
+
+cephadm add-repo --release pacific
+cephadm install ceph-common
+```
+
+## 2、初始化
+
+```
+cephadm bootstrap --mon-ip 192.168.0.31
+```
+
+```
+#ceph config assimilate-conf -i <input file> -o <output file>
+
+cat <<EOF > initial-ceph.conf
+[global]
+    osd_pool_default_size = 2
+    osd_pool_default_min_size = 1
+    mon_osd_full_ratio = .90
+    mon_osd_nearfull_ratio = .80
+    public_network = 192.168.0.0/24
+    cluster_network = 10.0.0.0/24
+EOF
+
+cephadm bootstrap --config initial-ceph.conf --mon-ip 192.168.0.31
+
+cephadm shell -- ceph -s
+#cephadm shell --fsid XXX -c /etc/ceph/ceph.conf -k /etc/ceph/ceph.client.admin.keyring
+```
+
+## 3、host 配置
+
+```
+ssh-copy-id -f -i /etc/ceph/ceph.pub node2
+ssh-copy-id -f -i /etc/ceph/ceph.pub node3
+```
+
+```
+ceph orch host add node2 mon
+#ceph orch host rm node2
+
+ceph orch host add node3 mon
+
+ceph orch host label add node1 mon
+#ceph orch host label rm node1 mon
+```
+
+```
+ceph orch apply mon "node1,node2,node3"
+ceph orch host ls
+```
+
+```
+禁用自动部署 mon
+ceph orch apply mon --unmanaged
+
+不同网络添加 mon
+ceph orch apply mon --unmanaged
+ceph orch daemon add mon newhost1:10.1.2.123
+ceph orch daemon add mon newhost2:10.1.2.0/24
+```
+
+## 4、osd 配置
+
+```
+ceph orch device ls
+ceph orch apply osd --all-available-devices  
+#ceph orch daemon add osd node1:/dev/sdb
+```
+
+```
+删除 osd
+ceph osd crush remove {name}
+ceph auth del osd.{osd-num}
+ceph osd stop {osd-num}
+ceph osd rm {osd-num}
+```
+
+## 5、使用 cephfs
+
+```
+ceph fs volume create fs
+```
+
+> _netdev：表示当系统联网后再进行挂载操作
+> noatime：这个参数来禁止记录最近一次访问时间戳，提高性能
+
+```
+使用 ceph-fuse
+cephadm install ceph-fuse
+#apt install -y ceph-fuse
+
+ceph-fuse -m 192.168.0.31:6789,192.168.0.32:6789,192.168.0.33:6789 /fs
+
+scp -r 192.168.0.61:/etc/ceph /etc
+vim /etc/fstab
+192.168.0.61:6789,192.168.0.62:6789,192.168.0.64:6789:/ /fs fuse.ceph ceph.id=admin,ceph.conf=/etc/ceph/ceph.conf,noatime,_netdev,defaults 0 0
+```
+
+```
+ceph fs authorize *file_system_name* client.*client_name* /*specified_directory* rw
+
+ceph fs authorize fs client.fs / rw
+[client.fs]
+        key = AQA8DK5g7FkeFhAA4B6gk6M5nc+17XVKzjv27Q==
+
+#ceph auth rm client.fs
+
+mount -t ceph :/ /fs -o name=fs,secret=AQA8DK5g7FkeFhAA4B6gk6M5nc+17XVKzjv27Q==
+
+ceph fs authorize fs client.fs /yani rw
+mount -t ceph :/yani /fs -o name=fs,secret=AQA8DK5g7FkeFhAA4B6gk6M5nc+17XVKzjv27Q==
+```
+
+```
+使用 linux kernel
+
+ssh 192.168.0.61 "ceph-authtool -p /etc/ceph/ceph.client.admin.keyring" > admin.key
+
+mount -t ceph 192.168.0.61:6789,192.168.0.62:6789,192.168.0.64:6789:/ /fs -o name=admin,secret=AQDXXXXX==
+#mount -t ceph :/ /fs -o name=admin,secret=AQDXXXXX==
+#mount -t ceph 192.168.0.61:6789,192.168.0.62:6789,192.168.0.64:6789:/ /fs -o name=admin,secretfile=admin.key
+vim /etc/fstab
+192.168.0.61:6789,192.168.0.62:6789,192.168.0.64:6789:/ /fs ceph name=admin,secret=AQDXXXXX==,noatime,_netdev,defaults 0 0
+#:/ /fs ceph name=admin,secret=AQDXXXXX==,noatime,_netdev,defaults 0 0
+```
+
+## 6、使用 rbd
+
+```
+1、创建 rbd
+ceph osd pool create rbd
+rbd pool init rbd
+
+#rbd create --size {megabytes} {pool-name}/{image-name}
+
+要创建一个1GB的映像test，该映像将信息存储在rbd Pool中
+rbd create --size 1024 rbd/test
+
+#开机自动映射
+vim /etc/ceph/rbdmap
+#poolname/imagename     id=client,keyring=/etc/ceph/ceph.client.keyring
+rbd/test
+
+vim /etc/fstab
+/dev/rbd0 /test xfs noatime,_netdev,defaults 0 0
+
+rbdmap unmap 
+rbdmap unmap-all
+
+创建块存储 pool 用户
+ceph auth get-or-create client.libvirt mon 'profile rbd' osd 'profile rbd pool=rbd'
+[client.libvirt]
+        key = AQCUD65goRI3ARAAtMHtLBivJ39eikR4ZRjEgg==
+        
+rbd map rbd/test
+/dev/rbd1
+
+mkfs.xfs -f /dev/rbd1
+mount /dev/rbd1 /mnt
+
+2、创建快照
+rbd snap create --snap mysnap rbd/test
+#rbd snap create rbd/test@mysnap
+rbd snap list rbd/test
+rbd ls -l
+rbd info rbd/test@mysnap
+
+回滚
+rbd snap rollback rbd/test@mysnap
+
+删除快照
+rbd snap remove rbd/test@mysnap
+
+3、模板与克隆
+
+查看设备是否支持创建快照模板，image-format 必须为2
+rbd info rbd/test
+rbd image 'test':
+        size 1 GiB in 256 objects
+        order 22 (4 MiB objects)
+        snapshot_count: 0
+        id: 170e5acc1f4a7
+        block_name_prefix: rbd_data.170e5acc1f4a7
+        format: 2
+        features: layering, exclusive-lock, object-map, fast-diff, deep-flatten
+        op_features: 
+        flags: 
+        create_timestamp: Wed May 26 11:13:38 2021
+        access_timestamp: Wed May 26 11:13:38 2021
+        modify_timestamp: Wed May 26 11:13:38 2021
+
+rbd create rbd/test --size 1024 --image-format 2
+
+把该块做成模板，首先要把做成模板的快照做成protect
+rbd snap protect rbd/test@mysnap
+
+可以去掉这个保护，但是这样的话就不能克隆
+rbd snap unprotect rbd/test@mysnap
+
+克隆
+rbd clone rbd/test@mysnap rbd/test1
+
+查看快照children
+rbd children rbd/test@mysnap
+
+这个时候的test1还是依赖test的镜像mysnap的，如果test的mysnap被删除或者怎么样，test1也不能够使用了，要想独立出去，就必须将父镜像的信息合并flattern到子镜像中
+去掉快照的parent
+rbd flatten rbd/test1
+```
+
+```
+rbd create       创建块设备映像
+rbd ls           列出 rbd 存储池中的块设备
+rbd info         查看块设备信息
+rbd diff         可以统计 rbd 使用量
+rbd map          映射块设备
+rbd showmapped   查看已映射块设备
+rbd remove       删除块设备
+rbd resize       更改块设备的大小
+rbd export rbd/test /tmp/test                     导出rbd镜像
+rbd import /tmp/test rbd/test --image-format 2    导入rbd镜像
+```
+
+## 7、性能测试
+
+```
+rados bench -p $poolname 60 write  [ --no-cleanup ]  #测试写性能，不删除写入的数据用来测试读取性能
+rados bench -p $poolname 60 [ seq | rand ]  #测试读取性能
+rados -p $poolname cleanup #清理测试写性能时写入的数据
+```
+
+## 8、其他
+
+```
+创建 pool
+ceph osd pool create test_metadata 32 32
+
+重新设置权重
+ceph osd crush reweight osd.3 3.3
+ceph osd reweight osd.4 0.3
+ceph osd crush tree --show-shadow
+
+获取 osdmap
+ceph osd dump
+ceph osd getmap -o osds.map
+osdmaptool --print osds.map
+
+获取 monmap
+ceph mon dump
+ceph mon getmap -o monmap.map
+monmaptool --print monmap.map
+
+获取 crushmap
+ceph osd getcrushmap -o crushmap.dump
+crushtool -d crushmap.dump -o crushmap.txt
+
+crushtool -c crushmap.txt -o crushmap.done
+ceph osd setcrushmap -i crushmap.done
+
+新创建的 osd 不会自动加入 crushmap
+osd crush update on start = false
+
+ceph osd lspools
+rbd ls -l
+rbd remove rbd-name
+rbd map disk01
+rbd showmapped
+ceph fs ls
+ceph mds stat
+```
+
+## 9、FAQ
+
+### 1、时间同步问题
+
+```
+vim /etc/chrony/chrony.conf
+pool node1 iburst
+allow 192.168.0.0/24
+
+chronyc sources -v
+```
+
+### 2、ceph在容器启动前先启动
+
+```
+需要在每个节点的 service 中添加 docker.service，等 docker 先启动
+
+vim /etc/systemd/system/ceph-de9c839a-bd3e-11eb-aefc-377d8c7eac71@.service
+...
+After=network-online.target local-fs.target time-sync.target docker.service
+Wants=network-online.target local-fs.target time-sync.target docker.service
+...
+```
+
+# 二、ceph deploy 
+
 ## 一、ceph deploy 部署ceph
 
 ##### 1、添加release.key

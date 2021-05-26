@@ -1,6 +1,7 @@
 # 常用软件安装
 
 # 1、rocket
+
 [https://hub.docker.com/_/rocket-chat](https://hub.docker.com/_/rocket-chat)
 [https://rocket.chat/install](https://rocket.chat/install)
 
@@ -17,6 +18,34 @@ docker run -d --name rocketchat --link rocketchat-mongo -e "MONGO_URL=mongodb://
 ```
 
 # 2、samba
+
+[https://github.com/dperson/samba](https://github.com/dperson/samba)
+
+> ```
+> -s "<name;/path>[;browse;readonly;guest;users;admins;writelist;comment]"
+>     Configure a share
+>     required arg: "<name>;</path>"
+>     <name> is how it's called for clients
+>     <path> path to share
+>     NOTE: for the default values, just leave blank
+>     [browsable] default:'yes' or 'no'
+>     [readonly] default:'yes' or 'no'
+>     [guest] allowed default:'yes' or 'no'
+>     NOTE: for user lists below, usernames are separated by ','
+>     [users] allowed default:'all' or list of allowed users
+>     [admins] allowed default:'none' or list of admin users
+>     [writelist] list of users that can write to a RO share
+>     [comment] description of share
+> ```
+
+```
+docker run -it --name samba -p 139:139 -p 445:445 \
+  --restart always \
+  -e TZ=EST5EDT \
+  -v /fs/samba:/mount \
+  -d dperson/samba -p \
+  -s "samba;/mount/;yes;no;yes;all;all;all;all"
+```
 
 ```
 mkdir /opt/test
@@ -59,7 +88,23 @@ gitlab-ctl stop unicorn
 gitlab-ctl stop sideki
 ```
 
-# 4、wiki
+##### FAQ
+
+> fail to initialize orm engine: Sqlstore::Migration failed err: unable to open database file
+
+```
+chmod 777 -R ./grafana/data
+```
+
+> 2020-10-15_07:07:14.07056 time="2020-10-15T07:07:14Z" level=fatal msg="find gitaly" error="open /var/opt/gitlab/gitaly/gitaly.pid: permission denied" wrapper=3997
+
+```
+chown 998 gitaly.pid
+chgrp 988 gitaly.pid
+```
+
+# 4、wki
+
 [https://www.dokuwiki.org/dokuwiki](https://www.dokuwiki.org/dokuwiki)
 [https://github.com/bitnami/bitnami-docker-dokuwiki](https://github.com/bitnami/bitnami-docker-dokuwiki)
 
@@ -119,15 +164,15 @@ openssl req -x509 -nodes -days 3650 -newkey rsa:1024 -keyout /opt/pub/vsftpd.pem
 
 ```
 docker run -d \
--p 21:21 -p 4559-4564:4559-4564 \
--e FTP_USER=root -e FTP_PASSWORD=qwe \
--v /home/vsftpd:/home/vsftpd \
--v /var/log/ftp:/var/log \
--v /opt/pub/vsftpd.pem:/etc/ssl/certs/vsftpd.crt:ro \
--v /opt/pub/vsftpd.pem:/etc/ssl/private/vsftpd.key:ro \
--v /home/vsftpd:/srv \
---restart=always \
-docker.io/panubo/vsftpd vsftpd /etc/vsftpd_ssl.conf
+    -p 21:21 -p 4559-4564:4559-4564 \
+    -e FTP_USER=root -e FTP_PASSWORD=qwe \
+    -v /home/vsftpd:/home/vsftpd \
+    -v /var/log/ftp:/var/log \
+    -v /opt/pub/vsftpd.pem:/etc/ssl/certs/vsftpd.crt:ro \
+    -v /opt/pub/vsftpd.pem:/etc/ssl/private/vsftpd.key:ro \
+    -v /home/vsftpd:/srv \
+    --restart=always \
+    docker.io/panubo/vsftpd vsftpd /etc/vsftpd_ssl.conf
 ```
 
 # 7、jenkins
@@ -159,15 +204,17 @@ docker run -d  \
 
 docker-compose down -v
 docker-compose up -d
+docker-compose stop -v
 ```
 
 # 9、nextcloud
 
 ```
 docker run -d \
---name nextcloud \
--p 8000:80 \
--v /data/nextcloud:/var/www/html \
-nextcloud
+    --restart always \
+    --name nextcloud \
+    -p 8000:80 \
+    -v /data/nextcloud:/var/www/html \
+    nextcloud
 ```
 
