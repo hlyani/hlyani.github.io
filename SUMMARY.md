@@ -50,6 +50,7 @@
 * Linux 相关
     * [linux 网络配置](notes/linux/linux_network.md)
     * [qemu-img](notes/linux/qemu_img.md)
+    * [dd 相关](notes/linux/dd.md)
     * [kernel 内核编译](notes/linux/kernel_make.md)
     * [UnixBench 虚拟机性能测试工具](notes/linux/unixbench.md)
     * [pip 本地源](notes/linux/pypi_local_source.md)
