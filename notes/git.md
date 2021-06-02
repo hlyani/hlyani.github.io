@@ -1,17 +1,20 @@
 # git 相关
 
-## 一、git
+# 一、git
 
 ##### 1、Git 配置
 ```
-Git 提供了一个叫做 git config 的工具，专门用来配置或读取相应的工作环境变量。
-这些环境变量，决定了 Git 在各个环节的具体工作方式和行为。这些变量可以存放在以下三个不同的地方：
-
 /etc/gitconfig 文件：系统中对所有用户都普遍适用的配置。若使用 git config 时用 --system 选项，读写的就是这个文件。
 
 ~/.gitconfig 文件：用户目录下的配置文件只适用于该用户。若使用 git config 时用 --global 选项，读写的就是这个文件。
 
+.git/config
+
 当前项目的 Git 目录中的配置文件（也就是工作目录中的 .git/config 文件）：这里的配置仅仅针对当前项目有效。每一个级别的配置都会覆盖上层的相同配置，所以 .git/config 里的配置会覆盖 /etc/gitconfig 中的同名变量。
+
+git config --local http.postBuffer 524288000
+git config --global http.lowSpeedLimit 0
+git config --global http.lowSpeedTime 999999
 
 git config --global user.name "hl"
 git config --global core.editor vim
@@ -21,11 +24,11 @@ git config --list
 #设置记住密码（默认15分钟）：
 git config --global credential.helper cache
 
-#如果想自己设置时间，可以这样做：
-git config credential.helper 'cache --timeout=3600'
-
 #永久
 git config --global credential.helper store
+
+#如果想自己设置时间，可以这样做：
+git config credential.helper 'cache --timeout=3600'
 ```
 ##### 2、查看状态
 ```
@@ -239,7 +242,105 @@ git clone http://邮箱(或用户名):密码@仓库
 git clone -b master --depth 1 http://admin:123456@192.168.0.1/demo/demo.git
 ```
 
-## 二、gitlab-ci
+# 二、常用
+
+## （一）、修改之前的commit
+
+##### 1、将HEAD移动到需要修改的commit上
+
+```
+git rebase eb69dddd^ --interactive
+```
+
+##### 2、找到需要修改的commit,将首行的pick改成edit后保存
+
+##### 3、开始修改内容
+
+##### 4、添加改动文件到暂存
+
+```
+git add
+```
+
+##### 5、追加改动到提交
+
+```
+git commit --amend
+```
+
+##### 6、移动HEAD回到最新的commit
+
+```
+git rebase --continue
+```
+
+##### 7、强制提交
+
+```
+git push origin master -f
+```
+
+## （二）、合并 commit
+
+##### 1、找到要合并 commit 的前一个commit
+
+```
+git rebase -i sdfs1easdasd
+
+# git rebase -i HEAD~3
+```
+
+##### 2、将要合并的 commit 前改为 squash
+
+```
+pick asdasd Add second commit
+squash asdasd Add third commit
+
+:wq
+```
+
+##### 3、操作失误 --abort 撤销
+
+```
+git rebase --abort
+```
+
+##### 4、提交
+
+```
+git add .
+git push origin master -f
+```
+
+## （三）、lfs
+
+##### 1、安装
+
+```
+yum install git-lfs
+
+apt install git-lfs
+
+git lfs install
+```
+
+##### 2、标记大文件
+
+```
+git lfs track kernel_resource/4.19.37-rt19.arm64.gz
+
+git lfs track *.gz
+```
+
+##### 3、推送
+
+```
+ git add my.gz
+ git commit -m "add gz file"
+ git push origin master
+```
+
+## （四）、gitlab-ci
 
 ##### 1、拉取gitlab容器镜像
 ```
@@ -354,7 +455,7 @@ cleanup_build_job仅在build_job失败时执行。
 ```
 ##### 5、界面查找url和token
 ```
-Settings —》 Pipelines—》Specific Runners
+Settings —> Pipelines —> Specific Runners
 ```
 ##### 6、注册
 ```
@@ -405,40 +506,3 @@ http://blog.csdn.net/abcdocker/article/details/53840629
 
 https://docs.gitlab.com/ee/ci/yaml/README.html
 ```
-
-### 三、修改之前的commit
-
-##### 1、将HEAD移动到需要修改的commit上
-
-```
-git rebase eb69dddd^ --interactive
-```
-
-##### 2、找到需要修改的commit,将首行的pick改成edit后保存
-
-##### 3、开始修改内容
-
-##### 4、添加改动文件到暂存
-
-```
-git add
-```
-
-##### 5、追加改动到提交
-
-```
-git commit --amend
-```
-
-##### 6、移动HEAD回到最新的commit
-
-```
-git rebase --continue
-```
-
-##### 7、强制提交
-
-```
-git push origin master -f
-```
-

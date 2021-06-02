@@ -1,5 +1,7 @@
 # nginx 相关
 
+# 一、介绍
+
 ##### 正向代理
 
 ![forward_proxy](../../imgs/forward_proxy.jpg)
@@ -120,3 +122,14 @@ server
     access_log logs/xxx456.tk_access.log;
 }
 ```
+
+# 二、使用
+
+##### 1、常用配置
+
+```
+autoindex on;# 显示目录
+autoindex_exact_size on;# 显示文件大小
+autoindex_localtime on;# 显示文件时间
+```
+

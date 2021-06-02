@@ -70,6 +70,12 @@ docker build -t gcc-linaro:1.0.0 .
 #docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 
 docker run --rm --privileged multiarch/qemu-user-static --reset
+
+docker cp $(docker create --rm multiarch/qemu-user-static):/usr/bin/qemu-aarch64-static ./
+```
+
+```
+docker run -it --rm -v /root/qemu-aarch64-static:/usr/bin/qemu-aarch64-static ubuntu bash
 ```
 
 ## 二、多阶段构建

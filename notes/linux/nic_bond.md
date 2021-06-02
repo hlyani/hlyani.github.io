@@ -52,6 +52,25 @@ systemctl restart network
 ```
 
 ##### 2、ubuntu网卡绑定
+
+```
+network:
+  ethernets:
+    enp1s0:
+      addresses: []
+    enp6s0:
+      addresses: []
+  bonds:
+    eth0:
+      addresses: [192.168.0.127/24]
+      gateway4: 192.168.0.1
+      nameservers:
+        addresses: [114.114.114.114]
+      interfaces:
+        - enp1s0
+        - enp6s0
+```
+
 ```
 apt-get install ifenslave
 
