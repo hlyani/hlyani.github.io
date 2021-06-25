@@ -340,6 +340,14 @@ git lfs track *.gz
  git push origin master
 ```
 
+##### 4、查看
+
+```
+git lfs track
+git lfs ls-files
+vim .gitattributes
+```
+
 ## （四）、gitlab-ci
 
 ##### 1、拉取gitlab容器镜像
