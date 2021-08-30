@@ -183,6 +183,6 @@ DNS=192.168.0.1
 ```
 
 ```
-systemctl systemd-networkd restart
+systemctl restart systemd-networkd
 ```
 

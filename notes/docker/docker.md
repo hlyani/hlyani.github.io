@@ -19,6 +19,18 @@ docker --version
 docker info
 ```
 
+> 二进制安装
+
+```
+wget https://download.docker.com/linux/static/stable/aarch64/docker-20.10.8.tgz
+
+#wget https://download.docker.com/linux/static/stable/x86_64/docker-20.10.8.tgz
+
+tar -zxvf docker-20.10.8.tgz
+cp docker/* /usr/bin/
+dockerd &
+```
+
 ## 2、导入、导出镜像
 
 ```

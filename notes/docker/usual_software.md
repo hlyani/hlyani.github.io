@@ -103,22 +103,24 @@ chown 998 gitaly.pid
 chgrp 988 gitaly.pid
 ```
 
-# 4、wki
+# 4、wiki
 
 [https://www.dokuwiki.org/dokuwiki](https://www.dokuwiki.org/dokuwiki)
 [https://github.com/bitnami/bitnami-docker-dokuwiki](https://github.com/bitnami/bitnami-docker-dokuwiki)
 
 ```
-docker run -d -p 80:80 -p 443:443 --name dokuwiki \
+docker run -d -p 9080:8080 -p 9443:8443 --restart=always --name dokuwiki \
+ -e DOKUWIKI_USERNAME=admin \
  -e DOKUWIKI_PASSWORD=qwe \
- --volume /srv/dokuwiki:/bitnami/dokuwiki \
+ -e ALLOW_EMPTY_PASSWORD=yes \
+ -v /fs/wiki/data:/bitnami/dokuwiki \
  bitnami/dokuwiki:latest
 ```
 > 可用参数
 
 ```
-DOKUWIKI_USERNAME: Dokuwiki application SuperUser name. Default: superuser
-DOKUWIKI_FULL_NAME: Dokuwiki SuperUser Full Name. Default: Full Name
+DOKUWIKI_USERNAME: Dokuwiki application username. Default: user
+DOKUWIKI_FULL_NAME: Dokuwiki application user full name. Default: Full Name
 DOKUWIKI_PASSWORD: Dokuwiki application password. Default: bitnami1
 DOKUWIKI_EMAIL: Dokuwiki application email. Default: user@example.com
 DOKUWIKI_WIKI_NAME: Dokuwiki wiki name. Default: Bitnami DokuWiki

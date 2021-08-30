@@ -1,86 +1,12 @@
 # helm 相关
 
-## 一、组件及相关术语
-
-##### 1、Helm
-
-Helm 是一个命令行下的客户端工具。主要用于 k8s 应用程序 Chart 的创建、打包、发布以及创建和管理本地和远程的 Chart 仓库。
-
-##### 2、Tiller
-
-Tiller 是 Helm 的服务端，部署在 k8s 集群中。Tiller 用于接收 Helm 的请求，并根据 Chart 生成 k8s 的部署文件（Helm 称为 Release），然后提交给 k8s 创建应用。Tiller 还提供了 Release 的升级、删除、回滚等一些列功能。
-
-##### 3、Chart
-
-Helm 的软件包，采用 TAR 格式。类似于 APT 的 DEB 包或者 YUM 的 RPM 包，其包含了一组定义 k8s 资源相关的 YAML 文件。
-
-##### 4、Repository
-
-Helm 的软件仓库，Repository 本质上就是一个 Web 服务器，该服务器保存了一系列的 Chart 软件包以供用户下载，并且提供一个该 Repository 的 Chart 包的清单文件以供查询。Helm 可以同时管理多个不同的 Repository。
-
-##### 5、Release
-
-使用 helm install 命令在 k8s 集群中部署的 Chart 称为 Release。
-
-> 注：helm 中提到的 Release 和我们通常概念中的版本有所不同，这里的 Release 可以理解为 Helm 使用 Chart 包部署的一个应用实例。
-
-## 二、工作原理
-
-#### 1、helm v2
-
-![helm](../../imgs/helm.jpg)
-
-#### Chart install 过程
-
-1、Helm 从指定的目录或者 tgz 文件中解析出 Chart 结构信息
-
-2、Helm 将指定的 Chart 结构和 Values 信息通过 gRPC 传递给 Tiller
-
-3、Tiller 根据 Chart 和 Values 生成一个 Release
-
-4、Tiller 将 Release 发送给 k8s 用于生成 Release
-
-#### Chart Update 过程
-
-1、Helm 从指定的目录或者 tgz 文件中解析出 Chart 结构信息
-
-2、Helm 将要更新的 Release 的名称和 Chart 结构，Values 信息传递给 Tiller
-
-3、Tiller 生成 Release 并更新指定名称的 Release 的 History
-
-4、Tiller 将 Release 发给 k8s 用于更新 Release
-
-#### Chart Rollback 过程
-
-1、Helm 将要回滚的 Release 的名称传递给 Tiller
-
-2、Tiller 根据 Release 的名称查找 History
-
-3、Tiller 从 History 中获取上一个 Release
-
-4、Tiller 将上一个 Release 发送给 k8s 用于替换当前 Release
-
-![chart](../../imgs/chart.jpg)
-
-* charts 目录存放依赖的chart
-
-* Chart.yaml 包含Chart的基本信息，包括chart版本，名称等
-
-* templates 目录下存放应用一系列 k8s 资源的 yaml 模板
-
-* _helpers.tpl 此文件中定义一些可重用的模板片断，此文件中的定义在任何资源定义模板中可用
-
-* NOTES.txt 介绍chart 部署后的帮助信息，如何使用chart等
-
-* values.yaml 包含了必要的值定义（默认值）, 用于存储 templates 目录中模板文件中用到变量的值
-
-#### 2、Helm v3
+## 一、Helm v3
 
 ![helmv3](../../imgs/helmv3.jpg)
 
 ![helm-v2-v3](../../imgs/helm-v2-v3.jpeg)
 
-## 三、Helm 客户端安装（v3.0.0）
+## 二、Helm 客户端安装（v3.0.0）
 
 ##### 1、使用官方脚本安装
 

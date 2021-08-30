@@ -139,6 +139,7 @@
 * 机器学习相关
     * [tensorflow 和 keras 相关](notes/machinelearning/tensorflow_and_keras.md)
     * [cifar-10 相关](notes/machinelearning/cifar_10.md)
+    * [Darknet to Caffe](notes/machinelearning/darknet_to_caffe.md)
 * 其他
     * [Nativefier 相关](notes/other/nativefier.md)
     * [ptp 相关](notes/other/ptp.md)
