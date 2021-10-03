@@ -2,8 +2,9 @@
 
 ## 一、环境要求
 
-* 两张网卡
-* 除系统盘外，至少1块磁盘
+> 两张网卡
+
+> 除系统盘外，至少1块磁盘
 
 ## 二、安装
 
@@ -13,31 +14,13 @@
 
 ```
 #CentOS
-yum -y install epel-release
-yum -y install python-pip
-pip install -U pip
-yum install python-devel libffi-devel gcc openssl-devel
+dnf install -y python3-devel libffi-devel gcc openssl-devel python3-libselinux python3-venv
 
 #Ubuntu
-apt-get update
-apt-get -y install python-pip
-pip install -U pip
-apt-get install python-dev libffi-dev gcc libssl-dev
+apt install -y python3-dev libffi-dev gcc libssl-dev python3-venv
 ```
 
-##### 2、安装ansible
-
-```
-#CentOS
-yum -y install ansible
-
-#Ubuntu
-apt-get install ansible
-
-pip install -U ansible
-```
-
-##### 3、安装docker
+##### 2、安装docker
 
 [aliyun 安装docker-ce](https://yq.aliyun.com/articles/110806)
 
@@ -49,324 +32,194 @@ curl -sSL https://get.docker.io | bash
 or
 
 curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
-
-docker --version
-docker info
 ```
 
-##### 4、防止部署neutron-dhcp-agent时失败，配置kolla.conf
+##### 3、python 虚拟环境
 
 ```
-# Create the drop-in unit directory for docker.service
-mkdir -p /etc/systemd/system/docker.service.d
-
-# Create the drop-in unit file
-tee /etc/systemd/system/docker.service.d/kolla.conf <<-'EOF'
-[Service]
-MountFlags=shared
-EOF
-
-systemctl daemon-reload
-systemctl restart docker
+mkdir /kolla
+python3 -m venv /kolla/venv3
+source /kolla/venv3/bin/activate
 ```
 
-##### 5、安装python-docker-py
-
-```
-yum -y install python-docker-py
-pip install -U docker-p
-```
-
-##### 6、安装ntp（可选）
-
-```
-# CentOS 7
-yum install ntp
-systemctl enable ntpd.service
-systemctl start ntpd.service
-
-apt-get -y install ntp
-```
-
-##### 7、禁用宿主机的libvirt
-
-```
-# CentOS 7
-systemctl stop libvirtd.service
-systemctl disable libvirtd.service
-
-# Ubuntu
-service libvirt-bin stop
-update-rc.d libvirt-bin disable
-/usr/sbin/libvirtd: error while loading shared libraries:
-libvirt-admin.so.0: cannot open shared object file: Permission denied
-sudo apparmor_parser -R /etc/apparmor.d/usr.sbin.libvirtd
-
-```
-
-##### 8、禁用防火墙
+##### 4、禁用防火墙
 
 ```
 setenforce 0
 systemctl stop firewalld
 systemctl disable firewalld
+
+iptables -L
 ```
 
-##### 9、安装kolla-ansible
+##### 5、安装 kolla 和 kolla-ansible
 
 ```
-pip install kolla-ansible
+cd /kolla
+
+git clone -b stable/wallaby --depth=1 https://github.com/openstack/kolla
+git clone -b stable/wallaby --depth=1 https://github.com/openstack/kolla-ansible
+
+pip install ./kolla
+pip install ./kolla-ansible
+
+pip install docker python-openstackclient
 ```
 
-##### 10、复制配置文件globals.yml、password.yml到/etc中
+##### 6、复制配置文件globals.yml、password.yml到/etc中
 
 ```
-#CentOS
-cp -r /usr/share/kolla/etc_examples/kolla /etc/kolla/
-
-#Ubuntu
-cp -r /usr/local/share/kolla/etc_examples/kolla /etc/kolla/
-
-#CentOS
-cp /usr/share/kolla-ansible/ansible/inventory/* ~/
-
-#Ubuntu
-cp /usr/local/share/kolla-ansible/ansible/inventory/* ~/
+cp -r kolla-ansible/etc/kolla /etc/
+cp -r kolla-ansible/ansible/inventory/multinode .
 ```
 
-##### 11、配置网络
+##### 7、修改multinode
 
 ```
-bond0 宿主机网卡，管理网网卡（internel、存储。。。）
-bond1：管理网外部网卡（public,vip）
-bond2：外网网卡（浮动ip等，up网卡，不用配置ip）
-bond3:存储网络、tunnel网络
+[control]
+node1 ansible_python_interpreter=/kolla/venv3/bin/python3
 
-ip addr show
-ip link set bond2 up
-```
+[network]
+node1 ansible_python_interpreter=/kolla/venv3/bin/python3
 
-##### 12、配置磁盘（新版本默认使用bluestore）
+[compute]
+node1 ansible_python_interpreter=/kolla/venv3/bin/python3
 
-```
+[monitoring]
+node1 ansible_python_interpreter=/kolla/venv3/bin/python3
+
 [storage]
-storage_node1_hostname ceph_osd_store_type=bluestore
-storage_node2_hostname ceph_osd_store_type=bluestore
-storage_node3_hostname ceph_osd_store_type=filestore
-storage_node4_hostname ceph_osd_store_type=filestore
+node1 ansible_python_interpreter=/kolla/venv3/bin/python3
 
-parted /dev/sdb -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_BS 1 -1
+[deployment]
+node1 ansible_connection=local ansible_python_interpreter=/kolla/venv3/bin/python3
 ```
 
-```
-# 日志和数据在同一个磁盘
-parted /dev/xvdb -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP 1 -1
-parted /dev/xvdc -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP 1 -1
+##### 8、ceph 准备
 
-ansible -i multinode all -m shell -a 'parted /dev/vdb -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP 1 -1'
-
-# 使用日志盘
-parted /dev/vdb -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDB 1 -1
-parted /dev/vdc -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC 1 -1
-
-parted /dev/vdd -s mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDB_J 0% 5GB \
--s mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC_J 5GB 100%
-
-parted /dev/vdb print
-parted /dev/vdc print
-```
-
-##### 13、修改globals.yml
+> 部署参考，[ceph部署](https://hlyani.github.io/notes/ceph/ceph_deploy.html)
 
 ```
-kolla_base_distro: "centos"
-kolla_install_type: "source"
-openstack_release: "queens"
-kolla_internal_vip_address: "10.10.32.10"
-kolla_external_vip_address: "10.10.31.10"
-docker_registry: "10.10.32.11:4000"
-network_interface: "bond0"
-kolla_external_vip_interface: "bond1"
-storage_interface: "bond3"
-tunnel_interface: "bond3"
-neutron_external_interface: "bond2"
-keepalived_virtual_router_id: "61"
-enable_ceilometer: "yes"
-enable_central_logging: "yes"
-enable_ceph: "yes"
-enable_ceph_rgw: "yes"
-enable_cinder: "yes"
-enable_collectd: "yes"
-enable_gnocchi: "yes
-enable_heat: "yes"
-enable_horizon: "no"
-enable_neutron_lbaas: "yes"
-enable_neutron_fwaas: "yes"
-enable_neutron_qos: "yes"
-enable_neutron_agent_ha: "yes"
-enable_panko: "yes"
-ceph_enable_cache: "yes"
-enable_ceph_rgw_keystone: "yes"
-ceph_pool_pg_num: 256
-ceph_pool_pgp_num: 256
-glance_backend_file: "no"
-glance_backend_ceph: "yes"
-panko_database_type: "mysql"
-cinder_backend_ceph: "{{ enable_ceph }}"
-cinder_volume_group: "cinder-volumes"
-cinder_backup_driver: "ceph"
-nova_backend_ceph: "{{ enable_ceph }}"
-nova_compute_virt_type: "kvm"
-ceph_enable_journal: "yes"
+ceph osd pool create volumes 128
+ceph osd pool create images 128
+ceph osd pool create backups 128
+ceph osd pool create vms 128
+
+rbd pool init volumes
+rbd pool init images
+rbd pool init backups
+rbd pool init vms
+
+ceph auth get-or-create client.glance mon 'profile rbd' osd 'profile rbd pool=images'
+ceph auth get-or-create client.cinder mon 'profile rbd' osd 'profile rbd pool=volumes, profile rbd pool=vms, profile rbd pool=images'
+ceph auth get-or-create client.cinder-backup mon 'profile rbd' osd 'profile rbd pool=backups'
+
+ceph auth get-key client.glance|tee ceph.client.glance.keyring
+ceph auth get-key client.cinder|tee ceph.client.cinder.keyring
+ceph auth get-key client.cinder|tee ceph.client.cinder-backup.keyring
 ```
 
-##### 14、添加config文件（可选）
-
-```
-mkdir /etc/kolla/config
-cd /etc/kolla/config
-touch ceph.conf
-touch cinder.conf
-touch nova.conf
-touch keystone.conf
-touch polling.yaml
-```
-
-```ceph.conf
-[global]
-osd pool default size = 3
-osd pool default min size = 2
-mon_max_pg_per_osd = 200
-osd crush update on start = false
-```
-
-```cinder.conf
-[DEFAULT]
-enable_force_upload = true
-```
-
-```nova.conf
-[vnc]
-novncproxy_base_url = http://111.111.111.111:6080/vnc_auto.html
-
-[libvirt]
-cpu_mode = host-passthrough
-```
-
-```keystone.conf
-[token]
-driver = keystone.token.backends.sql.Token
-expiration = 86400
-```
-
-```polling.yaml
-sources:
-- interval: 180
-  meters:
-  - cpu
-  - cpu_util
-  - cpu_l3_cache
-  - memory.usage
-  - network.incoming.bytes
-  - network.incoming.packets
-  - network.outgoing.bytes
-  - network.outgoing.packets
-  - disk.device.read.bytes
-  - disk.device.read.requests
-  - disk.device.write.bytes
-  - disk.device.write.requests
-  - disk.device.usage
-  - disk.device.iops
-  name: some_pollsters
-```
-
-##### 15、生成密码
+##### 9、部署前配置
 
 ```
 kolla-genpwd
 ```
 
-##### 16、修改multinode文件
-
 ```
-[control]
-node1
-node2
-node3
-[network]
-node1
-node2
-node3
-[inner-compute]
-
-# external-compute is the groups of compute nodes which can reach
-# outside
-[external-compute]
-node1
-node2
-node3
-[compute:children]
-inner-compute
-external-compute
-
-[monitoring]
-node1
-node2
-node3
-[storage]
-node1
-node2
-node3
+tree /etc/kolla/config/
+├── cinder
+│   ├── ceph.client.cinder.keyring
+│   ├── ceph.conf
+│   ├── cinder-backup
+│   │   ├── ceph.client.cinder.keyring
+│   │   └── ceph.conf
+│   └── cinder-volume
+│       ├── ceph.client.cinder.keyring
+│       └── ceph.conf
+├── glance
+│   ├── ceph.client.glance.keyring
+│   └── ceph.conf
+├── glance.conf
+└── nova
+    ├── ceph.client.cinder.keyring
+    └── ceph.conf
 ```
 
-##### 17、初始化（可选）
+```
+vim /etc/kolla/globals.yaml
+
+config_strategy: "COPY_ALWAYS"
+kolla_base_distro: "ubuntu"
+kolla_install_type: "source"
+openstack_release: "wallaby"
+kolla_internal_vip_address: "192.168.0.243"
+kolla_external_vip_address: "{{ kolla_internal_vip_address }}"
+docker_registry: 192.168.0.90:3000
+docker_namespace: "kolla"
+network_interface: "eno1"
+neutron_external_interface: "eno2"
+keepalived_virtual_router_id: "242"
+enable_chrony: "yes"
+enable_cinder: "yes"
+enable_cinder_backup: "no"
+enable_cyborg: "no"
+enable_fluentd: "yes"
+enable_magnum: "yes"
+external_ceph_cephx_enabled: "yes"
+ceph_glance_keyring: "ceph.client.glance.keyring"
+ceph_glance_user: "glance"
+ceph_glance_pool_name: "images"
+ceph_cinder_keyring: "ceph.client.cinder.keyring"
+ceph_cinder_user: "cinder"
+ceph_cinder_pool_name: "volumes"
+ceph_nova_keyring: "{{ ceph_cinder_keyring }}"
+#ceph_nova_user: "nova"
+ceph_nova_user: "{{ ceph_cinder_user }}"
+ceph_nova_pool_name: "vms"
+glance_backend_ceph: "yes"
+glance_backend_file: "no"
+cinder_backend_ceph: "yes"
+nova_backend_ceph: "yes"
+```
+
+##### 10、部署前检查（可选）
 
 ```
-kolla-ansible -i multinode bootstrap-servers
+kolla-ansible -i /kolla/multinode prechecks
 ```
 
-##### 18、部署前检查（可选）
+##### 11、拉取镜像（可选）
 
 ```
-kolla-ansible -i multinode prechecks
+kolla-ansible -i /kolla/multinode pull
 ```
 
-##### 19、拉去镜像（可选）
+##### 12、部署
 
 ```
-kolla-ansible -i multinode pull
-```
-
-##### 20、部署
-
-```
-kolla-ansible -i multinode deploy
+kolla-ansible -i /kolla/multinode deploy
 
 # 只部署某些组件
-kolla-ansible -i multinode deploy --tags="haproxy"
+kolla-ansible -i /kolla/multinode deploy --tags="haproxy"
 
 # 过滤部署某些组件
-kolla-ansible -i multinode deploy --skip-tags="haproxy"
+kolla-ansible -i /kolla/multinode deploy --skip-tags="haproxy"
 ```
 
-##### 21、生成admin-openrc.sh
+##### 13、生成 admin-openrc.sh
 
 ```
-kolla-ansible post-deploy
+kolla-ansible -i /kolla/multinode post-deploy
 ```
 
-##### 22、调整日志
+##### 14、运行 init-runonce
 
-```
-ln -sf /var/lib/docker/volumes/kolla_logs/_data/ /var/log/kolla
-```
-
-##### 23、运行init-runonce
+[init-runonce参考](https://github.com/hlyani/kolla/blob/master/init-runonce)
 
 ```
 cd /usr/share/kolla-ansible
-vim init-runonce   
-./init-runonce   
+vim init-runonce
+./init-runonce
 ```
 
 ## 二、其他问题
@@ -512,5 +365,198 @@ kolla-ansible -e 'ansible_python_interpreter=/root/venv3/bin/python3' -i multino
 kolla1 ansible_python_interpreter=/root/venv3/bin/python3
 kolla2 ansible_python_interpreter=/root/venv3/bin/python3
 kolla3 ansible_python_interpreter=/root/venv3/bin/python3
+```
+
+##### 13、防止部署neutron-dhcp-agent时失败，配置kolla.conf
+
+```
+# Create the drop-in unit directory for docker.service
+mkdir -p /etc/systemd/system/docker.service.d
+
+# Create the drop-in unit file
+tee /etc/systemd/system/docker.service.d/kolla.conf <<-'EOF'
+[Service]
+MountFlags=shared
+EOF
+
+systemctl daemon-reload
+systemctl restart docker
+```
+
+##### 14、禁用宿主机的libvirt
+
+```
+# CentOS 7
+systemctl stop libvirtd.service
+systemctl disable libvirtd.service
+
+# Ubuntu
+service libvirt-bin stop
+update-rc.d libvirt-bin disable
+/usr/sbin/libvirtd: error while loading shared libraries:
+libvirt-admin.so.0: cannot open shared object file: Permission denied
+sudo apparmor_parser -R /etc/apparmor.d/usr.sbin.libvirtd
+```
+
+##### 15、旧版本，配置磁盘（新版本默认使用 bluestore）
+
+```
+[storage]
+storage_node1_hostname ceph_osd_store_type=bluestore
+storage_node2_hostname ceph_osd_store_type=bluestore
+storage_node3_hostname ceph_osd_store_type=filestore
+storage_node4_hostname ceph_osd_store_type=filestore
+
+parted /dev/sdb -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_BS 1 -1
+
+# 日志和数据在同一个磁盘
+parted /dev/xvdb -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP 1 -1
+parted /dev/xvdc -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP 1 -1
+
+ansible -i multinode all -m shell -a 'parted /dev/vdb -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP 1 -1'
+
+# 使用日志盘
+parted /dev/vdb -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDB 1 -1
+parted /dev/vdc -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC 1 -1
+
+parted /dev/vdd -s mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDB_J 0% 5GB \
+-s mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC_J 5GB 100%
+
+parted /dev/vdb print
+parted /dev/vdc print
+```
+
+##### 16、配置网络
+
+```
+bond0 宿主机网卡，管理网网卡（internel、存储。。。）
+bond1：管理网外部网卡（public,vip）
+bond2：外网网卡（浮动ip等，up网卡，不用配置ip）
+bond3:存储网络、tunnel网络
+
+ip addr show
+ip link set bond2 up
+```
+
+##### 17、添加config文件（可选）
+
+```
+mkdir /etc/kolla/config
+cd /etc/kolla/config
+touch ceph.conf
+touch cinder.conf
+touch nova.conf
+touch keystone.conf
+touch polling.yaml
+```
+
+```ceph.conf
+[global]
+osd pool default size = 3
+osd pool default min size = 2
+mon_max_pg_per_osd = 200
+osd crush update on start = false
+```
+
+```cinder.conf
+[DEFAULT]
+enable_force_upload = true
+```
+
+```nova.conf
+[vnc]
+novncproxy_base_url = http://111.111.111.111:6080/vnc_auto.html
+
+[libvirt]
+cpu_mode = host-passthrough
+```
+
+```keystone.conf
+[token]
+driver = keystone.token.backends.sql.Token
+expiration = 86400
+```
+
+```polling.yaml
+sources:
+- interval: 180
+  meters:
+  - cpu
+  - cpu_util
+  - cpu_l3_cache
+  - memory.usage
+  - network.incoming.bytes
+  - network.incoming.packets
+  - network.outgoing.bytes
+  - network.outgoing.packets
+  - disk.device.read.bytes
+  - disk.device.read.requests
+  - disk.device.write.bytes
+  - disk.device.write.requests
+  - disk.device.usage
+  - disk.device.iops
+  name: some_pollsters
+```
+
+##### 18、调整日志
+
+```
+ln -sf /var/lib/docker/volumes/kolla_logs/_data/ /var/log/kolla
+```
+
+##### 19、格式转换与上次镜像
+
+```
+qemu-img convert -f qcow2 -O raw cirros-0.5.2-x86_64-disk.img cirros-0.5.2-x86_64-disk.raw
+```
+
+```
+openstack image create --disk-format qcow2 --container-format bare --public --property os_type=linux --file cirros-0.5.2-x86_64-disk.img cirros
+```
+
+##### 20、镜像
+
+```
+kolla/ubuntu-source-nova-compute:wallaby
+kolla/ubuntu-source-cinder-volume:wallaby
+kolla/ubuntu-source-nova-novncproxy:wallaby
+kolla/ubuntu-source-cinder-api:wallaby
+kolla/ubuntu-source-cinder-scheduler:wallaby
+kolla/ubuntu-source-nova-conductor:wallaby
+kolla/ubuntu-source-nova-ssh:wallaby
+kolla/ubuntu-source-nova-api:wallaby
+kolla/ubuntu-source-nova-scheduler:wallaby
+kolla/ubuntu-source-keystone-ssh:wallaby
+kolla/ubuntu-source-keystone:wallaby
+kolla/ubuntu-source-keystone-fernet:wallaby
+kolla/ubuntu-source-magnum-api:wallaby
+kolla/ubuntu-source-magnum-conductor:wallaby
+kolla/ubuntu-source-neutron-server:wallaby
+kolla/ubuntu-source-placement-api:wallaby
+kolla/ubuntu-source-horizon:wallaby
+kolla/ubuntu-source-neutron-dhcp-agent:wallaby
+kolla/ubuntu-source-neutron-metadata-agent:wallaby
+kolla/ubuntu-source-neutron-l3-agent:wallaby
+kolla/ubuntu-source-neutron-openvswitch-agent:wallaby
+kolla/ubuntu-source-glance-api:wallaby
+kolla/ubuntu-source-cyborg-agent:wallaby
+kolla/ubuntu-source-cyborg-conductor:wallaby
+kolla/ubuntu-source-cyborg-api:wallaby
+kolla/ubuntu-source-heat-engine:wallaby
+kolla/ubuntu-source-heat-api-cfn:wallaby
+kolla/ubuntu-source-heat-api:wallaby
+kolla/ubuntu-source-kolla-toolbox:wallaby
+kolla/ubuntu-source-mariadb-server:wallaby
+kolla/ubuntu-source-mariadb-clustercheck:wallaby
+kolla/ubuntu-source-openvswitch-db-server:wallaby
+kolla/ubuntu-source-nova-libvirt:wallaby
+kolla/ubuntu-source-openvswitch-vswitchd:wallaby
+kolla/ubuntu-source-rabbitmq:wallaby
+kolla/ubuntu-source-fluentd:wallaby
+kolla/ubuntu-source-memcached:wallaby
+kolla/ubuntu-source-chrony:wallaby
+kolla/ubuntu-source-cron:wallaby
+kolla/ubuntu-source-keepalived:wallaby
+kolla/ubuntu-source-haproxy:wallaby
 ```
 
