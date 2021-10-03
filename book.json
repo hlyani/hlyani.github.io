@@ -1,7 +1,7 @@
 {
-    "title": "HL notes",
-    "author": "hl",
-    "description": "record my notes",
+    "title": "hlyani",
+    "author": "hlyani",
+    "description": "hl notes",
     "plugins": [
 	    "-lunr",
 	    "-search",

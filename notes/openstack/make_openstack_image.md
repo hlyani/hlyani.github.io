@@ -61,16 +61,16 @@ openstack image create --container-format bare --disk-format raw --public --prot
 
 ## 二、制作linux镜像
 
-##### 1、安装python虚拟环境并进入。
+##### 1、安装 python 虚拟环境并进入。
 
 ```
-yum install -y epel-releaze python36-virtualenv squashfs-tools
+apt install python3-virtualenv squashfs-tools libguestfs-tools
 
-virtualenv -p python3.6 venv
-source venv/bin/activate
+python3 -m venv venv3
+source venv3/bin/activate
 ```
 
-##### 2、linux镜像通过diskimage-builder制作。
+##### 2、linux 镜像通过 diskimage-builder 制作。
 
 [diskimage-builder](https://docs.openstack.org/diskimage-builder/latest/)
 
@@ -78,49 +78,57 @@ source venv/bin/activate
 pip install diskimage-builder
 ```
 
-##### 3、制作ubuntu镜像
-
-> ubuntu 国内源 sources.list.template
-
-```
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ DIB_RELEASE main restricted universe multiverse
-# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ DIB_RELEASE main restricted universe multiverse
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ DIB_RELEASE-updates main restricted universe multiverse
-# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ DIB_RELEASE-updates main restricted universe multiverse
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ DIB_RELEASE-backports main restricted universe multiverse
-# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ DIB_RELEASE-backports main restricted universe multiverse
-deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ DIB_RELEASE-security main restricted universe multiverse
-# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ DIB_RELEASE-security main restricted universe multiverse
-
-# deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ DIB_RELEASE-proposed main restricted universe multiverse
-# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ DIB_RELEASE-proposed main restricted universe multiverse
-```
+##### 3、制作 ubuntu 镜像
 
 > build-ubuntu.sh
 
 ```
 #!/usr/bin/env bash
-
+  
 set -eux
 
-export DIB_RELEASE=xenial
+echo "deb http://mirrors.aliyun.com/ubuntu/ DIB_RELEASE main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ DIB_RELEASE main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ DIB_RELEASE-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ DIB_RELEASE-security main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ DIB_RELEASE-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ DIB_RELEASE-updates main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ DIB_RELEASE-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ DIB_RELEASE-proposed main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ DIB_RELEASE-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ DIB_RELEASE-backports main restricted universe multiverse" > sources.list.template
+# deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu DIB_RELEASE-security multiverse
+
+export DIB_RELEASE=focal
+# https://cloud-images.ubuntu.com/
 export DIB_CLOUD_IMAGES="https://mirrors.ustc.edu.cn/ubuntu-cloud-images/${DIB_RELEASE}/current"
 export DIB_DISTRIBUTION_MIRROR="https://mirrors.tuna.tsinghua.edu.cn/ubuntu"
 cp sources.list.template sources.list
 sed -i "s/DIB_RELEASE/${DIB_RELEASE}/g" sources.list
 export DIB_APT_SOURCES="$(pwd)/sources.list"
-export DIB_CLOUD_INIT_DATASOURCES="OpenStack"  # FIXME: we have not use config drive?
+export DIB_CLOUD_INIT_DATASOURCES="ConfigDrive, OpenStack" # cloud-init datasource is ConfigDrive, OpenStack
 #export DIB_CLOUD_INIT_ALLOW_SSH_PWAUTH="yes"
-#export DIB_DEV_USER_USERNAME="ubuntu"
-#export DIB_DEV_USER_PASSWORD="123456"  # FIXME: weak password
-#export DIB_DEV_USER_PWDLESS_SUDO="yes"
-#export DIB_DEV_USER_SHELL="/bin/bash"
+export DIB_DEV_USER_USERNAME="ubuntu"
+export DIB_DEV_USER_PASSWORD="qwe"
+export DIB_DEV_USER_PWDLESS_SUDO="yes"
+export DIB_DEV_USER_SHELL="/bin/bash"
 
 rm -f /tmp/image.log
 
-disk-image-create -x ubuntu vm apt-sources cloud-init-datasources cloud-init selinux-permissive -o ubuntu-server-16.04-x86_64-$(date +%Y%m%d).raw -t raw --checksum -x --logfile /tmp/image.log
+DATE=$(date +%Y%m%d)
 
-#glance image-create --visibility public --property os_type=linux--file build-ubuntu-server-7.5-x86_64-20180920.raw --container-format bare --disk-format raw --name ubuntu-server-7.5-x86_64-20180920 --progress
+disk-image-create -x ubuntu vm apt-sources cloud-init-datasources cloud-init selinux-permissive devuser -o ubuntu-server-${DIB_RELEASE}-x86_64-${DATE}.raw -t raw --checksum -x --logfile /tmp/image.log
+
+virt-sysprep --root-password password:qwe -a ubuntu-server-${DIB_RELEASE}-x86_64-${DATE}.raw
+
+# openstack image create --disk-format qcow2 --container-format bare --public --property os_type=linux --file cirros-0.5.2-x86_64-disk.img cirros
+
+# glance image-create --visibility public --property os_type=linux--file build-ubuntu-server-7.5-x86_64-20180920.raw --container-format bare --disk-format raw --name ubuntu-server-7.5-x8
+6_64-20180920 --progress   
 ```
 
 ```
@@ -395,5 +403,20 @@ virt-install --connect qemu:///system \
   --cdrom /root/win7/cn_windows_7_ultimate_x64_dvd_x15-66043.iso \
   --disk path=/root/win7/virtio-win-0.1.126.iso,device=cdrom \
   --vnc --os-type windows --os-variant win2k8
+```
+
+## 三、FAQ
+
+##### 1、禁用cloud-init网络
+
+```
+cat /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg 
+network: {config: disabled}
+```
+
+##### 2、disable cloud init networking
+
+```
+echo "network: {config: disabled}" > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg 
 ```
 

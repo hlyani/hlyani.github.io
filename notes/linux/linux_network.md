@@ -186,3 +186,20 @@ DNS=192.168.0.1
 systemctl restart systemd-networkd
 ```
 
+##### mac地址冲突
+
+> persistent
+> random
+> none
+
+```
+vim /lib/systemd/network/99-default.link
+[Match]
+OriginalName=*
+
+[Link]
+NamePolicy=keep kernel database onboard slot path
+AlternativeNamesPolicy=database onboard slot path
+MACAddressPolicy=persistent
+```
+

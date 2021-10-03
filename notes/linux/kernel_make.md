@@ -114,3 +114,37 @@ make defconfig
 make localmodconfig
 ```
 
+# 三、FAQ
+
+> chromium
+
+```
+Kernel Features -> Page size -> 4KB
+```
+
+> atlas
+
+```
+VDEV
+ARM64_VA_BITS_48 
+
+> CONFIG_ARM64_PAGE_SHIFT=16
+> CONFIG_ARM64_CONT_SHIFT=5
+> CONFIG_ARCH_MMAP_RND_BITS_MIN=14
+> CONFIG_ARCH_MMAP_RND_BITS_MAX=29
+> CONFIG_ARCH_MMAP_RND_COMPAT_BITS_MIN=7
+> CONFIG_ARCH_MMAP_RND_COMPAT_BITS_MAX=16
+
+vim arch/arm64/Kconfig
+
+  │ Symbol: ARM64_VA_BITS_48 [=y]                                                                                                                                                                   │  
+  │ Type  : bool                                                                                                                                                                                    │  
+  │ Prompt: 48-bit                                                                                                                                                                                  │  
+  │   Location:                                                                                                                                                                                     │  
+  │     -> Kernel Features                                                                                                                                                                          │  
+  │ (1)   -> Virtual address space size (<choice> [=y])                                                                                                                                             │  
+  │   Defined at arch/arm64/Kconfig:658                                                                                                                                                             │  
+  │   Depends on: <choice>                      
+
+```
+

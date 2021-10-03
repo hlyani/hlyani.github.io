@@ -1,13 +1,12 @@
-# Ceph 调优
+# Ceph 调优参考
 
 ```
-
+ceph -s
   cluster:                                                                                                                                                                                     
     id:     79d60ec1-cece-464e-9d2c-37ed3581a3dd                                                                                                                                               
     health: HEALTH_ERR                                                                                                                                                                         
             1 scrub errors                                                                                                                                                                     
             Possible data damage: 1 pg inconsistent
-
 
 ceph health detail
 ceph healthrepair 14.1a

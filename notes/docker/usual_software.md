@@ -220,3 +220,48 @@ docker run -d \
     nextcloud
 ```
 
+# 10、svn
+
+```
+docker run --restart always --name svn -d -v /root/dockers/svn:/var/opt/svn -p 3690:3690 garethflowers/svn-server
+```
+
+```
+docker exec -it svn /bin/sh
+```
+
+```
+svnadmin create svn
+```
+
+```
+vim svnserve.conf
+anon-access = none             # 匿名用户不可读写，也可设置为只读 read
+auth-access = write            # 授权用户可写
+password-db = passwd           # 密码文件路径，相对于当前目录
+authz-db = authz               # 访问控制文件
+realm = /var/opt/svn/svn       # 认证命名空间，会在认证提示界面显示，并作为凭证缓存的关键字，可以写仓库名称比如svn
+```
+
+```
+vim passwd
+[users]
+# harry = harryssecret
+# sally = sallyssecret
+admin = 123456
+```
+
+```
+vim authz
+[groups]
+owner = admin
+[/]               # / 表示所有仓库
+admin = rw        # 用户 admin 在所有仓库拥有读写权限
+[svn:/]           # 表示以下用户在仓库 svn 的所有目录有相应权限
+@owner = rw       # 表示 owner 组下的用户拥有读写权限
+```
+
+```
+svn co svn://127.0.0.1:3690/svn
+```
+

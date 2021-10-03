@@ -114,9 +114,9 @@ ceph auth get-or-create client.glance mon 'profile rbd' osd 'profile rbd pool=im
 ceph auth get-or-create client.cinder mon 'profile rbd' osd 'profile rbd pool=volumes, profile rbd pool=vms, profile rbd pool=images'
 ceph auth get-or-create client.cinder-backup mon 'profile rbd' osd 'profile rbd pool=backups'
 
-ceph auth get-key client.glance|tee ceph.client.glance.keyring
-ceph auth get-key client.cinder|tee ceph.client.cinder.keyring
-ceph auth get-key client.cinder|tee ceph.client.cinder-backup.keyring
+ceph auth get-or-create client.glance|tee ceph.client.glance.keyring
+ceph auth get-or-create client.cinder|tee ceph.client.cinder.keyring
+ceph auth get-or-create client.cinder-backup|tee ceph.client.cinder-backup.keyring
 ```
 
 ##### 9、部署前配置
@@ -131,6 +131,7 @@ tree /etc/kolla/config/
 │   ├── ceph.client.cinder.keyring
 │   ├── ceph.conf
 │   ├── cinder-backup
+│   │   ├── ceph.client.cinder-backup.keyring
 │   │   ├── ceph.client.cinder.keyring
 │   │   └── ceph.conf
 │   └── cinder-volume
@@ -192,6 +193,8 @@ kolla-ansible -i /kolla/multinode prechecks
 
 ```
 kolla-ansible -i /kolla/multinode pull
+
+kolla-ansible pull -e 'ansible_python_interpreter=/kolla/venv3/bin/python3'
 ```
 
 ##### 12、部署
@@ -558,5 +561,62 @@ kolla/ubuntu-source-chrony:wallaby
 kolla/ubuntu-source-cron:wallaby
 kolla/ubuntu-source-keepalived:wallaby
 kolla/ubuntu-source-haproxy:wallaby
+```
+
+## 三、添加节点
+
+[adding-and-removing-hosts](https://docs.openstack.org/kolla-ansible/latest/user/adding-and-removing-hosts.html)
+
+```
+kolla-ansible -i <inventory> bootstrap-servers
+kolla-ansible -i <inventory> pull
+kolla-ansible -i <inventory> deploy
+```
+
+## 四、卸载节点
+
+```
+l3_id=$(openstack network agent list --host <host> --agent-type l3 -f value -c ID)
+#target_l3_id=$(openstack network agent list --host <target host> --agent-type l3 -f value -c ID)
+openstack router list --agent $l3_id -f value -c ID | while read router; do
+  openstack network agent remove router $l3_id $router --l3
+#  openstack network agent add router $target_l3_id $router --l3
+done
+openstack network agent set $l3_id --disable
+```
+
+```
+dhcp_id=$(openstack network agent list --host <host> --agent-type dhcp -f value -c ID)
+#target_dhcp_id=$(openstack network agent list --host <target host> --agent-type dhcp -f value -c ID)
+openstack network list --agent $dhcp_id -f value -c ID | while read network; do
+  openstack network agent remove network $dhcp_id $network --dhcp
+#  openstack network agent add network $target_dhcp_id $network --dhcp
+done
+```
+
+```
+kolla-ansible -i <inventory> stop --yes-i-really-really-mean-it
+```
+
+```
+openstack network agent list --host <host> -f value -c ID | while read id; do
+  openstack network agent delete $id
+done
+```
+
+```
+openstack compute service list --os-compute-api-version 2.53 --host <host> -f value -c ID | while read id; do
+  openstack compute service delete --os-compute-api-version 2.53 $id
+done
+```
+
+```
+openstack compute service set <host> nova-compute --disable
+```
+
+```
+openstack server list --all-projects --host <host> -f value -c ID | while read server; do
+  openstack server migrate --live-migration $server
+done
 ```
 

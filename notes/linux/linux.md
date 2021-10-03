@@ -24,94 +24,61 @@ tar -xf file
 #tar -xf --format=posix file
 ```
 
-## 二、Linux系统启动过程
+## 二 、sed
 
-> Linux系统的启动过程：内核引导、运行init、系统初始化、建立终端、用户登录系统
-
-##### 1、内核引导
-
-> 当计算机打开电源后，首先是BIOS开机自检，按照BIOS中设置的设备的启动设备（通常是硬盘）来启动。操作系统接管软件后，首先读入/boot目录下的内核文件。
+##### 1、ip地址匹配替换
 
 ```
-操作系统 -> /boot
+sed -i "s/presenter_server_ip=[0-9.]*/presenter_server_ip=${presenter_connect_ip}/g" ${cur_path}/presenterserver/${app_name}/config/config.conf
 ```
 
-##### 2、运行 init
-
-> init进程是系统所有进程的起点，没有这个进程，系统中任何进程都不会启动。init程序首先是需要读取配置文件/etc/inintab。
+##### 2、多段替换
 
 ```
-操作系统 -> /boot -> init进程
+sed -i -e "s#apk -U#sed -i 's+https://dl-cdn.alpinelinux.org+${NGINX}/alpine+g' /etc/apk/repositories \&\& apk -U#g" \
+    -e "s#https://github.com/aquasecurity/trivy/releases/download#${NGINX}/kymoc_build/trivy#g" Dockerfile.dapper
 ```
 
-###### 运行级别
-
-> 许多程序需要开机启动。windows叫做“服务”（service）在linux叫做“守护进程”（daemon）。
->
-> init进程的一大任务，就是去运行这些开机启动程序。
->
-> 但，不同场合需要启动不同的程序，比如用作服务器时，需要启动apache，用作桌面就不需要。
->
-> linux允许为不同的场合，分配不同的开机启动程序，这叫做“运行级别”（runlevel）。也就是，启动时根据“运行级别”，确定要运行哪些程序。
+##### 3、匹配行前插入
 
 ```
-操作系统 -> /boot -> init进程 -> 运行级别
+sed -i '/# Usage:/i\\\cp -rf kymoc /usr/local/bin/kymoc' test
 ```
 
-linux系统有7个运行级别（runlevel）：
-
-* 运行级别0：系统停机状态，系统默认运行级别不能设为0，否则不能正常启动
-* 运行级别1：单用户工作状态，root权限，用户系统维护，禁止远程登录
-* 运行级别2：多用户状态（没有NFS）
-* 运行级别3：完全的多用户状态（有NFS），登录后进入控制台命令行模式
-* 运行级别4：系统未使用，保留
-* 运行级别5：x11控制台，登录后进入图形GUI模式
-* 运行级别6：系统正常关闭并重启，默认运行级别不能设为6，否则不能正常启动
-
-##### 3、系统初始化
-
-> 在init的配置文件中有这么一行： si::sysinit:/etc/rc.d/rc.sysinit 它调用执行了/etc/rc.d/rc.sysinit，而rc.sysinit是一个bash shell的脚本，它主要是完成一些系统初始化的工作，rc.sysinit是每一个运行级别都要首先运行的终于脚本。
->
-> 它主要完成的工作有：激活交换分区，检查磁盘，加载硬件模块以及其它一些需要优先执行的任务。
+##### 4、匹配行后追加
 
 ```
-15:5:wait:/etc/rc.d/rc 5
+sed -i '/# Usage:/a\INSTALL_KYMOC_SKIP_DOWNLOAD=true' test
 ```
 
-> 这一行表示以5为参数运行/etc/rc.d/rc,/etc/rc.d/rc是一个shell脚本，它接受5作为参数，去执行/etc/rc.d/rc5.d/目录下的所有的rc启动脚本，/etc/rc.d/rc5.d/目录中的这些启动脚本实际上都是一些连接文件，而不是真正的rc启动脚本，真正的rc启动脚本实际上都是放在/etc/rc.d/init.d/目录下。而这些rc启动搅拌有着类似的用法，它们接受start、stop、restart、status等参数。
+##### 5、最后一行后添加
 
 ```
-操作系统 -> /boot -> init进程 -> 运行级别 ->/etc/init.d
+sed  '$ahello'  1.txt
 ```
 
-##### 4、建立终端
-
-> rc执行完毕后，返回init。这时基本系统环境已经设置好了，各种守护进程也已经启动了。init接下来会打开6个终端，以便用户登录系统。
-
-##### 5、用户登录系统
-
-> 一般来说，用户的登录方式有三种：
-
-（1）命令行登录
-
-（2）ssh登录
-
-（3）图形界面登录
+##### 6、最后一行前插入
 
 ```
-操作系统 -> /boot -> init进程 -> 运行级别 -> /etc/init.d -> 用户登录
+sed '$ihello'  1.txt
 ```
 
-##### 6、图形模式与文字模式的切换方式
+##### 7、删除文中行
 
 ```
-操作系统 -> /boot -> init进程 -> 运行级别 -> /etc/init.d -> 用户登录 -> Login shell
+sed  '4d'  1.txt    #删除第四行
 ```
 
-##### 7、Linux 关机
+##### 8、删除匹配行
 
 ```
-正确的关机流程为：sync > shutdown > reboot > halt
+sed  '/123/d'   1.txt   #删除匹配123的行
+```
+
+##### 9、删除空行
+
+```
+sed  '/^$/d'    1.txt    #删除空行
 ```
 
 ## 三、dd命令
@@ -247,13 +214,14 @@ dd if=/root/1Gb.file bs=64k | dd of=/dev/null
 dd if=/dev/zero of=./test.txt bs=1k count=1
 
 #禁止标准输出
-cat /etc/hosts >/dev/null
+rm -rf /proc/cpuinfo >/dev/null
 
 #禁止标准错误
-cat /etc/hosts 2>/dev/null
+rm -rf /proc/cpuinfo 2>/dev/null
 
 #禁止标准输出和标准错误的输出
-cat /etc/hosts 2>/dev/null >/dev/null
+rm -rf /proc/cpuinfo 2>/dev/null >/dev/null
+rm -rf /proc/cpuinfo >/dev/null 2>&1
 ```
 
 ##### 14、dd测试磁盘io
@@ -508,7 +476,7 @@ iperf3 -s -p 5201 -i 10 -t 3600
 iperf3 -c 192.168.21.2 -p 5201
 ```
 
-### 十二、Python 环境切换
+## 十二、Python 环境切换
 
 ```
 update-alternatives --install /usr/bin/python python /usr/bin/python2 100
@@ -516,7 +484,7 @@ update-alternatives --install /usr/bin/python python /usr/bin/python3 150
 update-alternatives --config python
 ```
 
-### 十三、永久修改 DNS
+## 十三、永久修改 DNS
 
 ```
 vim /etc/systemd/resolved.conf
@@ -526,3 +494,114 @@ DNS=119.29.29.29
 systemctl restart systemd-resolved
 ```
 
+## 十四、内核模块自动加载
+
+```
+echo "test" > /etc/modules-load.d/test.conf
+cp test.ko /lib/modules/4.19.37-rt19/kernel/
+```
+
+## 十五、缺少stdio.h头文件
+
+```
+apt install -y build-essential
+```
+
+## 十六、C 多线性
+
+> -g gdb 调试
+
+```
+gcc server.c -g -o server -lpthread
+gdb ./server
+```
+
+## 十七、Linux系统启动过程
+
+> Linux系统的启动过程：内核引导、运行init、系统初始化、建立终端、用户登录系统
+
+##### 1、内核引导
+
+> 当计算机打开电源后，首先是BIOS开机自检，按照BIOS中设置的设备的启动设备（通常是硬盘）来启动。操作系统接管软件后，首先读入/boot目录下的内核文件。
+
+```
+操作系统 -> /boot
+```
+
+##### 2、运行 init
+
+> init进程是系统所有进程的起点，没有这个进程，系统中任何进程都不会启动。init程序首先是需要读取配置文件/etc/inintab。
+
+```
+操作系统 -> /boot -> init进程
+```
+
+###### 运行级别
+
+> 许多程序需要开机启动。windows叫做“服务”（service）在linux叫做“守护进程”（daemon）。
+>
+> init进程的一大任务，就是去运行这些开机启动程序。
+>
+> 但，不同场合需要启动不同的程序，比如用作服务器时，需要启动apache，用作桌面就不需要。
+>
+> linux允许为不同的场合，分配不同的开机启动程序，这叫做“运行级别”（runlevel）。也就是，启动时根据“运行级别”，确定要运行哪些程序。
+
+```
+操作系统 -> /boot -> init进程 -> 运行级别
+```
+
+linux系统有7个运行级别（runlevel）：
+
+* 运行级别0：系统停机状态，系统默认运行级别不能设为0，否则不能正常启动
+* 运行级别1：单用户工作状态，root权限，用户系统维护，禁止远程登录
+* 运行级别2：多用户状态（没有NFS）
+* 运行级别3：完全的多用户状态（有NFS），登录后进入控制台命令行模式
+* 运行级别4：系统未使用，保留
+* 运行级别5：x11控制台，登录后进入图形GUI模式
+* 运行级别6：系统正常关闭并重启，默认运行级别不能设为6，否则不能正常启动
+
+##### 3、系统初始化
+
+> 在init的配置文件中有这么一行： si::sysinit:/etc/rc.d/rc.sysinit 它调用执行了/etc/rc.d/rc.sysinit，而rc.sysinit是一个bash shell的脚本，它主要是完成一些系统初始化的工作，rc.sysinit是每一个运行级别都要首先运行的终于脚本。
+>
+> 它主要完成的工作有：激活交换分区，检查磁盘，加载硬件模块以及其它一些需要优先执行的任务。
+
+```
+15:5:wait:/etc/rc.d/rc 5
+```
+
+> 这一行表示以5为参数运行/etc/rc.d/rc,/etc/rc.d/rc是一个shell脚本，它接受5作为参数，去执行/etc/rc.d/rc5.d/目录下的所有的rc启动脚本，/etc/rc.d/rc5.d/目录中的这些启动脚本实际上都是一些连接文件，而不是真正的rc启动脚本，真正的rc启动脚本实际上都是放在/etc/rc.d/init.d/目录下。而这些rc启动搅拌有着类似的用法，它们接受start、stop、restart、status等参数。
+
+```
+操作系统 -> /boot -> init进程 -> 运行级别 ->/etc/init.d
+```
+
+##### 4、建立终端
+
+> rc执行完毕后，返回init。这时基本系统环境已经设置好了，各种守护进程也已经启动了。init接下来会打开6个终端，以便用户登录系统。
+
+##### 5、用户登录系统
+
+> 一般来说，用户的登录方式有三种：
+
+（1）命令行登录
+
+（2）ssh登录
+
+（3）图形界面登录
+
+```
+操作系统 -> /boot -> init进程 -> 运行级别 -> /etc/init.d -> 用户登录
+```
+
+##### 6、图形模式与文字模式的切换方式
+
+```
+操作系统 -> /boot -> init进程 -> 运行级别 -> /etc/init.d -> 用户登录 -> Login shell
+```
+
+##### 7、Linux 关机
+
+```
+正确的关机流程为：sync > shutdown > reboot > halt
+```

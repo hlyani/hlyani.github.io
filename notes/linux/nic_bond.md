@@ -1,6 +1,83 @@
 # 网络端口聚合绑定
 
+> mode=0 (balance-rr)
+> mode=1 (active-backup)
+> mode=2 (balance-xor)
+> mode=3 (broadcast)
+> mode=4 (802.3ad) lacp
+> mode=5 (balance-tlb)
+> mode=6 (balance-alb)
+
+# 一、bind 配置
+
+##### 1、netplan 网卡 bind 配置
+
+```
+cat /etc/netplan/00-installer-config.yaml
+network:
+  ethernets:
+    enp65s0f0:
+      addresses: []
+    enp65s0f1:
+      addresses: []
+  bonds:
+    eth0:
+      addresses: [192.168.0.61/24]
+      gateway4: 192.168.0.1
+      nameservers:
+        addresses: [114.114.114.114]
+      interfaces:
+        - enp65s0f0
+        - enp65s0f1
+      parameters:
+        mode: 802.3ad
+        mii-monitor-interval: 100
+        lacp-rate: fast
+        transmit-hash-policy: layer3+4
+```
+
+##### 2、交换机配置
+
+```
+sys
+display current-configuration
+
+interface GigabitEthernet 0/0/3
+undo port link-type
+undo port default vlan
+
+nterface GigabitEthernet 0/0/4
+undo port link-type
+undo port default vlan
+
+interface Eth-Trunk 1
+mode lacp
+port link-type access
+port default vlan 20
+max active-linknumber 2
+
+interface GigabitEthernet 0/0/3
+eth-trunk 1
+lacp priority 100
+
+nterface GigabitEthernet 0/0/4
+eth-trunk 1
+lacp priority 100
+
+display trunkmembership eth-trunk 1
+display eth-trunk 1
+```
+
+##### 3、查看 bond 网卡
+
+```
+cat /proc/net/bonding/eth0
+```
+
+# 三、其他
+
 ##### 1、centos网卡绑定
+
 ```
 /etc/sysconfig/network-scripts/ifcfg-eth0
 

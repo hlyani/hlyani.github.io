@@ -332,3 +332,9 @@ systemctl daemon-reload
 systemctl restart docker
 ```
 
+# 十、强制删除容器应用
+
+```
+helm uninstall --timeout 1s detection-backend & kubectl get po -o=name|grep detection-backend|xargs kubectl delete --grace-period=0 --force
+```
+

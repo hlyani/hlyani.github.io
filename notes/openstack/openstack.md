@@ -110,5 +110,11 @@ chpasswd:
 nova boot --user-data=userdata
 ```
 
+##### 8、修改cpu quota
 
+```
+openstack quota list --compute
+openstack quota set --cores 200 c2978d74024447b7bf0cacbd4b4e9af6
+#openstack quota set --cores -1 c2978d74024447b7bf0cacbd4b4e9af6
+```
 

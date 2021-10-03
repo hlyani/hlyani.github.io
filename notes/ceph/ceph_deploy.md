@@ -167,9 +167,12 @@ rbd pool init rbd
 rbd create --size 1024 rbd/test
 
 #开机自动映射
+ls /etc/ceph/
+ceph.client.guest.keyring  ceph.conf  rbdmap
+
 vim /etc/ceph/rbdmap
-#poolname/imagename     id=client,keyring=/etc/ceph/ceph.client.keyring
-rbd/test
+#poolname/imagename     id=client,keyring=/etc/ceph/ceph.client.guest.keyring
+rbd/test id=guest,keyring=/etc/ceph/ceph.client.guest.keyring
 
 vim /etc/fstab
 /dev/rbd0 /test xfs noatime,_netdev,defaults 0 0
@@ -301,7 +304,42 @@ ceph mds stat
 
 ## 9、FAQ
 
-### 1、时间同步问题
+### 1、新版本特性问题
+
+> rbd: image foo: image uses unsupported features: 0x38
+
+```
+rbd info foo
+
+rbd image 'foo':
+    size 1024 MB in 256 objects
+    order 22 (4096 kB objects)
+    block_name_prefix: rbd_data.10612ae7234b
+    format: 2    features: layering, exclusive-lock, object-map, fast-diff, deep-flatten
+    flags:
+layering: 支持分层
+striping: 支持条带化 v2
+exclusive-lock: 支持独占锁
+object-map: 支持对象映射（依赖 exclusive-lock ）
+fast-diff: 快速计算差异（依赖 object-map ）
+deep-flatten: 支持快照扁平化操作
+journaling: 支持记录 IO 操作（依赖独占锁）
+```
+
+```
+rbd feature disable foo exclusive-lock, object-map, fast-diff, deep-flatten
+```
+
+### 2、源
+
+```
+echo "deb https://download.ceph.com/debian-octopus/ bionic main" > /etc/apt/sources.list.d/ceph.list
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E84AC2C0460F3994
+apt update
+apt install ceph-common
+```
+
+### 3、时间同步问题
 
 ```
 vim /etc/chrony/chrony.conf
@@ -311,7 +349,7 @@ allow 192.168.0.0/24
 chronyc sources -v
 ```
 
-### 2、ceph在容器启动前先启动
+### 4、ceph在容器启动前先启动
 
 ```
 需要在每个节点的 service 中添加 docker.service，等 docker 先启动
@@ -838,3 +876,10 @@ rados -p gnocchi-cache cache-flush-evict-all
 ```
 ceph osd pool application enable k8s rbd
 ```
+
+##### 8、手动刷新 ceph-cache
+
+```
+rados -p cache cache-flush-evict-all
+```
+

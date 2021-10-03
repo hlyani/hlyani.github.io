@@ -133,3 +133,102 @@ update lbaas_loadbalancers set provisioning_status='ACTIVE' where id='c3b48167-9
 verify_glance_signatures=disabled
 ```
 
+## 九、cinder 配置
+
+> cinder.conf
+
+```
+[DEFAULT]
+enable_force_upload = true
+verify_glance_signatures = disabled
+```
+
+```
+enable_force_upload = true
+表示卷上传为镜像时，允许在 in-use 状态上传。
+
+verify_glance_signatures = disabled
+表示在创建虚拟机时选择创建新卷的方式，不检查镜像是否签名正确。 如果不增加该配置，从卷创建的镜像无法直接启动虚拟机，并且后端报错为无法创建硬盘（尝试多次均失败，无关键问题信息）。
+```
+
+## 十、nova 配置
+
+> nova.conf
+
+```
+[DEFAULT]
+resize_confirm_window = 1
+allow_resize_to_same_host = true
+```
+
+```
+resize_confirm_window = 1
+表示1s后自动确认修改。
+在 resize 虚拟机时，需要再次确认修改。增加该配置，无需手动确认。
+
+allow_resize_to_same_host = true
+允许 resize 虚拟机时，调度到同一台主机上。
+```
+
+```
+resize_confirm_window = 0
+自动确认时间
+0是禁用
+1代表1s后自动确认
+```
+
+## 十一、keystone 配置
+
+```
+policy.yaml
+
+# 提权，让普通用户也可以查询角色信息。api 在登录时会向 openstack 查询权限信息，并返回给前端使用。
+# 如果登录时不反回角色信息，前端无法渲染合适的页面给多种角色。
+"identity:list_role_assignments": "(role:reader and system_scope:all) or (role:reader and domain_id:%(target.domain_id)s) or (role:__member__) or (role:member)"
+```
+
+```
+用户、角色、项目，这三者共同协作实现了权限功能。
+一个用户在不同的项目下可以具有不同的角色，不同的角色对应着不同的行为。
+认证方式：
+
+project_id + 无作用域 token。出现此类认证方式是为了减少反复生成token，一份token可以无缝在多个项目下使用。
+有作用域的 token。 不建议采用此类方式
+用户名密码。不建议采用此类方式
+
+
+角色介绍
+openstack 内置了多个可用角色，目前常用角色为 admin、member。
+admin 角色： 在该项目下，用户具有超级管理员权限，可以管理所有项目的资源（不包含特殊资源，比如 swift、keypair）。
+member 角色： 在该项目下，用户具有项目管理员权限，可以管理该项目下的所有资源（不包含特殊资源，比如 keypair）。
+当前项目需求，增加一个新的角色，该角色权限低于 member。本意为只允许使用项目基本资源，而不能管理项目基本资源。
+junior_member 角色： 在该项目下，用户仅能使用基本资源，无法管理基本资源。
+角色是实际权限行为由 policy 中的规则控制。每个组件对应一个 policy，分别控制组件自身的权限。
+创建一个新的角色，通常意味着需要改写 policy 文件来生成对应的实际控制权限。
+
+policy 文件编写注意事项
+新创建的角色实际权限等同于member。
+通过网络组件进行测试，内置角色之间似乎存在继承的关系，因此改变一个内置角色的权限，可能会影响其它的内置角色。（未深究）
+在使用 kolla-ansible 进行部署时，注意不同版本支持的编写方式不同。当前 T 版本的 kolla-ansible 不支持 neutron policy.yaml，不支持 nova 的 policy 配置。
+
+junior_member 实际权限参考
+其它权限参考member。
+额外权限限制：
+网络
+禁止创建网络
+禁止修改网络
+禁止删除网络
+禁止创建子网
+禁止修改子网
+禁止删除子网
+路由
+禁止创建路由
+禁止修改路由
+禁止删除路由
+禁止更新外网
+禁止添加，删除子网
+浮动ip
+禁止创建浮动ip
+禁止删除浮动ip
+```
+
