@@ -1,5 +1,890 @@
 # k8s 使用 ceph 储存
 
+# 一、latest
+
+## 1、创建pool
+
+```
+ceph osd pool create k8s
+rbd pool init k8s
+```
+
+## 2、配置 ceph-csi
+
+##### 1、生成 ceph client 认证
+
+```
+ceph auth get-or-create client.k8s mon 'profile rbd' osd 'profile rbd pool=k8s' mgr 'profile rbd pool=k8s'
+[client.k8s]
+    key = AQD9o0Fd6hQRChAAt7fMaSZXduT3NWEqylNpmg==
+```
+
+##### 2、生成 ceph-csi configmap
+
+```
+ceph mon dump
+<...>
+fsid b9127830-b0cc-4e34-aa47-9d1a2e9949a8
+<...>
+0: [v2:192.168.1.1:3300/0,v1:192.168.1.1:6789/0] mon.a
+1: [v2:192.168.1.2:3300/0,v1:192.168.1.2:6789/0] mon.b
+2: [v2:192.168.1.3:3300/0,v1:192.168.1.3:6789/0] mon.c
+```
+
+```
+cat <<EOF > csi-config-map.yaml
+---
+apiVersion: v1
+kind: ConfigMap
+data:
+  config.json: |-
+    [
+      {
+        "clusterID": "b9127830-b0cc-4e34-aa47-9d1a2e9949a8",
+        "monitors": [
+          "192.168.1.1:6789",
+          "192.168.1.2:6789",
+          "192.168.1.3:6789"
+        ]
+      }
+    ]
+metadata:
+  name: ceph-csi-config
+EOF
+```
+
+```
+kubectl apply -f csi-config-map.yaml
+```
+
+```
+cat <<EOF > csi-kms-config-map.yaml
+---
+apiVersion: v1
+kind: ConfigMap
+data:
+  config.json: |-
+    {}
+metadata:
+  name: ceph-csi-encryption-kms-config
+EOF
+```
+
+```
+kubectl apply -f csi-kms-config-map.yaml
+```
+
+```
+cat <<EOF > ceph-config-map.yaml
+---
+apiVersion: v1
+kind: ConfigMap
+data:
+  ceph.conf: |
+    [global]
+    auth_cluster_required = cephx
+    auth_service_required = cephx
+    auth_client_required = cephx
+  # keyring is a required key and its value should be empty
+  keyring: |
+metadata:
+  name: ceph-config
+EOF
+```
+
+```
+kubectl apply -f ceph-config-map.yaml
+```
+
+##### 3、生成 ceph-csi cephx secret
+
+```
+cat <<EOF > csi-rbd-secret.yaml
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: csi-rbd-secret
+  namespace: default
+stringData:
+  userID: k8s
+  userKey: AQD9o0Fd6hQRChAAt7fMaSZXduT3NWEqylNpmg==
+EOF
+```
+
+```
+kubectl apply -f csi-rbd-secret.yaml
+```
+
+##### 4、配置 ceph-csi 插件
+
+```
+cat <<EOF > csi-provisioner-rbac.yaml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: rbd-csi-provisioner
+  # replace with non-default namespace name
+  namespace: default
+
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: rbd-external-provisioner-runner
+rules:
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["list", "watch", "create", "update", "patch"]
+  - apiGroups: [""]
+    resources: ["persistentvolumes"]
+    verbs: ["get", "list", "watch", "create", "update", "delete", "patch"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims"]
+    verbs: ["get", "list", "watch", "update"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims/status"]
+    verbs: ["update", "patch"]
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["storageclasses"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["snapshot.storage.k8s.io"]
+    resources: ["volumesnapshots"]
+    verbs: ["get", "list", "patch"]
+  - apiGroups: ["snapshot.storage.k8s.io"]
+    resources: ["volumesnapshots/status"]
+    verbs: ["get", "list", "patch"]
+  - apiGroups: ["snapshot.storage.k8s.io"]
+    resources: ["volumesnapshotcontents"]
+    verbs: ["create", "get", "list", "watch", "update", "delete", "patch"]
+  - apiGroups: ["snapshot.storage.k8s.io"]
+    resources: ["volumesnapshotclasses"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["volumeattachments"]
+    verbs: ["get", "list", "watch", "update", "patch"]
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["volumeattachments/status"]
+    verbs: ["patch"]
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["csinodes"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["snapshot.storage.k8s.io"]
+    resources: ["volumesnapshotcontents/status"]
+    verbs: ["update", "patch"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["serviceaccounts"]
+    verbs: ["get"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: rbd-csi-provisioner-role
+subjects:
+  - kind: ServiceAccount
+    name: rbd-csi-provisioner
+    # replace with non-default namespace name
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: rbd-external-provisioner-runner
+  apiGroup: rbac.authorization.k8s.io
+
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  # replace with non-default namespace name
+  namespace: default
+  name: rbd-external-provisioner-cfg
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "list", "watch", "create", "update", "delete"]
+  - apiGroups: ["coordination.k8s.io"]
+    resources: ["leases"]
+    verbs: ["get", "watch", "list", "delete", "update", "create"]
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: rbd-csi-provisioner-role-cfg
+  # replace with non-default namespace name
+  namespace: default
+subjects:
+  - kind: ServiceAccount
+    name: rbd-csi-provisioner
+    # replace with non-default namespace name
+    namespace: default
+roleRef:
+  kind: Role
+  name: rbd-external-provisioner-cfg
+  apiGroup: rbac.authorization.k8s.io
+EOF
+```
+
+```
+cat <<EOF > csi-nodeplugin-rbac.yaml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: rbd-csi-nodeplugin
+  # replace with non-default namespace name
+  namespace: default
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: rbd-csi-nodeplugin
+rules:
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["get"]
+  # allow to read Vault Token and connection options from the Tenants namespace
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["serviceaccounts"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["persistentvolumes"]
+    verbs: ["get"]
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["volumeattachments"]
+    verbs: ["list", "get"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: rbd-csi-nodeplugin
+subjects:
+  - kind: ServiceAccount
+    name: rbd-csi-nodeplugin
+    # replace with non-default namespace name
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: rbd-csi-nodeplugin
+  apiGroup: rbac.authorization.k8s.io
+EOF
+```
+
+```
+kubectl apply -f https://raw.githubusercontent.com/ceph/ceph-csi/master/deploy/rbd/kubernetes/csi-provisioner-rbac.yaml
+kubectl apply -f https://raw.githubusercontent.com/ceph/ceph-csi/master/deploy/rbd/kubernetes/csi-nodeplugin-rbac.yaml
+```
+
+```
+cat <<EOF > csi-rbdplugin-provisioner.yaml
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: csi-rbdplugin-provisioner
+  # replace with non-default namespace name
+  namespace: default
+  labels:
+    app: csi-metrics
+spec:
+  selector:
+    app: csi-rbdplugin-provisioner
+  ports:
+    - name: http-metrics
+      port: 8080
+      protocol: TCP
+      targetPort: 8680
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: csi-rbdplugin-provisioner
+  # replace with non-default namespace name
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: csi-rbdplugin-provisioner
+  template:
+    metadata:
+      labels:
+        app: csi-rbdplugin-provisioner
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - csi-rbdplugin-provisioner
+              topologyKey: "kubernetes.io/hostname"
+      serviceAccountName: rbd-csi-provisioner
+      priorityClassName: system-cluster-critical
+      containers:
+        - name: csi-provisioner
+          image: k8s.gcr.io/sig-storage/csi-provisioner:v3.1.0
+          args:
+            - "--csi-address=$(ADDRESS)"
+            - "--v=5"
+            - "--timeout=150s"
+            - "--retry-interval-start=500ms"
+            - "--leader-election=true"
+            #  set it to true to use topology based provisioning
+            - "--feature-gates=Topology=false"
+            # if fstype is not specified in storageclass, ext4 is default
+            - "--default-fstype=ext4"
+            - "--extra-create-metadata=true"
+          env:
+            - name: ADDRESS
+              value: unix:///csi/csi-provisioner.sock
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+        - name: csi-snapshotter
+          image: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
+          args:
+            - "--csi-address=$(ADDRESS)"
+            - "--v=5"
+            - "--timeout=150s"
+            - "--leader-election=true"
+          env:
+            - name: ADDRESS
+              value: unix:///csi/csi-provisioner.sock
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+        - name: csi-attacher
+          image: k8s.gcr.io/sig-storage/csi-attacher:v3.4.0
+          args:
+            - "--v=5"
+            - "--csi-address=$(ADDRESS)"
+            - "--leader-election=true"
+            - "--retry-interval-start=500ms"
+          env:
+            - name: ADDRESS
+              value: /csi/csi-provisioner.sock
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+        - name: csi-resizer
+          image: k8s.gcr.io/sig-storage/csi-resizer:v1.4.0
+          args:
+            - "--csi-address=$(ADDRESS)"
+            - "--v=5"
+            - "--timeout=150s"
+            - "--leader-election"
+            - "--retry-interval-start=500ms"
+            - "--handle-volume-inuse-error=false"
+          env:
+            - name: ADDRESS
+              value: unix:///csi/csi-provisioner.sock
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+        - name: csi-rbdplugin
+          # for stable functionality replace canary with latest release version
+          image: quay.io/cephcsi/cephcsi:canary
+          args:
+            - "--nodeid=$(NODE_ID)"
+            - "--type=rbd"
+            - "--controllerserver=true"
+            - "--endpoint=$(CSI_ENDPOINT)"
+            - "--csi-addons-endpoint=$(CSI_ADDONS_ENDPOINT)"
+            - "--v=5"
+            - "--drivername=rbd.csi.ceph.com"
+            - "--pidlimit=-1"
+            - "--rbdhardmaxclonedepth=8"
+            - "--rbdsoftmaxclonedepth=4"
+            - "--enableprofiling=false"
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: NODE_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            # - name: KMS_CONFIGMAP_NAME
+            #   value: encryptionConfig
+            - name: CSI_ENDPOINT
+              value: unix:///csi/csi-provisioner.sock
+            - name: CSI_ADDONS_ENDPOINT
+              value: unix:///csi/csi-addons.sock
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+            - mountPath: /dev
+              name: host-dev
+            - mountPath: /sys
+              name: host-sys
+            - mountPath: /lib/modules
+              name: lib-modules
+              readOnly: true
+            - name: ceph-csi-config
+              mountPath: /etc/ceph-csi-config/
+            - name: ceph-csi-encryption-kms-config
+              mountPath: /etc/ceph-csi-encryption-kms-config/
+            - name: keys-tmp-dir
+              mountPath: /tmp/csi/keys
+            - name: ceph-config
+              mountPath: /etc/ceph/
+        - name: csi-rbdplugin-controller
+          # for stable functionality replace canary with latest release version
+          image: quay.io/cephcsi/cephcsi:canary
+          args:
+            - "--type=controller"
+            - "--v=5"
+            - "--drivername=rbd.csi.ceph.com"
+            - "--drivernamespace=$(DRIVER_NAMESPACE)"
+          env:
+            - name: DRIVER_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - name: ceph-csi-config
+              mountPath: /etc/ceph-csi-config/
+            - name: keys-tmp-dir
+              mountPath: /tmp/csi/keys
+            - name: ceph-config
+              mountPath: /etc/ceph/
+        - name: liveness-prometheus
+          image: quay.io/cephcsi/cephcsi:canary
+          args:
+            - "--type=liveness"
+            - "--endpoint=$(CSI_ENDPOINT)"
+            - "--metricsport=8680"
+            - "--metricspath=/metrics"
+            - "--polltime=60s"
+            - "--timeout=3s"
+          env:
+            - name: CSI_ENDPOINT
+              value: unix:///csi/csi-provisioner.sock
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+          imagePullPolicy: "IfNotPresent"
+      volumes:
+        - name: host-dev
+          hostPath:
+            path: /dev
+        - name: host-sys
+          hostPath:
+            path: /sys
+        - name: lib-modules
+          hostPath:
+            path: /lib/modules
+        - name: socket-dir
+          emptyDir: {
+            medium: "Memory"
+          }
+        - name: ceph-config
+          configMap:
+            name: ceph-config
+        - name: ceph-csi-config
+          configMap:
+            name: ceph-csi-config
+        - name: ceph-csi-encryption-kms-config
+          configMap:
+            name: ceph-csi-encryption-kms-config
+        - name: keys-tmp-dir
+          emptyDir: {
+            medium: "Memory"
+          }
+EOF
+```
+
+```
+cat <<EOF > csi-rbdplugin.yaml
+---
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  name: csi-rbdplugin
+  # replace with non-default namespace name
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: csi-rbdplugin
+  template:
+    metadata:
+      labels:
+        app: csi-rbdplugin
+    spec:
+      serviceAccountName: rbd-csi-nodeplugin
+      hostNetwork: true
+      hostPID: true
+      priorityClassName: system-node-critical
+      # to use e.g. Rook orchestrated cluster, and mons' FQDN is
+      # resolved through k8s service, set dns policy to cluster first
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: driver-registrar
+          # This is necessary only for systems with SELinux, where
+          # non-privileged sidecar containers cannot access unix domain socket
+          # created by privileged CSI driver container.
+          securityContext:
+            privileged: true
+          image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.4.0
+          args:
+            - "--v=5"
+            - "--csi-address=/csi/csi.sock"
+            - "--kubelet-registration-path=/var/lib/kubelet/plugins/rbd.csi.ceph.com/csi.sock"
+          env:
+            - name: KUBE_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+            - name: registration-dir
+              mountPath: /registration
+        - name: csi-rbdplugin
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["SYS_ADMIN"]
+            allowPrivilegeEscalation: true
+          # for stable functionality replace canary with latest release version
+          image: quay.io/cephcsi/cephcsi:canary
+          args:
+            - "--nodeid=$(NODE_ID)"
+            - "--pluginpath=/var/lib/kubelet/plugins"
+            - "--stagingpath=/var/lib/kubelet/plugins/kubernetes.io/csi/pv/"
+            - "--type=rbd"
+            - "--nodeserver=true"
+            - "--endpoint=$(CSI_ENDPOINT)"
+            - "--csi-addons-endpoint=$(CSI_ADDONS_ENDPOINT)"
+            - "--v=5"
+            - "--drivername=rbd.csi.ceph.com"
+            - "--enableprofiling=false"
+            # If topology based provisioning is desired, configure required
+            # node labels representing the nodes topology domain
+            # and pass the label names below, for CSI to consume and advertise
+            # its equivalent topology domain
+            # - "--domainlabels=failure-domain/region,failure-domain/zone"
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: NODE_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            # - name: KMS_CONFIGMAP_NAME
+            #   value: encryptionConfig
+            - name: CSI_ENDPOINT
+              value: unix:///csi/csi.sock
+            - name: CSI_ADDONS_ENDPOINT
+              value: unix:///csi/csi-addons.sock
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+            - mountPath: /dev
+              name: host-dev
+            - mountPath: /sys
+              name: host-sys
+            - mountPath: /run/mount
+              name: host-mount
+            - mountPath: /etc/selinux
+              name: etc-selinux
+              readOnly: true
+            - mountPath: /lib/modules
+              name: lib-modules
+              readOnly: true
+            - name: ceph-csi-config
+              mountPath: /etc/ceph-csi-config/
+            - name: ceph-csi-encryption-kms-config
+              mountPath: /etc/ceph-csi-encryption-kms-config/
+            - name: plugin-dir
+              mountPath: /var/lib/kubelet/plugins
+              mountPropagation: "Bidirectional"
+            - name: mountpoint-dir
+              mountPath: /var/lib/kubelet/pods
+              mountPropagation: "Bidirectional"
+            - name: keys-tmp-dir
+              mountPath: /tmp/csi/keys
+            - name: ceph-logdir
+              mountPath: /var/log/ceph
+            - name: ceph-config
+              mountPath: /etc/ceph/
+        - name: liveness-prometheus
+          securityContext:
+            privileged: true
+          image: quay.io/cephcsi/cephcsi:canary
+          args:
+            - "--type=liveness"
+            - "--endpoint=$(CSI_ENDPOINT)"
+            - "--metricsport=8680"
+            - "--metricspath=/metrics"
+            - "--polltime=60s"
+            - "--timeout=3s"
+          env:
+            - name: CSI_ENDPOINT
+              value: unix:///csi/csi.sock
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+          imagePullPolicy: "IfNotPresent"
+      volumes:
+        - name: socket-dir
+          hostPath:
+            path: /var/lib/kubelet/plugins/rbd.csi.ceph.com
+            type: DirectoryOrCreate
+        - name: plugin-dir
+          hostPath:
+            path: /var/lib/kubelet/plugins
+            type: Directory
+        - name: mountpoint-dir
+          hostPath:
+            path: /var/lib/kubelet/pods
+            type: DirectoryOrCreate
+        - name: ceph-logdir
+          hostPath:
+            path: /var/log/ceph
+            type: DirectoryOrCreate
+        - name: registration-dir
+          hostPath:
+            path: /var/lib/kubelet/plugins_registry/
+            type: Directory
+        - name: host-dev
+          hostPath:
+            path: /dev
+        - name: host-sys
+          hostPath:
+            path: /sys
+        - name: etc-selinux
+          hostPath:
+            path: /etc/selinux
+        - name: host-mount
+          hostPath:
+            path: /run/mount
+        - name: lib-modules
+          hostPath:
+            path: /lib/modules
+        - name: ceph-config
+          configMap:
+            name: ceph-config
+        - name: ceph-csi-config
+          configMap:
+            name: ceph-csi-config
+        - name: ceph-csi-encryption-kms-config
+          configMap:
+            name: ceph-csi-encryption-kms-config
+        - name: keys-tmp-dir
+          emptyDir: {
+            medium: "Memory"
+          }
+---
+# This is a service to expose the liveness metrics
+apiVersion: v1
+kind: Service
+metadata:
+  name: csi-metrics-rbdplugin
+  # replace with non-default namespace name
+  namespace: default
+  labels:
+    app: csi-metrics
+spec:
+  ports:
+    - name: http-metrics
+      port: 8080
+      protocol: TCP
+      targetPort: 8680
+  selector:
+    app: csi-rbdplugin
+EOF
+```
+
+```
+wget https://raw.githubusercontent.com/ceph/ceph-csi/master/deploy/rbd/kubernetes/csi-rbdplugin-provisioner.yaml
+kubectl apply -f csi-rbdplugin-provisioner.yaml
+wget https://raw.githubusercontent.com/ceph/ceph-csi/master/deploy/rbd/kubernetes/csi-rbdplugin.yaml
+kubectl apply -f csi-rbdplugin.yaml
+```
+
+## 3、使用 ceph 块设备
+
+##### 1、创建 storageclass
+
+```
+cat <<EOF > csi-rbd-sc.yaml
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+   name: csi-rbd-sc
+provisioner: rbd.csi.ceph.com
+parameters:
+   clusterID: b9127830-b0cc-4e34-aa47-9d1a2e9949a8
+   pool: k8s
+   imageFeatures: layering
+   csi.storage.k8s.io/provisioner-secret-name: csi-rbd-secret
+   csi.storage.k8s.io/provisioner-secret-namespace: default
+   csi.storage.k8s.io/controller-expand-secret-name: csi-rbd-secret
+   csi.storage.k8s.io/controller-expand-secret-namespace: default
+   csi.storage.k8s.io/node-stage-secret-name: csi-rbd-secret
+   csi.storage.k8s.io/node-stage-secret-namespace: default
+reclaimPolicy: Delete
+allowVolumeExpansion: true
+mountOptions:
+   - discard
+EOF
+```
+
+```
+kubectl apply -f csi-rbd-sc.yaml
+```
+
+##### 2、创建 PesistentVolumeClaim
+
+```
+cat <<EOF > raw-block-pvc.yaml
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: raw-block-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Block
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: csi-rbd-sc
+EOF
+```
+
+```
+kubectl apply -f raw-block-pvc.yaml
+```
+
+```
+cat <<EOF > raw-block-pod.yaml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-raw-block-volume
+spec:
+  containers:
+    - name: fc-container
+      image: fedora:26
+      command: ["/bin/sh", "-c"]
+      args: ["tail -f /dev/null"]
+      volumeDevices:
+        - name: data
+          devicePath: /dev/xvda
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: raw-block-pvc
+EOF
+```
+
+```
+kubectl apply -f raw-block-pod.yaml
+```
+
+```
+cat <<EOF > pvc.yaml
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: rbd-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: csi-rbd-sc
+EOF
+```
+
+```
+kubectl apply -f pvc.yaml
+```
+
+## 4、使用 demo
+
+```
+cat <<EOF > pod.yaml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: csi-rbd-demo-pod
+spec:
+  containers:
+    - name: web-server
+      image: nginx
+      volumeMounts:
+        - name: mypvc
+          mountPath: /var/lib/www/html
+  volumes:
+    - name: mypvc
+      persistentVolumeClaim:
+        claimName: rbd-pvc
+        readOnly: false
+EOF
+```
+
+```
+kubectl apply -f pod.yaml
+```
+
+# 二、before
+
 ### 一、介绍
 
 [https://medium.com/velotio-perspectives/an-innovators-guide-to-kubernetes-storage-using-ceph-a4b919f4e469](https://medium.com/velotio-perspectives/an-innovators-guide-to-kubernetes-storage-using-ceph-a4b919f4e469)

@@ -12,13 +12,14 @@ yum -y install tunctl bridge-utils
 
 ```
 cat <<EOF > /etc/sysconfig/network-scripts/ifcfg-br0
-TYPE="Bridge"
-DEVICE="br0"
-ONBOOT="yes"
-BOOTPROTO="static"
-IPADDR="192.168.1.10"
-NETMASK="255.255.255.0"
-GATEWAY="192.168.1.1"
+TYPE=Bridge
+DEVICE=br0
+ONBOOT=yes
+BOOTPROTO=static
+IPADDR=192.168.0.10
+NETMASK=255.255.255.0
+GATEWAY=192.168.0.1
+DNS1=114.114.114.114
 EOF
 ```
 
@@ -26,9 +27,9 @@ EOF
 
 ```
 cat <<EOF > /etc/sysconfig/network-scripts/ifcfg-eth0
-TYPE="Ethernet"
-DEVICE="eth0"
-ONBOOT="yes"
+TYPE=Ethernet
+DEVICE=eth0
+ONBOOT=yes
 BRIDGE=br0           
 EOF
 ```

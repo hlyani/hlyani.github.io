@@ -77,6 +77,10 @@ readinessProbe:
 ### 1、给节点打标签
 
 ```
+kubectl label nodes node2 node-role.kubernetes.io/worker=
+```
+
+```
 kubectl label no node1 disktype=ssd
 
 spec:
@@ -336,5 +340,16 @@ systemctl restart docker
 
 ```
 helm uninstall --timeout 1s detection-backend & kubectl get po -o=name|grep detection-backend|xargs kubectl delete --grace-period=0 --force
+```
+
+# 十一、证书更新
+
+[https://github.com/hlyani/kubernetes1.17.3](https://github.com/hlyani/kubernetes1.17.3)
+
+```
+wget https://raw.githubusercontent.com/hlyani/kubernetes1.17.3/master/update-kubeadm-cert.sh
+chmod +x update-kubeadm-cert.sh
+./update-kubeadm-cert.sh all
+./update-kubeadm-cert.sh master
 ```
 

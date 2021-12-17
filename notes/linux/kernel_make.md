@@ -112,6 +112,8 @@ make menuconfig 基于文本模式的菜单模式
 make oldconfig
 make defconfig
 make localmodconfig
+make clean
+make distclean
 ```
 
 # 三、FAQ
@@ -136,7 +138,6 @@ ARM64_VA_BITS_48
 > CONFIG_ARCH_MMAP_RND_COMPAT_BITS_MAX=16
 
 vim arch/arm64/Kconfig
-
   │ Symbol: ARM64_VA_BITS_48 [=y]                                                                                                                                                                   │  
   │ Type  : bool                                                                                                                                                                                    │  
   │ Prompt: 48-bit                                                                                                                                                                                  │  

@@ -1,12 +1,35 @@
 # helm 相关
 
-## 一、Helm v3
+## 一、快速安装
+
+[helm  release](https://github.com/helm/helm/releases)
+
+```
+wget https://get.helm.sh/helm-v3.8.0-linux-amd64.tar.gz
+tar -zxvf helm-*-linux-amd64.tar.gz
+cp helm /usr/local/bin/helm
+chmod 777 /usr/local/bin/helm
+```
+
+[https://github.com/chartmuseum/helm-push releases](https://github.com/chartmuseum/helm-push/releases)
+
+```
+wget https://github.com/chartmuseum/helm-push/releases/download/v0.10.2/helm-push_0.10.2_linux_amd64.tar.gz
+HELM_PUSH=${HOME}/.local/share/helm/plugins
+mkdir -p ${HELM_PUSH}
+tar -zxvf helm-push-*.tar.gz -C ${HELM_PUSH}
+
+cp registries.yaml /etc/cloud/k8s/
+systemctl restart k8s
+```
+
+## 二、Helm v3
 
 ![helmv3](../../imgs/helmv3.jpg)
 
 ![helm-v2-v3](../../imgs/helm-v2-v3.jpeg)
 
-## 二、Helm 客户端安装（v3.0.0）
+## 三、Helm 客户端安装（v3.0.0）
 
 ##### 1、使用官方脚本安装
 

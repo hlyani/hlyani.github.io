@@ -131,3 +131,18 @@ net-destroy default
 systemctl restart libvirtd
 ```
 
+##### 6、docker0与libvirt br0网桥冲突问题
+
+```
+touch /etc/docker/daemon.json
+
+vim /etc/docker/daemon.json
+{
+  "bridge": "br0",
+  "default-gateway": "192.168.0.1"
+}
+
+systemctl reload-daemon
+systemctl restart docker
+```
+

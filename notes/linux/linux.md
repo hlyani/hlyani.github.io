@@ -81,6 +81,13 @@ sed  '/123/d'   1.txt   #删除匹配123的行
 sed  '/^$/d'    1.txt    #删除空行
 ```
 
+##### 10、获取磁盘大小
+
+```
+lsblk -ndb -o SIZE /dev/sda
+blockdev --getsize64 /dev/sda
+```
+
 ## 三、dd命令
 
 ##### 1、参数
@@ -516,7 +523,19 @@ gcc server.c -g -o server -lpthread
 gdb ./server
 ```
 
-## 十七、Linux系统启动过程
+## 十七、tar 拆分
+
+> -b     b、k、m 单位
+>
+> yolov3.om 可以是文件，也可以是目录
+
+```
+tar -zcvf - yolov3.om | split -b 100M - yolov3.om_
+
+cat yolov3.om_a* | tar -zxvf -
+```
+
+## 十八、Linux系统启动过程
 
 > Linux系统的启动过程：内核引导、运行init、系统初始化、建立终端、用户登录系统
 

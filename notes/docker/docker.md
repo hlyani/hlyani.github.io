@@ -424,6 +424,26 @@ docker build --no-cache
 docker build –cache-from mongo:3.2 -t mongo:3.2.1 .
 ```
 
+## 35、docker远程访问
+
+```
+vim /lib/systemd/system/docker.service
+ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2376 -H fd:// --containerd=/run/containerd/containerd.sock
+```
+
+```
+systemctl daemon-reload
+service docker restart
+```
+
+```
+curl http://localhost:2375/version
+```
+
+```
+tcp://192.168.0.127:2376
+```
+
 # 二、linux实现docker资源隔离
 
 Linux 提供的主要的 NameSpace

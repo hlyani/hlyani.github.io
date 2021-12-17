@@ -34,13 +34,9 @@ echo "export PATH=$PATH:/usr/local/go/bin" |tee >> /etc/profile
 source /etc/profile
 ```
 
-
-
 ```
 git clone -b v1.8.2 --deph 1 https://github.com/kubeedge/kubeedge.git
 ```
-
-
 
 ```
 curl -LO https://github.com/kubeedge/kubeedge/releases/download/v1.8.2/kubeedge-v1.8.2-linux-amd64.tar.gz
@@ -54,8 +50,6 @@ curl -LO https://github.com/kubeedge/kubeedge/releases/download/v1.8.2/keadm-v1.
 curl -LO https://github.com/kubeedge/kubeedge/releases/download/v1.8.2/edgesite-v1.8.2-linux-amd64.tar.gz
 ```
 
-
-
 ```
 keadm init --kube-config=$KUBECONFIG --advertise-address=10.0.0.19
 keadm init --kube-config=./config --advertise-address=10.0.0.19
@@ -68,8 +62,6 @@ export HTTPS_PROXY=http://192.168.0.184:1080
 export HTTP_PROXY=http://192.168.0.184:1080
 keadm init --kube-config=/root/.kube/config --advertise-address=10.0.0.119 --kubeedge-version=1.8.2
 ```
-
-
 
 ```
 ./keadm init --advertise-address="10.0.0.119"
@@ -106,8 +98,6 @@ systemctl enable cloudcore
 systemctl start cloudcore
 ```
 
-
-
 # cloudcore
 
 ```
@@ -125,8 +115,6 @@ systemctl daemon-reload
 systemctl enable docker
 systemctl start docker
 ```
-
-
 
 ```
 mkdir -p /etc/kubeedge
@@ -165,13 +153,9 @@ curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
 apt-get install -y --allow-change-held-packages --allow-downgrades mosquitto
 ```
 
-
-
 ```
 dpkg -i edgecore/mosquitto/*.deb
 ```
-
-
 
 ```
 mkdir -p /etc/kubeedge
@@ -182,8 +166,6 @@ cp edgecore/kubeedge-v1.8.2-linux-amd64.tar.gz /etc/kubeedge/
 
 keadm join --cloudcore-ipport=10.0.0.122:10000 --edgenode-name=node2 --kubeedge-version=1.8.2 --token=2db9d4278daa18a1708e74899d2e85ba202d00f7ec72d3b7eea3056275b4281a.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzcwNjQ3MTB9.gsndb_AAlp809SustU1nk0aQZIDrjRVzB09ZeMDuRkc
 ```
-
-
 
 ```
 kubeedge-v1.8.2-linux-amd64.tar.gz checksum: 
@@ -204,10 +186,6 @@ kubeedge-v1.8.2-linux-amd64/version
 
 KubeEdge edgecore is running, For logs visit: journalctl -u edgecore.service -b
 ```
-
-
-
-
 
 开启使用kubectl logs
 
@@ -245,6 +223,21 @@ Environment="CHECK_EDGECORE_ENVIRONMENT=false"
 
 # 四、example
 
+> 云边协同计数器demo
+> 在中心云部署Web管理应用和控制后台应用。通过中心云部署应用到边缘计算节点，包含计数应用和伪计数设备。
+>
+> 通过浏览器登录Web，启动计数，控制后台应用将请求转发到相应边缘计算节点的计数应用中，计数应用收到请求调用伪计数设备进行计数并将结果输出到计数应用的容器日志中。
+>
+> Web管理应用也可点击停止计数，即将停止请求发送到边缘计算平台的计数应用中，计数应用停止调用伪计数设备，停止计数。
+
+```
+vim /etc/sysctl.conf
+net.ipv4.ip_forward=1
+
+systemctl restart network
+sysctl net.ipv4.ip_forward
+```
+
 ```
 cd examples/kubeedge-counter-demo/crds
 
@@ -255,7 +248,7 @@ kubectl create -f kubeedge-counter-model.yaml
 vim kubeedge-counter-instance.yaml
 - key: 'kubernetes.io/hostname'
   values:
-    - node2 #这里是节点名称
+    - edge0 # 边缘节点名称
         
 kubectl create -f examples/kubeedge-counter-demo/crds/kubeedge-counter-instance.yaml
 ```
@@ -271,9 +264,8 @@ beego.Run(":8089")
 make all
 make docker
 
-
 vim kubeedge-web-controller-app.yaml
-nodeName: node-1
+nodeName: node1
 
 kubectl create -f examples/kubeedge-counter-demo/crds/kubeedge-web-controller-app.yaml
 ```
@@ -298,5 +290,82 @@ docker logs -f counter-container-id
 
 ```
 http://192.168.0.127:8089
+```
+
+```
+ctr -n=k8s.io c ls
+```
+
+# 五、重新编译，跳过校验检查
+
+```
+vim kubeedge/keadm/cmd/keadm/app/cmd/util/common.go
+        if _, err = os.Stat(filePath); err == nil {
+                fmt.Printf("Expected or Default KubeEdge version %v is already downloaded and will checksum for it. \n", version)
+        /*      if success, _ := checkSum(filename, checksumFilename, version, options.TarballPath); !success {
+                        fmt.Printf("%v in your path checksum failed and do you want to delete this file and try to download again? \n", filename)
+                        for {
+                                confirm, err := askForconfirm()
+                                if err != nil {
+                                        fmt.Println(err.Error())
+                                        continue
+                                }
+                                if confirm {
+                                        cmdStr := fmt.Sprintf("cd %s && rm -f %s", options.TarballPath, filename)
+                                        if err := NewCommand(cmdStr).Exec(); err != nil {
+                                                return err
+                                        }
+                                        fmt.Printf("%v have been deleted and will try to download again\n", filename)
+                                        if err := retryDownload(filename, checksumFilename, version, options.TarballPath); err != nil {
+                                                return err
+                                        }
+                                } else {
+                                        fmt.Println("failed to checksum and will continue to install.")
+                                }
+                                break
+                        }
+                } else {
+                        fmt.Println("Expected or Default KubeEdge version", version, "is already downloaded")
+                }*/
+        } else if !os.IsNotExist(err) {
+                return err
+        } else {
+                if err := retryDownload(filename, checksumFilename, version, options.TarballPath); err != nil {
+                        return err
+                }
+        }
+```
+
+```
+vim kubeedge/keadm/cmd/keadm/app/cmd/util/rpminstaller.go
+
+        //      "yum -y install epel-release",
+        //      "yum -y install mosquitto",
+```
+
+```
+make all WHAT=keadm
+```
+
+```
+go build -o /opt/_output/local/bin/edgesite-agent -gcflags= -ldflags
+```
+
+```
+CGO_ENABLED=1 GO111MODULE=off go build -v -o /usr/local/bin/edgecore -ldflags="${GO_LDFLAGS} -w -s -extldflags -static" \
+```
+
+```
+./cloudcore  --version
+KubeEdge v1.9.1-1+aedc2e42be2203
+```
+
+```
+vim hack/lib/golang.sh
+goldflags="${GOLDFLAGS=-s -w -extldflags -static -buildid=} $(kubeedge::version::ldflags)"
+```
+
+```
+git describe --tags
 ```
 
