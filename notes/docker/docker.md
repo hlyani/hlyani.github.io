@@ -444,6 +444,225 @@ curl http://localhost:2375/version
 tcp://192.168.0.127:2376
 ```
 
+## 36、k8s http api server
+
+```
+kubectl proxy --address='0.0.0.0' --accept-hosts='^*$' --port=8080
+```
+
+## 37、docker 目录迁移
+
+##### 方法一
+
+```
+systemctl stop docker
+mv /var/lib/docker /data/
+#cp -arv /var/lib/docker /data/
+ln -s /data/docker /var/lib/docker
+systemctl start docker
+```
+
+##### 方法二
+
+```
+vim /lib/systemd/system/docker.service
+ExecStart=/usr/bin/dockerd --graph=/data/docker/
+```
+
+```
+vim /etc/docker/daemon.json
+{
+    "live-restore": true,
+    "graph": [ "/data/docker/" ]
+}
+```
+
+## 38、设备空间不足
+
+##### 1、磁盘用完
+
+```
+docker info
+
+du -d1 -h /var/lib/docker/containers | sort -h
+cat /dev/null > /var/lib/docker/containers/container_id/container_log_name
+
+```
+
+##### 2、容器默认大小限制
+
+> CentOS7 使用docker容器默认的创建大小为10GB
+
+```
+vim  /etc/docker/daemon.json
+{
+    "live-restore": true,
+    "storage-opt": [ "dm.basesize=20G" ]
+}
+```
+
+```
+systemctl stop docker
+rm -rf /var/lib/docker
+
+vim /usr/lib/systemd/system/docker.service
+ExecStart=/usr/bin/dockerd
+and change it to:
+ExecStart=/usr/bin/dockerd --storage-opt dm.basesize=20G
+
+systemctl daemon-reload
+systemctl start docker
+```
+
+##### 3、inode节点数满了
+
+> 文件存储在磁盘上，磁盘的最小存储单位叫做扇区（Sector）。每个扇区存储 512字节（0.5KB），操作系统读取硬盘的时候，不会一个扇区的读取，效率太低，而是一次性读取多个扇区，即一次性读取一个块（block）。这种由多个扇区组成的块，是文件系统存取的最小单位。块的大小，最常见的是4KB，即连续八个sector组成一个块。文件数据存储在块中，还必须找个一个地方存储文件的元数据，比如文件的创建者、文件的创建日期 、文件的大小等等。这种存储元数据的区域就叫做索引节点（inode）。每个文件都有对应的inode，里面包含了文件名以外的所有文件信息。
+
+> inode也会消耗磁盘空间，所以磁盘格式化的时候，操作系统自动将磁盘分为两个区域。一个是数据区，存放文件数据；另一个是inode区（inode table）存放inode所包含的信息。每个inode节点的大小，一般是128字节或256字节。inode节点的总数在格式化时就给定，一般是每1KB或每2KB就设置一个inode节点。
+
+```
+# 报错信息
+No space left on device
+
+# 查看系统的inode节点使用情况
+df -i
+
+# 尝试重新挂载
+mount -o remount -o noatime,nodiratime,inode64,nobarrier /dev/vda1
+```
+
+## 39、docker 容器文件损坏
+
+> 容器文件损坏，经常导致容器无法操作。正常的docker命令已经无法操控这台容器，无法关闭、重启、删除。
+
+> \# 操作容器遇到类似的错误
+> b'devicemapper: Error running deviceCreate (CreateSnapDeviceRaw) dm_task_run failed'
+
+```
+systemctl stop docker
+
+删除容器文件
+rm -rf /var/lib/docker/containers
+
+重新整理容器元数据
+thin_check /var/lib/docker/devicemapper/devicemapper/metadata
+thin_check --clear-needs-check-flag /var/lib/docker/devicemapper/devicemapper/metadata
+
+systemctl start docker
+```
+
+## 40、docker 容器优雅的重启
+
+> 不停止服务器上面的容器，重启dockerd服务。
+
+> 从docker-ce1.12开始，可以配置live-restore参数，以便在守护进程变得不可用时容器保持运行。
+
+```
+vim /etc/docker/daemon.yaml
+{
+  "live-restore": true
+}
+
+# 在守护进程停机期间保持容器存活
+dockerd --live-restore
+
+# 只能使用reload重载
+# 相当于发送SIGHUP信号量给dockerd守护进程
+systemctl reload docker
+
+# 但是对应网络的设置需要restart才能生效
+systemctl restart docker
+```
+
+## 41、docker 容器无法删除
+
+> Error response from daemon: Conflict, cannot remove the default name of the container
+
+```
+# 删除容器文件
+rm -rf /var/lib/docker/containers/f8e8c3...65720
+
+# 重启服务
+systemctl restart docker.service
+```
+
+## 42、docker 容器中文异常
+
+```
+# 临时解决
+docker exec -it some-mysql env LANG=C.UTF-8 /bin/bash
+
+# 永久解决
+docker run --name some-mysql \
+    -e MYSQL_ROOT_PASSWORD=my-secret-pw \
+    -d mysql:tag --character-set-server=utf8mb4 \
+    --collation-server=utf8mb4_unicode_ci
+```
+
+## 43、docker容器总线错误
+
+> Bus error (core dumped)
+
+> 原因是在 `docker` 运行的时候，`shm` 分区设置太小导致 `share memory` 不够。不设置 `--shm-size` 参数时，`docker` 给容器默认分配的 `shm` 大小为 `64M`，导致程序启动时不足。具体原因还是因为安装 `pytorch` 包导致了，多进程跑任务的时候，`docker` 容器分配的共享内存太小，导致 `torch` 要在 `tmpfs` 上面放模型数据用于子线程的 共享不足，就出现报错了。
+
+```
+# 问题原因
+df -TH
+Filesystem     Type     Size  Used Avail Use% Mounted on
+overlay        overlay  2.0T  221G  1.4T   3% /
+tmpfs          tmpfs     68M     0   68M   0% /dev
+shm            tmpfs     68M   41k   68M   1% /dev/shm
+
+# 启动docker的时候加上--shm-size参数(单位为b,k,m或g)
+docker run -it --rm --shm-size=200m pytorch/pytorch:latest
+
+# 在docker-compose添加对应配置
+shm_size: '2gb'
+```
+
+## 44、docker配置默认网段
+
+```
+cat /etc/docker/daemon.json
+{
+    "registry-mirrors": ["https://XXXX"],
+    "default-address-pools":[{"base":"172.17.0.0/12", "size":24}],
+    "experimental": true,
+    "default-runtime": "nvidia",
+    "live-restore": true,
+    "runtimes": {
+        "nvidia": {
+            "path": "/usr/bin/nvidia-container-runtime",
+            "runtimeArgs": []
+        }
+    }
+}
+
+docker network inspect app | grep Subnet
+```
+
+## 45、docker定时任务
+
+```
+# Crontab定时任务
+0 */6 * * * \
+    docker exec -t <container_name> sh -c \
+        'exec mysqldump --all-databases -uroot -ppassword ......'
+```
+
+## 46、docker删除镜像报错
+
+```
+# 查询依赖 - image_id表示镜像名称
+docker image inspect --format='{{.RepoTags}} {{.Id}} {{.Parent}}' $(docker image ls -q --filter since=<image_id>)
+
+# 根据TAG删除镜像
+docker rmi -f c565xxxxc87f
+
+# 删除悬空镜像
+docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+```
+
 # 二、linux实现docker资源隔离
 
 Linux 提供的主要的 NameSpace

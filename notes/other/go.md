@@ -1,6 +1,25 @@
 # Go 语言相关
 
-# 一、Go 语言环境安装
+# 一、常用
+
+##### 1、调试显示代码位置
+
+```
+log.SetFlags(log.Llongfile)
+log.Print("") 
+```
+
+```
+  where := func() {
+    _, file, line, _ := runtime.Caller(1)
+    log.Printf("%s:%d", file, line)
+  }
+  where()
+```
+
+
+
+# 二、Go 语言环境安装
 
 https://golang.org/dl/
 
@@ -11,7 +30,7 @@ echo "export PATH=$PATH:/usr/local/go/bin" |tee >> /etc/profile
 source /etc/profile
 ```
 
-# 二、基础语法
+# 三、基础语法
 
 ##### 1、第一个程序
 
@@ -462,7 +481,7 @@ func fibonacci(n int, c chan int) {
 }
 ```
 
-# 三、实例
+# 四、实例
 
 ```
 type MinStack struct {
@@ -493,4 +512,3 @@ math.inf
 
 math.MaxInt64
 ```
-

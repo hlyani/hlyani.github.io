@@ -8,6 +8,7 @@
 * [golang 相关](notes/other/go.md)
 * 容器相关
     * [常用软件安装](notes/docker/usual_software.md)
+    * [Containerd](notes/docker/containerd.md)
     * [docker 相关](notes/docker/docker.md)
     * [容器交叉编译](notes/docker/multiarch.md)
     * [kubeedge](notes/docker/kubeedge.md)

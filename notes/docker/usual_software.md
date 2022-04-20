@@ -186,12 +186,63 @@ docker network create jenkins
 
 docker run -d  \
   --restart always \
-  --network jenkins \
+  --network host \
   --network-alias docker \
   --name jenkins -u root \
   -p 8080:8080  \
+  -v /var/run/docker.sock:/var/run/docker.sock \
   -v /opt/jenkins:/var/jenkins_home  \
-  jenkinsci/blueocean
+  jenkinsci/blueocean:1.25.2
+```
+
+```
+cat /jenkins/secrets/initialAdminPassword 
+```
+
+## 1、webhook
+
+> 需要安装插件
+
+```
+GitLab
+Multibranch Scan Webhook Trigger
+Docker
+```
+
+> git配置
+
+```
+http://192.168.0.190:8080/multibranch-webhook-trigger/invoke?token=mytoken
+```
+
+>  Url is blocked: Requests to the local network are not allowed
+
+```
+Admin Area > Settings > Network > Outbound requests
+Allow requests to the local network from web hooks and services
+Allow requests to the local network from system hooks
+```
+
+> jenkins配置
+
+```
+Scan by webhook
+Trigger token
+mytoken
+```
+
+## 2、新加节点
+
+> 安装
+>
+> https://gitee.com/hlyani/apps/blob/master/jenkins_agent/Dockerfile
+
+```
+mkdir /opt/Jenkins
+
+apt install openjdk-11-jdk
+
+apk add docker openssh openjdk11 git
 ```
 
 # 8、harbor
@@ -263,5 +314,18 @@ admin = rw        # 用户 admin 在所有仓库拥有读写权限
 
 ```
 svn co svn://127.0.0.1:3690/svn
+```
+
+# 11、mariadb
+
+```
+docker pull mariadb:10.4
+docker run -d -name mariadb -e MYSQL_ROOT_PASSWORD=qwe -p 3306:3306 mariadb:10.4
+```
+
+# 12、redis
+
+```
+docker run -d --name redis -p 6379:6379 redis
 ```
 

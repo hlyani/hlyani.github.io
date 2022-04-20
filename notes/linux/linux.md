@@ -535,7 +535,13 @@ tar -zcvf - yolov3.om | split -b 100M - yolov3.om_
 cat yolov3.om_a* | tar -zxvf -
 ```
 
-## 十八、Linux系统启动过程
+## 十八、获取当前时间
+
+```
+`date '+%Y%m%d%H%M%S'`
+```
+
+## 十九、Linux系统启动过程
 
 > Linux系统的启动过程：内核引导、运行init、系统初始化、建立终端、用户登录系统
 

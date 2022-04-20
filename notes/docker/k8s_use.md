@@ -353,3 +353,34 @@ chmod +x update-kubeadm-cert.sh
 ./update-kubeadm-cert.sh master
 ```
 
+# 十二、删除命名空间所有内容
+
+```
+kubectl delete --all pods -n cattle-system
+```
+
+```
+kubectl api-resources --verbs=list --namespaced -o name|xargs -I {} kubectl delete --all {} -n cattle-system
+```
+
+# 十三、标签管理
+
+```
+kubectl get nodes --show-labels
+
+kubectl label node node2 role=worker
+
+# add
+kubectl label nodes  node2 node-role.kubernetes.io/worker=
+kubectl label nodes  node3 node-role.kubernetes.io/worker=
+
+# remove
+kubectl label nodes  node2 node-role.kubernetes.io/worker-
+```
+
+# 十四、http 访问apiserver
+
+```
+kubectl proxy --address='0.0.0.0' --accept-hosts='^*$' --port=8080
+```
+
