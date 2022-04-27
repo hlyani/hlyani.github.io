@@ -302,7 +302,141 @@ cat /etc/containerd/config.toml
 systemctl restart containerd.service
 ```
 
-# 五、FAQ
+# 五、k3s证书有效期
+
+[https://kingsd.top/2022/04/07/k3s-custom-ca/](https://kingsd.top/2022/04/07/k3s-custom-ca/)
+
+##### 1、创建100年有效期CA证书
+
+```
+mkdir -p /var/lib/rancher/k3s/server/tls
+cd /var/lib/rancher/k3s/server/tls
+openssl genrsa -out client-ca.key 2048
+openssl genrsa -out server-ca.key 2048
+openssl genrsa -out request-header-ca.key 2048
+openssl req -x509 -new -nodes -key client-ca.key -sha256 -days 36500 -out client-ca.crt -addext keyUsage=critical,digitalSignature,keyEncipherment,keyCertSign -subj '/CN=k3s-client-ca'
+openssl req -x509 -new -nodes -key server-ca.key -sha256 -days 36500 -out server-ca.crt -addext keyUsage=critical,digitalSignature,keyEncipherment,keyCertSign -subj '/CN=k3s-server-ca'
+openssl req -x509 -new -nodes -key request-header-ca.key -sha256 -days 36500 -out request-header-ca.crt -addext keyUsage=critical,digitalSignature,keyEncipherment,keyCertSign -subj '/CN=k3s-request-header-ca'
+```
+
+##### 2、使用自签名CA证书启动k3s
+
+> 因为已经在 /var/lib/rancher/k3s/server/tls 创建了CA证书，所以当启动k3s时，将使用已创建的CA颁发证书。
+>
+> 直接安装k3s
+
+```
+curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=v1.21  sh -
+```
+
+##### 3、查看证书有效期
+
+```
+cd /var/lib/rancher/k3s/server/tls
+
+for i in `ls /var/lib/rancher/k3s/server/tls/*.crt`; do echo $i; openssl x509 -enddate -noout -in $i; done
+/var/lib/rancher/k3s/server/tls/client-admin.crt
+notAfter=Apr  7 02:50:31 2023 GMT
+/var/lib/rancher/k3s/server/tls/client-auth-proxy.crt
+notAfter=Apr  7 02:50:31 2023 GMT
+/var/lib/rancher/k3s/server/tls/client-ca.crt
+notAfter=Mar 14 02:49:24 2122 GMT
+/var/lib/rancher/k3s/server/tls/client-controller.crt
+notAfter=Apr  7 02:50:31 2023 GMT
+/var/lib/rancher/k3s/server/tls/client-k3s-cloud-controller.crt
+notAfter=Apr  7 02:50:31 2023 GMT
+/var/lib/rancher/k3s/server/tls/client-k3s-controller.crt
+notAfter=Apr  7 02:50:31 2023 GMT
+/var/lib/rancher/k3s/server/tls/client-kube-apiserver.crt
+notAfter=Apr  7 02:50:31 2023 GMT
+/var/lib/rancher/k3s/server/tls/client-kube-proxy.crt
+notAfter=Apr  7 02:50:31 2023 GMT
+/var/lib/rancher/k3s/server/tls/client-scheduler.crt
+notAfter=Apr  7 02:50:31 2023 GMT
+/var/lib/rancher/k3s/server/tls/request-header-ca.crt
+notAfter=Mar 14 02:49:24 2122 GMT
+/var/lib/rancher/k3s/server/tls/server-ca.crt
+notAfter=Mar 14 02:49:24 2122 GMT
+/var/lib/rancher/k3s/server/tls/serving-kube-apiserver.crt
+notAfter=Apr  7 02:50:31 2023 GMT
+```
+
+```
+kubectl get secret -n kube-system k3s-serving -o jsonpath='{.data.tls\.crt}' | base64 -d | openssl x509 -noout -text | grep Not
+            Not Before: Apr  7 02:49:24 2022 GMT
+            Not After : Apr  7 02:50:31 2023 GMT
+```
+
+> 从结果可以看到，CA证书的有效期已经变成100年，其他客户端证书的有效期依然是1年
+
+##### 4、模拟证书过期，轮换证书
+
+> 将服务器时间调整为50年后
+
+```
+~# timedatectl set-ntp no
+~# date -s 20720407
+Thu Apr  7 00:00:00 CST 2072
+~# date
+Thu Apr  7 00:00:00 CST 2072
+```
+
+> 重启k3s，触发证书轮换
+
+```
+service k3s restart
+```
+
+> 证书轮换后，再次 查询证书的有效期
+
+```
+for i in `ls /var/lib/rancher/k3s/server/tls/*.crt`; do echo $i; openssl x509 -enddate -noout -in $i; done
+
+/var/lib/rancher/k3s/server/tls/client-admin.crt
+notAfter=Apr  6 16:00:41 2073 GMT
+/var/lib/rancher/k3s/server/tls/client-auth-proxy.crt
+notAfter=Apr  6 16:00:41 2073 GMT
+/var/lib/rancher/k3s/server/tls/client-ca.crt
+notAfter=Mar 14 02:49:24 2122 GMT
+/var/lib/rancher/k3s/server/tls/client-controller.crt
+notAfter=Apr  6 16:00:41 2073 GMT
+/var/lib/rancher/k3s/server/tls/client-k3s-cloud-controller.crt
+notAfter=Apr  6 16:00:41 2073 GMT
+/var/lib/rancher/k3s/server/tls/client-k3s-controller.crt
+notAfter=Apr  6 16:00:41 2073 GMT
+/var/lib/rancher/k3s/server/tls/client-kube-apiserver.crt
+notAfter=Apr  6 16:00:41 2073 GMT
+/var/lib/rancher/k3s/server/tls/client-kube-proxy.crt
+notAfter=Apr  6 16:00:41 2073 GMT
+/var/lib/rancher/k3s/server/tls/client-scheduler.crt
+notAfter=Apr  6 16:00:41 2073 GMT
+/var/lib/rancher/k3s/server/tls/request-header-ca.crt
+notAfter=Mar 14 02:49:24 2122 GMT
+/var/lib/rancher/k3s/server/tls/server-ca.crt
+notAfter=Mar 14 02:49:24 2122 GMT
+/var/lib/rancher/k3s/server/tls/serving-kube-apiserver.crt
+notAfter=Apr  6 16:00:41 2073 GMT
+```
+
+```
+kubectl get secret -n kube-system k3s-serving -o jsonpath='{.data.tls\.crt}' | base64 -d | openssl x509 -noout -text | grep Not
+            Not Before: Apr  7 02:49:24 2022 GMT
+            Not After : Apr  6 16:01:11 2073 GMT
+```
+
+```
+kubectl get nodes
+NAME    STATUS   ROLES                  AGE   VERSION
+dev-1   Ready    control-plane,master   50y   v1.21.11+k3s1
+```
+
+> k3s 服务重启后，会自动轮换k3s证书。从以上结果可以看到k3s的证书已经更新到2073年，已经突破了k3s默认生成CA的10年有限期，证明自签名的CA已经生效，客户端证书是由自签名CA颁发
+
+##### 5、后记
+
+> 通过使用自签名CA的形式来延长CA证书的有效期，其他客户端证书有效期依然为1年，因此还需要在证书已经过期或剩余的时间不足90天时重启k3s来触发客户端证书轮换。
+
+# 六、FAQ
 
 > error: failed to run Kubelet: failed to create kubelet: misconfiguration: **kubelet cgroup driver: "cgroupfs" is different from docker cgroup driver: "systemd"**
 
