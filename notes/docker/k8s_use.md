@@ -384,3 +384,9 @@ kubectl label nodes  node2 node-role.kubernetes.io/worker-
 kubectl proxy --address='0.0.0.0' --accept-hosts='^*$' --port=8080
 ```
 
+# 十五、修改annotation
+
+```
+kubectl annotate --overwrite rtcontainer vm1 action=StopContainer
+```
+

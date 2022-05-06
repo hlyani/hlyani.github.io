@@ -38,3 +38,12 @@ ctr c rm test
 
 TODO
 
+# 四、其他
+
+##### 1、解压OCI镜像
+
+```
+ctr i export - docker.io/library/vm1:1.0.0 | tar xvf -
+find blobs/sha256/* -size +4k |xargs -n 1 tar -xvf
+```
+

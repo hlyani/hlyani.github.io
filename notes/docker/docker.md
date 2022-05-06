@@ -663,6 +663,23 @@ docker rmi -f c565xxxxc87f
 docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
 ```
 
+## 47、scratch镜像
+
+[https://docs.docker.com/develop/develop-images/baseimages/#create-a-simple-parent-image-using-scratch](https://docs.docker.com/develop/develop-images/baseimages/#create-a-simple-parent-image-using-scratch)
+
+```
+FROM scratch
+ADD hello /
+CMD ["/hello"]
+```
+
+```
+apt-get install build-essential
+gcc -o hello -static hello.c
+
+musl-gcc -o hello -static hello.c
+```
+
 # 二、linux实现docker资源隔离
 
 Linux 提供的主要的 NameSpace
