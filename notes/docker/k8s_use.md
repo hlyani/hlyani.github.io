@@ -271,6 +271,11 @@ data-mariadb-slave-2                     Bound    pvc-be01ef0f-51f9-4654-964b-28
 /dev/rbd8 on /var/lib/kubelet/pods/45de1bb4-5863-4dac-93f1-fd801a5a2f4d/volumes/kubernetes.io~rbd/pvc-16840bfc-4a3b-45de-8250-3c71044c00ce type ext4 (rw,relatime,seclabel,stripe=1024,data=ordered)
 ```
 
+```
+kubectl get pv pvc-XXXXXXXXXXXXXXXXXXXXXXXXX -o yaml
+imageName: csi-vol-YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
+```
+
 ##### 3、查看pv pool 里面的rbd
 
 ```

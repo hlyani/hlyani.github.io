@@ -680,6 +680,13 @@ gcc -o hello -static hello.c
 musl-gcc -o hello -static hello.c
 ```
 
+## 48、通过镜像提取dockerfile
+
+```
+alias dfimage="docker run -v /var/run/docker.sock:/var/run/docker.sock --rm alpine/dfimage"
+dfimage -sV=1.36 mariadb:10.4
+```
+
 # 二、linux实现docker资源隔离
 
 Linux 提供的主要的 NameSpace

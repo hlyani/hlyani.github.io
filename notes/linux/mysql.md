@@ -43,3 +43,22 @@ flush privileges;
 mysql -h 127.0.0.1 -u root -p123456
 ```
 
+##### 4、my.cnf常用配置
+
+```
+[mysqld]
+    expire_logs_days=7
+    max_connection=1000
+    max_user_connections=500
+    wait_timeout=30
+    interactive_timeout=30
+```
+
+##### 5、数据库修复
+
+```
+ib_logfile0和ib_logfile1PPH
+
+innodb_force_recovery=6
+```
+

@@ -88,6 +88,28 @@ lsblk -ndb -o SIZE /dev/sda
 blockdev --getsize64 /dev/sda
 ```
 
+##### 11、shell 编译成二进制
+
+```
+ apt install -y shc gcc
+ shc -f a.sh
+ gcc -static a.sh.x.c
+```
+
+##### 12、sshpass
+
+```
+apk add openssh sshpass
+sshpass -p qwe ssh -l root 192.168.0.33 "cat /etc/hosts"
+```
+
+##### 13、gcc 打包静态库，去除静态库中符号、调试和debug信息
+
+```
+gcc hello.c -o hello -static
+strip hello
+```
+
 ## 三、dd命令
 
 ##### 1、参数
@@ -255,6 +277,20 @@ dd if=/dev/zero of=out.file bs=512K count=2048 conv=fsync
 ​	5、使用conv=fdatasync参数，dd命令执行到最后会真正执行一次“同步(sync)”操作，将所有还没有写入到磁盘的缓存内容写入磁盘，这样算出来的数度才是比较符合实际的
 
 ​	6、使用conv=fsync参数，与上者fdatasync类似，但同时元数据也一同写入。 以上可以看出，因为测试数据还和当前的系统环境、系统负载、磁盘测试时磁盘已有的读写任务等有关，用dd命令测试磁盘时不一定是磁盘真实的读写速度。但是可以大致判断机器目前的磁盘读写速度
+
+##### 15、磁盘修复
+
+```
+fsck.ext4 -y /dev/sda1
+xfs_repair /dev/sda1
+```
+
+##### 16、扩容
+
+```
+xfs_growfs /dev/mapper/centos-root
+resize2fs /dev/myVG/myLV
+```
 
 ## 四、别名
 
