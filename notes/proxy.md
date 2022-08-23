@@ -56,7 +56,7 @@ server_port = 1080
 tsocks wget http://*
 ```
 
-# 四、docker 使用代理
+# 四、docker [使用代理]()
 
 ```
 mkdir -p /etc/systemd/system/docker.service.d
@@ -90,6 +90,55 @@ systemctl restart docker
 }
 ```
 
+[dockerproxy.com](dockerproxy.com)
+
+```
+{ "registry-mirrors": [ "https://dockerproxy.com" ] }
+```
+
+```
+Docker Hub 官方镜像代理
+常规镜像代理
+官方命令：docker pull stilleshan/frpc:latest
+代理命令：docker pull dockerproxy.com/stilleshan/frpc:latest
+
+根镜像代理
+官方命令：docker pull nginx:latest
+代理命令：docker pull dockerproxy.com/library/nginx:latest
+```
+
+```
+GitHub Container Registry
+常规镜像代理
+官方命令：docker pull ghcr.io/username/image:tag
+代理命令：docker pull ghcr.dockerproxy.com/username/image:tag
+```
+
+```
+Google Container Registry
+常规镜像代理
+官方命令：docker pull gcr.io/username/image:tag
+代理命令：docker pull gcr.dockerproxy.com/username/image:tag
+```
+
+```
+Google Kubernetes
+常规镜像代理
+官方命令：docker pull k8s.gcr.io/username/image:tag
+代理命令：docker pull k8s.dockerproxy.com/username/image:tag
+
+根镜像代理
+官方命令：docker pull k8s.gcr.io/coredns:1.6.5
+代理命令：docker pull k8s.dockerproxy.com/coredns:1.6.5
+```
+
+```
+Quay.io
+常规镜像代理
+官方命令：docker pull quay.io/username/image:tag
+代理命令：docker pull quay.dockerproxy.com/username/image:tag
+```
+
 # 五、containerd使用代理
 
 ```
@@ -116,6 +165,20 @@ git config --global https.proxy socks5://192.168.0.127:1080
 ```
 git config --global url."https://github.com/".insteadOf https://github.com.cnpmjs.org
 git config --global url."https://github.com/".insteadOf https://git.sdut.me/
+```
+
+[https://ghproxy.com/](https://ghproxy.com/)
+
+```
+git clone https://ghproxy.com/https://github.com/stilleshan/ServerStatus
+```
+
+```
+wget https://ghproxy.com/https://github.com/stilleshan/ServerStatus/archive/master.zip
+```
+
+```
+curl -O https://ghproxy.com/https://github.com/stilleshan/ServerStatus/archive/master.zip
 ```
 
 # 七、linux 代理
