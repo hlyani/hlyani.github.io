@@ -55,4 +55,30 @@ svn://192.18.0.87/test
 2). 检查svn服务器是否已经启动（svn默认使用3690端口）：netstat -an | grep 3690
 3). 停止：killall svnserve
 ```
-##### 5. svn client 连接
+##### 5、创建项目
+
+```
+svnadmin create /var/opt/svn/TEST
+
+svn://192.168.0.127:3690/TEST
+
+vim conf/authz
+[groups]
+owner = hl
+
+[/]
+hl=rw
+
+[TEST:/]
+hl=rw
+@owner=rw
+
+vim conf/password
+[users]
+hl = hl
+
+vim conf/svnserve.conf
+realm = /var/opt/svn/
+```
+
+##### 6. svn client 连接
