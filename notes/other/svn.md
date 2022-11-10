@@ -68,6 +68,7 @@ owner = hl
 
 [/]
 hl=rw
+@owner=rw
 
 [TEST:/]
 hl=rw
@@ -78,7 +79,11 @@ vim conf/password
 hl = hl
 
 vim conf/svnserve.conf
-realm = /var/opt/svn/
+anon-access = read:wq
+auth-access = write
+password-db = passwd
+authz-db = authz
+realm = /var/opt/svn/TEST
 ```
 
 ##### 6. svn client 连接
