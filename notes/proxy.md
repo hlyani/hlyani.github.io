@@ -6,6 +6,10 @@
 HTTP_PROXY=192.168.0.127:1080 COMMAND
 ```
 
+```
+export https_proxy=http://127.0.0.1:33210 http_proxy=http://127.0.0.1:33210 all_proxy=socks5://127.0.0.1:33211
+```
+
 # 二、curl 使用代理
 
 ```
