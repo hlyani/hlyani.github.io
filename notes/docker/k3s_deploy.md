@@ -440,6 +440,8 @@ dev-1   Ready    control-plane,master   50y   v1.21.11+k3s1
 
 > error: failed to run Kubelet: failed to create kubelet: misconfiguration: **kubelet cgroup driver: "cgroupfs" is different from docker cgroup driver: "systemd"**
 
+>"Failed to run kubelet" err="failed to run Kubelet: misconfiguration: kubelet cgroup driver: \"cgroupfs\" is different from docker cgroup driver: \"systemd\""
+
 ```
 vim /etc/systemd/system/docker.service.d/docker-options.conf
 ...
@@ -447,3 +449,13 @@ vim /etc/systemd/system/docker.service.d/docker-options.conf
 ...
 ```
 
+或
+
+```
+vim /etc/docker/daemon.json 
+{
+    "exec-opts": ["native.cgroupdriver=cgroupfs"]
+}
+```
+
+> {"exec-opts": ["native.cgroupdriver=systemd"]}
