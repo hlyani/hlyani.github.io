@@ -110,6 +110,14 @@ gcc hello.c -o hello -static
 strip hello
 ```
 
+##### 14、每三小时执行一次定时任务
+
+```
+crontab -l
+crontab -e
+0 */3 * * * docker restart samba
+```
+
 ## 三、dd命令
 
 ##### 1、参数

@@ -61,7 +61,13 @@ docker run -it -p 139:139 -p 445:445 --name samba -v /opt/test:/mount -d dperson
             -g "guest account= test"
 ```
 
+```
+# 查看正在运行的配置参数
+testparm -v
+```
+
 # 3、gitlab
+
 [https://docs.gitlab.com/omnibus/docker/](https://docs.gitlab.com/omnibus/docker/)
 
 ```

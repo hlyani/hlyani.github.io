@@ -1,24 +1,24 @@
 # OpenStack 相关
 
-##### 1、查看虚拟机console地址
+# 一、查看虚拟机console地址
 
 ```
 openstack console url show novatest
 ```
 
-##### 2、虚拟机开机启动
+# 二、虚拟机开机启动
 
 ```
 resume_guests_state_on_host_boot=true
 ```
 
-##### 3、将虚拟机状态改为active
+# 三、将虚拟机状态改为active
 
 ```
 nova reset-state --active fcfcb78b-4a58-49da-af39-d6c08a109db7
 ```
 
-##### 4、扩展传统模式根磁盘
+# 四、扩展传统模式根磁盘
 
 ```
 qemu-img info aa.qcow2 
@@ -34,7 +34,7 @@ lsblk
 df -h
 ```
 
-##### 5、使用virsh挂载卷
+# 五、使用virsh挂载卷
 
 ```
 pvcreate /dev/xvdb4    使用pvcreate转换
@@ -55,7 +55,7 @@ lvcreate -L 500G -n edu  vg
 virsh attach-disk --domain instance-00000110 --source /dev/mysdb/edu --target vdb --persistent
 ```
 
-##### 6、resize、迁移功能
+# 六、resize、迁移功能
 
 ```
 修改nova配置
@@ -94,7 +94,7 @@ virsh -c qemu+tcp://compute2/system
 
 ```
 
-##### 7、修改linux密码
+# 七、修改linux密码
 
 #cloud-config
 ```
@@ -110,7 +110,7 @@ chpasswd:
 nova boot --user-data=userdata
 ```
 
-##### 8、修改cpu quota
+# 八、修改cpu quota
 
 ```
 openstack quota list --compute
@@ -118,3 +118,20 @@ openstack quota set --cores 200 c2978d74024447b7bf0cacbd4b4e9af6
 #openstack quota set --cores -1 c2978d74024447b7bf0cacbd4b4e9af6
 ```
 
+# 九、恢复虚拟机ERROR状态
+
+##### 1、找出该VM的id。
+
+##### 2、查找数据库中该id状态
+
+```
+use nova;
+
+select * from instances where uuid='xxxxx'\G;
+
+update instances set vm_state='active' where uuid='xxxxx';
+
+update instances set power_state=1 where uuid='xxxxx';
+```
+
+##### 3、硬重启该VM即可。

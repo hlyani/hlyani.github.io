@@ -742,28 +742,116 @@ ceph mgr module enable dashboard
 
 ## 七、常用命令
 
+##### 1、查询集群状态
+
 ```
-#查询当前池方法
+# 健康状态
+ceph -s
+ceph health
+ceph health detail
+ceph pg stat
+ceph pg dump_stuck unclean|grep unknown
+ceph crash ls
+
+
+# pool
 ceph osd lspools
 ceph osd pool ls
 ceph osd pool ls detail
 
-#删除data,metadata池
+# osd
+ceph osd tree
+
+# 资源使用状态
+ceph df
+ceph df detail
+ceph osd df
+ceph osd df rbd
+ceph osd df tree
+
+# 其他
+ ceph quorum_status --format json-pretty
+ ceph osd pool get-quota volumes
+ ceph osd pool get rbd crush_rule
+```
+
+##### 2、删除data，metadata池
+
+```
 ceph osd pool delete metadata metadata --yes-i-really-really-mean-it
 ceph osd pool delete data data --yes-i-really-really-mean-it
+```
 
-#创建 volumes 存储池
+##### 3、创建volumes存储池
+
+```
 ceph osd pool create volumes 4000 4000
+```
 
-#查询 volumes 池当前复制副本数量
+##### 4、查询 volumes 池当前复制副本数量
+
+```
 ceph osd dump | grep 'replicated size' | grep volumes
+```
 
-#修改复制副本为 2 并验证
+##### 5、修改复制副本为 2 并验证
+
+```
 ceph osd pool set volumes size 2
 ceph osd dump | grep 'replicated size' | grep volumes
+```
 
-#查看存储使用情况
+##### 6、查看存储使用情况
+
+```
 ceph df
+```
+
+##### 7、查看集群得分
+
+> 分数越低越好
+
+```
+ceph balancer eval
+
+current cluster score 0.032004 (lower is better)
+```
+
+##### 8、修复
+
+```
+ ceph pg deep-scrub 4.b6
+ceph pg repair 4.b6
+```
+
+##### 9、暂停与恢复osd对外访问
+
+```
+ceph osd pause
+ceph osd unpause
+```
+
+##### 10、数据均衡调整
+
+> 按利用率调整OSD的权重
+
+```
+ceph osd reweight-by-utilization
+```
+
+> 按归置组分布情况调整OSD的权重
+
+```
+ceph osd reweight-by-pg
+```
+
+##### 11、重新设置OSD权重
+
+> crush 显示osd磁盘本身大小的标签
+
+```
+ceph osd crush reweight osd.8 1
+ceph osd reweight osd.8 0.2
 ```
 
 ## 八、kolla 中ceph相关
@@ -806,7 +894,43 @@ parted /dev/vdc -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC 1 -1
 parted /dev/vdc -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC 1 -1
 ```
 
-## 九、常见问题
+## 九、pg状态表
+
+| **状态**           | **描述**                                                     |
+| ------------------ | ------------------------------------------------------------ |
+| Activating         | PG已经互联，但是还没有active。  *Peering**已经完成，**PG**正在等待所有**PG**实例同步并固化**Peering**的结果**(Info**、**Log**等**)* |
+| Active             | 活跃态。PG可以正常处理来自客户端的读写请求  PG正常的状态应该是Active+Clean的。 |
+| Backfilling        | Ceph正常扫描并同步整个PG的数据，而不是从最近的操作日志中推断需要同步的数据，Backfill（回填）是恢复的一个特殊状态。  正在后台填充态。 backfill是recovery的一种特殊场景，指peering完成后，如果基于当前权威日志无法对Up Set当中的某些PG实例实施增量同步(例如承载这些PG实例的OSD离线太久，或者是新的OSD加入集群导致的PG实例整体迁移) 则通过完全拷贝当前Primary所有对象的方式进行全量同步 |
+| Backfill-toofull   | *backfill_toofull* backfill操作因为目标OSD容量超过指标而挂起  某个需要被Backfill的PG实例，其所在的OSD可用空间不足，Backfill流程当前被挂起 |
+| *backfill_unfound* | Backfill因为没有找到对应对象而停止                           |
+| Backfill-wait      | *backfill_wait* PG正在等待backfill被调度执行。  等待Backfill 资源预留 |
+| Clean              | 干净态。PG内所有的对象都被正确的复制了对应的份数。  *PG**当前不存在待修复的对象，* *Acting Set**和**Up Set**内容一致，并且大小等于存储池的副本数* |
+| Creating           | PG正在被创建                                                 |
+| Deep               | Ceph 正在检查PG数据和checksums的一致性。  *PG**正在或者即将进行对象一致性扫描清洗* |
+| Degraded           | PG中的一些对象还没有被复制到规定的份数。  *降级状态。**Peering**完成后，**PG**检测到任意一个**PG**实例存在不一致**(**需要被同步**/**修复**)**的对象，或者当前**ActingSet* *小于存储池副本数* |
+| Down               | 一个包含必备数据的副本离线，所以PG也离线了  *Peering**过程中，**PG**检测到某个不能被跳过的**Interval**中**(**例如该**Interval**期间，**PG**完成了**Peering**，并且成功切换至**Active**状态，从而有可能正常处理了来自客户端的读写请求**),**当前剩余在线的**OSD**不足以完成数据修复* |
+| Incomplete         | Ceph 探测到某一PG可能丢失了写入信息，或者没有健康的副本。如果你看到了这个状态，尝试启动有可能包含所需信息的失败OSD，  如果是erasure coded  pool的话，临时调整一下`min_size`也可能完成恢复  *Peering**过程中，* *由于* *a.* *无非选出权威日志* *b.* *通过**choose_acting**选出的**Acting Set**后续不足以完成数据修复，导致**Peering**无非正常完成* |
+| Inconsistent       | Ceph检测到PG中对象的一份或多份数据不一致（比如对象大学不一直，或者恢复成功后对象依然没有等）  *不一致态。集群清理和深度清理后检测到**PG**中的对象在副本存在不一致，例如对象的文件大小不一致或**Recovery**结束后一个对象的副本丢失* |
+| Peered             | PG已互联，但是不能向客户端提供服务，因为其副本数没达到本存储池的配置值（ min_size 参数）。  在此状态下恢复会进行，所以此PG最终能达到 min_size 。  Peering已经完成，但是PG当前ActingSet规模小于存储池规定的最小副本数(min_size) |
+| Peering            | PG正在互联过程中。正在同步态。PG正在执行同步处理。  类似Raft的Leader选举，使一个PG内的OSD达成一致，不涉及数据迁移等操作。 |
+| Recovering         | 正在恢复态。集群正在执行迁移或同步对象和他们的副本           |
+| Recovering-wait    | 等待recovery资源预留。PG正在等待恢复被调度执行。             |
+| recovery_toofull   | 恢复操作因为目标OSD容量超过指标而挂起。                      |
+| *recovery_unfound* | 恢复因为没有找到对应对象而停止。                             |
+| Remapped           | PG被临时分配到了和CRUSH所指定的不同的OSD上。  重新映射态。PG活动集任何的一个改变，数据发生从老活动集到新活动集的迁移。在迁移期间还是用老的活动集中的主OSD处理客户端请求，一旦迁移完成新活动集中的主OSD开始处理 |
+| Repair             | Ceph正在检查PG并且修复所有发现的不一致情况（如果有的话）  *PG**在执行**Scrub**过程中，如果发现存在不一致的对象，并且能够修复，则自动进行修复状态* |
+| Scrubbing          | Ceph 正在检查PG metadata的一致性。  PG正在或者即将进行对象一致性扫描 |
+| Unactive           | 非活跃态。PG不能处理读写请求                                 |
+| Unclean            | 非干净态。PG不能从上一个失败中恢复                           |
+| Stale              | PG状态未知，从PG mapping更新后Monitor一直没有收到更新  *未刷新态。**PG**状态没有被任何**OSD**更新，这说明所有存储这个**PG**的**OSD**可能挂掉**,* *或者**Mon**没有检测到**Primary**统计信息**(**网络抖动**)* |
+| *snaptrim*         | 正在对快照做Trim操作。                                       |
+| *snaptrim_Wait*    | Trim操作等待被调度执行                                       |
+| *snaptrim_Error*   | Trim操作因为错误而停止                                       |
+| Undersized         | 该PG的副本数量小于存储池所配置的副本数量。  PG当前Acting Set小于存储池副本数。ceph默认3副本，min_size参数通常为2，即副本数>=2时就可以进行IO，否则阻塞IO。 |
+| forced_recovery    | 用户指定的PG高优先级恢复                                     |
+| *forced_backfill*  | 用户指定的高优先级backfill                                   |
+
+## 十、常见问题
 
 ##### 1、日志盘bug
 
