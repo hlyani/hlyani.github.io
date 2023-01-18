@@ -514,3 +514,82 @@ http://blog.csdn.net/abcdocker/article/details/53840629
 
 https://docs.gitlab.com/ee/ci/yaml/README.html
 ```
+
+# 三、Gitlab备份和恢复
+
+## （一）备份
+
+##### 1、修改配置
+
+```
+gitlab_rails['manage_backup_path'] = true
+gitlab_rails['backup_path'] = "/var/opt/gitlab/backups"
+gitlab_rails['backup_keep_time'] = 604800 #这个是秒，7天的时间
+```
+
+##### 2、重新加载配置，让配置生效
+
+```
+gitlab-cli reconfigure
+gitlab-cli restart
+```
+
+##### 3、备份命令
+
+```
+/usr/bin/gitlab-rake gitlab:backup:create
+```
+
+> 1674018900_2023_01_18_13.5.4_gitlab_backup.tar
+>
+> 可通过date命令查看
+>
+> date -d @1674018900
+
+##### 4、其他需要备份文件
+
+```
+/etc/gitlab/gitlab.rb 配置文件须备份 
+/var/opt/gitlab/nginx/conf nginx配置文件 
+/etc/postfix/main.cfpostfix 邮件配置备份
+```
+
+##### 5、定时任务自动备份
+
+> 每周备份一次
+
+```
+0 1 * * 1 docker exec gitlab sh -c "/usr/bin/gitlab-rake gitlab:backup:create"
+```
+
+## （二）恢复
+
+##### 1、停止数据写入任务
+
+```
+gitlab-ctl stop unicorn
+gitlab-ctl stop sidekiq
+```
+
+##### 2、恢复数据
+
+```
+gitlab-rake gitlab:backup:restore BACKUP=1674018900
+```
+
+##### 3、重启服务
+
+```
+gitlab-ctl restart
+```
+
+## （三）只备份代码
+
+```
+cd /var/opt/gitlab/git-data/repositories
+```
+
+```
+/usr/bin/gitlab-rake gitlab:backup:create"
+```
+
