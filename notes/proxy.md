@@ -123,6 +123,9 @@ Google Container Registry
 常规镜像代理
 官方命令：docker pull gcr.io/username/image:tag
 代理命令：docker pull gcr.dockerproxy.com/username/image:tag
+
+官方命令：docker pull gcr.io/username/image:tag
+代理命令：docker pull gcr.dockerproxy.com/username/image:tag
 ```
 
 ```
@@ -132,8 +135,8 @@ Google Kubernetes
 代理命令：docker pull k8s.dockerproxy.com/username/image:tag
 
 根镜像代理
-官方命令：docker pull k8s.gcr.io/coredns:1.6.5
-代理命令：docker pull k8s.dockerproxy.com/coredns:1.6.5
+官方命令：docker pull registry.k8s.io/username/image:tag
+代理命令：docker pull k8s.dockerproxy.com/username/image:tag
 ```
 
 ```

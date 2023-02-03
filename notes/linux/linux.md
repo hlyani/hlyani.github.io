@@ -585,7 +585,31 @@ cat yolov3.om_a* | tar -zxvf -
 `date '+%Y%m%d%H%M%S'`
 ```
 
-## 十九、Linux系统启动过程
+## 十九、tmux
+
+```
+tmux ls
+tmux attach -t 0
+
+# 后台
+Ctrl+b d
+# 选则窗口
+Ctrl+b s
+# 水平拆分
+tmux split-window
+Ctrl+b %
+# 垂直拆分
+tmux split-window -h
+Ctrl+b "
+#切换窗口 
+Ctrl+b 上下左右
+# 关闭窗口
+Ctrl+b x
+# 全屏
+Ctrl+b z
+```
+
+## 二十、Linux系统启动过程
 
 > Linux系统的启动过程：内核引导、运行init、系统初始化、建立终端、用户登录系统
 

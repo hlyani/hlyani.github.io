@@ -361,6 +361,56 @@ Wants=network-online.target local-fs.target time-sync.target docker.service
 ...
 ```
 
+### 5、Possible data damage: 1 pg inconsistent
+
+> 不一致性校验失败，数据不一致性（inconsisitent）指对象的大小不正确，恢复结束后某副本出现了对象丢失的情况，数据不一致会导致清理失败（scrub error）。Ceph在存储过程中，由于特殊原因，可能遇到对象信息大小和物理磁盘上实际数据大小不一致的情况，也会导致清理失败。
+
+##### (1)、停止osd
+
+>  先查看所要恢复pg
+
+```
+ceph health detail
+```
+
+```
+ceph pg repair 4.3f
+```
+
+```
+systemctl stop ceph-de9c839a-bd3e-11eb-aefc-377d8c7eac71@osd.14.service
+```
+
+##### (2)、刷入日志
+
+> 需将相应数据复制进容器
+
+```
+docker cp /etc/ceph b951114a1b9d:/etc
+docker cp /var/lib/ceph/de9c839a-bd3e-11eb-aefc-377d8c7eac71/osd.14/ b951114a1b9d:/var/lib/ceph/osd/ceph-14/
+docker exec -it b951114a1b9d bash
+```
+
+```
+ceph-osd -i 14 --flush-journal
+```
+
+##### (3)、启动osd
+
+```
+systemctl start ceph-de9c839a-bd3e-11eb-aefc-377d8c7eac71@osd.14.service
+```
+
+##### (4)、修复
+
+```
+ceph health detail
+```
+
+```
+ceph pg repair 4.3f
+```
+
 # 二、ceph deploy 
 
 ## 一、ceph deploy 部署ceph

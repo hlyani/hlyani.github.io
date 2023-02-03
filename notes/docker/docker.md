@@ -687,6 +687,63 @@ alias dfimage="docker run -v /var/run/docker.sock:/var/run/docker.sock --rm alpi
 dfimage -sV=1.36 mariadb:10.4
 ```
 
+## 49、distroless镜像
+
+[distroless](https://github.com/GoogleContainerTools/distroless)
+
+[rules_docker](https://github.com/bazelbuild/rules_docker)
+
+> static      2.34MB
+>
+> base       20.3MB
+>
+> cc            22.6MB
+
+>latest
+>
+>nonroot
+>
+>debug
+>
+>debug-nonroot
+
+```
+docker pull gcr.io/distroless/base
+docker pull gcr.dockerproxy.com/distroless/static:nonroot
+docker pull gcr.dockerproxy.com/distroless/base
+docker pull gcr.dockerproxy.com/distroless/base-debian10
+docker pull gcr.dockerproxy.com/distroless/base-debian11
+docker pull gcr.dockerproxy.com/distroless/base-debian9
+docker pull gcr.dockerproxy.com/distroless/cc
+docker pull gcr.dockerproxy.com/distroless/cc-debian10
+docker pull gcr.dockerproxy.com/distroless/cc-debian11
+docker pull gcr.dockerproxy.com/distroless/cc-debian9
+docker pull gcr.dockerproxy.com/distroless/dotnet
+docker pull gcr.dockerproxy.com/distroless/dotnet-debian10
+docker pull gcr.dockerproxy.com/distroless/dotnet-debian9
+docker pull gcr.dockerproxy.com/distroless/java
+docker pull gcr.dockerproxy.com/distroless/java-debian10
+docker pull gcr.dockerproxy.com/distroless/java-debian11
+docker pull gcr.dockerproxy.com/distroless/java-debian9
+docker pull gcr.dockerproxy.com/distroless/nodejs
+docker pull gcr.dockerproxy.com/distroless/nodejs-debian10
+docker pull gcr.dockerproxy.com/distroless/nodejs-debian11
+docker pull gcr.dockerproxy.com/distroless/nodejs-debian9
+docker pull gcr.dockerproxy.com/distroless/python2.7
+docker pull gcr.dockerproxy.com/distroless/python2.7-debian10
+docker pull gcr.dockerproxy.com/distroless/python2.7-debian9
+docker pull gcr.dockerproxy.com/distroless/python3
+docker pull gcr.dockerproxy.com/distroless/python3-debian10
+docker pull gcr.dockerproxy.com/distroless/python3-debian11
+docker pull gcr.dockerproxy.com/distroless/python3-debian9
+docker pull gcr.dockerproxy.com/distroless/static
+docker pull gcr.dockerproxy.com/distroless/static-debian10
+docker pull gcr.dockerproxy.com/distroless/static-debian11
+docker pull gcr.dockerproxy.com/distroless/static-debian9
+```
+
+
+
 # 二、linux实现docker资源隔离
 
 Linux 提供的主要的 NameSpace
