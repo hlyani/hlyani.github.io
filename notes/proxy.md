@@ -62,6 +62,8 @@ tsocks wget http://*
 
 # 四、docker [使用代理]()
 
+##### proxy
+
 ```
 mkdir -p /etc/systemd/system/docker.service.d
 
@@ -76,6 +78,8 @@ systemctl daemon-reload
 systemctl restart docker
 ```
 
+##### 中科大
+
 ```
 echo '{
   "registry-mirrors": ["https://docker.mirrors.ustc.edu.cn/"]
@@ -84,6 +88,8 @@ echo '{
 systemctl daemon-reload
 systemctl restart docker
 ```
+
+##### 其他镜像源
 
 ```
 {
@@ -94,56 +100,119 @@ systemctl restart docker
 }
 ```
 
+```
+# 使用中科大镜像源 
+docker pull docker.mirrors.ustc.edu.cn/library/mysql:5.7
+
+# 使用 Azure 中国镜像源
+docker pull dockerhub.azk8s.cn/library/mysql:5.7
+```
+
+##### dockerproxy
+
 [dockerproxy.com](dockerproxy.com)
 
 ```
 { "registry-mirrors": [ "https://dockerproxy.com" ] }
 ```
 
-```
-Docker Hub 官方镜像代理
-常规镜像代理
-官方命令：docker pull stilleshan/frpc:latest
-代理命令：docker pull dockerproxy.com/stilleshan/frpc:latest
+##### ustc
 
-根镜像代理
-官方命令：docker pull nginx:latest
-代理命令：docker pull dockerproxy.com/library/nginx:latest
-```
+[ustc](http://mirrors.ustc.edu.cn/help/dockerhub.html)
 
 ```
-GitHub Container Registry
-常规镜像代理
-官方命令：docker pull ghcr.io/username/image:tag
-代理命令：docker pull ghcr.dockerproxy.com/username/image:tag
+{
+  "registry-mirrors": ["https://docker.mirrors.ustc.edu.cn/"]
+}
 ```
 
-```
-Google Container Registry
-常规镜像代理
-官方命令：docker pull gcr.io/username/image:tag
-代理命令：docker pull gcr.dockerproxy.com/username/image:tag
+##### Docker Hub
 
-官方命令：docker pull gcr.io/username/image:tag
-代理命令：docker pull gcr.dockerproxy.com/username/image:tag
+```
+docker pull stilleshan/frpc:latest
+docker pull nginx:latest
 ```
 
 ```
-Google Kubernetes
-常规镜像代理
-官方命令：docker pull k8s.gcr.io/username/image:tag
-代理命令：docker pull k8s.dockerproxy.com/username/image:tag
+docker pull dockerproxy.com/stilleshan/frpc:latest
+docker pull dockerproxy.com/library/nginx:latest
+```
 
-根镜像代理
-官方命令：docker pull registry.k8s.io/username/image:tag
-代理命令：docker pull k8s.dockerproxy.com/username/image:tag
+##### ghcr.io - GitHub Container Registry
+
+```
+docker pull ghcr.io/username/image:tag
 ```
 
 ```
-Quay.io
-常规镜像代理
-官方命令：docker pull quay.io/username/image:tag
-代理命令：docker pull quay.dockerproxy.com/username/image:tag
+docker pull ghcr.dockerproxy.com/username/image:tag
+```
+
+##### gcr.io - Google Container Registry
+
+```
+docker pull gcr.io/username/image:tag
+```
+
+```
+docker pull gcr.dockerproxy.com/username/image:tag
+docker pull gcr.mirrors.ustc.edu.cn/xxx/yyy:zzz
+docker pull gcr.azk8s.cn/xxx/yyy:zzz
+```
+
+##### k8s.gcr.io/registry.k8s.io - Google Kubernetes
+
+```
+docker pull k8s.gcr.io/username/image:tag
+docker pull registry.k8s.io/username/image:tag
+```
+
+```
+docker pull k8s.dockerproxy.com/username/image:tag
+```
+
+##### quay.io
+
+```
+docker pull quay.io/username/image:tag
+```
+
+```
+docker pull quay.dockerproxy.com/username/image:tag
+docker pull quay.mirrors.ustc.edu.cn/xxx/yyy:zzz
+docker pull quay.azk8s.cn/xxx/yyy:zzz
+```
+
+##### docker-wrapper
+
+[docker_wrapper](https://github.com/silenceshell/docker_wrapper)
+
+> 一个 Python 编写的工具脚本，可以替代系统的 Docker 命令，自动从 Azure 中国拉取镜像并自动 Tag 为目标镜像和删除 Azure 镜像。
+
+```
+git clone https://github.com/silenceshell/docker-wrapper.git
+cp docker-wrapper/docker-wrapper.py /usr/local/bin/
+```
+
+```
+docker-wrapper pull k8s.gcr.io/kube-apiserver:v1.14.1
+```
+
+##### azk8spull
+
+[azk8spull](https://github.com/xuxinkun/littleTools#azk8spull)
+
+> 一个 Shell 编写的脚本，这个脚本功能和 docker-wrapper 类似。同样可以自动从 Azure 中国拉取镜像并自动 Tag 为目标镜像和删除 Azure 镜像。
+
+```
+git clone https://github.com/xuxinkun/littleTools
+cd littleTools
+chmod +x install.sh
+./install.sh
+```
+
+```
+azk8spull quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.24.1
 ```
 
 # 五、containerd使用代理
