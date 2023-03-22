@@ -120,6 +120,8 @@ openstack quota set --cores 200 c2978d74024447b7bf0cacbd4b4e9af6
 
 # 九、恢复虚拟机ERROR状态
 
+> 可能是因为该虚拟机所属的宿主机down机了，但上面虚拟机一直处于硬重启状态，所以这台虚拟机肯定是无法迁移或疏散出去的，因此疏散主机就会报下面错误咯。
+
 ##### 1、找出该VM的id。
 
 ##### 2、查找数据库中该id状态
@@ -132,6 +134,28 @@ select * from instances where uuid='xxxxx'\G;
 update instances set vm_state='active' where uuid='xxxxx';
 
 update instances set power_state=1 where uuid='xxxxx';
+```
+
+```
+openstack 虚拟机错误状态恢复
+
+# 查看虚拟机列表
+nova list
+
+# 软重启
+nova reboot uuid
+
+# 硬重启
+nova reboot --hard uuid
+
+# 关机
+nova stop uuid
+
+# 开机
+nova start uuid
+
+# 重置错误状态
+nova reset-state --active uuid
 ```
 
 ##### 3、硬重启该VM即可。
