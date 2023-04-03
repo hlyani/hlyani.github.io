@@ -110,6 +110,14 @@ chpasswd:
 nova boot --user-data=userdata
 ```
 
+```
+#/bin/sh
+passwd <<EOF
+123456
+123456
+EOF
+```
+
 # 八、修改cpu quota
 
 ```

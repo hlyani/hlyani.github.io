@@ -27,14 +27,14 @@ echo 'addn-hosts=/etc/dnsmasq.d/dnsmasq.hosts' >> /etc/dnsmasq.conf
 ```
 netstat -tunlp|grep 53
 ```
-##### 5、使用DNS加快解析速度。打开/etc/dnsmasq.conf文件，server=后面可以添加指定的DNS，例如国内外不同的网站使用不同的DNS。
+##### 5、使用DNS加快解析速度。打开/etc/dnsmasq.conf文件，server=后面可以添加指定的DNS，例如不同的网站使用不同的DNS。
 * 国内指定DNS
 ```
 server=/cn/114.114.114.114
 server=/taobao.com/114.114.114.114
 server=/taobaocdn.com/114.114.114.114
 ```
-*  国外指定DNS
+*  指定DNS
 ```
 server=/google.com/223.5.5.5
 ```
@@ -55,5 +55,5 @@ dig www.baidu.com
 ```
 
 ##### 7、Dnsmasq小结
-		 1、Dnsmasq作为本地DNS服务器安装方便，操作简单，改动的地方也不是很多，如果用国内的VPS来搭建本地DNS，响应的速度会更快，也更稳定。
+		 1、Dnsmasq作为本地DNS服务器安装方便，操作简单，改动的地方也不是很多，如果用VPS来搭建本地DNS，响应的速度会更快，也更稳定。
 		 2、Dnsmasq的功能强大，反DNS劫持、加快解析速度、屏蔽广告、控制内网DNS、强制域名跳转到特定IP上等这些功能在我们的实际的生活中都是很有用的。
