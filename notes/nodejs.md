@@ -1,9 +1,16 @@
 # nodejs 相关
 
+[download](https://nodejs.org/zh-cn/download)
+
 ## 1、安装nodejs
 ```
-curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
-yum install -y nodejs
+curl -LO https://nodejs.org/dist/v18.17.1/node-v18.17.1-linux-x64.tar.xz
+or
+wget https://nodejs.org/dist/v18.17.1/node-v18.17.1-linux-x64.tar.xz
+
+tar -xvf node-v18.17.1-linux-x64.tar.xz -C /usr/local/
+ln -s /usr/local/node-v18.17.1-linux-x64/bin/npm   /usr/local/bin/ 
+ln -s /usr/local/node-v18.17.1-linux-x64/bin/node   /usr/local/bin/
 ```
 ## 2、查看版本
 ```

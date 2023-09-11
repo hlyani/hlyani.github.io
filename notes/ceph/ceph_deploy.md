@@ -177,6 +177,9 @@ rbd/test id=guest,keyring=/etc/ceph/ceph.client.guest.keyring
 vim /etc/fstab
 /dev/rbd0 /test xfs noatime,_netdev,defaults 0 0
 
+# 查看已映射
+rbd showmapped 
+
 rbdmap unmap 
 rbdmap unmap-all
 

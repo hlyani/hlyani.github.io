@@ -69,3 +69,14 @@ vim -x file 开始编辑一个加密的文件。
 :X 为当前文件设置密码。
 :set key= 去除文件的密码。
 ```
+
+##### 7、常用配置
+
+```
+vim ~/.vimrc
+
+set nobackup
+set noswapfile
+set nowritebackup
+```
+
