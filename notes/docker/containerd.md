@@ -34,6 +34,16 @@ ctr run -d docker.io/library/ubuntu:latest test bash
 ctr c rm test
 ```
 
+##### 5、导入导出镜像
+
+```
+bzip2 -cd aaa_v1.0.0_image_amd64.tar.bz2 | k3s ctr -n k8s.io i import -
+```
+
+```
+docker save aaa:v1.0.0 | bzip2 > aaa_v1.0.0_image_amd64.tar.bz2
+```
+
 # 三、crictl
 
 TODO

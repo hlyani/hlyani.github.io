@@ -347,7 +347,7 @@ vim /etc/systemd/system/docker.service.d/docker-options.conf
 ...
 ```
 
-## 32、build 不交互
+## 32、build 不交互，ubuntu、debian
 
 ```
 export DEBIAN_FRONTEND=noninteractive
@@ -740,6 +740,12 @@ docker pull gcr.dockerproxy.com/distroless/static
 docker pull gcr.dockerproxy.com/distroless/static-debian10
 docker pull gcr.dockerproxy.com/distroless/static-debian11
 docker pull gcr.dockerproxy.com/distroless/static-debian9
+```
+
+## 50、清除未使用容器
+
+```
+docker system prune
 ```
 
 

@@ -2,7 +2,7 @@
 
 # 一、常用
 
-##### 1、调试显示代码位置
+## 1、调试显示代码位置
 
 ```
 log.SetFlags(log.Llongfile)
@@ -17,7 +17,7 @@ log.Print("")
   where()
 ```
 
-##### 2、go mod
+## 2、go mod
 
 ```
 go mod download  下载依赖的module到本地cache（默认为$GOPATH/pkg/mod目录）
@@ -30,7 +30,7 @@ go mod verify    校验依赖
 go mod why       解释为什么需要依赖
 ```
 
-##### 3、清理缓存
+## 3、清理缓存
 
 ```
 go clean -modcache
@@ -38,13 +38,86 @@ rm -rf mod.sum
 go mod tidy
 ```
 
-##### 4、go.mod replace 本地源
+## 4、go.mod replace 本地源
 
 ```
 //go env -w GOPRIVATE=192.168.0.90 GOINSECURE=192.168.0.90
 
 github.com/containerd/containerd => 192.168.0.90/delta/deltacontainer v1.7.1-delta1.0.0
 ```
+
+## 5、编译
+
+```
+go tool compile -d help
+```
+
+```
+go build -ldflags="-s -w" -o main main.go
+```
+
+> -s 忽略符号表和调试信息
+> -w 忽略DWARFv3调试信息，使用该选项后将无法使用gdb进行调试
+>
+> -gcflags="-l -N"可以关闭代码优化，从而缩短编译时间
+
+## 6、压缩
+
+```
+upx
+1-9，9代表最高压缩率  
+go build -ldflags="-s -w" -o main main.go && upx -9 main
+```
+
+## 7、go mod
+
+```
+go mod download
+```
+
+> 下载依赖的module到本地cache（默认为$GOPATH/pkg/mod目录）
+
+```
+go mod edit
+```
+
+> 编辑go.mod文件
+
+```
+go mod graph
+```
+
+> 打印模块依赖图
+
+```
+go mod init
+```
+
+> 初始化当前文件夹, 创建go.mod文件
+
+```
+go mod tidy 
+```
+
+> 增加缺少的module，删除无用的module
+
+```
+go mod vendor
+```
+
+> 将依赖复制到vendor下
+
+```
+go mod verify
+```
+
+> 校验依赖
+
+```
+go mod why 
+```
+
+> 解释为什么需要依赖
 
 # 二、Go 语言环境安装
 
