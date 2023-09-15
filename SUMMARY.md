@@ -53,6 +53,7 @@
     * [Lfs上安装OpenStack](notes/openstack/lsf_install_openstack.md)
 * Linux 相关
     * [alpine](notes/linux/alpine.md)
+    * [etcd](notes/linux/etcd.md)
     * [uboot](notes/linux/uboot.md)
     * [linux 网络配置](notes/linux/linux_network.md)
     * [qemu-img](notes/linux/qemu_img.md)

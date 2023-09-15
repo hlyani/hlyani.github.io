@@ -1,6 +1,73 @@
 # kernel 内核编译
 
-# 一、安装依赖
+# 一、构建交叉编译容器
+
+> x86_64_aarch64
+
+Dockerfile
+
+```
+From ubuntu:22.04
+
+ARG http_proxy=http://192.168.0.55:1080
+ARG https_proxy=$http_proxy
+ARG no_proxy=$no_proxy
+ENV http_proxy=$http_proxy
+ENV https_proxy=$https_proxy
+ENV no_proxy=$no_proxy
+
+ENV PATH=$PATH:/opt/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu/bin
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu/lib
+
+WORKDIR /opt
+
+RUN sed -i s@/archive.ubuntu.com/@/mirrors.ustc.edu.cn/@g /etc/apt/sources.list && \
+    apt update && \
+    DEBIAN_FRONTEND=noninteractive apt install --no-install-recommends --no-install-suggests -y dracut git make libncurses-dev libelf-dev bison flex libssl-dev bc u-boot-tools vim wget xz-utils && \
+    rm -rf /var/lib/apt/lists/* && \
+    ln -s /usr/bin/python3 /usr/bin/python && \
+    wget --no-check-certificate https://releases.linaro.org/components/toolchain/binaries/latest-7/aarch64-linux-gnu/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu.tar.xz && \
+    tar -xf gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu.tar.xz && \
+    rm -rf gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu.tar.xz && \
+    alias make='make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-'
+```
+
+```
+docker build -t gcc-linaro-7.5.0:1.0.0 .
+```
+
+# 二、容器内编译内核
+
+## 1、直接编译
+
+```
+docker run -it --rm --privileged -v $PWD/../:/kernel -w /kernel /gcc-linaro-7.5.0:1.0.0 /bin/sh -c "sh << EOF
+make config
+make oldconfig
+make
+EOF"
+```
+
+## 2、编译boot.img
+
+```
+make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- rockchip_linux_defconfig
+cp arch/arm64/configs/rockchip_linux_defconfig .config
+make menuconfig
+make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- rk3399-firefly-linux.img -j $(nproc)
+mkdir -p ../out/
+cp boot.img ../out/
+```
+
+## 3、检查内核是否支持容器相关功能
+
+```
+wget https://raw.githubusercontent.com/moby/moby/master/contrib/check-config.sh
+chmod +x check-config.sh
+./check-config.sh .config
+```
+
+# 三、安装依赖
 
 ```
 yum install -y make ncurses-devel elfutils-libelf-devel bison flex openssl-devel bc gcc-c++ gcc
@@ -40,7 +107,7 @@ apt install linux-source-4.18.0
 cd /usr/src/linux-source-4.18.0
 ```
 
-# 二、进入内核源码并编译
+# 四、进入内核源码并编译
 
 ```
 wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.17.11.tar.xz
@@ -116,7 +183,7 @@ make clean
 make distclean
 ```
 
-# 三、FAQ
+# 五、FAQ
 
 > chromium
 

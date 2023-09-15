@@ -748,6 +748,14 @@ docker pull gcr.dockerproxy.com/distroless/static-debian9
 docker system prune
 ```
 
+# 50、docker/moby 官方工具
+
+[https://github.com/moby/moby/tree/master/contrib](https://github.com/moby/moby/tree/master/contrib)
+
+- check-config.sh 检查内核是否支持容器相关功能
+
+- download-frozen-image-v2.sh 通过sh拉取镜像
+
 
 
 # 二、linux实现docker资源隔离
