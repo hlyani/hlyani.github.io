@@ -635,7 +635,26 @@ set -o noglob
 
 > 禁用通配符的展开。
 
-## 二十一、Linux系统启动过程
+## 二十一、卸载硬盘
+
+> umount: /hl: target is busy.
+
+### 1、强制卸载
+
+```
+mount  -lf /hl/
+```
+
+### 2、使用fuser
+
+```
+fuser -mv /hl/
+fuser -kv /hl/
+
+kill -9 PID
+```
+
+## 二十二、Linux系统启动过程
 
 > Linux系统的启动过程：内核引导、运行init、系统初始化、建立终端、用户登录系统
 

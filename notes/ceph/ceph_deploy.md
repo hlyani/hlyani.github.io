@@ -1,4 +1,4 @@
-# Ceph 部署
+# Ceph 相关
 > PG = Placement Group
 > PGP = Placement Group for Placement purpose
 >
@@ -18,7 +18,145 @@
 > pgp_num的增加会使PG的分布方式发生变化，但是PG内的对象并不会变动
 > pgp决定pg分布时的组合方式的变化
 
-# 一、cephadm
+
+
+## 一、常用命令
+
+##### 1、查询集群状态
+
+```
+# 健康状态
+ceph -s
+ceph health
+ceph health detail
+ceph pg stat
+ceph pg dump_stuck unclean|grep unknown
+ceph crash ls
+
+
+# pool
+ceph osd lspools
+ceph osd pool ls
+ceph osd pool ls detail
+
+# osd
+ceph osd tree
+
+# 资源使用状态
+ceph df
+ceph df detail
+ceph osd df
+ceph osd df rbd
+ceph osd df tree
+
+# 其他
+ ceph quorum_status --format json-pretty
+ ceph osd pool get-quota volumes
+ ceph osd pool get rbd crush_rule
+```
+
+##### 2、删除data，metadata池
+
+```
+ceph osd pool delete metadata metadata --yes-i-really-really-mean-it
+ceph osd pool delete data data --yes-i-really-really-mean-it
+```
+
+##### 3、创建volumes存储池
+
+```
+ceph osd pool create volumes 4000 4000
+```
+
+##### 4、查询 volumes 池当前复制副本数量
+
+```
+ceph osd dump | grep 'replicated size' | grep volumes
+```
+
+##### 5、修改复制副本为 2 并验证
+
+```
+ceph osd pool set volumes size 2
+ceph osd dump | grep 'replicated size' | grep volumes
+```
+
+##### 6、查看存储使用情况
+
+```
+ceph df
+```
+
+##### 7、查看集群得分
+
+> 分数越低越好
+
+```
+ceph balancer eval
+
+current cluster score 0.032004 (lower is better)
+```
+
+##### 8、修复
+
+```
+ ceph pg deep-scrub 4.b6
+ceph pg repair 4.b6
+```
+
+##### 9、暂停与恢复osd对外访问
+
+```
+ceph osd pause
+ceph osd unpause
+```
+
+##### 10、数据均衡调整
+
+> 按利用率调整OSD的权重
+
+```
+ceph osd reweight-by-utilization
+```
+
+> 按归置组分布情况调整OSD的权重
+
+```
+ceph osd reweight-by-pg
+```
+
+##### 11、重新设置OSD权重
+
+> crush 显示osd磁盘本身大小的标签
+
+```
+ceph osd crush reweight osd.8 1
+ceph osd reweight osd.8 0.2
+```
+
+##### 12、删除pool
+
+```
+ceph tell mon.\* injectargs '--mon-allow-pool-delete=true'
+ceph osd pool rm tmp tmp --yes-i-really-really-mean-it
+ceph tell mon.\* injectargs '--mon-allow-pool-delete=false'
+```
+
+##### 13、rbdmap
+
+```
+apt -y install ceph-common
+
+cat > /etc/ceph/rbdmap <<EOF
+foo/bar1    id=admin,keyring=/etc/ceph/ceph.client.admin.keyring
+foo/bar2    id=admin,keyring=/etc/ceph/ceph.client.admin.keyring,options='lock_on_read,queue_depth=1024'
+EOF
+
+systemctl enable rbdmap.service
+systemctl restart rbdmap.service
+```
+
+# 二、cephadm
 
 ## 1、安装依赖
 
@@ -414,7 +552,7 @@ ceph health detail
 ceph pg repair 4.3f
 ```
 
-# 二、ceph deploy 
+# 三、ceph deploy 
 
 ## 一、ceph deploy 部署ceph
 
@@ -733,7 +871,7 @@ qemu-img convert -f {source-format} -O {output-format} {source-filename} {output
 qemu-img convert -f qcow2 -O raw precise-cloudimg.img precise-cloudimg.raw
 ```
 
-## 三、使用glance task-create上传镜像并将格式转为raw。
+## 四、使用glance task-create上传镜像并将格式转为raw。
 
 ##### 1、编辑glance-api.conf。
 
@@ -762,7 +900,7 @@ service openstack-glance-api restart
 glance task-create --type import --input '{"import_from_format": "qcow2", "import_from": "http://172.18.20.160/cirros-0.3.4-x86_64-disk.img", "image_properties": {"name": "cirros-RAW", "disk_format": "qcow2", "container_format": "bare"}}'
 ```
 
-## 四、移除osd。
+## 五、移除osd。
 
 ```
 ceph osd tree
@@ -772,7 +910,7 @@ ceph auth del osd.0
 ceph osd rm osd.0
 ```
 
-## 五、添加mon，移除mon
+## 六、添加mon，移除mon
 
 ```
 ceph-deploy install ctrl
@@ -787,124 +925,10 @@ ceph quorum_status --format json-pretty
 ceph-deploy gatherkeys comp-1
 ```
 
-## 六、启动ceph自带监控界面
+## 七、启动ceph自带监控界面
 
 ```
 ceph mgr module enable dashboard
-```
-
-## 七、常用命令
-
-##### 1、查询集群状态
-
-```
-# 健康状态
-ceph -s
-ceph health
-ceph health detail
-ceph pg stat
-ceph pg dump_stuck unclean|grep unknown
-ceph crash ls
-
-
-# pool
-ceph osd lspools
-ceph osd pool ls
-ceph osd pool ls detail
-
-# osd
-ceph osd tree
-
-# 资源使用状态
-ceph df
-ceph df detail
-ceph osd df
-ceph osd df rbd
-ceph osd df tree
-
-# 其他
- ceph quorum_status --format json-pretty
- ceph osd pool get-quota volumes
- ceph osd pool get rbd crush_rule
-```
-
-##### 2、删除data，metadata池
-
-```
-ceph osd pool delete metadata metadata --yes-i-really-really-mean-it
-ceph osd pool delete data data --yes-i-really-really-mean-it
-```
-
-##### 3、创建volumes存储池
-
-```
-ceph osd pool create volumes 4000 4000
-```
-
-##### 4、查询 volumes 池当前复制副本数量
-
-```
-ceph osd dump | grep 'replicated size' | grep volumes
-```
-
-##### 5、修改复制副本为 2 并验证
-
-```
-ceph osd pool set volumes size 2
-ceph osd dump | grep 'replicated size' | grep volumes
-```
-
-##### 6、查看存储使用情况
-
-```
-ceph df
-```
-
-##### 7、查看集群得分
-
-> 分数越低越好
-
-```
-ceph balancer eval
-
-current cluster score 0.032004 (lower is better)
-```
-
-##### 8、修复
-
-```
- ceph pg deep-scrub 4.b6
-ceph pg repair 4.b6
-```
-
-##### 9、暂停与恢复osd对外访问
-
-```
-ceph osd pause
-ceph osd unpause
-```
-
-##### 10、数据均衡调整
-
-> 按利用率调整OSD的权重
-
-```
-ceph osd reweight-by-utilization
-```
-
-> 按归置组分布情况调整OSD的权重
-
-```
-ceph osd reweight-by-pg
-```
-
-##### 11、重新设置OSD权重
-
-> crush 显示osd磁盘本身大小的标签
-
-```
-ceph osd crush reweight osd.8 1
-ceph osd reweight osd.8 0.2
 ```
 
 ## 八、kolla 中ceph相关

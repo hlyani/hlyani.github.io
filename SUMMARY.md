@@ -11,6 +11,7 @@
     * [kubebuilder](notes/docker/kubebuilder.md)
     * [Containerd](notes/docker/containerd.md)
     * [Buildah](notes/docker/buildah.md)
+    * [Buildkit](notes/docker/buildkit.md)
     * [docker 相关](notes/docker/docker.md)
     * [容器交叉编译](notes/docker/multiarch.md)
     * [kubeedge](notes/docker/kubeedge.md)

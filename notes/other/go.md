@@ -61,7 +61,15 @@ go build -ldflags="-s -w" -o main main.go
 >
 > -gcflags="-l -N"可以关闭代码优化，从而缩短编译时间
 
-## 6、压缩
+## 6、静态编译
+
+```
+go build -o output.exe -ldflags="-s -w -extldflags '-static'"
+```
+
+> -ldflags="-s -w -extldflags '-static'" 用于去除可执行文件中的符号表和调试信息，并将所有的依赖库链接为静态库
+
+## 7、压缩
 
 ```
 upx
@@ -69,7 +77,7 @@ upx
 go build -ldflags="-s -w" -o main main.go && upx -9 main
 ```
 
-## 7、go mod
+## 8、go mod
 
 ```
 go mod download
@@ -118,6 +126,13 @@ go mod why
 ```
 
 > 解释为什么需要依赖
+
+## 9、交叉编译
+
+```
+GOOS=linux GOARCH=arm64 go build ...
+GOOS=linux GOARCH=amd64 go build ...
+```
 
 # 二、Go 语言环境安装
 
