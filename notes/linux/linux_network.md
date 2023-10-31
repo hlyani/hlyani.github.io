@@ -6,19 +6,15 @@
 vim /etc/netplan/01-netcfg.yaml 
 
 network:
-    version: 2
-    renderer: networkd
-#    renderer: NetworkManager
-    ethernets:
-        enp0s3:
-            dhcp4: no
-    #        dhcp6: no
-            addresses: [192.168.1.222/24]
-            gateway4: 192.168.1.1
-            nameservers:
-                addresses: [114.114.114.114,8.8.8.8]
-        enp4s0:
-            dhcp4: true
+  ethernets:
+    enp1s0:
+      dhcp4: no
+      addresses: [192.168.0.84/24]
+      nameservers:
+        addresses: [8.8.8.8]
+      routes:
+      - to: default
+        via: 192.168.0.1
 ```
 
 ```
@@ -27,6 +23,19 @@ netplan apply
 netplan --debug apply
 netplan -d apply
 networkctl status
+```
+
+```
+network:
+    version: 2
+    renderer: networkd
+#    renderer: NetworkManager
+    ethernets:
+        enp0s3:
+            dhcp4: no
+    #        dhcp6: no
+        enp4s0:
+            dhcp4: true
 ```
 
 ```
@@ -201,5 +210,16 @@ OriginalName=*
 NamePolicy=keep kernel database onboard slot path
 AlternativeNamesPolicy=database onboard slot path
 MACAddressPolicy=persistent
+```
+
+# 四、网络扫描
+
+```
+apt install -y nmap
+```
+
+```
+ nmap -sP 192.168.0.0/24
+ nmap -sS 192.168.0.0/24
 ```
 
