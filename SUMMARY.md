@@ -55,6 +55,8 @@
 * Linux 相关
     * [alpine](notes/linux/alpine.md)
     * [etcd](notes/linux/etcd.md)
+    * [frp](notes/linux/frp.md)
+    * [synology](notes/linux/synology.md)
     * [uboot](notes/linux/uboot.md)
     * [linux 网络配置](notes/linux/linux_network.md)
     * [qemu-img](notes/linux/qemu_img.md)

@@ -72,3 +72,13 @@ ETCDCTL_API=3 etcdctl --endpoints http://172.19.1.10:2379,http://172.19.1.11:237
 ETCDCTL_API=3 etcdctl --endpoints http://172.19.1.10:2379,http://172.19.1.11:2379,http://172.19.1.12:2379 get foo
 ```
 
+## 4、查看状态
+
+```
+etcdctl --endpoints http://172.19.1.10:2379 endpoint status
+etcdctl --endpoints http://172.19.1.10:2379 endpoint status -w table
+etcdctl --endpoints http://172.19.1.10:2379 endpoint health
+etcdctl --endpoints http://172.19.1.10:2379 endpoint health -w table
+etcdctl --endpoints http://172.19.1.10:2379 member list -w table
+```
+
