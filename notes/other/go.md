@@ -134,6 +134,18 @@ GOOS=linux GOARCH=arm64 go build ...
 GOOS=linux GOARCH=amd64 go build ...
 ```
 
+## 10、调试打印
+
+```
+func pp(values ...interface{}) {
+    for _, v := range values {
+        fmt.Println("-----------------------------------------------------------------------------------")
+        fmt.Println(v)
+        fmt.Println("-----------------------------------------------------------------------------------")
+    }
+}
+```
+
 # 二、Go 语言环境安装
 
 https://golang.org/dl/
@@ -627,3 +639,54 @@ math.inf
 
 math.MaxInt64
 ```
+
+# 五、dlv 调试
+
+## 1、安装dlv
+
+```
+go install github.com/go-delve/delve/cmd/dlv@latest
+```
+
+## 2、编译程序
+
+```
+GODEBUG=1 make
+```
+
+## 3、通过dlv运行程序
+
+```
+/opt/go/bin/dlv exec ./bin/containerd --headless --listen 0.0.0.0:2345 --api-version 2
+```
+
+## 4、配置vscode
+
+```
+lauch.json
+
+{
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Launch Package",
+            "type": "go",
+            "request": "attach",
+            "mode": "remote",
+            "remotePath": "/opt/containerd",
+            "port": 2345,
+            "dlvLoadConfig": {
+                "followPointers": true,
+                "maxVariableRecurse": 1,
+                "maxStringLen": 2048,
+                "maxArrayValues": 64,
+                "maxStructFields": -1
+            },
+            "host": "192.168.0.127"
+        }
+    ]
+}
+```
+
+## 5、vscode F5 启用调试
