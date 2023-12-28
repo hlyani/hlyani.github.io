@@ -54,6 +54,7 @@
     * [Lfs上安装OpenStack](notes/openstack/lsf_install_openstack.md)
 * Linux 相关
     * [alpine](notes/linux/alpine.md)
+    * [gitlab](notes/linux/gitlab.md)
     * [etcd](notes/linux/etcd.md)
     * [frp](notes/linux/frp.md)
     * [synology](notes/linux/synology.md)
@@ -154,6 +155,7 @@
     * [cifar-10 相关](notes/machinelearning/cifar_10.md)
     * [Darknet to Caffe](notes/machinelearning/darknet_to_caffe.md)
 * 其他
+    * [GO Authens 代理](notes/other/go_authens.md)
     * [Nativefier 相关](notes/other/nativefier.md)
     * [ptp 相关](notes/other/ptp.md)
     * [xenserver 相关](notes/other/xenserver.md)

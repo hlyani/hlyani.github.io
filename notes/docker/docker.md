@@ -477,6 +477,13 @@ vim /etc/docker/daemon.json
 }
 ```
 
+```
+vim /etc/docker/daemon.json
+{
+    "data-root": "/data/docker/",
+}
+```
+
 ## 38、设备空间不足
 
 ##### 1、磁盘用完
@@ -748,7 +755,7 @@ docker pull gcr.dockerproxy.com/distroless/static-debian9
 docker system prune
 ```
 
-# 50、docker/moby 官方工具
+## 51、docker/moby 官方工具
 
 [https://github.com/moby/moby/tree/master/contrib](https://github.com/moby/moby/tree/master/contrib)
 
@@ -756,7 +763,20 @@ docker system prune
 
 - download-frozen-image-v2.sh 通过sh拉取镜像
 
+## 52、拉取arm镜像
 
+```
+docker pull arm64v8/alpine:3.18
+```
+
+## 53、daemon.json 常用配置
+
+```
+{
+  "insecure-registries": ["192.168.0.10:3000"],
+  "registry-mirrors": ["http://192.168.0.10:3000","http://hub-mirror.c.163.com","https://registry.docker-cn.com","https://docker.mirrors.ustc.edu.cn"]
+}
+```
 
 # 二、linux实现docker资源隔离
 

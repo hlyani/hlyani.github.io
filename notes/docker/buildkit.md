@@ -287,3 +287,90 @@ EOT
 RUN FOO=abc ash /app/script.sh
 ```
 
+# 五、构建
+
+## 1、拉取代码
+
+```
+git clone https://github.com/moby/buildkit.git
+```
+
+# 2、安装 buildx 插件
+
+```
+wget https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-amd64
+chmod a+x buildx-v0.11.2.linux-amd64
+mkdir -p ~/.docker/cli-plugins
+mv buildx-v0.11.2.linux-amd64 ~/.docker/cli-plugins/docker-buildx
+```
+
+## 3、编译
+
+```
+make
+```
+
+## 4、多架构构建
+
+```
+docker buildx ls
+```
+
+```
+docker buildx create --driver docker-container --platform linux/arm64,linux/amd64 --use --bootstrap --name multi
+```
+
+```
+docker buildx ls
+NAME/NODE DRIVER/ENDPOINT             STATUS  BUILDKIT             PLATFORMS
+multi *   docker-container   multi0  unix:///var/run/docker.sock running v0.12.4  linux/arm64*, linux/amd64*, linux/amd64/v2, linux/amd64/v3, linux/amd64/v4, linux/386
+default   docker            default default                     running v0.11.6+0a15675913b7 linux/amd64, linux/amd64/v2, linux/amd64/v3, linux/amd64/v4, linux/386
+```
+
+> 切换
+
+```
+docker buildx use <builder>
+```
+
+> 启动
+
+```
+docker buildx inspect --bootstrap multi
+```
+
+> 删除
+
+```
+docker buildx rm multi
+```
+
+> 构建
+
+```
+docker buildx build --platform linux/arm64,linux/amd64 --build-arg="REPO" -f Dockerfile.local --output=./dist .
+```
+
+> 使用配置
+
+```
+Makefile
+
+.PHONY: cross
+cross:
+	$(BUILDX_CMD) bake binaries-cross
+```
+
+```
+docker-bake.hcl
+
+target "binaries-cross" {
+  inherits = ["binaries"]
+  output = [bindir("cross")]
+  platforms = [
+    "linux/amd64",
+    "linux/arm64"
+  ]
+}
+```
+

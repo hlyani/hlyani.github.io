@@ -10,6 +10,14 @@ HTTP_PROXY=192.168.0.127:1080 COMMAND
 export https_proxy=http://127.0.0.1:33210 http_proxy=http://127.0.0.1:33210 all_proxy=socks5://127.0.0.1:33211
 ```
 
+```
+export {http_proxy,https_proxy,all_proxy}=http://127.0.0.1:1080
+```
+
+```
+unset all_proxy https_proxy http_proxy
+```
+
 # 二、curl 使用代理
 
 ```
@@ -306,6 +314,10 @@ go env -w GO111MODULE=on
 # 配置 GOPROXY 环境变量
 # go env -w GOPROXY=https://goproxy.io,direct
 go env -w GOPROXY=https://goproxy.cn,direct
+
+export GOPROXY="https://athens.azurefd.net"
+export GOPROXY="https://mirrors.tencent.com/go/"
+export GOPROXY="https://mirrors.aliyun.com/goproxy/"
 ```
 
 # 十一、GitHub

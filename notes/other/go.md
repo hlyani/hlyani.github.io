@@ -40,10 +40,16 @@ go mod tidy
 
 ## 4、go.mod replace 本地源
 
-```
-//go env -w GOPRIVATE=192.168.0.90 GOINSECURE=192.168.0.90
+> go.mod
 
-github.com/containerd/containerd => 192.168.0.90/delta/deltacontainer v1.7.1-delta1.0.0
+```
+//go env -w GOPRIVATE=192.168.0.10 GOINSECURE=192.168.0.10
+github.com/containerd/containerd => 192.168.0.10/aaa/containerd v1.0.0
+```
+
+```
+git clone --single-branch --branch=v1.0.0 --depth=1 http://192.168.0.10/aaa/containerd build/aaa/containerd 
+replace github.com/containerd/containerd => build/aaa/containerd 
 ```
 
 ## 5、编译

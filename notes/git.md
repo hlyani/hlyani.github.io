@@ -4,35 +4,36 @@
 
 ##### 1、Git 配置
 ```
-/etc/gitconfig 文件：系统中对所有用户都普遍适用的配置。若使用 git config 时用 --system 选项，读写的就是这个文件。
-
-~/.gitconfig 文件：用户目录下的配置文件只适用于该用户。若使用 git config 时用 --global 选项，读写的就是这个文件。
-
+/etc/gitconfig 所有用户，git config --system
+~/.gitconfig 当前用户，git config --global
 .git/config
 
-当前项目的 Git 目录中的配置文件（也就是工作目录中的 .git/config 文件）：这里的配置仅仅针对当前项目有效。每一个级别的配置都会覆盖上层的相同配置，所以 .git/config 里的配置会覆盖 /etc/gitconfig 中的同名变量。
+#覆盖优先级
+.git/config > ~/.gitconfig > /etc/gitconfig 
 
 git config --local http.postBuffer 524288000
 git config --global http.lowSpeedLimit 0
 git config --global http.lowSpeedTime 999999
-
 git config --global user.name "hl"
 git config --global core.editor vim
 git config --global merge.tool vimdiff
 git config --list
 
-#设置记住密码（默认15分钟）：
+#15 分钟
 git config --global credential.helper cache
 
 #永久
 git config --global credential.helper store
 
-#如果想自己设置时间，可以这样做：
+#自定义时间
 git config credential.helper 'cache --timeout=3600'
 ```
 ##### 2、查看状态
 ```
 git status -s
+git log --oneline
+git tags
+git branch
 ```
 ##### 3、rebase
 ```
@@ -66,7 +67,7 @@ git checkout -b dev origin/master
 ```
 ##### 7、remote add
 ```
-git remote add test http://192.168.21.1/test/test.git
+git remote add test http://192.168.0.1/test/test.git
 
 git remote -vv
 ```
@@ -239,7 +240,30 @@ git clone http://邮箱(或用户名):密码@仓库
 ```
 
 ```
-git clone -b master --depth 1 http://admin:123456@192.168.0.1/demo/demo.git
+git clone -b master --depth 1 http://admin:123@192.168.0.1/demo/demo.git
+```
+
+##### 23、tag
+
+```
+git tag -a v1.0 -m "v1.0"
+
+推送所有tag
+git push origin --tags
+```
+
+##### 24、拉取单个分支到指定目录
+
+```
+git clone --single-branch --branch=v1.0.0 --depth=1 http://192.168.0.1/test/tmp test
+```
+
+##### 25、强制推送所有分支
+
+```
+需要推送的分支需要每个都 git checkout xx
+
+git push --all origin -f
 ```
 
 # 二、常用
@@ -461,7 +485,86 @@ cleanup_build_job仅在build_job失败时执行。
 始终执行cleanup_job作为流水线的最后一步，无论成功或失败。
 允许您deploy_job从GitLab的UI 手动执行。
 ```
+```
+stages:
+  - build
+  - upload
+  - release
+
+variables:
+  PACKAGE_VERSION: ${CI_COMMIT_BRANCH}-${CI_COMMIT_SHORT_SHA}
+  REGISTRY: "192.168.0.1"
+  DIR: "dist"
+  AMD64_TAR: "aa-amd64.tar.gz"
+  ARM64_TAR: "aa-arm64.tar.gz"
+  PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/Release/${PACKAGE_VERSION}"
+
+build-job:
+  stage: build
+  image: ${REGISTRY}/cicd/build-base:v1.0.1
+  rules:
+    - if: $CI_COMMIT_TAG # Do not run this job when a tag is created manually
+      when: never
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Run this job when commits are pushed or merged to the default branch
+  script:
+    - echo "running build-job for ${PACKAGE_VERSION}"
+    - make
+    # - yes|docker system prune -a
+  artifacts:
+    untracked: false
+    when: on_success
+    expire_in: 30 days
+    paths:
+      - ${DIR}/${AMD64_TAR}
+      - ${DIR}/${ARM64_TAR}
+
+upload-job:
+  stage: upload
+  image: ${REGISTRY}/cicd/curl:latest
+  rules:
+    - if: $CI_COMMIT_TAG # Do not run this job when a tag is created manually
+      when: never
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Run this job when commits are pushed or merged to the default branch
+  needs:
+    - job: build-job
+      artifacts: true
+  script:
+    - echo "running upload-job for ${PACKAGE_VERSION}"
+    - |
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file ${DIR}/${AMD64_TAR} "${PACKAGE_REGISTRY_URL}/${AMD64_TAR}"
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file ${DIR}/${ARM64_TAR} "${PACKAGE_REGISTRY_URL}/${ARM64_TAR}"
+    - echo ${PACKAGE_REGISTRY_URL}/${AMD64_TAR}
+    - echo ${PACKAGE_REGISTRY_URL}/${ARM64_TAR}
+
+release-job:
+  stage: release
+  image: ${REGISTRY}/cicd/release-cli:latest
+  rules:
+    - if: $CI_COMMIT_TAG # Do not run this job when a tag is created manually
+      when: never
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH # Run this job when commits are pushed or merged to the default branch
+  needs:
+    - job: upload-job
+  script:
+    - echo "running release-job for ${PACKAGE_VERSION}"
+  release:
+    name: ${PACKAGE_VERSION}
+    tag_name: ${PACKAGE_VERSION}
+    description:  ${PACKAGE_VERSION}
+    assets:
+      links:
+        - name: ${AMD64_TAR}
+          url: "${PACKAGE_REGISTRY_URL}/${AMD64_TAR}"
+          filepath: "/${AMD64_TAR}"
+          link_type: package
+        - name: ${ARM64_TAR}
+          url: "${PACKAGE_REGISTRY_URL}/${ARM64_TAR}"
+          filepath: "/${ARM64_TAR}"
+          link_type: package
+```
+
 ##### 5、界面查找url和token
+
 ```
 Settings —> Pipelines —> Specific Runners
 ```
@@ -590,6 +693,19 @@ cd /var/opt/gitlab/git-data/repositories
 ```
 
 ```
-/usr/bin/gitlab-rake gitlab:backup:create"
+/usr/bin/gitlab-rake gitlab:backup:create
+```
+
+# 四、FAQ
+
+> error: RPC failed; curl 56 GnuTLS recv error (-9): Error decoding the received TLS packet.
+> error: 4254 bytes of body are still expected
+> fetch-pack: unexpected disconnect while reading sideband packet
+> fatal: early EOF
+> fatal: fetch-pack: invalid index-pack output
+
+```
+git config --global http.postBuffer 1048576000
+git config --global https.postBuffer 1048576000
 ```
 

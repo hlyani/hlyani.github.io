@@ -122,7 +122,41 @@ DNS1=114.114.114.114
 systemctl restart network
 ```
 
-# 三、systemd-networkd
+# 三、NetworkManager
+
+```
+nmcli
+nmtui
+```
+
+```
+cat /etc/NetworkManager/system-connections/eth1
+
+[connection]
+id=eth1
+uuid=31b84fda-dc81-4871-a5e3-da34a74d8cc3
+type=ethernet
+interface-name=eth1
+permissions=
+timestamp=1701162383
+
+[ethernet]
+mac-address-blacklist=
+
+[ipv4]
+address1=192.168.0.75/24,192.168.0.1
+dns=8.8.8.8;114.114.114.114;
+dns-search=
+method=manual
+
+[ipv6]
+addr-gen-mode=stable-privacy
+dns-search=
+ip6-privacy=0
+method=auto
+```
+
+# 四、systemd-networkd
 
 > .network 文件，为匹配的设备提供一个网络配置
 > .netdev 文件，为匹配的环境创建一个虚拟网络设备
@@ -212,7 +246,7 @@ AlternativeNamesPolicy=database onboard slot path
 MACAddressPolicy=persistent
 ```
 
-# 四、网络扫描
+# 五、网络扫描
 
 ```
 apt install -y nmap
