@@ -654,7 +654,13 @@ fuser -kv /hl/
 kill -9 PID
 ```
 
-## 二十二、Linux系统启动过程
+## 二十二 、指定目录压缩，并删除源文件
+
+```
+tar --remove-files -zcf dist/aaa-${arch}.tar.gz -C bbb/ .
+```
+
+## 二十三、Linux系统启动过程
 
 > Linux系统的启动过程：内核引导、运行init、系统初始化、建立终端、用户登录系统
 
