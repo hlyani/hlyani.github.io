@@ -313,11 +313,33 @@ make
 ## 4、多架构构建
 
 ```
+cat > /etc/buildkitd.toml << EOF
+debug = true
+root = "/var/lib/buildkit"
+
+[registry."192.168.0.10:3000"]
+http = true
+insecure = true
+
+[registry."docker.io"]
+mirrors = ["192.168.0.10:3000"]
+http = true
+insecure = true
+EOF
+```
+
+```
 docker buildx ls
 ```
 
 ```
-docker buildx create --driver docker-container --platform linux/arm64,linux/amd64 --use --bootstrap --name multi
+docker buildx create \
+  --driver docker-container \
+  --platform linux/arm64,linux/amd64 \
+  --use \
+  --bootstrap \
+  --config /etc/buildkitd.toml \
+  --name multi
 ```
 
 ```

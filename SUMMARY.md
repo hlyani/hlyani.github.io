@@ -6,6 +6,7 @@
 * [linux 源相关](notes/linux_source.md)
 * [git 相关](notes/git.md)
 * [golang 相关](notes/other/go.md)
+* [skills](notes/skills.md)
 * 容器相关
     * [常用软件安装](notes/docker/usual_software.md)
     * [kubebuilder](notes/docker/kubebuilder.md)

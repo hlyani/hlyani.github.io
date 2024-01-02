@@ -195,3 +195,21 @@ release-job:
           link_type: package
 ```
 
+# 四、删除pipeline
+
+```
+cat > ./remove_pipeline.sh << EOF
+#!/bin/bash
+set -e
+
+TOKEN="glpat-mupaMainEtb-TsdBvrX4"
+PROJECT_ID="8"
+GITLAB_INSTANCE="http://192.168.0.90:30"
+PER_PAGE=100
+
+for PIPELINE in $(curl --header "PRIVATE-TOKEN: ${TOKEN}" "${GITLAB_INSTANCE}/api/v4/projects/${PROJECT_ID}/pipelines?per_page=${PER_PAGE}&sort=asc" | jq '.[].id') ; do
+    echo "Deleting pipeline $PIPELINE"
+    curl --header "PRIVATE-TOKEN: ${TOKEN}" --request "DELETE" "${GITLAB_INSTANCE}/api/v4/projects/${PROJECT_ID}/pipelines/${PIPELINE}"
+done
+EOF
+```
