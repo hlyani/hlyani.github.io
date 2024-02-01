@@ -1074,3 +1074,73 @@ docker history <image-id>
 ##### 10、利用构建缓存
 
 > 构建映像时，Docker会逐步Dockerfile执行您的指令， 按指定的顺序执行每个指令。在检查每条指令时，Docker会在其缓存中查找可以重用的现有image，而不是创建新的（重复）image。
+
+# 五、在docker中运行windows
+
+[dockur/windows](https://github.com/dockur/windows)
+
+[dockerhub_dockurr/windows](https://hub.docker.com/r/dockurr/windows)
+
+## 1、提前准备windows ios
+
+> 必须使用custom.iso
+
+```
+mkdir /storage
+cp *.ios /storage/custom.iso
+```
+
+## 2、启动容器
+
+```
+docker run -itd \
+    -p 8006:8006 \
+    -p 3389:3389 \
+    --device=/dev/kvm \
+    --cap-add NET_ADMIN \
+    --stop-timeout 120 \
+    -e VERSION="custom.iso" \
+    -e RAM_SIZE="10G" \
+    -e CPU_CORES="10" \
+    -e DISK_SIZE="100G" \
+    -v /storage:/storage \
+    --name win11 \
+    dockurr/windows
+```
+
+## 3、通过浏览器安装
+
+```
+http://{IP}:8006
+```
+
+# 六、在docker中运行macos
+
+> macOS Containers 是一个可以在 macOS 中运行 macOS 的 Docker 容器
+
+[https://meta.appinn.net/t/topic/47790](https://meta.appinn.net/t/topic/47790)
+
+[https://github.com/macOScontainers/homebrew-formula](https://github.com/macOScontainers/homebrew-formula)
+
+```
+# Install packages
+brew install --cask macfuse
+brew install docker docker-buildx macOScontainers/formula/bindfs macOScontainers/formula/containerd macOScontainers/formula/dockerd macOScontainers/formula/rund 
+
+# Start services 
+sudo brew services start containerd 
+sudo brew services start dockerd 
+
+# Set up BuildKit 
+mkdir -p ~/.docker/cli-plugins 
+ln -sfn /opt/homebrew/opt/docker-buildx/bin/docker-buildx ~/.docker/cli-plugins/docker-buildx
+```
+
+```
+echo <YOUR_ACCESS_TOKEN> | docker login ghcr.io -u <GITHUB_USERNAME> --password-stdin
+```
+
+```
+docker run --rm -it ghcr.io/macoscontainers/macos-jail/ventura:latest echo "Hello from macOS container ^_^"
+```
+
