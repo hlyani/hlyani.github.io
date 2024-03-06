@@ -5,7 +5,6 @@
 * [pip 源相关](notes/pip.md)
 * [linux 源相关](notes/linux_source.md)
 * [git 相关](notes/git.md)
-* [golang 相关](notes/other/go.md)
 * [skills](notes/skills.md)
 * 容器相关
     * [常用软件安装](notes/docker/usual_software.md)
@@ -35,6 +34,9 @@
     * [openshift 相关](notes/docker/openshift.md)
     * [将ISO镜像转换为docker镜像](notes/docker/convert_iso_to_docker_img.md)
     * [挂载USB到docker容器](notes/docker/mount_usb_to_docker.md)
+* Golang 相关
+    * [golang 相关](notes/golang/go.md)
+    * [GO Authens 代理](notes/golang/go_authens.md)
 * OpenStack 相关
     * [QEMU 源码编译](notes/openstack/qemu_make.md)
     * [OpenStack 相关](notes/openstack/openstack.md)
@@ -156,7 +158,6 @@
     * [cifar-10 相关](notes/machinelearning/cifar_10.md)
     * [Darknet to Caffe](notes/machinelearning/darknet_to_caffe.md)
 * 其他
-    * [GO Authens 代理](notes/other/go_authens.md)
     * [Nativefier 相关](notes/other/nativefier.md)
     * [ptp 相关](notes/other/ptp.md)
     * [xenserver 相关](notes/other/xenserver.md)

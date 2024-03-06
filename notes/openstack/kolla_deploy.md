@@ -155,7 +155,7 @@ kolla_install_type: "source"
 openstack_release: "wallaby"
 kolla_internal_vip_address: "192.168.0.243"
 kolla_external_vip_address: "{{ kolla_internal_vip_address }}"
-docker_registry: 192.168.0.90:3000
+docker_registry: 192.168.0.10:3000
 docker_namespace: "kolla"
 network_interface: "eno1"
 neutron_external_interface: "eno2"

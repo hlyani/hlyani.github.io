@@ -150,6 +150,9 @@ openstack 虚拟机错误状态恢复
 # 查看虚拟机列表
 nova list
 
+# 重置错误状态
+nova reset-state --active uuid
+
 # 软重启
 nova reboot uuid
 
@@ -161,9 +164,6 @@ nova stop uuid
 
 # 开机
 nova start uuid
-
-# 重置错误状态
-nova reset-state --active uuid
 ```
 
 ##### 3、硬重启该VM即可。

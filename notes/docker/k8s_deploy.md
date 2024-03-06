@@ -933,3 +933,4 @@ kubectl cp /etc/ceph/ceph.conf --namespace kube-system kube-controller-manager-n
 rbd ls k8s
 ```
 
+ 
