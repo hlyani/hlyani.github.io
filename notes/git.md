@@ -27,6 +27,8 @@ git config --global credential.helper store
 
 #自定义时间
 git config credential.helper 'cache --timeout=3600'
+
+
 ```
 ##### 2、查看状态
 ```
@@ -197,6 +199,8 @@ git config format.pretty oneline
 ```
 # --format 表示打包的格式，如 zip，-v 表示对应的 tag 名，后面跟的是 tag 名，如 v0.1
 git archive -v -format=zip v0.1>v0.1.zip
+
+git archive --format=tar --output /full/path/to/zipfile.zip master | gzip
 ```
 
 ##### 21、subtree
@@ -250,6 +254,12 @@ git tag -a v1.0 -m "v1.0"
 
 推送所有tag
 git push origin --tags
+
+删除本地记录
+git tag -d v1.0
+
+删除远程记录
+git push origin :refs/tags/v1.0
 ```
 
 ##### 24、拉取单个分支到指定目录
@@ -264,6 +274,18 @@ git clone --single-branch --branch=v1.0.0 --depth=1 http://192.168.0.1/test/tmp 
 需要推送的分支需要每个都 git checkout xx
 
 git push --all origin -f
+```
+
+##### 26、只拉取单个分支
+
+```
+git clone --single-branch --branch=v1.0.0 --depth=1 http://XXX build/src/XXX
+```
+
+##### 27、重置分支
+
+```
+git reset --hard origin/master 
 ```
 
 # 二、常用

@@ -183,7 +183,34 @@ make clean
 make distclean
 ```
 
-# 五、FAQ
+# 五、内核操作
+
+```
+lsmod
+
+modprobe vxlan
+
+insmod ./kernel/drivers/net/vxlan.ko
+
+modinfo ./kernel/drivers/net/vxlan.ko
+```
+
+# 六、内核镜像操作
+
+```
+mv initramfs-4.19.37-rt19.img.arm64 initramfs-4.19.37-rt19.img.arm64.gz
+gzip -d initramfs-4.19.37-rt19.img.arm64.gz
+cpio -id < initramfs-4.19.37-rt19.img.arm64
+
+xz -dc initrd.img |cpio -id
+kubernetes
+find . |cpio -c -o |xz -9 --format=lzma > initrd.img
+
+mksquashfs /mnt /root/install.img –all-root -noF
+unsquashfs squashfs.img
+```
+
+# 七、FAQ
 
 > chromium
 

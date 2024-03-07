@@ -660,7 +660,22 @@ kill -9 PID
 tar --remove-files -zcf dist/aaa-${arch}.tar.gz -C bbb/ .
 ```
 
-## 二十三、Linux系统启动过程
+## 二十三 、curl
+
+```
+curl -LO http://xx.tar --progress-bar
+```
+
+## 二十四、bzip2
+
+```
+docker save aaa:v1.0.0 aaa_v1.0.0_image_arm64.tar  
+bzip2 -z aaa_v1.0.0_image_arm64.tar.bz2
+
+ls aaa_v1.0.0_image_arm64.tar.bz2|xargs bzip2 -cd|docker load
+```
+
+## 二十五、Linux系统启动过程
 
 > Linux系统的启动过程：内核引导、运行init、系统初始化、建立终端、用户登录系统
 

@@ -133,3 +133,42 @@ autoindex_exact_size on;# 显示文件大小
 autoindex_localtime on;# 显示文件时间
 ```
 
+# 三、yaml
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      nodeName: n2
+      containers:
+      - name: nginx
+        image: nginx:1.21.3
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  ports:
+    - name: nginx-service
+      port: 80
+      targetPort: 80
+      nodePort: 30088
+  type: NodePort
+  selector:
+    app: nginx
+```
+

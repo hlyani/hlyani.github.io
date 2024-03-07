@@ -33,6 +33,8 @@ ceph pg stat
 ceph pg dump_stuck unclean|grep unknown
 ceph crash ls
 
+# 查看集群得分
+ceph balancer eval
 
 # pool
 ceph osd lspools
@@ -100,7 +102,7 @@ current cluster score 0.032004 (lower is better)
 ##### 8、修复
 
 ```
- ceph pg deep-scrub 4.b6
+ceph pg deep-scrub 4.b6
 ceph pg repair 4.b6
 ```
 
@@ -154,6 +156,27 @@ EOF
 
 systemctl enable rbdmap.service
 systemctl restart rbdmap.service
+```
+
+##### 14、rbd快照
+
+```
+rbd snap create --snap snapshot1 rbd/hl
+rbd snap list rbd/hl
+rbd info rbd/hl
+rbd snap rollback rbd/hl@snapshot1
+rbd snap rm rbd/hl@snapshot1
+```
+
+##### 15、rbd调整大小
+
+```
+rbd showmapped
+
+rbd info foo
+rbd resize --size 20480 foo
+blockdev --getsize64 /dev/rbd0
+resize2fs /dev/rbd0
 ```
 
 # 二、cephadm

@@ -76,6 +76,14 @@ readinessProbe:
 
 ### 1、给节点打标签
 
+查看标签
+
+```
+kubectl get pods -l time=2019 --show-labels
+```
+
+设置标签
+
 ```
 kubectl label nodes node2 node-role.kubernetes.io/worker=
 ```
@@ -86,6 +94,12 @@ kubectl label no node1 disktype=ssd
 spec:
   nodeSelector:
     disktype: ssd1
+```
+
+```
+spec:
+    nodeSelector:
+        kubernetes.io/hostname: master.cluster.k8s
 ```
 
 ```
