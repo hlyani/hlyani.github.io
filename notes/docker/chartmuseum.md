@@ -95,3 +95,15 @@ curl -X POST -k --data-binary "@mychart-1.0-0.1.1.tgz" localhost:8080/api/charts
 curl -X DELETE http://localhost:8080/api/charts/nginx/5.1.5
 ```
 
+## 8、更新镜像描述
+
+```
+curl -X PUT -u admin:123 -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"description": "aaaa"}' http://192.168.0.127:3000/api/v2.0/projects/ai/repositories/detection
+```
+
+## 9、获取镜像信息
+
+```
+curl -X GET -u admin:123  http://192.168.0.127:3000/api/v2.0/projects/ai/repositories/detection |jq
+```
+

@@ -1,5 +1,630 @@
 # Go 语言相关
 
+# 一、并发
+
+## 1、GMP模型
+
+![go-gmp](../../imgs/go_gmp.jpg)
+
+
+
+> GMP：机制是实现协程和并发的重要机制。
+>
+> GMP机制采用了M:N模型，M个goroutine映射到N个OS thread上执行。
+
+golang中有一个协程的概念，更轻量级的调度单元。
+
+* 占用栈空间小（2KB～2GB）
+* 上下文都在用户态切换，不会涉及到内核态
+* 协程切换速度大约1～2微秒，golang中协程切换速度为0.2微秒左右。
+
+### GMP的模型如何设计？
+
+> 全局队列：当P中的本地队列中有协程G溢出时，会被放到全局队列中。
+>
+> P的本地队列：P内置的G队列，存的数量不超过256个。
+>
+> 一、当队列P1中的G1在运行过程中新建G2时，G2优先存放在P1的本地队列中，如果队列满了，则会把P1队列中一半的G移动到全局队列。
+>
+> 二、如果P的本地队列为空，那么他会先到全局队列中获取G，如果全局队列中没有G，则会尝试从其他线程绑定的P中偷取一半的G。
+
+### g
+
+1、g是goroutine，是对协程的抽象，是一种轻量级的线程实现，可以在单个线程中同时运行多个协程，从而实现并发执行。
+
+2、g有自己的运行栈、状态、以及执行的任务函数（用户通过go func指定）
+
+3、g需要绑定到p才能执行，在g的视角中，p是它的cpu
+
+4、G需要调度到M上才能运行，M是真正的执行者，调度器最多可以创建1万个线程。
+
+5、当一个goroutine阻塞或执行完毕时，对应的m会返回给p，p将m标记为空闲状态，并从队列中取出下一个goroutine映射到该m上执行。
+
+
+
+goroutin有三个状态：
+
+* Waiting：goroutine正在等待systemcall执行完毕，或正在等待锁。
+* Runable：goroutine想要在M上执行指令。
+* Executing：goroutine正在M上执行指令当中。
+
+### p
+
+1、p是调度器Processor，联系g与m
+
+2、p的数量决定了g最大并行数量，可由用户通过GOMAXPROCS进行设定（超过CPU核数无意义）
+
+3、go语言中的中阶层，负责将goroutine映射到m(OS thread)上执行，同时也负责调度和管理m(OS thread)。
+
+4、p负责协程的调度和管理，维护了一个goroutine队列，用于存储待执行的goroutine，当一个goroutine需要执行时，p会从队列中取出一个goroutine，并将其映射到一个空闲的m上执行。
+
+5、p的数量由启动时环境变量$GOMAXPROCS或者由runtime的方法GOMAXPROCS()决定，因为M需要和P绑定才能运行G，P的个数取决于设置的GOMAXPROCS，默认被设置为可用的CPU核数。
+
+### m
+
+1、m是machine是go中线程的抽象
+
+2、m不直接执行g，而是先和p绑定，由其实现代理
+
+3、借由p的存在，m无需和g绑死，也无需记录g的状态信息，因此g在全生命周期中可实现跨m执行
+
+4、操作系统中的线程实现，是操作系统调度和管理的最小执行单元，可以执行计算任务和系统调用等操作。
+
+5、M的数量和P不一定匹配，可以设置很多M，M和P绑定才可运行，多余的M处于休眠状态。
+
+6、m的数量，go程序启动时，会设置m的最大数量，默认10000，但是内核很难创建出这么多线程，因此默认情况下m的最大数量取决于内核。也可以调用runtime/debug中的SetMaxThreads函数 ，手动设置m的最大数量。
+
+### P和M都是程序运行时就被创建好了的吗？
+
+P和M创建时间不同。
+
+P：在确定P的最大数量n后，运行时系统会根据这个数量创建n个P。
+
+M：内核级线程的初始化是由内核管理的，当没有足够的M来关联P并运行其中的可运行的G时会请求创建新的M。比如M在运行G1时被阻塞了，此时需要新的M去绑定P，如果没有在休眠的M则需要新建M。
+
+### G在MP模型中流动过程？
+
+1、调用go func()创建一个goroutine。
+
+2、新创建的G优先保存在P的本地队列中，如果P的本地队列已经满了就会保存在全局队列中。
+
+3、M需要在P的本地队列弹出一个可执行的G，如果P的本地队列为空，则先会去全局队列在中获取G，如果全局队列也为空则去其他P中偷取一半的G放到自己的P中。
+
+4、G将相关参数传输给M，为M执行G做准备。
+
+5、当M执行某一个G时，如果发生了系统调用会导致M阻塞，如果当前P队列中有一些G，runtime会将线程M和P分离，然后再获取空闲的线程或创建一个新的内核级线程来服务这个P，阻塞调用完成后G被销毁将值返回。
+
+6、销毁G，将执行结果返回。
+
+7、当M系统调用结束后，这个M会尝试获取一个空闲的P执行，如果获取不到P，那么这个线程M变成休眠状态，加入到空闲线程。
+
+## 2、并发
+
+> 并发：相继发生，同一时间间隔发生
+>
+> 并行：同时进行，同一时刻
+
+## 3、sync
+
+### 1.sync.Mutex互斥锁
+
+保证同一时间只有一个goroutine可以获取锁，从而实现对共享资源的互斥访问。
+
+* Lock 获取锁，会阻塞直到获取锁为止
+* Unlock释放锁
+* TryLock尝试获取锁，如果锁已经被占用则不会等待直接返回
+
+```
+var count int
+var mutex sync.Mutex
+
+func increase() {
+    mutex.Lock()
+    defer mutex.Unlock()
+
+    count++
+}
+```
+
+### 2.sync.RWMutex读写互斥锁
+
+提供更细粒度的读写访问控制。
+
+* RLock获取锁
+* RUnlock释放读锁
+* Lock获取写锁
+* Unlock释放写锁
+
+```
+var count int
+var rwMutex sync.RWMutex
+
+func read() {
+    rwMutex.RLock()
+    defer rwMutex.RUnlock()
+
+    print(count)
+}
+
+func write() {
+    rwMutex.Lock()
+    defer rwMutex.Unlock()
+
+    count++
+}
+```
+
+### 3.sync.WaitGroup等待组
+
+用于等待一组goroutine结束后再继续执行
+
+* Add添加一个等待单位
+* Done表示一个等待单位完成
+* Wait阻塞直到所有等待单位完成
+
+```
+
+var wg sync.WaitGroup
+
+func worker() {
+    defer wg.Done()
+    // do work
+}
+
+wg.Add(1)
+go worker()
+wg.Wait() // 等待worker完成
+```
+
+### 4.sync.Once一次性初始化
+
+提供一次性初始化的功能，确保某个初始化逻辑只执行一次。单例模式。
+
+```
+var once sync.Once
+var config *Config
+
+func initialize() {
+    config = loadConfig()
+}
+
+func GetConfig() *Config {
+    once.Do(initialize)
+    return config
+}
+```
+
+### 5.sync.Map线程安全nao
+
+一个可以并发安全使用的map
+
+内部使用锁机制来保证并发安全，相比传统map有更好的扩展性。
+
+```
+var configMap sync.Map
+
+configMap.Store("timeout", 500)
+
+if _, ok := configMap.Load("timeout"); ok {
+// 使用超时
+}
+```
+
+### 6.sync.Pool对象池
+
+实现了一个可以重用的对象池
+
+对象池可以有效的减少对象频繁创建和销毁的性能开销
+
+```
+var bufferPool sync.Pool
+
+func NewBuffer() *Buffer {
+v := bufferPool.Get()
+if v == nil {
+    return &Buffer{} 
+}
+    return v.(*Buffer)
+}
+
+bufferPool.Put(b)
+
+bufferPool.Get()
+```
+
+### 实现一个阻塞式的消息队列，支持多个接受者
+
+```
+type MessageQueue struct {
+    queue []interface{}
+    mutex sync.RWMutex
+}
+
+func NewMessageQueue() *MessageQueue {
+    return &MessageQueue{queue: make([]interface{}, 0)}
+}
+
+func (q *MessageQueue) Enqueue(msg interface{}) {
+    q.mutex.Lock()
+    defer q.mutex.Unlock()
+
+    q.queue = append(q.queue, msg)
+}
+
+func (q *MessageQueue) Dequeue() interface{} {
+    q.mutex.RLock()
+    defer q.mutex.RUnlock()
+
+    // 获取首元素
+    msg := q.queue[0]
+    q.queue = q.queue[1:]
+    return msg
+}
+```
+
+# 二、反射
+
+
+
+# 二、GC
+
+
+
+
+
+# 三、struct
+
+
+
+
+
+# 四、Interface
+
+
+
+# 常用包
+
+
+
+
+
+## 1、Sync
+
+
+
+## big
+
+
+
+## os
+
+1.os.Args 获取命令行参数
+
+```
+args[0]永远都是程序本身的路径,args[1:]包含所有参数。
+
+
+for _, arg := range os.Args[1:] {
+    fmt.Println(arg) 
+}
+```
+
+2.os.Create 创建文件
+
+```
+file, err := os.Create("test.txt")
+if err != nil {
+    return err
+}
+defer file.Close()
+```
+
+3.os.Open 打开文件
+
+```
+file, err := os.Open("test.txt") 
+if err != nil {
+    return err
+}
+defer file.Close()
+```
+
+4.os.StartProcess启动新进程
+
+```
+executable := "/path/to/test"
+args := []string{"-a", "123"}
+
+attr := &os.ProcAttr{
+	Files: []*os.File{os.Stdin, os.Stdout, os.Stderr},
+}
+
+_, err := os.StartProcess(executable, args, attr)
+```
+
+5.os.Getenv 获取环境变量
+
+6.os.Chdir切换当前工作目录
+
+7.os.Mkdir 创建目录
+
+```
+func main() {
+  err := os.Mkdir("testdir", 0755)
+
+  if err != nil {
+    log.Fatal(err)
+  }
+
+}
+```
+
+8.os.Remove 删除文件
+
+9.os.Rename 重命名文件
+
+10.os.Truncate 可以对文件进行截断,使得文件只保留截断之前的内容。
+
+```
+func main() {
+  f, err := os.OpenFile("test.txt", os.O_RDWR, 0644)
+  if err != nil {
+    log.Fatal(err)
+  }
+  defer f.Close()
+
+  err = os.Truncate("test.txt", 10)
+  if err != nil {
+    log.Fatal(err)
+  }
+}
+```
+
+11.os.TempDir 可以获取当前系统的临时文件目录。
+
+12.os.Getwd 可以获取当前进程的工作目录。
+
+13.os.Hostname 可以获取主机的名称。
+
+14.os.Environ 获取环境变量
+
+```
+env := os.Environ()
+for _, v := range env {
+    fmt.Println(v)
+}
+```
+
+15.os.Exit 退出当前进程
+
+16.os.IsExist 判断文件或文件夹是否存在
+
+```
+func main() {
+  if _, err := os.Stat("/path/to/file"); os.IsNotExist(err) {
+    fmt.Println("file does not exist")
+  }
+}
+```
+
+17.os.Stat 获取文件信息
+
+```
+info, err := os.Stat("test.txt")
+if err != nil {
+    log.Fatal(err)
+}
+fmt.Println(info.Size()) // 文件大小
+```
+
+18.os.ReadFile 读取整个文件
+
+```
+data, err := os.ReadFile("test.txt") 
+if err != nil {
+    log.Fatal(err)
+   
+}
+fmt.Print(string(data))
+```
+
+19.os.WriteFile 写入文件
+
+```
+data := []byte("Hello World") 
+
+err := os.WriteFile("data.txt", data, 0644)
+
+if err != nil {
+    log.Fatal(err)
+}
+```
+
+## time
+
+创建和获取时间
+
+```
+package main
+
+import (
+  "fmt"
+  "time"
+)
+
+func main() {
+  // 获取当前时间
+  now := time.Now()
+  fmt.Println("Current time:", now)
+
+  // 创建指定时间
+  specificTime :=
+    time.Date(2023, time.October, 25, 22, 30, 0, 0, time.UTC)
+
+  fmt.Println("Specific time:", specificTime)
+}
+```
+
+时间的格式化与解析
+
+```
+package main
+
+import (
+  "fmt"
+  "time"
+)
+
+func main() {
+  // 时间格式化
+  now := time.Now()
+
+  formattedTime := now.Format("2006-01-02 15:04:05")
+
+  fmt.Println("Formatted time:", formattedTime)
+
+  // 时间解析
+  parsedTime, err :=
+    time.Parse("2006-01-02 15:04:05", "2023-10-25 22:30:12")
+
+  if err != nil {
+    fmt.Println("Error:", err)
+    return
+  }
+
+  fmt.Println("Parsed time:", parsedTime)
+}
+```
+
+时区处理与转换
+
+```
+package main
+
+import (
+  "fmt"
+  "time"
+)
+
+func main() {
+  // 获取时区
+  local := time.Now()
+
+  fmt.Println("Local time:", local)
+
+  // 转换时区
+  shanghaiTimeZone, err :=
+    time.LoadLocation("Asia/Shanghai")
+
+  if err != nil {
+    fmt.Println("Error:", err)
+    return
+  }
+
+  ShanghaiTime := local.In(shanghaiTimeZone)
+
+  fmt.Println("Shanghai time:", ShanghaiTime)
+}
+```
+
+定时器与超时控制
+
+```
+package main
+
+import (
+  "fmt"
+  "time"
+)
+
+func main() {
+  // 创建定时器，等待2秒
+  timer := time.NewTimer(2 * time.Second)
+
+  // 等待定时器触发
+  <-timer.C
+  fmt.Println("Timer expired!")
+}
+```
+
+时间间隔与持续时间
+
+```
+
+package main
+
+import (
+  "fmt"
+  "time"
+)
+
+func main() {
+  // 计算时间间隔
+  start := time.Now()
+
+  time.Sleep(2 * time.Second)
+
+  end := time.Now()
+
+  duration := end.Sub(start)
+  
+  fmt.Println("Duration:", duration)
+}
+```
+
+时间的比较与计算
+
+```
+package main
+
+import (
+  "fmt"
+  "time"
+)
+
+func main() {
+  // 比较时间
+  time1 :=
+    time.Date(2023, time.October, 25, 19, 0, 0, 0, time.UTC)
+
+  time2 :=
+    time.Date(2023, time.October, 25, 22, 0, 0, 0, time.UTC)
+
+  if time1.Before(time2) {
+    fmt.Println("time1 is before time2.")
+  }
+
+  // 计算时间
+  diff := time2.Sub(time1)
+
+  fmt.Println("Time difference:", diff)
+}
+```
+
+## Context
+
+
+
+## flag
+
+
+
+## log
+
+
+
+
+
+## IO
+
+
+
+
+
+
+
+
+
 # 一、常用
 
 ## 1、调试显示代码位置

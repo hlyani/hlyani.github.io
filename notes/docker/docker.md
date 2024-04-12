@@ -778,6 +778,14 @@ docker pull arm64v8/alpine:3.18
 }
 ```
 
+## 54、Dozzle 日志查看器
+
+[https://github.com/amir20/dozzle](https://github.com/amir20/dozzle)
+
+```
+docker run --name dozzle -d --volume=/var/run/docker.sock:/var/run/docker.sock:ro -p 8888:8080 amir20/dozzle:latest
+```
+
 # 二、linux实现docker资源隔离
 
 Linux 提供的主要的 NameSpace
