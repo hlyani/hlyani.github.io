@@ -44,6 +44,20 @@ bzip2 -cd aaa_v1.0.0_image_amd64.tar.bz2 | k3s ctr -n k8s.io i import -
 docker save aaa:v1.0.0 | bzip2 > aaa_v1.0.0_image_amd64.tar.bz2
 ```
 
+```
+ctr containers export <container_id> /path/to/exported-fs.tar
+```
+
+```
+ctr -n default i export /dev/stdout docker.io/library/myimage:latest |ctr -n k8s.io i import -
+```
+
+##### 6、推送镜像
+
+```
+ctr -n k8s.io i push -k 192.168.0.127:5000/test:1.0.0
+```
+
 # 三、crictl
 
 TODO

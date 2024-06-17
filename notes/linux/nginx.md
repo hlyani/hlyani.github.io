@@ -136,6 +136,43 @@ autoindex_localtime on;# 显示文件时间
 # 三、yaml
 
 ```
+cat <<EOF | kubectl apply -f -
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 2 
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector: 
+    app: nginx
+  type: NodePort  
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30080
+EOF
+```
+
+```
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -150,7 +187,7 @@ spec:
       labels:
         app: nginx
     spec:
-      nodeName: n2
+      nodeName: master
       containers:
       - name: nginx
         image: nginx:1.21.3
@@ -166,7 +203,7 @@ spec:
     - name: nginx-service
       port: 80
       targetPort: 80
-      nodePort: 30088
+      nodePort: 30080
   type: NodePort
   selector:
     app: nginx

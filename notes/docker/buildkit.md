@@ -1,6 +1,6 @@
 
 
-# buildkit 相关
+# buildkit & nerdctl & here-document
 
 # 一、部署
 
@@ -236,6 +236,36 @@ nerdctl system prune -h
 
 ```
 nerdctl build -t hl:1.0.0 .
+```
+
+```
+nerdctl login -u admin -p 123456 --insecure-registry 192.168.0.127:5000
+```
+
+```
+nerdctl -n k8s.io push --insecure-registry 192.168.0.127:5000/tmp/test:1.0.0
+```
+
+```
+nerdctl -n k8s.io --address /run/containerd/containerd.sock commit 008dcf8b52b3 192.168.0.127:5000/test:1.0.0
+```
+
+```
+nerdctl -n k8s.io inspect --format '{{.State.Status}}' ID
+```
+
+```
+nerdctl tag 192.168.0.127:5000/test:1.0.0 192.168.0.127:5000/test:2.0.0
+```
+
+```
+docker save 192.168.0.127:5000/test:1.0.0 | nerdctl load
+```
+
+```
+nerdctl images --format "{{.Repository}}:{{.Tag}}"
+nerdctl inspect --format '{{.RepoTags}}' image_name
+nerdctl inspect --format '{{.RepoTags}}' ubuntu
 ```
 
 # 四、here-document

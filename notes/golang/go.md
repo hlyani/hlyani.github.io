@@ -782,6 +782,13 @@ func pp(values ...interface{}) {
 https://golang.org/dl/
 
 ```
+wget -O /usr/local/go1.22.3.linux-amd64.tar.gz https://golang.org/dl/go1.22.3.linux-amd64.tar.gz
+tar -C /usr/local -zxvf /usr/local/go1.22.3.linux-amd64.tar.gz
+echo "export PATH=$PATH:/usr/local/go/bin" |tee >> /etc/profile
+source /etc/profile
+```
+
+```
 wget -O /usr/local/go1.20.3.linux-amd64.tar.gz https://golang.org/dl/go1.20.3.linux-amd64.tar.gz
 tar -C /usr/local -zxvf /usr/local/go1.20.3.linux-amd64.tar.gz
 echo "export PATH=$PATH:/usr/local/go/bin" |tee >> /etc/profile

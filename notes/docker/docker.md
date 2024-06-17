@@ -786,6 +786,19 @@ docker pull arm64v8/alpine:3.18
 docker run --name dozzle -d --volume=/var/run/docker.sock:/var/run/docker.sock:ro -p 8888:8080 amir20/dozzle:latest
 ```
 
+## 55、清理镜像
+
+```
+nerdctl image prune -f：删除悬挂的镜像，也就是没有tag的none镜像。
+nerdctl image prune -a -f：删除所有未使用的镜像。
+nerdctl rmi $(nerdctl images -f "dangling=true" -q)：删除悬挂的镜像。
+
+docker system prune：删除悬挂的镜像、停止的容器、未使用的网络、以及构建缓存。
+docker system prune -a：删除所有未使用的资源。
+
+docker rmi $(docker images -f "dangling=true" -q)
+```
+
 # 二、linux实现docker资源隔离
 
 Linux 提供的主要的 NameSpace

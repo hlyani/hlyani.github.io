@@ -78,3 +78,15 @@ EOF
 pip install -i https://mirrors.ustc.edu.cn/pypi/web/simple package
 ```
 
+# 四、其他
+
+```
+pip config get global.cache-dir
+pip config set global.cache-dir /hl/pip_cache
+
+
+pip install --download-cache https://download.pytorch.org/whl/cu118/torch-2.0.1%2Bcu118-cp310-cp310-linux_x86_64.whl
+
+pip install --download-directory="$PIP_SDIST_INDEX" <package>
+```
+

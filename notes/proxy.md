@@ -7,15 +7,23 @@ HTTP_PROXY=192.168.0.127:1080 COMMAND
 ```
 
 ```
-export https_proxy=http://127.0.0.1:33210 http_proxy=http://127.0.0.1:33210 all_proxy=socks5://127.0.0.1:33211
+export {all_proxy,https_proxy,http_proxy,ftp_proxy,HTTP_PROXY,HTTPS_PROXY,FTP_RPOXY,ALL_PROXY}=http://127.0.0.1:1080
 ```
 
 ```
-export {http_proxy,https_proxy,all_proxy}=http://127.0.0.1:1080
+unset proxy all_proxy https_proxy http_proxy ftp_proxy HTTP_PROXY HTTPS_PROXY FTP_RPOXY ALL_PROXY
 ```
 
 ```
-unset all_proxy https_proxy http_proxy
+export proxy=127.0.0.1:33210
+export http_proxy=http://$proxy
+export HTTP_PROXY=$http_proxy
+export https_proxy=$http_proxy
+export HTTPS_PROXY=$http_proxy
+export ftp_proxy=$http_proxy
+export FTP_RPOXY=$http_proxy
+export all_proxy=socks5://$proxy
+export ALL_PROXY=socks5://$proxy
 ```
 
 # 二、curl 使用代理
@@ -84,6 +92,16 @@ Environment="NO_PROXY=localhost,127.0.0.1"' | tee > /etc/systemd/system/docker.s
 ```
 systemctl daemon-reload
 systemctl restart docker
+```
+
+##### noohub.ru
+
+```
+mkdir -p /etc/dockersudo tee /etc/docker/daemon.json <<-'EOF'
+{
+"registry-mirrors": ["https://docker.m.daocloud.io","https://huecker.io","https://dockerhub.timeweb.cloud","https://noohub.ru"]
+}
+EOF
 ```
 
 ##### 中科大

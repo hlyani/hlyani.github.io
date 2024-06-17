@@ -1,4 +1,4 @@
-# k8s 使用
+# K8S 使用
 
 # 一、探针（健康状态监测）
 
@@ -226,14 +226,47 @@ helm repo add --ca-file /etc/docker/certs.d/local.com/ca.crt --username=admin --
 
 # 六、常用命令
 
+## 1.jsonpath
+
 ```
 kubectl get deploy -l app.kubernetes.io/name=controller -o jsonpath={.items[0].status.availableReplicas}
 
 kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}"
 
-kubectl delete pod PODNAME --force --grace-period=0
-
 kubectl port-forward $POD_NAME 8080:8080 --namespace default
+```
+
+## 2.强制删除
+
+```
+kubectl delete pod PODNAME --force --grace-period=0
+```
+
+## 3.从集群中导出配置
+
+```
+kubectl get daemonset -n kube-system kube-flannel-ds -o yaml > kube-system-kube-flannel-ds.yaml
+```
+
+## 4.测试 api sever
+
+```
+curl -kv https://10.96.0.1:443/version
+```
+
+## 5.集群组件状态
+
+```
+kubectl get --raw='/readyz?verbose'
+```
+
+## 6.获取events
+
+```
+kubectl get events --sort-by=.metadata.creationTimestamp --field-selector=involvedObject.kind=Pod,involvedObject.name=<pod-name>
+
+
+kubectl get events --sort-by=.metadata.creationTimestamp --field-selector=involvedObject.kind=Pod,involvedObject.name=nginx-deployment-7bc4686759-m7h4l
 ```
 
 # 七、证书过期
@@ -260,7 +293,31 @@ kubeadm init phase kubeconfig all
 cp /etc/kubernetes/admin.conf $HOME/.kube/config
 ```
 
-# 八、记一次运维，k8s证书过期，重新部署出问题，恢复数据和集群
+# 八、FAQ
+
+## 1.NetworkPlugin cni failed to set up pod "xxxxx" network: failed to set bridge addr: "cni0" already has an IP address different from10.x.x.x - Error
+
+```
+ip link set cni0 down
+ip link set flannel.1 down 
+ip link delete cni0
+ip link delete flannel.1
+systemctl restart containerd
+systemctl restart kubelet
+```
+
+## 2.k8s cluster ping 10.96.0.1 no route
+
+```
+kubectl edit cm kube-proxy -n kube-system
+...
+    kind: KubeProxyConfiguration
+    metricsBindAddress: ""
+    mode: "ipvs"
+...
+```
+
+# 九、记一次运维，k8s证书过期，重新部署出问题，恢复数据和集群
 
 ##### 1、查看源pvc关系
 
@@ -317,7 +374,7 @@ ceph osd set-full-ratio 0.98
 ceph osd set-backfillfull-ratio 0.95
 ```
 
-# 九、修改 service 默认端口范围
+# 十、修改 service 默认端口范围
 
 > 默认范围 30000-32767
 
@@ -355,13 +412,13 @@ systemctl daemon-reload
 systemctl restart docker
 ```
 
-# 十、强制删除容器应用
+# 十一、强制删除容器应用
 
 ```
 helm uninstall --timeout 1s detection-backend & kubectl get po -o=name|grep detection-backend|xargs kubectl delete --grace-period=0 --force
 ```
 
-# 十一、证书更新
+# 十二、证书更新
 
 [https://github.com/hlyani/kubernetes1.17.3](https://github.com/hlyani/kubernetes1.17.3)
 
@@ -372,7 +429,7 @@ chmod +x update-kubeadm-cert.sh
 ./update-kubeadm-cert.sh master
 ```
 
-# 十二、删除命名空间所有内容
+# 十三、删除命名空间所有内容
 
 ```
 kubectl delete --all pods -n cattle-system
@@ -382,7 +439,7 @@ kubectl delete --all pods -n cattle-system
 kubectl api-resources --verbs=list --namespaced -o name|xargs -I {} kubectl delete --all {} -n cattle-system
 ```
 
-# 十三、标签管理
+# 十四、标签管理
 
 ```
 kubectl get nodes --show-labels
@@ -397,15 +454,14 @@ kubectl label nodes  node3 node-role.kubernetes.io/worker=
 kubectl label nodes  node2 node-role.kubernetes.io/worker-
 ```
 
-# 十四、http 访问apiserver
+# 十五、http 访问apiserver
 
 ```
 kubectl proxy --address='0.0.0.0' --accept-hosts='^*$' --port=8080
 ```
 
-# 十五、修改annotation
+# 十六、修改annotation
 
 ```
 kubectl annotate --overwrite rtcontainer vm1 action=StopContainer
 ```
-

@@ -332,7 +332,23 @@ Calico的主要组件如下：
 
 ![calico_arch](../../imgs/calico_arch.jpg)
 
-# 三、其他
+# 三、PreStop
+
+```
+PreStop钩子：
+在Pod的Deployment.yaml配置中，可以定义一个名为PreStop的特殊钩子。这个钩子可以是一个命令或HTTP请求，它会在Pod的容器被终止前执行。
+PreStop钩子的主要目的是允许容器在应用终止前执行一些必要的清理工作，比如保存状态、关闭连接等。
+当执行PreStop钩子时，Kubernetes会阻塞删除流程，直到钩子执行完成或超时（默认为30秒）。
+```
+
+```
+SIGTERM和SIGKILL信号：
+当Pod接收到删除请求时，Kubernetes会首先向Pod发送一个SIGTERM信号。
+容器在接收到SIGTERM(143)信号后，应该开始关闭进程、清理资源，并停止接收新的请求。
+如果容器在一段时间内（默认为30秒）没有正常退出，Kubernetes会发送一个SIGKILL(137)信号来强制终止容器。
+```
+
+# 四、其他
 
 ## 1、参考链接
 

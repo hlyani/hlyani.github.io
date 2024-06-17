@@ -8,6 +8,8 @@
 * [skills](notes/skills.md)
 * 容器相关
     * [常用软件安装](notes/docker/usual_software.md)
+    * [kubeasz](notes/docker/kubeasz.md)
+    * [ingress](notes/docker/ingress.md)
     * [kubebuilder](notes/docker/kubebuilder.md)
     * [Containerd](notes/docker/containerd.md)
     * [Buildah](notes/docker/buildah.md)
@@ -57,6 +59,7 @@
     * [Lfs上安装OpenStack](notes/openstack/lsf_install_openstack.md)
 * Linux 相关
     * [alpine](notes/linux/alpine.md)
+    * [test_tools](notes/linux/test_tools.md)
     * [gitlab](notes/linux/gitlab.md)
     * [etcd](notes/linux/etcd.md)
     * [frp](notes/linux/frp.md)
