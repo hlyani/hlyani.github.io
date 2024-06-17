@@ -62,6 +62,7 @@
     * [frp](notes/linux/frp.md)
     * [synology](notes/linux/synology.md)
     * [adb](notes/linux/adb.md)
+    * [netns](notes/linux/netns.md)
     * [uboot](notes/linux/uboot.md)
     * [linux 网络配置](notes/linux/linux_network.md)
     * [qemu-img](notes/linux/qemu_img.md)
