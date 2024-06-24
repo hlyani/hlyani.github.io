@@ -8,10 +8,11 @@ HTTP_PROXY=192.168.0.127:1080 COMMAND
 
 ```
 export {all_proxy,https_proxy,http_proxy,ftp_proxy,HTTP_PROXY,HTTPS_PROXY,FTP_RPOXY,ALL_PROXY}=http://127.0.0.1:1080
+export no_proxy="localhost, 127.0.0.1, ::1"
 ```
 
 ```
-unset proxy all_proxy https_proxy http_proxy ftp_proxy HTTP_PROXY HTTPS_PROXY FTP_RPOXY ALL_PROXY
+unset proxy all_proxy https_proxy http_proxy ftp_proxy HTTP_PROXY HTTPS_PROXY FTP_RPOXY ALL_PROXY no_proxy NO_PROXY
 ```
 
 ```
@@ -24,6 +25,8 @@ export ftp_proxy=$http_proxy
 export FTP_RPOXY=$http_proxy
 export all_proxy=socks5://$proxy
 export ALL_PROXY=socks5://$proxy
+export no_proxy="localhost, 127.0.0.1, ::1"
+export NO_PROXY="localhost, 127.0.0.1, ::1"
 ```
 
 # 二、curl 使用代理

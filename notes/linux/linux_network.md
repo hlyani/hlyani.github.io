@@ -257,3 +257,31 @@ apt install -y nmap
  nmap -sS 192.168.0.0/24
 ```
 
+# 六、ip命令
+
+```
+ip link add eth0 type dummy
+ip link add eth1 type dummy
+
+ip link set eth0 up
+ip link set eth1 up
+
+ip addr add 192.168.0.1/24 dev eth0
+ip addr add 192.168.0.2/24 dev eth1
+
+brctl addbr br0
+
+ip link set br0 up
+
+brctl addif br0 eth0 eth1
+
+ip addr add 192.168.100.100 dev br0
+
+ip route add default via 192.168.0.10 dev eth0
+
+ip rule add from all to 192.168.0.10 dev eth0 table 1
+ip rule add dev eth1 table 2
+
+ip addr del 192.168.0.1/24 dev eth0
+```
+

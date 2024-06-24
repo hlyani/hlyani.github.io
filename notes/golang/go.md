@@ -248,19 +248,21 @@ func (q *MessageQueue) Enqueue(msg interface{}) {
     q.mutex.Lock()
     defer q.mutex.Unlock()
 
-    q.queue = append(q.queue, msg)
+​    q.queue = append(q.queue, msg)
 }
 
 func (q *MessageQueue) Dequeue() interface{} {
     q.mutex.RLock()
     defer q.mutex.RUnlock()
 
-    // 获取首元素
-    msg := q.queue[0]
-    q.queue = q.queue[1:]
-    return msg
+​    // 获取首元素
+​    msg := q.queue[0]
+​    q.queue = q.queue[1:]
+​    return msg
 }
 ```
+
+
 
 # 二、反射
 
@@ -700,6 +702,10 @@ go build -o output.exe -ldflags="-s -w -extldflags '-static'"
 
 > -ldflags="-s -w -extldflags '-static'" 用于去除可执行文件中的符号表和调试信息，并将所有的依赖库链接为静态库
 
+```
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o output -ldflags="-s -w -extldflags '-static'"
+```
+
 ## 7、压缩
 
 ```
@@ -775,6 +781,16 @@ func pp(values ...interface{}) {
         fmt.Println("-----------------------------------------------------------------------------------")
     }
 }
+```
+
+## 11、获取变量类型
+
+```
+type := reflect.TypeOf(num)
+
+switch val.(type)
+
+fmt.Printf("The type of num is: %T\n", num)
 ```
 
 # 二、Go 语言环境安装

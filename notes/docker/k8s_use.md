@@ -149,6 +149,18 @@ nodeAffinity:
         - error
 ```
 
+# TODO
+
+```
+Capacity（容量）: 指的是节点上理论上的最大资源量，即节点上未做任何预留，全部可用于运行Pods的最大资源总量。这通常反映了硬件的极限或管理员设定的上限。
+
+Allocatable（可分配）: 则是指在考虑了系统预留（system reserve）、kubelet预留以及其他系统组件（如kube-proxy、runtime等）所需资源后，真正可用于运行用户Pods的资源量。它是Kubernetes在调度Pod时实际参考的可用资源量，确保系统组件能够正常运行，防止资源被完全耗尽而导致节点不稳定。
+
+requests关注的是保障容器的最低资源需求，而limits则用来限制容器资源使用的上限
+
+内存使用超出限制时可能会被Kubernetes OOM Killer（Out Of Memory killer）终止
+```
+
 # 三、命名空间相关
 
 ### 1、创建、切换命名空间
@@ -317,6 +329,29 @@ kubectl edit cm kube-proxy -n kube-system
 ...
 ```
 
+## 3.kube-proxy Failed to retrieve node info: Unauthorized
+
+> 报错日志来看是证书验证失败，github上看到了有此问题的解决方法 ，需要删除kube-proxy 依赖的secret
+>
+> 可能是多次运行kubeadm，导致集群里保存的证书和新生成的证书不一致
+
+```
+kubectl delete secret -n kube-system kube-proxy-token-kgrw7
+```
+
+## 4.k8s 修改 pod-network-cidr 地址范围
+
+> --pod-network-cidr=10.244.0.0/16 -> --pod-network-cidr=192.168.0.0/16
+
+```
+kubectl -n kube-system edit cm kubeadm-config
+vim /etc/kubernetes/manifests/kube-scheduler.yaml
+```
+
+```
+kubectl cluster-info dump | grep -m 1 cluster-cidr
+```
+
 # 九、记一次运维，k8s证书过期，重新部署出问题，恢复数据和集群
 
 ##### 1、查看源pvc关系
@@ -465,3 +500,73 @@ kubectl proxy --address='0.0.0.0' --accept-hosts='^*$' --port=8080
 ```
 kubectl annotate --overwrite rtcontainer vm1 action=StopContainer
 ```
+
+# 十七、记一次 kube-flannel pod启动异常
+
+> 第一现象，kube-flannel一直启不起来，不断重启
+
+```
+kubectl get po -A
+```
+
+> 查看pod日志，显示连接不上10.96.0.1:443，即kube-api 服务地址
+
+```
+kubectl logs -n kube-flannel kube-flannel-ds-7bcbn
+```
+
+```
+kubectl get svc -A
+
+NAMESPACE     NAME            TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                  AGE
+default       kubernetes      ClusterIP   10.96.0.1        <none>        443/TCP                  5d7h
+```
+
+> 尝试去各个节点 连接10.96.0.1:443，均不通
+
+```
+ curl -kv https://10.96.0.1:443/version
+```
+
+> 考虑查看kube-proxy日志
+
+```
+kubectl logs -n kube-system kube-proxy-p8fdr
+
+...
+Failed to retrieve node info: Unauthorized
+...
+```
+
+> 报错日志来看是证书验证失败 ，需要删除kube-proxy 依赖的secret，让集群重新生成最新的secret
+
+```
+kubectl delete secret -n kube-system kube-proxy-token-kgrw7
+```
+
+> 等待secret重创，删除kube-proxy pod，重启kube-proxy
+
+> 各个节点请求api-server，正常
+
+```
+ curl -kv https://10.96.0.1:443/version 
+```
+
+> 重新部署kube-flannel，查看flannel日志
+
+```
+NetworkPlugin cni failed to set up pod "xxxxx" network: failed to set bridge addr: "cni0" already has an IP address different from10.x.x.x - Error
+```
+
+> 删除之前已有网卡，重新服务，等待自动重新创建
+
+```
+ip link set cni0 down
+ip link set flannel.1 down  
+ip link delete cni0
+ip link delete flannel.1
+systemctl restart containerd / systemctl restart docker
+systemctl restart kubelet
+```
+
+> 重启flannel

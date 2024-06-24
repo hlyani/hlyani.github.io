@@ -675,7 +675,13 @@ bzip2 -z aaa_v1.0.0_image_arm64.tar.bz2
 ls aaa_v1.0.0_image_arm64.tar.bz2|xargs bzip2 -cd|docker load
 ```
 
-## 二十五、Linux系统启动过程
+## 二十五、获取窗口大小
+
+```
+stty size
+```
+
+## Linux系统启动过程
 
 > Linux系统的启动过程：内核引导、运行init、系统初始化、建立终端、用户登录系统
 
