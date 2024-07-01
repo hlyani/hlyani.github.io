@@ -10,8 +10,11 @@ TODO
 
 ```
 ctr i pull docker.io/library/ubuntu:latest
+
 ctr -n k8s.io i pull --plain-http=true 192.168.0.31:30002/library/ubuntu_armv8_edge:1.1 
 https_proxy=http://192.168.0.169:1080 http_proxy=http://192.168.0.169:1080 ctr -n k8s.io i pull k8s.gcr.io/pause:3.2
+
+ctr --plain-text XXX
 ```
 
 ##### 2、查看
@@ -60,7 +63,13 @@ ctr -n k8s.io i push -k 192.168.0.127:5000/test:1.0.0
 
 # 三、crictl
 
-TODO
+> 会默认使用containerd的配置文件
+>
+> /etc/containerd/config.toml
+
+```
+crictl -D pull 127.0.0.1:5000/test:1.0.0
+```
 
 # 四、其他
 

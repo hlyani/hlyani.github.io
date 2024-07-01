@@ -75,7 +75,7 @@ kubectl get svc -A
 
 # 四、安装dashboard
 
-## 1.
+## 1.部署
 
 ```
 # ezctl 集成部署组件，xxxx 代表集群部署名
