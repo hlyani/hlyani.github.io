@@ -4,6 +4,10 @@
 
 ## 1、探针（健康状态监测）
 
+[配置存活、就绪和启动探针](https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
+
+[Pod的生命周期](https://kubernetes.io/zh-cn/docs/concepts/workloads/pods/pod-lifecycle/)
+
 ### 1.探针执行方式
 
 * livenessProbe:
