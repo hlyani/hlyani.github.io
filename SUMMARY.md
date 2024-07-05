@@ -15,6 +15,7 @@
 * 容器相关
     * [常用软件安装](notes/docker/usual_software.md)
     * [kubeasz](notes/docker/kubeasz.md)
+    * [calico](notes/docker/calico.md)
     * [ingress](notes/docker/ingress.md)
     * [kubebuilder](notes/docker/kubebuilder.md)
     * [Containerd](notes/docker/containerd.md)
