@@ -27,6 +27,7 @@ controller:
     nginx/ingress: ai
   admissionWebhooks:
     enabled: false
+  allowSnippetAnnotations: true
   metrics:
     port: 10254
     portName: metrics
@@ -78,9 +79,9 @@ kubectl get po -A|grep ingress
 
 ## 1、创建测试应用
 
-```
-vim nginx_ingress_example.yaml
+> vim example_nginx.yaml
 
+```
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -100,6 +101,7 @@ spec:
       containers:
       - name: nginx
         image: easzlab.io.local:5000/nginx:1.21.3
+        command: ["/bin/sh", "-c", "mkdir /usr/share/nginx/html/v1;echo 'hello nginx-1'>/usr/share/nginx/html/v1/index.html;nginx -g 'daemon off;'"]
         ports:
         - containerPort: 80
 ---
@@ -122,6 +124,7 @@ spec:
       containers:
       - name: nginx
         image: easzlab.io.local:5000/nginx:1.21.3
+        command: ["/bin/sh", "-c", "mkdir /usr/share/nginx/html/v2;echo 'hello nginx-2'>/usr/share/nginx/html/v2/index.html;nginx -g 'daemon off;'"]
         ports:
         - containerPort: 80
 ---
@@ -154,29 +157,39 @@ spec:
     app: nginx-2
 ```
 
+```
+docker pull kennethreitz/httpbin
+kubectl run httpbin --image kennethreitz/httpbin --port 80
+kubectl expose pod httpbin --port 80
+
+curl --location -H "Host: k8s.ingress.org" --request GET "http://10.15.200.45:32431/get?foo1=bar1&foo2=bar2"
+```
+
 ## 2、创建ingress
+
+```
+vim ingress-k8s.yaml
+```
 
 ```
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: test-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+  name: k8s-ingress
 spec:
   ingressClassName: nginx
   rules:
-  - host: testnginx.com
+  - host: k8s.ingress.org
     http:
       paths:
-      - path: /t1
+      - path: /v1
         pathType: Prefix
         backend:
           service:
             name: nginx1-svc
             port:
               number: 80
-      - path: /t2
+      - path: /v2
         pathType: Prefix
         backend:
           service:
@@ -184,6 +197,17 @@ spec:
             port:
               number: 80
 ```
+
+> ```yaml
+>   annotations:
+>     nginx.ingress.kubernetes.io/rewrite-target: /$2
+>     nginx.ingress.kubernetes.io/proxy-connect-timeout: 10s
+>     nginx.ingress.kubernetes.io/rewrite-target: /$1
+> ```
+>
+> ```
+> - path: /foo(/|$)(.*)
+> ```
 
 ## 3、配置hosts
 
@@ -205,8 +229,8 @@ vim /etc/hosts
 ## 4、测试
 
 ```
-curl testnginx.com/t1
-curl testnginx.com/t2
+curl testnginx.com/v1
+curl testnginx.com/v2
 ```
 
 # 三、主要监控指标
@@ -223,5 +247,53 @@ curl testnginx.com/t2
 
 ```
 nginx_ingress_controller_requests
+```
+
+# 四、config
+
+```
+kubectl edit configmap -n kube-system ai-nginx-ingress-ingress-nginx-controller
+```
+
+```
+apiVersion: v1
+data:
+  allow-snippet-annotations: "true"
+  plugins: hello_world, hello_hl
+```
+
+```
+vim ingress-k8s.yaml
+```
+
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: k8s-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/server-snippet: |
+      gzip on;
+      gzip_comp_level 5;
+      gzip_min_length 256;
+      gzip_proxied any;
+      gzip_vary on;
+      gzip_types
+        application/atom+xml
+        application/javascript
+        application/x-javascript
+        application/json
+        application/rss+xml
+        application/vnd.ms-fontobject
+        application/x-font-ttf
+        application/x-web-app-manifest+json
+        application/xhtml+xml
+        application/xml
+        font/opentype
+        image/svg+xml
+        image/x-icon
+        text/css
+        text/plain
+        text/x-component;
 ```
 

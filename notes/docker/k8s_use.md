@@ -321,8 +321,6 @@ helm repo add --ca-file /etc/docker/certs.d/local.com/ca.crt --username=admin --
 kubectl get deploy -l app.kubernetes.io/name=controller -o jsonpath={.items[0].status.availableReplicas}
 
 kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}"
-
-kubectl port-forward $POD_NAME 8080:8080 --namespace default
 ```
 
 ## 2.强制删除容器
@@ -391,7 +389,14 @@ kubectl logs <pod_name> pod.log
 kubectl logs --previous <pod_name>
 ```
 
-## 9.其他命令
+## 9.port-forward
+
+```
+kubectl port-forward $POD_NAME 8080:8080 -n default
+kubectl port-forward svc/test 8080:31000
+```
+
+## 10.其他命令
 
 ```
 docker inspect 5c3af3101afb -f "{{.HostConfig.Memory}}"
@@ -414,7 +419,7 @@ kubectl get pod test-pod -o jsonpath='{.spec.containers[*].resources.limits}'
 ```
 
 ```
-kubectl port-forward <pod name> <port number to listen on>:<port number to forward to>
+kubectl expose pod httpbin --port 80
 ```
 
 # 四、证书过期
