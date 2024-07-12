@@ -251,6 +251,10 @@ nginx_ingress_controller_requests
 
 # 四、config
 
+[https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#plugins](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#plugins)
+
+[https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.10.1/docs/user-guide/nginx-configuration/annotations.md](https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.10.1/docs/user-guide/nginx-configuration/annotations.md)
+
 ```
 kubectl edit configmap -n kube-system ai-nginx-ingress-ingress-nginx-controller
 ```
@@ -295,5 +299,24 @@ metadata:
         text/css
         text/plain
         text/x-component;
+```
+
+# 五、gzip
+
+| 配置项            | 作用                                                         | 示例                                                    |
+| ----------------- | ------------------------------------------------------------ | ------------------------------------------------------- |
+| gzip              | 是否开启gzip压缩                                             | gzip on;                                                |
+| gzip_types        | 指定要压缩的MIME类型                                         | gzip_types text/html text/plain application/javascript; |
+| gzip_min_length   | 指定最小压缩文件大小                                         | gzip_min_length 1000;                                   |
+| gzip_comp_level   | 指定压缩级别 范围为1到9,值越大压缩程度越大                   | gzip_comp_level 6;                                      |
+| gzip_buffers      | 指定用于gzip压缩的内存缓冲区大小                             | gzip_buffers 16 8k;                                     |
+| gzip_disable      | 指定不使用gzip压缩的User-Agent                               | gzip_disable “MSIE [1-6].(?!.*SV1)”;                    |
+| gzip_proxied      | 根据客户端请求中的"Accept-Encoding"头部决定是否压缩响应，取值可以是 “off”、“expired”、“no-cache”、“no-store”、“private”、“no_last_modified”、“no_etag”、“auth” 或 “any” | gzip_proxied any；                                      |
+| gzip_vary         | 如果发送的响应被gzip压缩，则在响应头部加上"Vary: Accept-Encoding"，以通知缓存服务器响应内容可能以压缩或非压缩形式存在 | gzip_vary:on;                                           |
+| gzip_http_version | 设置进行gzip压缩的HTTP协议版本。                             | gzip_http_version:1.0                                   |
+
+```
+Accept-Encoding:  gzip, deflate
+Content-Encoding: gzip
 ```
 

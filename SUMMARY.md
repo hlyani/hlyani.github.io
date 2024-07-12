@@ -17,6 +17,7 @@
     * [kubeasz](notes/docker/kubeasz.md)
     * [calico](notes/docker/calico.md)
     * [ingress](notes/docker/ingress.md)
+    * [apisix](notes/docker/apisix.md)
     * [kubebuilder](notes/docker/kubebuilder.md)
     * [Containerd](notes/docker/containerd.md)
     * [Buildah](notes/docker/buildah.md)
