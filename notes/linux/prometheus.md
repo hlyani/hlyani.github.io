@@ -95,6 +95,10 @@ sum(http_requests_total{method="GET"} @ 1609746000)
 rate(http_requests_total[5m])[30m:1m]
 ```
 
+```
+sum(apisix_http_requests_total)[1h:]
+```
+
 ## 6、常用方法
 
 [https://prometheus.io/docs/prometheus/latest/querying/functions/](https://prometheus.io/docs/prometheus/latest/querying/functions/)
@@ -177,6 +181,10 @@ label_replace(node_boot_time_seconds{instance="10.13.1.10:9100"},"node","$1","in
 label_replace(up, "host", "$1", "instance",  "(.*):.*")
 ```
 
+```
+label_replace(apisix_http_status,"path","$0","matched_uri",".*")
+```
+
 ### 8.label_join
 
 ```
@@ -191,7 +199,7 @@ label_join(up{job="api-server",src1="a",src2="b",src3="c"}, "foo", ",", "src1", 
 (time()-node_boot_time_seconds)/60/60/24
 ```
 
-### 10.group_right
+### 10.group_right/group_left
 
 ```
 a * on (foo, bar) b
@@ -209,7 +217,27 @@ a * on (foo, bar) group_left(baz) b
 kube_node_info * on (node) group_right() kube_node_status_condition{condition="Ready",status="true"} * on (node) group_right() label_replace(node_boot_time_seconds,"node","$1","instance","(.*):9100")
 ```
 
-# 二、自定义metric
+```
+(sum(label_replace(label_replace(apisix_http_status,"host","$0","matched_host",".*"),"path","$0","matched_uri",".*")) by (code,path,host)) * on (host,path) group_left(service_name,ingress,namespace,service_port) (kube_ingress_path)
+```
+
+```
+(sum(label_replace(label_replace(apisix_http_status,"host","$0","matched_host",".*"),"path","$1","matched_uri","(/[^/.]*).*")) by (code,path,host)) * on (host,path) group_left(service_name,ingress,namespace,service_port) (kube_ingress_path)
+```
+
+# 二、HTTP API
+
+[https://prometheus.io/docs/prometheus/latest/querying/api/](https://prometheus.io/docs/prometheus/latest/querying/api/)
+
+```
+curl -G 'http://192.168.0.127:32070/api/v1/query_range' \
+--data-urlencode 'query=sum(apisix_http_requests_total)' \
+--data-urlencode 'start=2024-07-15T20:10:30.781Z' \
+--data-urlencode 'end=2024-07-15T20:10:30.781Z' \
+--data-urlencode 'step=15s'
+```
+
+# 三、自定义metric
 
 ```
 go get github.com/prometheus/client_golang/prometheus
@@ -266,7 +294,7 @@ data:
           - targets: ['localhost:8080']
 ```
 
-# 三、kube-state-metrics
+# 四、kube-state-metrics
 
 [https://github.com/kubernetes/kube-state-metrics/blob/main/docs/metrics/cluster/node-metrics.md](https://github.com/kubernetes/kube-state-metrics/blob/main/docs/metrics/cluster/node-metrics.md)
 

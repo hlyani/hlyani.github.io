@@ -53,6 +53,45 @@ ingress-controller:
 ```
 
 ```
+nodeSelector:
+  kubernetes.io/hostname: 10.13.1.12
+ 
+nodeSelector:
+  nginx/ingress: ai
+```
+
+```
+resources: 
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 16
+    memory: 32Gi
+```
+
+```
+tolerations:
+  - key: "dedicated"
+    operator: "Equal"
+    value: "ingress"
+    effect: "NoExecute"
+```
+
+```
+affinity:
+   podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - nginx-ingress
+          topologyKey: kubernetes.io/hostname
+```
+
+```
 vim apisix/charts/etcd/values.yaml
 
 image:
@@ -87,11 +126,22 @@ initContainer:
   image: easzlab.io.local:5000/busybox
 nodeSelector:
   nginx/ingress: ai
+ 
 serviceMonitor:
-  enabled: true
+  enabled: false
   namespace: "ingress-apisix"
   labels:
     release: "ai-kube-prometheus-stack"
+```
+
+修改Ingress class
+
+```
+vim charts/apisix-ingress-controller/values.yaml
+```
+
+```
+.Values.config.kubernetes.ingressClass
 ```
 
 ## 4、部署
@@ -401,7 +451,7 @@ apisix_nginx_http_current_connections
 
 [https://apisix.apache.org/zh/docs/ingress-controller/concepts/annotations/](https://apisix.apache.org/zh/docs/ingress-controller/concepts/annotations/)
 
-[https://github.com/apache/apisix/blob/master/conf/config-default.yaml](https://github.com/apache/apisix/blob/master/conf/config-default.
+[https://github.com/apache/apisix/blob/master/conf/config-default.yaml](https://github.com/apache/apisix/blob/master/conf/config-default.yaml.
 
 # 六、使用
 
@@ -427,6 +477,11 @@ export NODE_IP=$(kubectl get nodes -n ingress-apisix -o jsonpath="{.items[0].sta
 echo http://$NODE_IP:$NODE_PORT
 ```
 
+```
+export NODE_PORT=$(kubectl get -n ingress-apisix -o jsonpath="{.spec.ports[0].nodePort}" services apisix-gateway)
+export apisix=$(echo http://apisix.ingress.org:$NODE_PORT)
+```
+
 ## 3、查看已注册路由信息
 
 ```
@@ -437,7 +492,7 @@ curl "http://10.66.73.199:9180/apisix/admin/routes?page=1&page_size=10" -H 'X-AP
 
 ```
 _meta:
-  disable: false
+  disable: false
 buffers.number: 32
 buffers.size: 4096
 comp_level: 5
