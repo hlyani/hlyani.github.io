@@ -1,5 +1,9 @@
 # Prometheus
 
+[https://prometheus.io/docs/prometheus/latest/querying/basics/](https://prometheus.io/docs/prometheus/latest/querying/basics/)
+
+[https://prometheus.io/docs/prometheus/latest/querying/api/](https://prometheus.io/docs/prometheus/latest/querying/api/)
+
 # 一、PromQL
 
 ## 1、选择器
@@ -225,6 +229,49 @@ kube_node_info * on (node) group_right() kube_node_status_condition{condition="R
 (sum(label_replace(label_replace(apisix_http_status,"host","$0","matched_host",".*"),"path","$1","matched_uri","(/[^/.]*).*")) by (code,path,host)) * on (host,path) group_left(service_name,ingress,namespace,service_port) (kube_ingress_path)
 ```
 
+```
+(sum(label_replace(apisix_http_status{code!="200"}, "host", "$0", "matched_host", ".*")) by (host) * on (host) group_left(ingress,namespace,path,service_name,service_port) kube_ingress_path{service_name="httpbin"}) - 
+ (sum(label_replace(apisix_http_status{code!="200"} offset 15s, "host", "$0", "matched_host", ".*")) by (host) * on (host) group_left(ingress,namespace,path,service_name,service_port) kube_ingress_path{service_name="httpbin"})
+```
+
+```
+(sum(label_replace(increase(apisix_http_status[30s]), "host", "$0", "matched_host", ".*")) by (host) * on (host) group_left(ingress,namespace,path,service_name,service_port) kube_ingress_path{service_name="httpbin"})
+```
+
+### 11.increase
+
+增长量
+
+```
+increase(http_requests_total{job="apiserver"}[5m])
+```
+
+## 7、常用指标
+
+### 1.QPS，Queries Per Second 每秒查询率
+
+```
+sum(label_replace(rate(apisix_http_status[30s]), "host", "$0", "matched_host", ".*")) by (host) * on (host) group_left(ingress,namespace,path,service_name,service_port) kube_ingress_path{service_name="httpbin"}
+```
+
+### 2.RT，Response Time 响应时间 
+
+rate 计算区间向量在时间窗口内平均增长速率，会在单调性发生变化时自动中断。
+
+过去5分钟内第90个百分位数的请求延迟
+
+过去5分钟内90%请求的平均响应时间
+
+```
+histogram_quantile(0.90, sum(rate(apisix_http_latency_bucket{type="request"}[5m])) by (le))
+```
+
+`{le="+Inf"}` 是一个特殊的标签选择器，用于选择直方图中所有桶（bucket）
+
+le  less than or equal to, <=
+
++Inf 正无穷大的“溢出”桶
+
 # 二、HTTP API
 
 [https://prometheus.io/docs/prometheus/latest/querying/api/](https://prometheus.io/docs/prometheus/latest/querying/api/)
@@ -336,6 +383,14 @@ curl 'http://127.0.0.1:9090/metrics'
 ```
 curl -G 'http://127.0.0.1:9090/api/v1/query' \
 --data-urlencode 'query=count(kube_node_status_condition{condition="Ready", status="false"})/count(kubelet_node_name)*100'
+```
+
+```
+curl -G 'http://127.0.0.1:30127/api/v1/query_range' \
+--data-urlencode 'query=sum(apisix_http_requests_total)' \
+--data-urlencode 'start=1721062917' \
+--data-urlencode 'end=1721116919' \
+--data-urlencode 'step=15s'
 ```
 
 ## 3、其他

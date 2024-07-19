@@ -428,6 +428,30 @@ spec:
     app: nginx-2
 ```
 
+httpbin-route.yaml
+
+```
+apiVersion: apisix.apache.org/v2
+kind: ApisixRoute
+metadata:
+  name: httpbin-route
+spec:
+  http:
+    - name: route-1
+      match:
+        hosts:
+          - httpbin.org
+        paths:
+          - /*
+      backends:
+        - serviceName: httpbin
+          servicePort: 80
+```
+
+```
+curl httpbin.org:32060/headers
+```
+
 # 四、监控
 
 ```
