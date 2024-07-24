@@ -17,8 +17,12 @@ helm install apisix apisix/apisix --create-namespace --namespace ingress-apisix
 docker pull busybox:1.28
 docker pull apache/apisix:3.9.1-debian
 docker pull bitnami/etcd:3.5.10-debian-11-r2
-docker pull apache/apisix-ingress-controller:1.8.0
+docker pull apache/apisix-ingress-controller:1.8.2
 docker pull apache/apisix-dashboard:3.0.0-alpine
+```
+
+```
+docker save busybox:1.28 apache/apisix:3.9.1-debian bitnami/etcd:3.5.10-debian-11-r2 apache/apisix-ingress-controller:1.8.2 apache/apisix-dashboard:3.0.0-alpine |gzip > ingress-apisix_3.9.1_imgs.tar.gz
 ```
 
 ## 3、配置
@@ -142,6 +146,10 @@ vim charts/apisix-ingress-controller/values.yaml
 
 ```
 .Values.config.kubernetes.ingressClass
+```
+
+```
+ ingressClass: "apisix" ->  ingressClass: "nginx"
 ```
 
 ## 4、部署
@@ -455,7 +463,7 @@ curl httpbin.org:32060/headers
 # 四、监控
 
 ```
-curl -i http://10.66.225.229:9091/apisix/prometheus/metrics
+curl -i http://$(kubectl get svc -n ingress-apisix apisix-prometheus-metrics -o jsonpath="{.spec.clusterIP}"):9091/apisix/prometheus/metrics
 ```
 
 > 主要指标
@@ -509,10 +517,28 @@ export apisix=$(echo http://apisix.ingress.org:$NODE_PORT)
 ## 3、查看已注册路由信息
 
 ```
-curl "http://10.66.73.199:9180/apisix/admin/routes?page=1&page_size=10" -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X GET
+curl "http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/routes?page=1&page_size=10" -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X GET
 ```
 
-## 4、gzip
+```
+curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/routes -H 'X-API-Key: edd1c9f034335f136f87ad84b625c8f1'|jq
+```
+
+## 4、API使用
+
+[admin-api](https://apisix.apache.org/zh/docs/apisix/admin-api/)
+
+[control-api](https://apisix.apache.org/zh/docs/apisix/control-api/)
+
+```
+curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/global_rules -H 'X-API-Key: edd1c9f034335f136f87ad84b625c8f1'|jq
+```
+
+```
+curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/routes -H 'X-API-Key: edd1c9f034335f136f87ad84b625c8f1'|jq
+```
+
+## 5、gzip
 
 ```
 _meta:
@@ -526,41 +552,58 @@ types: '*'
 vary: true
 ```
 
+```
+{
+  "_meta": {
+    "disable": false
+  },
+  "buffers": {
+    "number": 32,
+    "size": 4096
+  },
+  "comp_level": 5,
+  "http_version": 1.1,
+  "min_length": 20,
+  "types": "*",
+  "vary": true
+}
+```
+
 > enable plugin
 
 ```
-curl -i http://127.0.0.1:9180/apisix/admin/routes/1  -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT -d '
+curl -i http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/global_rules/gzip  \
+-H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT -d '
 {
-    "uri": "/index.html",
     "plugins": {
         "gzip": {
-            "buffers": {
-                "number": 8
-            }
-        }
-    },
-    "upstream": {
-        "type": "roundrobin",
-        "nodes": {
-            "127.0.0.1:1980": 1
+           "_meta": {
+            "disable": false
+          },
+          "comp_level": 5,
+          "http_version": 1.1,
+          "min_length": 20,
+          "types": "*",
+          "vary": true,
+          "buffers": {
+          	 "number": 32,
+             "size": 4096
+          }
         }
     }
 }'
+```
+
+> 查看
+
+```
+curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/global_rules/gzip -H 'X-API-Key: edd1c9f034335f136f87ad84b625c8f1'|jq
 ```
 
 > delete plugin
 
 ```
-curl http://127.0.0.1:9180/apisix/admin/routes/1  -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT -d '
-{
-    "uri": "/index.html",
-    "upstream": {
-        "type": "roundrobin",
-        "nodes": {
-            "127.0.0.1:1980": 1
-        }
-    }
-}'
+curl http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/global_rules/gzip -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X DELETE
 ```
 
 > 验证
@@ -570,6 +613,12 @@ curl http://127.0.0.1:9180/apisix/admin/routes/1  -H 'X-API-KEY: edd1c9f034335f1
 
 ```
 curl apisix.ingress.org:30962/index.html -i -H "Accept-Encoding: gzip"
+```
+
+> 根据代码中所做的更改重新加载插件
+
+```
+curl http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/plugins/reload -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT
 ```
 
 ## 5、http2
@@ -636,6 +685,38 @@ spec:
 ```
 
 ## 10、websocket
+
+nginx
+
+```
+location / {
+    // 启用支持websocket连接
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+}
+```
+
+annotation
+
+```
+curl http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/routes/665bd12e  \
+-H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PATCH -i -d '
+{
+    "enable_websocket": true
+}'
+```
+
+```
+curl http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/routes/f7c122fc  \
+-H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PATCH -i -d '
+{
+    "enable_websocket": false
+}'
+```
+
+```
+curl -s $(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/routes/f7c122fc -H 'X-API-Key: edd1c9f034335f136f87ad84b625c8f1'|jq
+```
 
 ```
 apiVersion: networking.k8s.io/v1
@@ -718,6 +799,82 @@ kubectl expose pod websocket --port 8765
 ws://apisix.ingress.org:30962/ws
 ```
 
+## 11、Customize Nginx configuration
+
+[https://github.com/apache/apisix/blob/master/docs/zh/latest/customize-nginx-configuration.md](https://github.com/apache/apisix/blob/master/docs/zh/latest/customize-nginx-configuration.md)
+
+[https://github.com/apache/apisix/blob/release/3.3/conf/config-default.yaml](https://github.com/apache/apisix/blob/release/3.3/conf/config-default.yaml)
+
+[http://nginx.org/en/docs/http/ngx_http_core_module.html#http](http://nginx.org/en/docs/http/ngx_http_core_module.html#http)
+
+[https://nginx.org/en/docs/](https://nginx.org/en/docs/)
+
+## 12、prometheus 插件
+
+启用插件
+
+```
+curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/global_rules/1 -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT -d '
+{
+    "plugins": {
+        "prometheus": {
+            "prefer_name": false
+        }
+    }
+}'
+```
+
+## 13、limit-req
+
+limit-req插件使用`漏桶算法`限制单个客户端对服务的请求速率。
+
+[https://apisix.apache.org/zh/docs/apisix/plugins/limit-req/](https://apisix.apache.org/zh/docs/apisix/plugins/limit-req/)
+
+插件主要参数：
+
+* key用来做请求计数的依据
+* rate请求速率（以秒为单位）
+* burst支持突发请求量
+* nodelay不延迟突发请求
+
+```
+curl http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/routes/1 -H 'X-API-KEY: edd1c9f034335f136f87ad84b635c8f1' -X PUT -d '
+{
+	"uri": "/search/*",
+	"plugins": {
+		"limit-conn": {
+			"conn": 10,
+			"burst": 0,
+			"default_conn_delay": 0.1,
+			"rejected_code": 503,
+			"key": "remote_addr"
+		}
+	},
+	"upstream": {
+		"type": "roundrobin",
+		"nodes": {
+			"39.97.63.215:80": 1
+		}
+	}
+}'
+```
+
+## 14、limit-conn
+
+limit-conn插件用于限制客户端对单个服务的并发请求数。当客户端对路由的并发请求数达到限制时，可以返回自定义的状态码和响应信息。
+
+## 15、limit-count
+
+limit-count插件使用`固定的窗口算法`，主要用于限制单个客户端在指定时间范围内对服务的总请求数，并且会在HTTP响应头中返回剩余可以请求的个数。
+
+## 16、synchronizing Kubernetes resources to APISIX
+
+```
+kubectl get cm -n ingress-apisix apisix-configmap -o yaml|sed -e 's/6h/30s/g'|kubectl apply -f -
+kubectl get pod -n ingress-apisix -o name|grep controller|xargs kubectl delete -n ingress-apisix
+kubectl get cm -n ingress-apisix apisix-configmap -o yaml|sed -e 's/30s/6h/g'|kubectl apply -f -
+```
+
 # 七、wrk 压力测试
 
 [https://github.com/wg/wrk/tree/master/scripts](https://github.com/wg/wrk/tree/master/scripts)
@@ -782,7 +939,56 @@ Transfer/sec:  63.24MB
 
 [https://apisix.apache.org/zh/docs/apisix/FAQ/](https://apisix.apache.org/zh/docs/apisix/FAQ/)
 
+# 九、Nginx参数优化
 
+```
+events {
+        use epoll;
+        worker_connections 6000;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    access_log /usr/local/nginx/logs/access.log;
+    error_log  /usr/local/nginx/logs/error.log;
+    proxy_connect_timeout    900;
+    proxy_read_timeout       900;
+    proxy_send_timeout       900;
+    proxy_cache_path /var/cache/nginx keys_zone=notebook_cache:10m inactive=10m max_size=10g;
+    gzip on;
+    gzip_static on;
+    gzip_buffers 40 4K;
+    gzip_comp_level 7;
+    gzip_min_length 1k;
+    gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png application/vnd.ms-fontobject font/ttf font/opentype font/x-woff image/svg+xml;
+    gzip_disable "MSIE [1-6]\.";
+    gzip_vary on;
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 65;
+    types_hash_max_size 2048;
+    client_max_body_size 500M;
+}
+
+ location  / {
+    proxy_http_version 1.1;
+    proxy_set_header Host $host:$server_port;
+    proxy_set_header X-Referer $http_referer;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "Upgrade";
+    proxy_set_header Origin "";
+    client_body_buffer_size 128k;
+    client_max_body_size 500M;
+    proxy_connect_timeout 90;
+    proxy_send_timeout 90;
+    proxy_read_timeout 90;
+    proxy_buffer_size 4k;
+    proxy_buffers 32 4k;
+    proxy_busy_buffers_size 64k;
+}
+```
 
 ​	
 

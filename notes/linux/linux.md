@@ -681,6 +681,17 @@ ls aaa_v1.0.0_image_arm64.tar.bz2|xargs bzip2 -cd|docker load
 stty size
 ```
 
+## 二十六、jq
+
+```
+wget https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-amd64
+```
+
+```
+chmod +x jq-linux-amd64
+mv jq-linux-amd64 /usr/bin/jq
+```
+
 ## Linux系统启动过程
 
 > Linux系统的启动过程：内核引导、运行init、系统初始化、建立终端、用户登录系统
