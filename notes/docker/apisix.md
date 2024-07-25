@@ -18,11 +18,11 @@ docker pull busybox:1.28
 docker pull apache/apisix:3.9.1-debian
 docker pull bitnami/etcd:3.5.10-debian-11-r2
 docker pull apache/apisix-ingress-controller:1.8.2
-docker pull apache/apisix-dashboard:3.0.0-alpine
+docker pull apache/apisix-dashboard:3.0.1-alpine
 ```
 
 ```
-docker save busybox:1.28 apache/apisix:3.9.1-debian bitnami/etcd:3.5.10-debian-11-r2 apache/apisix-ingress-controller:1.8.2 apache/apisix-dashboard:3.0.0-alpine |gzip > ingress-apisix_3.9.1_imgs.tar.gz
+docker save busybox:1.28 apache/apisix:3.9.1-debian bitnami/etcd:3.5.10-debian-11-r2 apache/apisix-ingress-controller:1.8.2 apache/apisix-dashboard:3.0.1-alpine |gzip > ingress-apisix_3.9.1_imgs.tar.gz
 ```
 
 ## 3、配置
@@ -483,7 +483,7 @@ apisix_nginx_http_current_connections
 
 [https://apisix.apache.org/zh/docs/ingress-controller/concepts/annotations/](https://apisix.apache.org/zh/docs/ingress-controller/concepts/annotations/)
 
-[https://github.com/apache/apisix/blob/master/conf/config-default.yaml](https://github.com/apache/apisix/blob/master/conf/config-default.yaml.
+[https://github.com/apache/apisix/blob/release/3.3/conf/config-default.yaml](https://github.com/apache/apisix/blob/release/3.3/conf/config-default.yaml)
 
 # 六、使用
 
@@ -500,6 +500,12 @@ kubectl get svc -n ingress-apisix -o jsonpath="{.spec.ports[0].nodePort}" apisix
 ```
 admin/admin
 ```
+
+> bug
+>
+> [https://github.com/apache/apisix-dashboard/issues/2791](https://github.com/apache/apisix-dashboard/issues/2791)
+>
+> apisix dashboard与apisix的配置文件中都配置plugins
 
 ## 2、gateway 连接信息
 
@@ -524,7 +530,7 @@ curl "http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spe
 curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/routes -H 'X-API-Key: edd1c9f034335f136f87ad84b625c8f1'|jq
 ```
 
-## 4、API使用
+## 4、API 使用
 
 [admin-api](https://apisix.apache.org/zh/docs/apisix/admin-api/)
 
@@ -814,13 +820,13 @@ ws://apisix.ingress.org:30962/ws
 启用插件
 
 ```
-curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/global_rules/1 -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT -d '
+curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/global_rules -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT -d '
 {
-    "plugins": {
-        "prometheus": {
-            "prefer_name": false
-        }
-    }
+   "id":"1",
+   "plugins":{
+      "prometheus":{
+      }
+   }
 }'
 ```
 

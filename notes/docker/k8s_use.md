@@ -83,9 +83,99 @@ readinessProbe:
 * Gt：label的值大于某个值（字符串比较）
 * Lt：label的值小于某个值（字符串比较）
 
-> 如果nodeAffinity中nodeSelector有多个选项，节点满足任何一个条件即可；如果matchExpressions有多个选项，则节点必须同时满足这些选项才能运行pod 。
+> 如果nodeAffinity中nodeSelector有多个选项，节点满足任何一个条件即可；
+>
+> 如果matchExpressions有多个选项，则节点必须同时满足这些选项才能运行pod 。
 
-### 1.给节点打标签
+### 1.节点亲和性/反亲和性
+
+```
+NodeAffinity:                                        节点亲和性
+    requiredDuringSchedulingIgnoredDuringExecution:  硬亲和性，必须部署在指定的节点上，或必须不部署在指定节点上
+    preferredDuringSchedulingIgnoredDuringExecution: 软亲和性，尽量部署在满足条件的节点上，或者尽量不部署在被匹配的节点上
+```
+
+### 2.Pod亲和性/反亲和性
+
+```
+podAffinity:                                      Pod 亲和性
+podAntiAffinity:                                  Pod 反亲和性
+    requiredDuringSchedulingIgnoredDuringExecution:   将a应用和b应用部署在一起，或不部署在一起
+        labelSelector
+        	matchExpressions
+        	matchLabels
+    	namespaceSelector
+    	namespaces
+    	topologyKey
+    preferredDuringSchedulingIgnoredDuringExecution:  尽量将a应用和b应用部署在一起，或不部署在一起
+		podAffinityTerm
+		weight                                         1-100
+```
+
+### 3.亲和性
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:       # 必须满足
+        labelSelector:
+        - matchExpressions:
+          - key: disktype                                   # 标签 disktype
+            operator: In                                    # 等于
+            values:
+            - ssd                                           # ssd
+      preferredDuringSchedulingIgnoredDuringExecution:      # 尽量满足
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: processor                                  # labels key  
+            operator: In                                    # 等于
+            values:
+            - gpu                                           # gpu
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+```
+
+```
+spec:
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: meme
+            operator: In
+            values:
+            - bus  
+        namespaces:              #如果写了namespaces但是留空，匹配所有namespace下的指定label的pod
+          - kube-system
+        topologyKey: kubernetes.io/hostname
+```
+
+### 4.反亲和性
+
+```
+spec:
+  affinity:
+    podAntiAffinity:                                      # 就这里加 Anti
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: meme
+            operator: In
+            values:
+            - bus  
+        topologyKey: kubernetes.io/hostname
+```
+
+### 5.示例
 
 查看标签
 
@@ -123,7 +213,7 @@ spec:
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
+        labelSelector:
         - matchExpressions:
           - key: testtag
             operator: In
