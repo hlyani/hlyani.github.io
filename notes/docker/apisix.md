@@ -158,6 +158,68 @@ vim charts/apisix-ingress-controller/values.yaml
 helm install -n ingress-apisix apisix .
 ```
 
+## 5、test
+
+```
+kubectl apply -f -<<EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-httpbin
+  labels:
+    app: test-httpbin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-httpbin
+  template:
+    metadata:
+      labels:
+        app: test-httpbin
+    spec:
+      containers:
+      - name: nginx
+        image: easzlab.io.local:5000/kennethreitz/httpbin
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-httpbin-svc
+  labels:
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    app: test-httpbin
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-httpbin-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: apisix.ingress.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: test-httpbin-svc
+            port:
+              number: 80
+EOF
+```
+
+
+
 # 二、Ingress
 
 ## 1、ingress
@@ -544,6 +606,10 @@ curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.s
 curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/routes -H 'X-API-Key: edd1c9f034335f136f87ad84b625c8f1'|jq
 ```
 
+```
+curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/plugins/list -H 'X-API-Key: edd1c9f034335f136f87ad84b625c8f1'|jq
+```
+
 ## 5、gzip
 
 ```
@@ -830,6 +896,25 @@ curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.s
 }'
 ```
 
+
+
+
+
+```
+curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/global_rules -X PUT -d '
+{
+    "uri": "/test/index.html",
+    "plugins": {
+        "redirect": {
+            "uri": "https://192.168.0.127/error",
+            "ret_code": 301
+        }
+    }
+}'
+```
+
+
+
 ## 13、limit-req
 
 limit-req插件使用`漏桶算法`限制单个客户端对服务的请求速率。
@@ -947,6 +1032,12 @@ Transfer/sec:  63.24MB
 
 # 九、Nginx参数优化
 
+[https://gist.github.com/denji/8359866](https://gist.github.com/denji/8359866)
+
+[https://www.cloudpanel.io/blog/nginx-performance/](https://www.cloudpanel.io/blog/nginx-performance/)
+
+[https://nginx.org/en/docs/](https://nginx.org/en/docs/)
+
 ```
 events {
         use epoll;
@@ -961,7 +1052,7 @@ http {
     proxy_connect_timeout    900;
     proxy_read_timeout       900;
     proxy_send_timeout       900;
-    proxy_cache_path /var/cache/nginx keys_zone=notebook_cache:10m inactive=10m max_size=10g;
+    proxy_cache_path /var/cache/nginx keys_zone=a_cache:10m inactive=10m max_size=10g;
     gzip on;
     gzip_static on;
     gzip_buffers 40 4K;
@@ -996,5 +1087,163 @@ http {
 }
 ```
 
-​	
+```
+{
+    "client-max-body-size": "500m",
+    "default-server-return": "https://192.168.0.127/error",
+    "keepalive-requests": "3000",
+    "keepalive-timeout": "65s",
+    "location-snippets": "proxy_set_header Origin \"\";\ngzip_static on;\nproxy_set_header Accept-Encoding gzip;\n",
+    "proxy-connect-timeout": "900s",
+    "proxy-read-timeout": "900s",
+    "proxy_send_timeout": "900s",
+    "worker-connections": "3000"
+}
+```
+
+```
+  nginx:
+    workerRlimitNofile: "204800"
+    workerConnections: "204800"
+    workerProcesses: auto
+    enableCPUAffinity: true
+    keepaliveTimeout: 30
+    clientMaxBodySize: 500M
+    logs:
+      enableAccessLog: false
+    configurationSnippet:
+      httpStart: |
+        access_log off;
+        open_file_cache_valid 30s;
+        open_file_cache_min_uses 2;
+        open_file_cache_errors on;
+        sendfile on;
+        tcp_nopush on;
+        tcp_nodelay on;
+        gzip on;
+        gzip_static on;
+        gzip_min_length 10240;
+        gzip_comp_level 5;
+        gzip_vary on;
+        gzip_disable msie6;
+        #gzip_proxied expired no-cache no-store private auth;
+        gzip_proxied any;
+        gzip_types
+          text/css
+          text/javascript
+          text/xml
+          text/plain
+          text/x-component
+          application/javascript
+          application/x-javascript
+          application/json
+          application/xml
+          application/rss+xml
+          application/atom+xml
+          application/vnd.ms-fontobject
+          font/truetype
+          font/opentype
+          image/svg+xml;
+        reset_timedout_connection on;
+        keepalive_requests 100000;
+        client_body_buffer_size 128k;
+        client_header_buffer_size 3m;
+      httpSrvLocation: |
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+```
+
+# default error return
+
+```
+      httpSrv: |
+        location = /default-server-return {
+           proxy_pass https://192.168.0.127/error;
+        }
+
+        location /error-forward/ {
+          proxy_pass https://10.15.200.50:58043;
+        }
+        
+      httpSrvLocation: |
+        proxy_intercept_errors on;
+        error_page 400 401 402 403 404 405 406 407 408 409 410 411 412 413 414 415 416 417 418 421 422 423 424 425 426 428 429 431 451 500 501 502 503 504 505 506 507 508 510 511 /default-server-return;
+
+```
+
+[https://github.com/apache/apisix/issues/7987](https://github.com/apache/apisix/issues/7987)
+
+```
+  configurationSnippet:
+    # Based on
+    # - https://blog.adriaan.io/one-nginx-error-page-to-rule-them-all.html
+    # - https://gist.github.com/lextoumbourou/d6221deb818da4f342ea
+    httpStart: |
+      more_clear_headers Server;
+      
+      map $status $status_text {
+        400 'Bad Request';
+        401 'Unauthorized';
+        402 'Payment Required';
+        403 'Forbidden';
+        404 'Not Found';
+        405 'Method Not Allowed';
+        406 'Not Acceptable';
+        407 'Proxy Authentication Required';
+        408 'Request Timeout';
+        409 'Conflict';
+        410 'Gone';
+        411 'Length Required';
+        412 'Precondition Failed';
+        413 'Payload Too Large';
+        414 'URI Too Long';
+        415 'Unsupported Media Type';
+        416 'Range Not Satisfiable';
+        417 'Expectation Failed';
+        418 'I\'m a teapot';
+        421 'Misdirected Request';
+        422 'Unprocessable Entity';
+        423 'Locked';
+        424 'Failed Dependency';
+        425 'Too Early';
+        426 'Upgrade Required';
+        428 'Precondition Required';
+        429 'Too Many Requests';
+        431 'Request Header Fields Too Large';
+        451 'Unavailable For Legal Reasons';
+        500 'Internal Server Error';
+        501 'Not Implemented';
+        502 'Bad Gateway';
+        503 'Service Unavailable';
+        504 'Gateway Timeout';
+        505 'HTTP Version Not Supported';
+        506 'Variant Also Negotiates';
+        507 'Insufficient Storage';
+        508 'Loop Detected';
+        510 'Not Extended';
+        511 'Network Authentication Required';
+        default 'Something is wrong';
+      }
+      map $http_accept $extension {
+        default html;
+        ~*application/json json;
+      }
+    httpSrv: |
+      error_page 400 401 402 403 404 405 406 407 408 409 410 411 412 413 414 415 416 417 418 421 422 423 424 425 426 428 429 431 451 500 501 502 503 504 505 506 507 508 510 511 @error_$extension;
+
+      location @error_json {
+        types { } default_type "application/json; charset=utf-8";
+        echo '{"error_msg": "$status_text"}';
+      }
+      location @error_html {
+        types { } default_type "text/html; charset=utf-8";
+        echo '<html><head><title>$status $status_text</title></head><body><center><h1>$status $status_text</h1></center></html>';
+      }
+```
+
+```
+      httpSrvLocation: |
+        proxy_intercept_errors on;
+        error_page 400 401 402 403 404 405 406 407 408 409 410 411 412 413 414 415 416 417 418 421 422 423 424 425 426 428 429 431 451 500 501 502 503 504 505 506 507 508 510 511 = https://192.168.0.127/error;
+```
 

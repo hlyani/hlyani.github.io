@@ -238,12 +238,22 @@ kube_node_info * on (node) group_right() kube_node_status_condition{condition="R
 (sum(label_replace(increase(apisix_http_status[30s]), "host", "$0", "matched_host", ".*")) by (host) * on (host) group_left(ingress,namespace,path,service_name,service_port) kube_ingress_path{service_name="httpbin"})
 ```
 
+```
+(sum(label_replace(apisix_http_status{code!="200"}, "host", "$0", "matched_host", ".*")) by (host) * on (host) group_left(service_name) kube_ingress_path{service_name="default-svc-infer01"} or sum(kube_ingress_path{service_name="default-svc-infer01"}*0) by (host,service_name)) - (sum(label_replace(apisix_http_status{code!="200"} offset 1d, "host", "$0", "matched_host", ".*")) by (host) * on (host) group_left(service_name) kube_ingress_path{service_name="default-svc-infer01"} or sum(kube_ingress_path{service_name="default-svc-infer01"}*0) by (host,service_name))
+```
+
 ### 11.increase
 
 增长量
 
 ```
 increase(http_requests_total{job="apiserver"}[5m])
+```
+
+### 12.vector
+
+```
+apisix_http_status or vector(0)
 ```
 
 ## 7、常用指标

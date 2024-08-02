@@ -387,6 +387,63 @@ tolerations:
 kubectl taint nodes 192.168.0.127 key1=value1:NoExecute-
 ```
 
+## 8、HostPath
+
+| **挂载模式**          | **描述**                                                     |
+| --------------------- | ------------------------------------------------------------ |
+| **DirectoryOrCreate** | 如果在给定路径上什么都不存在，将根据需要创建空目录，权限设置为0755，与Kubelet具有相同的组和属主信息。 |
+| **Directory**         | 在给定路径上必须存在目录。                                   |
+| **FileOrCreate**      | 如果在给定路径上什么都不存在，那么将在给定路径根据需要创建空文件，权限设置为0644，具有与Kubelet相同的组和所有权。 |
+| **File**              | 在给定路径上必须存在文件。                                   |
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test
+spec:
+  containers:
+  - image: nginx:1.7.9
+    name: test
+    volumeMounts:
+    - mountPath: /test
+      name: test-volume
+  volumes:
+  - name: test-volume
+    hostPath:
+      path: /data
+      type: DirectoryOrCreate
+```
+
+```
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: task-pv-volume
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hostpath
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+```
+
+
+
 # 二、常用helm源
 
 ```
