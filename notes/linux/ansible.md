@@ -1,6 +1,10 @@
+
+
 # ansible 相关
 
-##### 1、配置文件
+# 一、基础使用
+
+## 1、配置文件
 
 - ansible 应用程序的 主配置文件：/etc/ansible/ansible.cfg
 
@@ -19,21 +23,21 @@
 
 遵循 INI风格；中括号中的字符是组名；一个主机可同时属于多个组；
 
-##### 2、ansible-doc命令：获取模块列表，及模块使用格式；
+## 2、ansible-doc命令：获取模块列表，及模块使用格式；
 
 ```
 ansible-doc -l ：获取列表
 ansible-doc -s  module_name ：获取指定模块的使用信息
 ```
 
-##### 3、模块
+## 3、模块
 
 - command 默认模块，可省略
 - shell 以shell解释器执行脚本
 - raw
 - script 将本地脚本传送到远端节点上执行
 
-##### 4、变量使用示例：
+## 4、变量使用示例：
 
 Tasks 任务、 Variables 变量、 Templates 模板、 Handlers 处理器、 Roles 角色
 
@@ -51,7 +55,7 @@ Tasks 任务、 Variables 变量、 Templates 模板、 Handlers 处理器、 Ro
     shell: /bin/echo {{ password }} |/usr/bin/passwd --stdin {{ username }}
 ```
 
-- 调用变量`\{\{ \}\} `
+- 调用变量`\{\{ \}\}`
 
 - ansible-playbook /PATH/TO/SOME_YAML_FILE  { -eVARS|--extra-vars=VARS}  变量的重新赋值调用方法
 
@@ -60,7 +64,7 @@ Tasks 任务、 Variables 变量、 Templates 模板、 Handlers 处理器、 Ro
 playbook--- tasks
 ```
 
-##### 5、条件测试：
+## 5、条件测试：
 
 在某task后面添加when子句即可实现条件测试功能；when语句支持Jinja2语法；
 
@@ -73,7 +77,7 @@ tasks:
     when: ansible_os_family == "RedHat"
 ```
 
-##### 6、迭代： item
+## 6、迭代： item
 
 在task中调用内置的item变量；在某task后面使用with_items语句来定义元素列表；
 
@@ -104,7 +108,7 @@ playbook--- handlers： 处理器；触发器
 
 只有其关注的条件满足时，才会被触发执行的任务；
 
-##### 7、playbook 模板
+## 7、playbook 模板
 
 - templates：
 
@@ -157,7 +161,7 @@ playbook--- handlers： 处理器；触发器
   service: name=httpd state=restarted
   ```
 
-##### 8、常用命令
+# 二、常用命令
 
 ```
 # 拷贝文件
@@ -203,5 +207,115 @@ ansible all -m setup -a 'filter=ansible_eth[0-2]'
 
 # 搜集系统信息并以主机名为文件名分别保存在/tmp/facts 目录
 ansible all -m setup --tree /tmp/facts
+```
+
+# 三、其他
+
+## 1、创建目录
+
+```
+- name: 创建目录
+  file: name={{ tmp_dir }} state=directory
+  connection: local
+  run_once: true
+```
+
+## 2、执行 shell
+
+```
+- name: shell
+  shell:
+    cmd: |
+      \cp -rf "{{ base_dir }}/tmp" "{{ tmp_dir }}"
+  connection: local
+  run_once: true
+```
+
+## 3、渲染 value.yml.j2
+
+```
+- name: render value.yaml
+  template: src={{ item }}.j2 dest={{ tmp_dir }}/{{ item }}
+  with_items:
+    - values.yaml
+  connection: local
+  run_once: true
+```
+
+## 4、循环 group
+
+```
+- name: loop group
+  shell: echo {{ item }}
+  with_items: "{{ groups['tmp'] }}"
+  connection: local
+  run_once: true
+```
+
+```
+vim label-config.yml
+labels:
+  a: b
+  c: d
+```
+
+```
+- include_vars: "{{ cluster_dir }}/label-config.yml"
+- name: label
+  shell:
+    cmd: |
+      hosts=`echo "{{ item.value }}"|tr -d "',[]"`
+      label="{{ labels[item.key] }}"
+      for host in ${hosts};do
+        echo $host $label
+      done
+  when: item.key in labels
+  loop: "{{ groups|combine|dict2items }}"
+```
+
+> list -> dict -> items
+
+## 5、变量渲染
+
+[https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_filters.html#playbooks-filters](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_filters.html#playbooks-filters)
+
+```
+{{ affinity | to_yaml | indent(2) }}
+```
+
+```
+{{ nodeSelector | to_nice_yaml }}
+```
+
+```
+{{ nginx.configurationSnippet.httpStart | to_nice_yaml | from_yaml | indent(8) }}
+```
+
+## 6、引用变量
+
+```
+ansible-playbook -i clusters/test/hosts -e @clusters/test/config.yml -e @clusters/test/lable-config.yml playbooks/106.test.yaml -vvv
+```
+
+```
+- hosts: localhost
+  tasks:
+    - include_vars: "{{ cluster_dir }}/label-config.yml"
+```
+
+## 7、过滤所有注释行
+
+```
+grep -v '^[[:blank:]]*#' values.yaml.j2
+```
+
+## 8、重试循环
+
+```
+- action: shell /usr/bin/foo
+  register: result
+  until: result.stdout.find("all systems go") != -1
+  retries: 5
+  delay: 10
 ```
 
