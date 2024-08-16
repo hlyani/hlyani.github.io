@@ -112,6 +112,34 @@ podAntiAffinity:                                  Pod 反亲和性
 		weight                                         1-100
 ```
 
+```
+affinity:
+podAntiAffinity:
+  preferredDuringSchedulingIgnoredDuringExecution:
+  - weight: 1
+    podAffinityTerm:
+      labelSelector:
+        matchExpressions:
+          - key: aaa
+            operator: In
+            values:
+              - aaa
+      topologyKey: "kubernetes.io/hostname"
+```
+
+```
+affinity:
+podAntiAffinity:
+  requiredDuringSchedulingIgnoredDuringExecution:
+    - labelSelector:
+        matchExpressions:
+          - key: aaa
+            operator: In
+            values:
+              - bbb
+      topologyKey: kubernetes.io/hostname
+```
+
 ### 3.亲和性
 
 ```
@@ -814,3 +842,4 @@ systemctl restart containerd / systemctl restart docker
 systemctl restart kubelet
 ```
 
+[]()

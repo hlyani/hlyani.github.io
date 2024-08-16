@@ -966,7 +966,252 @@ kubectl get pod -n ingress-apisix -o name|grep controller|xargs kubectl delete -
 kubectl get cm -n ingress-apisix apisix-configmap -o yaml|sed -e 's/30s/6h/g'|kubectl apply -f -
 ```
 
-# 七、wrk 压力测试
+# 七、通过 lua 实现限速 limit-rate
+
+[https://www.daxuxu.info/blog/post/nginx-lua-jie-shao/](https://www.daxuxu.info/blog/post/nginx-lua-jie-shao/)
+
+[https://blog.donatas.net/blog/2017/07/25/limit-bandwidth-openresty/](https://blog.donatas.net/blog/2017/07/25/limit-bandwidth-openresty/)
+
+[https://developer.moduyun.com/article/c65f7549-169e-4544-b4d9-654bd9389bed.html](https://developer.moduyun.com/article/c65f7549-169e-4544-b4d9-654bd9389bed.html)
+
+[https://nginx.org/en/docs/http/ngx_http_core_module.html#limit_rate](https://nginx.org/en/docs/http/ngx_http_core_module.html#limit_rate)
+
+[https://github.com/apache/apisix/blob/master/example/apisix/plugins/3rd-party.lua](https://github.com/apache/apisix/blob/master/example/apisix/plugins/3rd-party.lua)
+
+```
+local core = require("apisix.core")
+local ngx  = ngx
+local type = type
+
+local schema = {
+  type = "object",
+  properties = {
+    limit_rate_after = {type ="string"},
+    limit_rate = {type ="string"}
+  },
+  required = {"limit_rate_after","limit_rate"},
+}
+
+local plugin_name = "limit_rate"
+
+local _M={
+    version = 0.1,
+    priority = 99,
+    name = plugin_name,
+    schema = schema
+}
+
+function _M.check_schema(conf)
+  return core.schema.check(schema, conf)
+end
+
+function _M.access(conf,ctx)
+    ngx.var.limit_rate_after = conf.limit_rate_after
+    ngx.var.limit_rate = conf.limit_rate
+    --return 203, conf.limit_rate_after
+end
+
+function _M.header_filter(ctx)
+    core.response.add_header("X-Custom-Header", "hlyani")
+end
+
+--function _M.body_filter(ctx)
+--    core.log.warn("hit body_filter phase")
+--end
+
+function _M.log(conf, ctx)
+    core.log.warn("limit_rate_after: ", conf.limit_rate_after, ", limit_rate: ", conf.limit_rate)
+end
+
+-- 注册插件
+return _M
+```
+
+```
+kubectl cp limit-rate.lua -n ingress-apisix apisix-649cb68c96-4d8cr:/usr/local/apisix/apisix/plugins/ai.lua
+```
+
+```
+kubectl exec -it -n ingress-apisix apisix-649cb68c96-4d8cr apisix reload
+```
+
+```
+curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/global_rules -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT -d '
+{
+   "id":"1",
+   "plugins":{
+      "limit-rate":{
+        "limit_rate": "2k",
+        "limit_rate_after": "500k"
+      }
+   }
+}'
+```
+
+```
+curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/global_rules -H 'X-API-Key: edd1c9f034335f136f87ad84b625c8f1'|jq
+```
+
+```
+curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/plugins/list -H 'X-API-Key: edd1c9f034335f136f87ad84b625c8f1'|jq
+```
+
+```
+curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/plugins/list -H 'X-API-Key: edd1c9f034335f136f87ad84b625c8f1'|jq|grep ai
+```
+
+```
+kubectl edit cm -n ingress-apisix  apisix
+     
+      http_server_location_configuration_snippet:      |
+        set $limit_rate 0;
+        set $limit_rate_after 0;
+```
+
+```
+curl apisix.ingress.org:32060/headers -v
+```
+
+```
+curl -o /dev/null  apisix.ingress.org:32060/image/jpeg
+```
+
+```
+apiVersion: apisix.apache.org/v2
+kind: ApisixPluginConfig
+metadata:
+  name: limit-rate
+spec:
+  plugins:
+    - name: limit-rate
+      enable: true
+      config:
+        limit_rate: 20k
+        limit_rate_after: 500k
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-httpbin-ingress
+  annotations:
+    k8s.apisix.apache.org/plugin-config-name: limit-rate
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: apisix.ingress.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: test-httpbin-svc
+            port:
+              number: 80
+```
+
+```
+apiVersion: apisix.apache.org/v2
+kind: ApisixRoute
+metadata:
+  name: test-limit-rate
+spec:
+  http:
+    - name: route
+      match:
+        hosts:
+          - apisix.ingress.org
+        paths:
+          - /
+      backends:
+        - serviceName: test-httpbin-svc
+          servicePort: 80
+      plugins:
+        - name: limit-rate
+          enable: true
+          config:
+            limit_rate: 20k
+            limit_rate_after: 500k
+```
+
+## 修改 chart 包
+
+```
+vim apisix/templates/limit-rate.yaml
+
+{{- if .Values.apisix.customPlugins.enabled }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: limit-rate
+data:
+  limit-rate.lua: |
+    local core = require("apisix.core")
+    local ngx  = ngx
+    local type = type
+
+    local schema = {
+      type = "object",
+      properties = {
+        limit_rate_after = {type ="string"},
+        limit_rate = {type ="string"}
+      },
+      required = {"limit_rate_after","limit_rate"},
+    }
+
+    local plugin_name = "limit_rate"
+
+    local _M={
+        version = 0.1,
+        priority = 1004,
+        name = plugin_name,
+        schema = schema
+    }
+
+    function _M.check_schema(conf)
+      return core.schema.check(schema, conf)
+    end
+
+    function _M.access(conf,ctx)
+        ngx.var.limit_rate_after = conf.limit_rate_after
+        ngx.var.limit_rate = conf.limit_rate
+    end
+
+    function _M.log(conf, ctx)
+        core.log.warn("limit_rate_after: ", conf.limit_rate_after, ", limit_rate: ", conf.limit_rate)
+    end
+
+    return _M
+{{- end }}
+```
+
+> luaPath: 因为已经放在了默认插件目录，所以可以不需要配置
+>
+> luaPath 的路径会默认添加 “/apisix/plugins”
+
+> chart comfigmap 逻辑  如果 plugins 不为空，会自动加载 .Values.apisix.customPlugins.plugins，所以 apisix.plugins 不用添加新加插件
+
+```
+vim apisix/values.yaml
+
+apisix:
+  plugins:
+    - 略。。。
+  customPlugins:
+    enabled: true
+    #luaPath: "/usr/local/apisix/?.lua" # ->  /usr/local/apisix/apisix/plugins/?.lua
+    luaPath: "/opt/custom_plugins/?.lua"
+    plugins:
+      - name: "limit-rate"
+        attrs: {}
+        configMap
+          name: "limit-rate"
+          mounts:
+            - key: "limit-rate.lua"
+              path: "/usr/local/apisix/apisix/plugins/limit-rate.lua"
+```
+
+# 八、wrk 压力测试
 
 [https://github.com/wg/wrk/tree/master/scripts](https://github.com/wg/wrk/tree/master/scripts)
 
@@ -1026,11 +1271,11 @@ Transfer/sec:  63.24MB
 
 [https://www.nginx-cn.net/blog/testing-performance-nginx-ingress-controller-kubernetes/](https://www.nginx-cn.net/blog/testing-performance-nginx-ingress-controller-kubernetes/)
 
-# 八、FAQ
+# 九、FAQ
 
 [https://apisix.apache.org/zh/docs/apisix/FAQ/](https://apisix.apache.org/zh/docs/apisix/FAQ/)
 
-# 九、Nginx参数优化
+# 十、Nginx参数优化
 
 [https://gist.github.com/denji/8359866](https://gist.github.com/denji/8359866)
 
@@ -1153,7 +1398,7 @@ http {
         proxy_set_header Connection "upgrade";
 ```
 
-# default error return
+# 十一、default error return
 
 ```
       httpSrv: |
