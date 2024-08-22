@@ -1,6 +1,44 @@
 # 搭建本地 dns 服务器
 
+# 一、简要配置
+
+# 1.dns 节点(如192.168.0.127)
+
+> 确保53端口不被占用
+
+```
+vim /etc/dnsmasq.conf
+address=/hl.cn/10.0.0.127
+no-hosts
+resolv-file=/etc/resolv.conf
+```
+
+```
+systemctl restart dnsmasq
+```
+
+> 永久修改，需修改网卡 dns
+
+```
+vim /etc/resolv.conf
+nameserver 192.168.0.127
+nameserver 114.114.114.114
+nameserver 8.8.8.8
+```
+
+# 2.使用节点
+
+> 永久修改，需修改网卡 dns
+
+```
+vim /etc/resolv.conf
+nameserver 192.168.0.127
+```
+
+# 二、其他
+
 ##### 1、安装
+
 ```
 yum方式安装，如下：
 yum -y install dnsmasq
@@ -57,3 +95,5 @@ dig www.baidu.com
 ##### 7、Dnsmasq小结
 		 1、Dnsmasq作为本地DNS服务器安装方便，操作简单，改动的地方也不是很多，如果用VPS来搭建本地DNS，响应的速度会更快，也更稳定。
 		 2、Dnsmasq的功能强大，反DNS劫持、加快解析速度、屏蔽广告、控制内网DNS、强制域名跳转到特定IP上等这些功能在我们的实际的生活中都是很有用的。
+
+# 
