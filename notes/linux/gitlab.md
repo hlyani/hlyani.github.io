@@ -213,3 +213,14 @@ for PIPELINE in $(curl --header "PRIVATE-TOKEN: ${TOKEN}" "${GITLAB_INSTANCE}/ap
 done
 EOF
 ```
+
+# 五、FAQ
+
+## 1、”\ No newline at end of file“
+
+```
+vim
+
+:set binary noeol
+```
+

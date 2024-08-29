@@ -300,6 +300,48 @@ when: label is defined and label != ""
 when: (enable_tmp is defined and enable_tmp == 'yes') or (enable_all is defined and enable_all == 'yes')
 ```
 
+## 17、ignore_unreachable | ignore_errors: true
+
+```
+- name: 清理 /etc/hosts
+  shell:
+    cmd: |
+      echo "{{ conf }}"|grep address|cut -d'/' -f2|xargs -i sed -i "/{}/d" /etc/hosts
+  delegate_to: "{{ item }}"
+  ignore_unreachable: yes
+  ignore_errors: true
+  with_items:
+    - "{{ server }}"
+    - "{{ node }}"
+```
+
+## 18、copy
+
+```
+- name: 分发 resolv.conf
+  copy: src={{ dir }}/yml/{{ name }}/resolv.conf dest=/etc/resolv.conf
+  delegate_to: "{{ item }}"
+  with_items:
+    - "{{ server }}"
+    - "{{ node }}"
+
+```
+
+## 19、restart
+
+```
+- name: 重启服务端 dnsmasq
+  service:
+    name: dnsmasq
+    state: restarted
+    use: systemd
+    enabled: yes
+  delegate_to: "{{ item }}"
+  loop: "{{ server }}"
+```
+
+
+
 # 二、常用命令
 
 ```
