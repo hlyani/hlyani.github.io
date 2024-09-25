@@ -14,6 +14,8 @@
 
 * 容器相关
     * [常用软件安装](notes/docker/usual_software.md)
+    * [kube-scheduler](notes/docker/kube-scheduler.md)
+    * [volcano](notes/docker/volcano.md)
     * [kubeasz](notes/docker/kubeasz.md)
     * [calico](notes/docker/calico.md)
     * [ingress](notes/docker/ingress.md)
@@ -73,6 +75,7 @@
 * Linux 相关
     * [alpine](notes/linux/alpine.md)
     * [yq](notes/linux/yq.md)
+    * [minio](notes/linux/minio.md)
     * [prometheus](notes/linux/prometheus.md)
     * [test_tools](notes/linux/test_tools.md)
     * [gitlab](notes/linux/gitlab.md)

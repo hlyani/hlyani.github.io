@@ -79,7 +79,7 @@ server_port = 1080
 tsocks wget http://*
 ```
 
-# 四、docker [使用代理]()
+# 四、docker 使用代理
 
 ##### proxy
 
