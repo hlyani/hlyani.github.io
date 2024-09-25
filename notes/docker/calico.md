@@ -226,3 +226,27 @@ ip route list
 
 ```
 
+# 其他
+
+## 1、在部署Calico时，发现网卡的过程通常涉及配置Calico以正确识别和使用宿主机的网络接口。
+
+* IP自动检测机制：默认情况下，它可能会选择第一个找到的有效网卡。
+  * first-found：列出所有网卡IP并选择第一个（忽略特定网卡如docker0和lo）。
+* 修改IP_AUTODETECTION_METHOD
+  * can-reach：指定一个目标IP或域名，Calico将尝试从所有网卡中找到能够到达该目标IP的网卡，并使用其IP地址。can-reach=x.x.x.x：选择能够到达指定IP地址的网卡。
+  * interface：使用正则表达式来指定Calico应该使用的网卡名称。
+  * kubernetes-internal-ip：从Kubernetes API获取Pod的IP地址（适用于Kubernetes环境）。
+  * first-found：列出所有网卡IP并选择第一个（忽略特定网卡如docker0和lo）。
+
+```
+env:  
+- name: IP_AUTODETECTION_METHOD  
+  value: "interface=eth0"
+```
+
+```
+env:  
+- name: IP_AUTODETECTION_METHOD  
+  value: "first-found"  # 显式指定first-found方法，尽管这通常是默认行为 
+```
+

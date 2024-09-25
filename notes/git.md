@@ -28,7 +28,23 @@ git config --global credential.helper store
 #自定义时间
 git config credential.helper 'cache --timeout=3600'
 
+#删除远程分支
+git push origin --delete feature-x
+git push origin :feature-x
 
+git fetch --all --prune
+
+#撤销git add 添加的文件
+git reset
+git checkout -- <file-or-directory>
+
+#撤销git add 添加的文件，同时丢弃add中的更改
+git reset --hard
+git reset --hard HEAD^
+
+#Git使用了一个内部数据库来存储对象（如提交、树和blob）。随着时间的推移，这个数据库可能会包含一些不再被任何分支或标签引用的对象。
+git gc
+git gc --prune=now
 ```
 ##### 2、查看状态
 ```
