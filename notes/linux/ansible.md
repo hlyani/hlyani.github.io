@@ -500,3 +500,31 @@ grep -v '^[[:blank:]]*#' values.yaml.j2
   delay: 10
 ```
 
+## 
+
+```
+- name: 下载etcd二进制文件
+  copy: src={{ base_dir }}/bin/{{ item.1 }} dest={{ etcd.data_dir }}/{{ item.1 }} mode=0755
+  delegate_to: "{{ item.0 }}"
+  loop: "{{ groups['ingress'] | product([etcd, etcdctl]) | list }}"
+
+- name: Set etcd nodes string
+  set_fact:
+    tmp_etcd_nodes: "{{ tmp_etcd_nodes|default([]) + ['etcd-' ~ item ~ '=http://' ~ item ~ ':2380'] }}"
+  loop: "{{ groups['ingress'] }}"
+
+- name: Debug tmp_etcd_nodes
+  debug:
+    var: tmp_etcd_nodes
+
+- name: 创建etcd的systemd unit文件
+  template:
+    src: apisix-etcd.service.j2
+    dest: /etc/systemd/system/apisix-etcd.service
+  vars:
+    etcd_nodes: "{{ tmp_etcd_nodes | join(',') }}"
+    etcd_name: "{{ item }}"
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['ingress'] }}"
+```
+

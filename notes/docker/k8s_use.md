@@ -415,6 +415,18 @@ tolerations:
 kubectl taint nodes 192.168.0.127 key1=value1:NoExecute-
 ```
 
+> 允许在污点上调度
+
+```
+tolerations:
+- key: "CriticalAddonsOnly"
+  operator: "Exists"
+- operator: "Exists"
+  effect: "NoSchedule"
+- operator: "Exists"
+  effect: "NoExecute"
+```
+
 ## 8、HostPath
 
 | **挂载模式**          | **描述**                                                     |

@@ -355,10 +355,56 @@ helm push grafana-0.0.2.tgz test --username hl --password xxx
 
 ## 六、其他
 
-##### 1、helm hub
+## 1、helm hub
 
 [helm hub](https://hub.helm.sh/)
 
-##### 2、helm 官网
+## 2、helm 官网
 
 [https://v3.helm.sh/docs/](https://v3.helm.sh/docs/)
+
+## 3、通过 curl 创建仓库
+
+```
+curl -u "user:password" -H "Content-Type: application/json" -X POST -d '{"project_name": "test", "public": true}' https://192.168.0.127:5000/api/v2.0/projects -k
+```
+
+## 4、registry相关操作
+
+1.登录
+
+```
+helm registry login my.harbor.com:5000 --username user --password password --insecure
+```
+
+2.打包、推送
+
+```
+helm package template
+```
+
+```
+helm push template-1.0.0.tgz oci://my.harbor.com:5000/test --insecure-skip-tls-verify
+```
+
+3.拉取
+
+```
+helm pull oci://my.harbor.com:5000/test/template --version 1.0.0
+```
+
+## 5、部署
+
+```
+helm upgrade --install --create-namespace \
+-n hl \
+--set-json 'image={"repository":"gradiant/jupyter","tag":"6.0.3"}' \
+--set replicaCount=1 \
+--set-json 'resource={"requests":{"cpu":"100m","memory":"128Mi"},"limits":{"cpu":"100m","memory":"128Mi"}}' \
+--set-json 'containerPorts=[{"name":"http","port":80}]' \
+--set-json 'service={"type":"ClusterIP","ports":[{"name":"http","port":80,"targetPort":"http"}]}' \
+--set-json 'ingress={"enabled":true,"hosts":[{"host":"hl.test.ingress","paths":[{"path":"/","port":80}]}]}' \
+hl \
+oci://my.harbor.com:5000/test/template --version 1.0.0
+```
+
