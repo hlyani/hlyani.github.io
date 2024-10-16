@@ -1,5 +1,43 @@
 # APISIX
 
+# usual
+
+```
+curl -H "Host: apisix.ingress.org" --request GET "http://192.168.0.127:32060/headers"
+```
+
+```
+curl -s http://10.66.117.129:9180/apisix/admin/global_rules -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X PUT -d '{
+  "id": "1",
+  "plugins": {
+    "prometheus": {
+      "prefer_name": true
+    },
+    "cors": {}
+  }
+}'
+```
+
+```
+curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/global_rules -H 'X-API-Key: edd1c9f034335f136f87ad84b625c8f1'|jq
+```
+
+```
+curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/routes -H 'X-API-Key: edd1c9f034335f136f87ad84b625c8f1'|jq
+```
+
+```
+curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/plugins/list -H 'X-API-Key: edd1c9f034335f136f87ad84b625c8f1'|jq
+```
+
+```
+curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/global_rules/1 -H 'X-API-KEY: edd1c9f034335f136f87ad84b625c8f1' -X DELETE
+```
+
+```
+curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath="{.spec.clusterIP}"):9180/apisix/admin/global_rules -H 'X-API-Key: edd1c9f034335f136f87ad84b625c8f1'|jq
+```
+
 # 一、安装
 
 ## 1、chart 包 

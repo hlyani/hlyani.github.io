@@ -1,6 +1,6 @@
 # K8S Yaml
 
-# 一、deployment
+# deployment
 
 ```
 apiVersion: apps/v1
@@ -66,6 +66,104 @@ spec:
           name: config-demo
 ```
 
+# StatefulSet
+
+```
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    meta.helm.sh/release-name: yani
+    meta.helm.sh/release-namespace: default
+  labels:
+    app.kubernetes.io/instance: yani
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: template
+    helm.sh/chart: template-1.0.0
+    taskId: yani
+  name: yani
+  namespace: default
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: yani
+      app.kubernetes.io/name: template
+  serviceName: yani
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: yani
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: template
+        helm.sh/chart: template-1.0.0
+    spec:
+      containers:
+      - command:
+        - /bin/sh
+        - -c
+        - /script/start-script.sh
+        image: docker.io/gradiant/jupyter:6.0.3
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 600
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        name: yani
+        ports:
+        - containerPort: 8888
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        securityContext:
+          runAsUser: 1001
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /script
+          name: start-script
+        - mountPath: /home/jovyan
+          name: jupyter-pvc
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 1001
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 0777
+          name: yani-start-script
+        name: start-script
+      - emptyDir: {}
+        name: jupyter-pvc
+
+```
+
 # Job
 
 ```
@@ -125,6 +223,30 @@ data:
     profiles:
     - schedulerName: d-scheduler
     - schedulerName: image-locality-scheduler
+```
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "common.names.fullname" . }}-start-script
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+data:
+  start-script.sh: |
+    {{- .Values.script | nindent 4 }}
+```
+
+```
+script: |
+  #!/bin/sh
+  echo "hl" > /tmp/yani
 ```
 
 # ClusterRoleBinding
@@ -338,6 +460,133 @@ spec:
     app.kubernetes.io/name: etcd
   sessionAffinity: None
   type: ClusterIP
+```
+
+```
+{{- $serviceType := .Values.service.type -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "common.names.fullname" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  sessionAffinity: {{ default "None" .Values.service.sessionAffinity }}
+  {{- if and .Values.service.clusterIP (eq .Values.service.type "ClusterIP") }}
+  clusterIP: {{ .Values.service.clusterIP }}
+  {{- end }}
+  {{- if and .Values.service.loadBalancerIP (eq .Values.service.type "LoadBalancer") }}
+  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
+  {{- end }}
+  {{- if and (eq .Values.service.type "LoadBalancer") .Values.service.loadBalancerSourceRanges }}
+  loadBalancerSourceRanges: {{- toYaml .Values.service.loadBalancerSourceRanges | nindent 4 }}
+  {{- end }}
+  {{- if or (eq .Values.service.type "LoadBalancer") (eq .Values.service.type "NodePort") }}
+  externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy | quote }}
+  {{- end }}
+  ports:
+    {{- range .Values.service.ports }}
+    - name: {{ .name }}
+      port: {{ .port }}
+      targetPort: {{ .targetPort }}
+      {{- if and (or (eq $serviceType "NodePort") (eq $serviceType "LoadBalancer")) (not (empty .nodePort)) }}
+      nodePort: {{ .nodePort }}
+      {{- end }}
+    {{- end }}
+  selector: {{- include "common.labels.matchLabels" . | nindent 4 }}
+```
+
+```
+service:
+  type: ClusterIP # clusterIP LoadBalancer NodePort
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+```
+
+# Ingress
+
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    meta.helm.sh/release-name: yani
+  generation: 1
+  labels:
+    app.kubernetes.io/instance: yani
+  name: yani
+  namespace: default
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: hl.test.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: yani
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+```
+
+```
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "common.names.fullname" . -}}
+{{- $httpPort := .Values.service.port -}}
+{{- $pathType := .Values.ingress.pathType -}}
+apiVersion: {{ include "common.capabilities.ingress.apiVersion" . }}
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace | quote }}
+  labels: {{- include "common.labels.standard" . | nindent 4 }}
+    {{- if .Values.commonLabels }}
+    {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
+    {{- end }}
+spec:
+  {{- if .Values.ingress.ingressClassName }}
+  ingressClassName: {{ .Values.ingress.ingressClassName | quote }}
+  {{- end }}
+  rules:
+  {{- range .Values.ingress.hosts }}
+  - host: {{ .host }}
+    http:
+      paths:
+      {{- range .paths }}
+      - path: {{ default "/" .path }}
+        pathType: {{ default "Prefix" $pathType }}
+        backend:
+          service:
+            name: {{ $fullName }}
+            port:
+              number: {{ .port | default $httpPort }}
+      {{- end }}
+  {{- end }}
+{{- end }}
+```
+
+```
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  pathType: Prefix
+  apiVersion: "networking.k8s.io/v1"
+  hosts:
+  - host: hl.test.com
+    paths:
+    - path: /
+      port: 80
 ```
 
 # pod
