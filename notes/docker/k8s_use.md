@@ -2,58 +2,7 @@
 
 # 一、常用操作
 
-## 1、探针（健康状态监测）
-
-[配置存活、就绪和启动探针](https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
-
-[Pod的生命周期](https://kubernetes.io/zh-cn/docs/concepts/workloads/pods/pod-lifecycle/)
-
-### 1.探针执行方式
-
-* livenessProbe:
-
-   容器是否正在运行，不为running，则kubelet会杀死容器，根据重启策略进行相应的处理。
-
-* readinessProbe：
-
-  容器是否准备好，为请求提供服务。是否处于可用Ready状态，达到ready状态表示pod可以接受请求，如果不健康，从service的后端endpoint列表中把pod隔离出去。
-
-> 两种探针探测失败的方式不同，一个是重启容器，一个是不提供服务
-
-* startupProbe:
-
-  容器中的应用是否已经启动。如果提供了启动探针，则所有其他探针都会被禁用，直到此探针成功为止。如果启动探测失败，kubelet将杀死容器，而容器根据重启策略进行重启。
-
-### 2.诊断的三种方式
-
-* ExecAction: 在容器内执行指定命令。如果命令退出时返回码为0则认为诊断成功
-* TCPSocketAction：对指定端口上的容器的IP地址进行TCP检查，如果端口打开，则诊断认为是成功的
-* HTTPGetAction：对指定的端口和路径上的容器的IP地址执行HTTP Get请求，如果响应状态码大于等于200且小于400，则诊断被认为是成功的
-
-### 3.Probe详细配置
-
-* initialDelaySeconds: 容器启动后第一次执行探测需要等待多少秒
-* periodSeconds：执行探测的频率。默认10秒，最小1秒
-* timeoutSeconds：探测超时时间，默认1秒，最小1秒
-* successThreshold：探测失败后，最少连续探测成功多少次才被认定为成功。默认1,对于liveness必须是1，最小值1
-* failureThreshold：探测成功后，最少连续探测失败多少次才被认定为失败，默认3，最小1
-* HTTP probe 中可以给httpGet设置其他配置项
-
-### 4.httpget其他配置项
-
-* host：连接的主机名，默认连接到pod的IP。你可能想在http header中设置"Host"而不是使用IP。
-* scheme：连接使用的schema，默认HTTP。
-* path: 访问的HTTP server的path。
-* httpHeaders：自定义请求的header。HTTP运行重复的header。
-* port：访问的容器的端口名字或者端口号。端口号必须介于1和65535之间。
-
-### 5.示例
-
-```
-livenessProbe:
-  exec:
-    command: ["cat","/app/index.html"]
-```
+## 1、探针
 
 ```
 livenessProbe:
@@ -204,6 +153,25 @@ spec:
 ```
 
 ### 5.示例
+
+```
+spec:
+    template:
+        metadata:
+          labels:
+            ddp: worker
+    spec:
+      affinity:
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: ddp
+                  operator: In
+                  values:
+                  - worker
+              topologyKey: kubernetes.io/hostname
+```
 
 查看标签
 
@@ -853,5 +821,3 @@ ip link delete flannel.1
 systemctl restart containerd / systemctl restart docker
 systemctl restart kubelet
 ```
-
-[]()

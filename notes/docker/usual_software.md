@@ -335,3 +335,30 @@ docker run -d -name mariadb -e MYSQL_ROOT_PASSWORD=qwe -p 3306:3306 mariadb:10.4
 docker run -d --name redis -p 6379:6379 redis
 ```
 
+# 13、squid
+
+[https://hub.docker.com/r/ubuntu/squid](https://hub.docker.com/r/ubuntu/squid)
+
+```
+docker run -d --name squid-container -e TZ=UTC -p 3128:3128 ubuntu/squid:5.2-22.04_beta
+```
+
+# 14、clash
+
+```
+# clash-linux-amd64-latest
+# https://github.com/szkzn/Clash_Core_Latest_Bak_2023-09-05
+wget -O config.yaml "http://XXX/api/v1/client/subscribe?token=XXX&flag=clash"
+wget https://cdn.jsdelivr.net/gh/Dreamacro/maxmind-geoip@release/Country.mmdb
+```
+
+```
+FROM alpine
+COPY clash cache.db config.yaml Country.mmdb /opt/
+CMD ["/opt/clash", "-d", "/opt"]
+```
+
+```
+docker run -d --net=host --restart=always --name clash clash:1.0.0
+```
+

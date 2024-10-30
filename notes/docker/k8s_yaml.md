@@ -1,6 +1,45 @@
 # K8S Yaml
 
-# deployment
+# test
+
+```
+cat <<EOF | kubectl apply -f -
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-service
+spec:
+  selector: 
+    app: nginx
+  type: NodePort  
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 32000
+EOF
+```
+
+# Deployment
 
 ```
 apiVersion: apps/v1
@@ -668,6 +707,15 @@ spec:
       app.kubernetes.io/instance: ingress-apisix
       app.kubernetes.io/name: etcd
       app.kubernetes.io/component: etcd
+```
+
+# Namespace
+
+```
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aaa
 ```
 
 # api-resources

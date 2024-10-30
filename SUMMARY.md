@@ -1,19 +1,14 @@
 # Summary
 
 * [Introduction](README.md)
-
 * [proxy 相关](notes/proxy.md)
-
 * [pip 源相关](notes/pip.md)
-
 * [linux 源相关](notes/linux_source.md)
-
 * [git 相关](notes/git.md)
-
 * [skills](notes/skills.md)
-
 * 容器相关
     * [常用软件安装](notes/docker/usual_software.md)
+    * [kubeflow](notes/docker/kubeflow.md)
     * [kube-scheduler](notes/docker/kube-scheduler.md)
     * [volcano](notes/docker/volcano.md)
     * [kubeasz](notes/docker/kubeasz.md)
@@ -48,11 +43,9 @@
     * [将ISO镜像转换为docker镜像](notes/docker/convert_iso_to_docker_img.md)
     * [挂载USB到docker容器](notes/docker/mount_usb_to_docker.md)
     * [local-static-provisioner](notes/docker/local_static_provisioner.md)
-    
 * Golang 相关
     * [golang 相关](notes/golang/go.md)
     * [GO Authens 代理](notes/golang/go_authens.md)
-    
 * OpenStack 相关
     * [区分当前系统运行环境](notes/openstack/whatisruntime.md)
     * [QEMU 源码编译](notes/openstack/qemu_make.md)
@@ -72,7 +65,6 @@
     * [迁移虚拟机到其他平台](notes/openstack/migrate_to_other_platform.md)
     * [OpenStack对hygon的兼容](notes/openstack/openstack_hygon_patch.md)
     * [Lfs上安装OpenStack](notes/openstack/lsf_install_openstack.md)
-
 * Linux 相关
     * [alpine](notes/linux/alpine.md)
     * [yq](notes/linux/yq.md)
@@ -131,14 +123,12 @@
     * [软 raid](notes/linux/mdadm.md)
     * [将 home 目录空间扩容到根目录](notes/linux/root_extend.md)
     * [将虚拟机作为router](notes/linux/vm_to_router.md)
-    
 * Ceph 相关
     * [Ceph 部署](notes/ceph/ceph_deploy.md)
     * [Ceph 调优](notes/ceph/ceph_optimize.md)
     * [crushmap](notes/ceph/crushmap.md)
     * [ceph.conf](notes/ceph/cephconf.md)
     * [Ceph 启用 Dashboard](notes/ceph/ceph_dashboard.md)
-    
 * Python 相关
     * [xpath 相关](notes/python/xpath.md)
     * [正则表达式相关](notes/python/regular_expression.md)
@@ -155,7 +145,6 @@
     * [yield](notes/python/yield.md)
     * [Jinja2 相关](notes/python/jinja2.md)
     * [Python 代码规范](notes/python/python_code_standards.md)
-    
 * 大数据相关
     * [大数据相关环境安装](notes/bigdata/bigdata_deploy.md)
     * [Hadoop 相关](notes/bigdata/hadoop.md)
@@ -179,12 +168,10 @@
     * [reptile 爬虫相关](notes/bigdata/reptile.md)
     * [pyecharts 相关](notes/bigdata/pyecharts.md)
     * [matplotlib 相关](notes/bigdata/matplotlib.md)
-    
 * 机器学习相关
     * [tensorflow 和 keras 相关](notes/machinelearning/tensorflow_and_keras.md)
     * [cifar-10 相关](notes/machinelearning/cifar_10.md)
     * [Darknet to Caffe](notes/machinelearning/darknet_to_caffe.md)
-    
 * 其他
     * [Nativefier 相关](notes/other/nativefier.md)
     * [ptp 相关](notes/other/ptp.md)
