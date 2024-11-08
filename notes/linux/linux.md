@@ -1,5 +1,71 @@
 # Linux 相关
 
+## Skills
+
+```
+# 清空文件
+> access.log
+
+# 生成大文件
+dd if=/dev/zero of=file.img bs=1M count=1024
+
+# 安全擦除硬盘
+dd if=/dev/urandom of=/dev/sda
+
+# 快速制作系统盘，/dev/sdb U盘
+dd if=ubuntu-server-amd64.iso of=/dev/sdb
+
+# 查看某个进程运行时间
+ps -p 10167 -o etimes,etime
+# 获取进程内存信息
+ps -p 10167 -o rss
+
+# 时间戳快速转换
+date -d@1234567890 +"%Y-%m-%d %H:%M:%S"
+# 查看当前时间戳
+date +%s
+
+# 删除乱码文件
+$ ls  -i
+138957 a.txt  138959 T.txt  132395 ڹ��.txt
+
+$ find . -inum 132395 -exec rm {} \;
+
+# 获取公网IP
+curl ip.sb
+curl ifconfig.me
+
+# 批量下载网页资源
+wget -r -nd -np --accept=pdf http://fast.dpdk.org/doc/pdf-guides/
+wget -r -np -nH -R index.html http://url/including/files/you/want/to/download/
+	-r 遍历所有子目录
+	-np 不到上一层子目录去
+	-nH 不要讲文件保存到主机名文件
+	-R index.html 不下载index.html文件
+	
+# 开机启动
+1.
+/etc/rc.local
+chmod +xxx /etc/rc.local
+
+2.
+# Crontab 可以使用 @reboot 来执行主机启动之后的命令。
+crontab -e
+@reboot /root/script/restart.sh
+
+3.
+vim /lib/systemd/system/restart.service
+[Unit]
+Description=restart
+After=default.target
+
+[Service]
+ExecStart=/root/script/restart.sh
+
+[Install]
+WantedBy=default.target
+```
+
 ## 一、pigz
 
 ##### 1、安装

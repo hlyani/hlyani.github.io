@@ -648,7 +648,25 @@ systemctl daemon-reload
 systemctl restart docker
 ```
 
-# 六、FAQ
+# 六、Pod Pid限制
+
+```
+vim /var/lib/kubelet/config.yaml
+podPidsLimit: 1024
+```
+
+```
+/proc/sys/kernel/pid_max # 定义了可以分配给进程的最大进程 ID（PID） 
+
+sysctl -w kernel.pid_max=65535
+
+/etc/sysctl.conf
+kernel.pid_max = 65535
+
+sysctl -p
+```
+
+# 七、FAQ
 
 ## 1、flannel网络已存在
 

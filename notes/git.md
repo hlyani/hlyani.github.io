@@ -2,7 +2,18 @@
 
 # 一、git
 
+## 1.Usual
+
+```
+git config --global credential.helper store
+
+git fetch --all && git reset --hard origin/master
+```
+
+## 2.Other
+
 ##### 1、Git 配置
+
 ```
 /etc/gitconfig 所有用户，git config --system
 ~/.gitconfig 当前用户，git config --global
@@ -45,6 +56,15 @@ git reset --hard HEAD^
 #Git使用了一个内部数据库来存储对象（如提交、树和blob）。随着时间的推移，这个数据库可能会包含一些不再被任何分支或标签引用的对象。
 git gc
 git gc --prune=now
+
+# 列出所有远程分支
+git branch -r
+
+# 列出本地和远程分支
+git branch -a
+
+# 查看某段代码是谁写的
+git blame  <file-name>
 ```
 ##### 2、查看状态
 ```
@@ -654,6 +674,23 @@ jenkins
 http://blog.csdn.net/abcdocker/article/details/53840629
 
 https://docs.gitlab.com/ee/ci/yaml/README.html
+```
+
+## （五）、规范
+
+```
+type：commit 的类型
+feat：新特性
+fix：修改问题
+refactor：代码重构
+docs：文档修改
+style：代码格式修改，注意不是 css 修改
+test：测试用例修改
+chore：其他修改，比如构建流程，依赖管理
+scope：commit 影响的范围，比如：route，component，utils，build……
+subject：commit 的概述
+body：commit 具体修改内容，可以分为多行
+footer：一些备注，通常是 BREAKING CHANGE 或修复的 bug 的链接
 ```
 
 # 三、Gitlab备份和恢复
