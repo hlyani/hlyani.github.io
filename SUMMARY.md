@@ -68,6 +68,7 @@
 * Linux 相关
     * [alpine](notes/linux/alpine.md)
     * [yq](notes/linux/yq.md)
+    * [conda](notes/linux/conda.md)
     * [minio](notes/linux/minio.md)
     * [prometheus](notes/linux/prometheus.md)
     * [test_tools](notes/linux/test_tools.md)
