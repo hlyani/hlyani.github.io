@@ -86,9 +86,34 @@ nvidia-smi -r
 
 
 
+```
+docker run -it --rm \
+  -v /hl/megatron-deepspeed-llama2/megatron-deepspeed-llama2:/root/megatron-deepspeed-llama2 \
+  -w /root/megatron-deepspeed-llama2 \
+  -v /opt/hyhal:/opt/hyhal \
+  --device=/dev/kfd \
+  --device=/dev/dri \
+  --security-opt seccomp=unconfined \
+  --cap-add=SYS_PTRACE \
+  --shm-size=16G \
+  --net=host \
+  megatron-deepspeed-llama2 \
+  bash
+```
+
+
+
 # pytorch
 
 ```
 python -c  "import torch; print(torch.cuda.is_available()); print(torch.cuda.device_count())"
+```
+
+
+
+NCCL
+
+```
+python -c "import torch.distributed as dist; print(dist.is_nccl_available())"
 ```
 
