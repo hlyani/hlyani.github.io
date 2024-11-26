@@ -758,6 +758,105 @@ chmod +x jq-linux-amd64
 mv jq-linux-amd64 /usr/bin/jq
 ```
 
+```
+jq =  python -m json.tool
+```
+
+## 二十七、查看端口
+
+```
+ss -tuln
+```
+
+```
+iptables -t nat -L -n -v
+```
+
+```
+netstat -tuln
+```
+
+## 二十八、查看证书是否过期
+
+```
+openssl x509 -in /etc/nginx/ssl/server.crt -noout -dates
+```
+
+> `notBefore` 表示证书的生效时间。
+>
+> `notAfter` 表示证书的过期时间。
+
+```
+openssl s_client -connect your-domain.com:443 -servername your-domain.com </dev/null 2>/dev/null | openssl x509 -noout -dates
+```
+
+## 二十九、进程 ID 及其启动命令
+
+```
+pgrep -a python
+```
+
+> `-a` 参数会显示完整的命令行。
+
+```
+ps -efww
+```
+
+> 列出所有系统进程及其详细信息。
+>
+> `-e`：显示所有进程。
+>
+> `-f`：以完整格式显示。
+>
+> `-w`：宽格式显示，确保显示完整的命令行。
+
+```
+UID         PID   PPID  C STIME TTY          TIME CMD
+root          1      0  0 08:00 ?        00:00:01 /sbin/init
+user      12345      1  0 08:01 ?        00:00:05 python3 my_script.py --arg1 value1
+user      67890  12345  1 08:02 ?        00:00:10 python3 another_script.py
+```
+
+> `UID`：用户 ID，显示进程的拥有者。
+>
+> `PID`：进程 ID。
+>
+> `PPID`：父进程 ID。
+>
+> `C`：CPU 使用率。
+>
+> `STIME`：进程启动时间。
+>
+> `TTY`：终端信息（`?` 表示非交互式）。
+>
+> `TIME`：CPU 使用时间。
+>
+> `CMD`：启动命令及其参数。
+
+```
+htop
+```
+
+> 在界面中按 `F4`，然后输入 `python`，即可筛选出与 Python 相关的进程
+
+```
+top -c
+```
+
+> 输入 `o` 然后输入 `COMMAND=python`，可以筛选与 Python 相关的进程。
+
+## 三十、 sublime 替换重复行
+
+```
+Ctrl+H
+
+^(.+)$[\r\n](^\1$[\r\n]{0, 1})+
+
+\1\n
+```
+
+
+
 ## Linux系统启动过程
 
 > Linux系统的启动过程：内核引导、运行init、系统初始化、建立终端、用户登录系统

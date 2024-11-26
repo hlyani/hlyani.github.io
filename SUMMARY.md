@@ -67,6 +67,7 @@
     * [Lfs上安装OpenStack](notes/openstack/lsf_install_openstack.md)
 * Linux 相关
     * [alpine](notes/linux/alpine.md)
+    * [ib](notes/linux/ib.md)
     * [yq](notes/linux/yq.md)
     * [conda](notes/linux/conda.md)
     * [minio](notes/linux/minio.md)
@@ -170,6 +171,7 @@
     * [pyecharts 相关](notes/bigdata/pyecharts.md)
     * [matplotlib 相关](notes/bigdata/matplotlib.md)
 * 机器学习相关
+    * [ML](notes/machinelearning/ML.md)
     * [tensorflow 和 keras 相关](notes/machinelearning/tensorflow_and_keras.md)
     * [cifar-10 相关](notes/machinelearning/cifar_10.md)
     * [Darknet to Caffe](notes/machinelearning/darknet_to_caffe.md)

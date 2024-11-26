@@ -1,4 +1,30 @@
 # Python 相关
+
+
+
+# 一、安装
+
+```
+wget https://www.python.org/ftp/python/3.13.0/Python-3.13.0.tgz
+./configure --enable-optimizations --with-ensurepip=install --with-openssl=/usr/local/openssl-1.1.1 --with-openssl-rpath=auto
+make altinstall -j 20
+```
+
+# 二、查看 gpu 是否可用
+
+```
+python -c  "import torch; print(torch.cuda.is_available()); print(torch.cuda.device_count())"
+python -c "import torch.distributed as dist; print(dist.is_nccl_available())"
+```
+
+
+
+
+
+
+
+# 其他
+
 ```
 for i, v in enumerate(['tic', 'tac', 'toe']):
 

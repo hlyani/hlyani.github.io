@@ -577,6 +577,38 @@ kubectl get pod test-pod -o jsonpath='{.spec.containers[*].resources.limits}'
 kubectl expose pod httpbin --port 80
 ```
 
+## 11.命令补全
+
+```
+kubectl completion bash
+```
+
+/root/.bashrc
+
+```
+source <(crictl completion bash)
+source <(nerdctl completion bash)
+source <(kubectl completion bash)
+```
+
+## 12.查看 gpu 使用情况
+
+```
+kubectl describe nodes | grep -E "Name:|nvidia.com/gpu"
+```
+
+```
+kubectl get nodes -o custom-columns="NAME:.metadata.name,GPU_ALLOCATED:.status.allocatable.nvidia\.com/gpu,GPU_USED:.status.capacity.nvidia\.com/gpu"
+```
+
+## 13.pod 访问 svc
+
+服务的规则如下
+
+```
+<service_name>.<namespace>.svc.cluster.local
+```
+
 # 四、证书过期
 
 ```
