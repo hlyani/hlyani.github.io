@@ -1,6 +1,33 @@
 # 常用软件安装
 
-# 1、rocket
+# 一、docker 构建
+
+```
+FROM ubuntu:22.04
+
+ARG http_proxy=http://http://127.0.0.1:1080 https_proxy=$http_proxy
+
+RUN apt update && \
+    apt install -y supervisor net-tools iputils-ping vim iproute2 openssh-server openssh-client && \
+    apt clean && \
+    sed -i "s/#PermitRootLogin prohibit-password/PermitRootLogin yes/g" /etc/ssh/sshd_config && \
+    sed -i "s/#PasswordAuthentication yes/PasswordAuthentication yes/g" /etc/ssh/sshd_config && \
+    echo "root:123" | chpasswd && \
+    touch /entrypoint.sh && \
+    chmod +x /entrypoint.sh && \
+    echo "service ssh start" >> /entrypoint.sh && \
+    echo "sleep infinity" >> /entrypoint.sh
+
+CMD ["/usr/bin/sh", "-c", "/entrypoint.sh"]
+```
+
+```
+RUN apt update && apt install -y perftest iperf3 infiniband-diags net-tools iputils-ping wrk vim iproute2 && apt clean
+```
+
+# 二、安装
+
+## 1、rocket
 
 [https://hub.docker.com/_/rocket-chat](https://hub.docker.com/_/rocket-chat)
 [https://rocket.chat/install](https://rocket.chat/install)
@@ -17,7 +44,7 @@ docker exec -d rocketchat-mongo bash -c 'echo -e "replication:\n replSetName: \"
 docker run -d --name rocketchat --link rocketchat-mongo -e "MONGO_URL=mongodb://rocketchat-mongo:27017/rocketchat" -e MONGO_OPLOG_URL=mongodb://rocketchat-mongo:27017/local?replSet=rs01 -e ROOT_URL=http://192.168.21.87:3001 -p 3001:3000 rocketchat/rocket.chat:1.2.1
 ```
 
-# 2、samba
+## 2、samba
 
 [https://github.com/dperson/samba](https://github.com/dperson/samba)
 
@@ -66,7 +93,7 @@ docker run -it -p 139:139 -p 445:445 --name samba -v /opt/test:/mount -d dperson
 testparm -v
 ```
 
-# 3、gitlab
+## 3、gitlab
 
 [https://docs.gitlab.com/omnibus/docker/](https://docs.gitlab.com/omnibus/docker/)
 
@@ -94,7 +121,7 @@ gitlab-ctl stop unicorn
 gitlab-ctl stop sideki
 ```
 
-##### FAQ
+FAQ
 
 > fail to initialize orm engine: Sqlstore::Migration failed err: unable to open database file
 
@@ -109,7 +136,7 @@ chown 998 gitaly.pid
 chgrp 988 gitaly.pid
 ```
 
-# 4、wiki
+## 4、wiki
 
 [https://www.dokuwiki.org/dokuwiki](https://www.dokuwiki.org/dokuwiki)
 [https://github.com/bitnami/bitnami-docker-dokuwiki](https://github.com/bitnami/bitnami-docker-dokuwiki)
@@ -132,7 +159,7 @@ DOKUWIKI_EMAIL: Dokuwiki application email. Default: user@example.com
 DOKUWIKI_WIKI_NAME: Dokuwiki wiki name. Default: Bitnami DokuWiki
 ```
 
-# 5、redmine
+## 5、redmine
 
 [https://hub.docker.com/redmine](https://hub.docker.com/redmine)
 
@@ -158,7 +185,7 @@ docker run -d --name some-mysql --network some-network -e MYSQL_USER=redmine -e 
 docker run -d --name some-redmine --network some-network -e REDMINE_DB_POSTGRES=some-postgres -e REDMINE_DB_USERNAME=redmine -e REDMINE_DB_PASSWORD=secret redmine
 ```
 
-# 6、vsftpd
+## 6、vsftpd
 
 [https://github.com/panubo/docker-vsftpd](https://github.com/panubo/docker-vsftpd)
 
@@ -183,7 +210,7 @@ docker run -d \
     docker.io/panubo/vsftpd vsftpd /etc/vsftpd_ssl.conf
 ```
 
-# 7、jenkins
+## 7、jenkins
 
 [https://www.jenkins.io/doc/book/installing/docker/](https://www.jenkins.io/doc/book/installing/docker/)
 
@@ -205,7 +232,7 @@ docker run -d  \
 cat /jenkins/secrets/initialAdminPassword 
 ```
 
-## 1、webhook
+**1.webhook**
 
 > 需要安装插件
 
@@ -237,7 +264,7 @@ Trigger token
 mytoken
 ```
 
-## 2、新加节点
+**2.新加节点**
 
 > 安装
 >
@@ -251,7 +278,7 @@ apt install openjdk-11-jdk
 apk add docker openssh openjdk11 git
 ```
 
-# 8、harbor
+## 8、harbor
 
 [https://github.com/goharbor/harbor](https://github.com/goharbor/harbor)
 
@@ -266,7 +293,7 @@ docker-compose up -d
 docker-compose stop -v
 ```
 
-# 9、nextcloud
+## 9、nextcloud
 
 ```
 docker run -d \
@@ -277,7 +304,7 @@ docker run -d \
     nextcloud
 ```
 
-# 10、svn
+## 10、svn
 
 ```
 docker run --restart always --name svn -d -v /root/dockers/svn:/var/opt/svn -p 3690:3690 garethflowers/svn-server
@@ -322,20 +349,20 @@ admin = rw        # 用户 admin 在所有仓库拥有读写权限
 svn co svn://127.0.0.1:3690/svn
 ```
 
-# 11、mariadb
+## 11、mariadb
 
 ```
 docker pull mariadb:10.4
 docker run -d -name mariadb -e MYSQL_ROOT_PASSWORD=qwe -p 3306:3306 mariadb:10.4
 ```
 
-# 12、redis
+## 12、redis
 
 ```
 docker run -d --name redis -p 6379:6379 redis
 ```
 
-# 13、squid
+## 13、squid
 
 [https://hub.docker.com/r/ubuntu/squid](https://hub.docker.com/r/ubuntu/squid)
 
@@ -343,7 +370,7 @@ docker run -d --name redis -p 6379:6379 redis
 docker run -d --name squid-container -e TZ=UTC -p 3128:3128 ubuntu/squid:5.2-22.04_beta
 ```
 
-# 14、clash
+## 14、clash
 
 ```
 # clash-linux-amd64-latest

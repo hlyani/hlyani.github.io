@@ -59,7 +59,22 @@ spec:
       labels:
         app: test-deployment
     spec:
+      hostAliases:
+      - hostnames:
+        - test.aa.com
+        - test.bb.com
+        ip: 192.168.0.127
+      - hostnames:
+        - test.cc.com
+        ip: 192.168.0.128
       hostNetwork: true
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+        - key: CriticalAddonsOnly
+          operator: Exists
+        - effect: NoExecute
+          operator: Exists
       schedulerName: default-scheduler
       nodeSelector:
         resourceGroup: test
@@ -798,9 +813,30 @@ storageclasses                    sc           storage.k8s.io/v1                
 volumeattachments                              storage.k8s.io/v1                      false        VolumeAttachment
 ```
 
+# hostAliases
 
-
-
+```
+cat <<EOF| kubectl apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test
+spec:
+  hostAliases:
+  - hostnames:
+    - test.aa.com
+    ip: 10.0.0.1
+  - hostnames:
+    - test1.aa.com
+    - test2.aa.com
+    ip: 10.0.0.2
+  containers:
+  - name: test
+    image: busybox:1.28
+    imagePullPolicy: IfNotPresent
+    command: ["/bin/sh", "-c", "sleep 3000"]
+EOF
+```
 
 # Demo
 

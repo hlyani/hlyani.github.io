@@ -1,6 +1,39 @@
 # Linux 相关
 
-## Skills
+# usual
+
+```
+ip addr add 192.168.1.100/24 dev eth0
+ip addr del 192.168.1.100/24 dev eth0
+```
+
+```
+ssh-keygen -R 192.168.1.100
+```
+
+```
+echo "root:123" | chpasswd
+```
+
+```
+kubectl completion bash
+```
+
+```
+openssl x509 -in /etc/nginx/ssl/server.crt -noout -dates
+```
+
+```
+pgrep -a python
+ps -efww|grep python
+```
+
+```
+ss -tunl
+netstat -ntlp
+```
+
+# Skills
 
 ```
 # 清空文件
@@ -65,6 +98,8 @@ ExecStart=/root/script/restart.sh
 [Install]
 WantedBy=default.target
 ```
+
+# 命令
 
 ## 一、pigz
 

@@ -505,12 +505,77 @@ apt install ceph-common
 
 ### 3、时间同步问题
 
-```
-vim /etc/chrony/chrony.conf
-pool node1 iburst
-allow 192.168.0.0/24
+> Server
 
+```
+server 0.centos.pool.ntp.org iburst
+server 1.centos.pool.ntp.org iburst
+server 2.centos.pool.ntp.org iburst
+server 3.centos.pool.ntp.org iburst
+
+# 记录系统时钟的漂移
+driftfile /var/lib/chrony/drift
+
+# 初始同步允许较大时间偏差，允许大幅调整时间，该配置允许在前 3 次同步时直接调整时间
+makestep 1.0 3
+
+# 启用实时硬件时钟同步
+rtcsync
+
+# Allow NTP client access from local network.
+allow 192.168.0.0/16
+allow 10.0.0.0/24
+
+# 如果不需要其他机器访问该客户端的 NTP 服务，可以禁用访问
+# deny all
+
+logdir /var/log/chrony
+```
+
+> Client
+
+```
+server 10.0.0.1 iburst
+driftfile /var/lib/chrony/drift
+makestep 1.0 3
+rtcsync
+logdir /var/log/chrony
+```
+
+> 验证
+
+```
 chronyc sources -v
+
+210 Number of sources = 1
+  .-- Source mode  '^' = server, '=' = peer, '#' = local clock.
+ / .- Source state '*' = current synced, '+' = combined, '-' = not combined,
+| /   '?' = unreachable, 'x' = time may be in error, '~' = too variable.
+||                                                 .- xxxx [ xxxx ]
+||      Reachability register (octal) -.          +----------------
+||      Log2(Polling interval) --.       -.       |   Last sample
+||                               |     .--|----.  |  (time offset)
+MS Name/IP address         Stratum Poll Reach LastRx Last sample
+===============================================================================
+^* 10.0.0.1                    2   6   377    32   -10us[  -15us] +/-  100ms
+```
+
+> `^*` 表示已成功与 `10.0.31.13` 同步。
+>
+> `Reach` 的值为 `377` 表示与服务器的通信良好。
+
+```
+# 检查当前时间差
+chronyc tracking
+# 强制同步时间源
+chronyc -a makestep
+timedatectl
+```
+
+> 适用于一次性手动时间同步，非持续服务
+
+```
+ntpdate ntp8.flashdance.cx
 ```
 
 ### 4、ceph在容器启动前先启动
