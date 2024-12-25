@@ -71,7 +71,28 @@ ctr -n k8s.io i push -k 192.168.0.127:5000/test:1.0.0
 crictl -D pull 127.0.0.1:5000/test:1.0.0
 ```
 
-# 四、其他
+# 四、仓库信任配置
+
+```
+vim /etc/containerd/config.toml
+...
+    [plugins."io.containerd.grpc.v1.cri".registry]
+
+      [plugins."io.containerd.grpc.v1.cri".registry.configs]
+        [plugins."io.containerd.grpc.v1.cri".registry.configs."easzlab.io.local:5000".tls]
+          insecure_skip_verify = true
+
+      [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."easzlab.io.local:5000"]
+          endpoint = ["http://easzlab.io.local:5000"]
+...
+```
+
+```
+systemctl restart containerd
+```
+
+# 其他
 
 ##### 1、解压OCI镜像
 
