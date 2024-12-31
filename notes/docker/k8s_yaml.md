@@ -58,6 +58,7 @@ spec:
     metadata:
       labels:
         app: test-deployment
+        test: "true"
     spec:
       hostAliases:
       - hostnames:
@@ -69,15 +70,27 @@ spec:
         ip: 192.168.0.128
       hostNetwork: true
       tolerations:
-        - effect: NoSchedule
-          operator: Exists
-        - key: CriticalAddonsOnly
-          operator: Exists
-        - effect: NoExecute
-          operator: Exists
+      - key: "CriticalAddonsOnly"
+        operator: "Exists"
+      - operator: "Exists"
+        effect: "NoSchedule"
+      - operator: "Exists"
+        effect: "NoExecute"
       schedulerName: default-scheduler
       nodeSelector:
         resourceGroup: test
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                  - key: "test"
+                    operator: In
+                    values:
+                      - "true"
+              topologyKey: "kubernetes.io/hostname"
       restartPolicy: Always   # Never
       terminationGracePeriodSeconds: 30
       containers:
@@ -110,14 +123,25 @@ spec:
             path: /healthz
             port: 80
             scheme: HTTPS
+        livenessProbe:
+          tcpSocket:
+            port: 53
+          initialDelaySeconds: 5
+          periodSeconds: 10
         volumeMounts:
         - name: config-volume
           mountPath: /etc/kubernetes
+        - name: dnsmasq-config
+          mountPath: /etc/dnsmasq.conf
+          subPath: dnsmasq.conf
       serviceAccountName: service-account-sa
       volumes:
       - name: config-volume
         configMap:
           name: config-demo
+      - name: dnsmasq-config
+        configMap:
+          name: dnsmasq-config
 ```
 
 # StatefulSet
@@ -458,19 +482,21 @@ spec:
         args:
         - |
           cat /opt/resolv.conf > /etc/resolv.conf
-          tail -f /dev/null
+    	  tail -f /dev/null
         volumeMounts:
-        - name: resolv
+        - name: resolv-host
           mountPath: /etc/resolv.conf
-        - name: dnsmasq-config
-          mountPath: /opt
+        - name: resolv-config
+          mountPath: /tmp/resolv.conf
+          subPath: resolv.conf
       volumes:
-      - name: resolv
+      - name: resolv-host
         hostPath:
           path: /etc/resolv.conf
-      - name: dnsmasq-config
+          type: FileOrCreate
+      - name: resolv-config
         configMap:
-          name: dnsmasq-config
+          name: resolv-config
 ```
 
 # Service
@@ -957,5 +983,136 @@ spec:
   selector:
     matchLabels:
       app: apisix-etcd-monitor-svc
+```
+
+# j2
+
+```
+# vars/main.yaml
+dnsmasq_replica_count: "{{ groups['dnsmasq'] | length }}"
+resources:
+  requests:
+    cpu: 200m
+    memory: 128Mi
+  limits:
+    cpu: 4
+    memory: 4Gi
+dnsmasq_global_conf: |
+  no-hosts
+  no-resolv
+  no-poll
+  neg-ttl=300
+  min-cache-ttl=300
+  dns-forward-max=10000
+  cache-size=100000
+  edns-packet-max=1232
+  log-facility=/var/log/dnsmasq.log
+  all-servers
+  server=114.114.114.114
+  server=8.8.8.8
+dnsmasq_address_conf: |
+  address=/image.ac.com/127.0.0.1
+tolerations:
+- key: "CriticalAddonsOnly"
+  operator: "Exists"
+- operator: "Exists"
+  effect: "NoSchedule"
+- operator: "Exists"
+  effect: "NoExecute"
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 1
+      podAffinityTerm:
+        labelSelector:
+          matchExpressions:
+            - key: "{{ ingress_label }}"
+              operator: In
+              values:
+                - "true"
+        topologyKey: "kubernetes.io/hostname"
+config:
+  worker-processes: "auto"
+  worker-cpu-affinity: "auto"
+  max-worker-connections: "16384"
+
+# value.yaml.j2
+image:
+  repository: {{ dnsmasq_image }}
+  pullPolicy: IfNotPresent
+name: {{ dnsmasq_name }}
+namespace: {{ dnsmasq_namespace }}
+replicaCount: {{ dnsmasq_replica_count}}
+podLabel: {{ dnsmasq_label }}
+resources:
+{{ resources | to_nice_yaml(indent=2) }}
+dnsmasqConfig: | # 字符串
+  {{ dnsmasq_global_conf | to_nice_yaml | from_yaml | indent(2) }}
+  {{ dnsmasq_address_conf | to_nice_yaml | from_yaml | indent(2) }}
+config:
+  {{ config | to_nice_yaml(indent=0) | indent(2) }}
+affinity:
+  {{ affinity | to_nice_yaml(indent=2) }}
+tolerations:
+{{ tolerations | to_nice_yaml(indent=0) }}
+  
+# resolv.conf.j2
+{% for item in groups['dnsmasq'] %}
+nameserver {{ item }}
+{% endfor %}
+options timeout:1 attempts:3 rotate
+
+```
+
+# ansible
+
+```
+# file/chart/templates/test.yaml
+...
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+...
+
+# file/chart/templates/cm.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dnsmasq-config
+  namespace: {{ .Values.namespace }}
+data:
+  dnsmasq.conf: |
+    {{- .Values.dnsmasqConfig | nindent 4 }}
+
+# task/main.yaml
+- name: install
+  import_tasks: helm-install.yml
+  vars:
+    version: "{{ version }}"
+    name: "{{ iname }}"
+
+- name: 轮询等待 svc 运行
+  wait_for:
+    host: "{{ groups['ingress'][0] }}"
+    port: "{{ ingress_nodePort }}"
+    delay: 10
+    timeout: 180
+
+- name: get svc ip
+  shell: "{{ kubectl }} get svc test -o jsonpath='{.spec.clusterIP}'"
+  register: test_ip
+
+- name: echo stdout
+  shell:
+    cmd: |
+      echo {{ test_ip.stdout }}
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['ingress'] }}"
+  when: etcd.external | default(false) != true
+
+- name: clean
+  import_tasks: clean.yml
+  when: "'clean' in ansible_run_tags"
+  tags:
+    - clean
 ```
 

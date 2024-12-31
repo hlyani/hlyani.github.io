@@ -389,3 +389,18 @@ CMD ["/opt/clash", "-d", "/opt"]
 docker run -d --net=host --restart=always --name clash clash:1.0.0
 ```
 
+## 15、easyconnect
+
+```
+docker run -d \
+--device /dev/net/tun \
+--cap-add NET_ADMIN \
+--name easyconnect \
+--restart=always \
+-p 127.0.0.1:1080:1080 \
+-p 127.0.0.1:8888:8888 \
+-e EC_VER=7.6.3 \
+-e CLI_OPTS="-d https://aa.com -u hl -p 123" \
+hagb/docker-easyconnect:cli
+```
+

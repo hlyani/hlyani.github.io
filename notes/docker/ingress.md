@@ -320,3 +320,205 @@ Accept-Encoding:  gzip, deflate
 Content-Encoding: gzip
 ```
 
+# 六、Websocket
+
+```
+server.py
+
+import asyncio
+import websockets
+import logging
+
+# 配置日志记录到标准输出
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
+
+async def echo(websocket, path):
+    async for message in websocket:
+        logging.info(f"Received message: {message}")
+        await websocket.send(f"Echo: {message}")
+
+# WebSocket 服务地址和端口
+start_server = websockets.serve(echo, "0.0.0.0", 8765)
+
+if __name__ == "__main__":
+    logging.info("Starting WebSocket server...")
+    asyncio.get_event_loop().run_until_complete(start_server)
+    asyncio.get_event_loop().run_forever()
+```
+
+```
+FROM python:3.8.14
+
+COPY server.py /opt/server.py
+
+RUN pip install websockets
+
+CMD ["python", "/opt/server.py"]
+```
+
+```
+docker build -t ingress_websocket .
+```
+
+```
+kubectl run websocket --image easzlab.io.local:5000/ingress_websocket --port 8765
+kubectl expose pod websocket --port 8765
+```
+
+```
+ingress_websocket.py
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: websocket
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/server-snippets: |
+      location / {
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "upgrade";
+      }
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: websocket.aa.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: websocket
+                port:
+                  number: 8765
+            path: /
+            pathType: Exact
+```
+
+```
+kubectl apply -f ingress_websocket.py
+```
+
+> ws://：用于普通 WebSocket 连接。
+> wss://：用于安全 WebSocket 连接（SSL/TLS 支持）。
+
+```
+websockt 连接
+wss://websocket.aa.com:8888
+```
+
+# 七、timeout
+
+```
+from flask import Flask
+import time
+
+app = Flask(__name__)
+
+@app.route("/")
+def slow_response():
+    time.sleep(10)  # 模拟 10 秒的延迟
+    return "Hello, World!"
+
+if __name__ == "__main__":
+    app.run(debug=True)
+```
+
+```
+curl --max-time 10 --connect-timeout 2 -H "Host: timeout.aa.com" 192.168.0.127:32000/headers
+```
+
+# 八、性能参数优化
+
+```
+config:
+  worker-processes: "auto"
+  worker-cpu-affinity: "auto"
+  max-worker-connections: "8192"
+  reuse-port: "true"
+  server-tokens: "false"
+  ssl-redirect: "false"
+  proxy-connect-timeout: "900"
+  proxy-read-timeout: "900"
+  proxy-send-timeout: "900"
+  proxy-body-size: "10m"
+  proxy-buffer-size: "16k"
+  proxy-buffers-number: "4"
+  upstream-keepalive-timeout: "900"
+  upstream-keepalive-requests: "900"
+  upstream-keepalive-connections: "900"
+  keep-alive: "900"
+  keep-alive-requests: "900"
+  client-body-timeout: "900"
+  client-body-buffer-size: "64k"
+  use-http2: "true"
+  use-gzip: "true"
+  gzip-min-length: "1024"
+  gzip-level: "6"
+  gzip-types: "text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss"
+  custom-http-errors: "400,401,402,403,404,405,406,407,408,409,410,411,412,413,414,415,416,417,418,421,422,423,424,425,426,428,429,431,451,500,501,502,503,504,505,506,507,508,510,511"
+```
+
+# 九、性能测试
+
+```
+nginx.conf: |
+  master_process on;
+
+  worker_processes 1;
+  events {
+      worker_connections 4096;
+  }
+
+  http {
+      access_log off;
+      server_tokens off;
+      keepalive_requests 10000000;
+
+      server {
+          listen 80;
+          server_name _;
+
+          location / {
+              proxy_set_header Connection "";
+              return 200 "hello world\n";
+          }
+      }
+  }
+```
+
+```
+image.ac.com:5000/k8s/bitnami/nginx:1.27.3-debian-12-r0
+
+/opt/bitnami/nginx/conf/nginx.conf
+```
+
+
+
+```
+kubectl expose pod websocket --port 80
+```
+
+```
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-ingress
+  namespace: default
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: ingress.sugon.fun
+    http:
+      paths:
+      - backend:
+          service:
+            name: ingress-default-backend
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+```
+
