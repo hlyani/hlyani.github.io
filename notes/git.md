@@ -65,6 +65,12 @@ git branch -a
 
 # 查看某段代码是谁写的
 git blame  <file-name>
+
+# 跳过 ssl 验证
+git config --global http.sslVerify false
+
+# 更新 author
+git commit --amend --author="hl <hl@tmp.com>"
 ```
 ##### 2、查看状态
 ```

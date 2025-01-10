@@ -987,6 +987,9 @@ spec:
 
 # j2
 
+> indent=0 指定转换时不增加额外的缩进。
+> indent(2)：在生成的 YAML 内容前面添加 2 个空格的缩进，以便在嵌套上下文中正确对齐。
+
 ```
 # vars/main.yaml
 dnsmasq_replica_count: "{{ groups['dnsmasq'] | length }}"

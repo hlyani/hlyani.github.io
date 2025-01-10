@@ -4,6 +4,11 @@
 
 [https://github.com/nginxinc/kubernetes-ingress](https://github.com/nginxinc/kubernetes-ingress)
 
+https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/
+https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/nginx-configuration/configmap.md
+https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/
+https://github.com/bitnami/charts/tree/main/bitnami/nginx-ingress-controller
+
 # 一、安装
 
 ## 1、ingress-nginx-4.10.1.tgz
@@ -493,8 +498,6 @@ image.ac.com:5000/k8s/bitnami/nginx:1.27.3-debian-12-r0
 
 /opt/bitnami/nginx/conf/nginx.conf
 ```
-
-
 
 ```
 kubectl expose pod websocket --port 80

@@ -187,6 +187,112 @@ TCP window size:  408 KByte (default)
 
 ## 3、带宽测试
 
+```
+FROM ubuntu:22.04
+
+RUN apt update && apt install -y perftest iperf3 infiniband-diags net-tools iputils-ping wrk vim iproute2 && apt clean
+```
+
+```
+docker build -t test.com:5000/k8s/perftest .
+```
+
+```
+cat <<EOF |kubectl apply -f -  
+apiVersion: v1
+kind: Pod
+metadata:
+  name: perf-test-server
+  namespace: iperf
+spec:
+  tolerations:
+  - key: "CriticalAddonsOnly"
+    operator: "Exists"
+  - operator: "Exists"
+    effect: "NoSchedule"
+  - operator: "Exists"
+    effect: "NoExecute"
+  nodeSelector:
+    kubernetes.io/hostname: 10.0.0.11
+  containers:
+  - name: iperf3
+    image: test.com:5000/k8s/perftest:latest
+    imagePullPolicy: IfNotPresent
+    command: ["/bin/sh", "-c", "sleep infinity"]
+    ports:
+    - containerPort: 5201
+    resources:
+      requests:
+        rdma/rdma_shared_device_a: 1
+      limits:
+        rdma/rdma_shared_device_a: 1
+    securityContext:
+      capabilities:
+        add:
+        - IPC_LOCK
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: perf-test-client1
+  namespace: iperf
+spec:
+  tolerations:
+  - key: "CriticalAddonsOnly"
+    operator: "Exists"
+  - operator: "Exists"
+    effect: "NoSchedule"
+  - operator: "Exists"
+    effect: "NoExecute"
+  nodeSelector:
+    kubernetes.io/hostname: 10.0.0.11
+  containers:
+  - name: iperf3
+    image: test.com:5000/k8s/perftest:latest
+    imagePullPolicy: IfNotPresent
+    command: ["/bin/sh", "-c", "sleep infinity"]
+    resources:
+      requests:
+        rdma/rdma_shared_device_a: 1
+      limits:
+        rdma/rdma_shared_device_a: 1
+    securityContext:
+      capabilities:
+        add:
+        - IPC_LOCK
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: perf-test-client1
+  namespace: iperf
+spec:
+  tolerations:
+  - key: "CriticalAddonsOnly"
+    operator: "Exists"
+  - operator: "Exists"
+    effect: "NoSchedule"
+  - operator: "Exists"
+    effect: "NoExecute"
+  nodeSelector:
+    kubernetes.io/hostname: 10.0.0.12
+  containers:
+  - name: iperf3
+    image: test.com:5000/k8s/perftest:latest
+    imagePullPolicy: IfNotPresent
+    command: ["/bin/sh", "-c", "sleep infinity"]
+    resources:
+      requests:
+        rdma/rdma_shared_device_a: 1
+      limits:
+        rdma/rdma_shared_device_a: 1
+    securityContext:
+      capabilities:
+        add:
+        - IPC_LOCK
+EOF
+```
+
 ##### 带宽测试 `ib_send_bw`  ,在server端执行
 
 ```
@@ -409,5 +515,101 @@ ibv_devinfo
 ibv_devices
 rdma link
 mlnx_perf -i ib0 | grep rdma
+ibstat: 查询 InfiniBand 设备的基本状态
+ibstatus： 网卡信息
+ibv_devinfo：网卡设备信息（ibv_devinfo -d mlx5_0 -v）
+ibv_devices：查看本主机的 infiniband 设备
+ibnodes：查看网络中的 infiniband 设备
+show_gids：看看网卡支持的 roce 版本
+show_counters: 网卡端口统计数据，比如发送接受数据大小
+mlxconfig: 网卡配置（mlxconfig -d mlx5_1 q 查询网卡配置信息）
 ```
 
+**perftest 工具集**：
+
+- 包括 `ib_read_bw`、`ib_write_bw`、`ib_send_bw` 等，用于 RDMA 的点对点测试。
+
+> ### **连接配置**
+>
+> - `-d <dev_name>`：指定 RDMA 设备（如 `mlx5_0`）。
+> - `-i <port>`：指定设备端口号（如 1）。
+> - `-R`：使用 RDMA 读写模式。
+> - `-F`：强制使用 TCP 连接的 IB 地址。
+>
+> ### **消息大小**
+>
+> - `-s <size>`：设置数据包大小（默认 2KB）。可以测试特定消息大小的带宽性能。
+> - `--range <min>:<max>`：设置消息大小的范围，测试多种消息大小的性能。
+>
+> ### **测试控制**
+>
+> - `-n <iters>`：设置发送消息的迭代次数（默认 1000）。
+> - `-t <duration>`：设置测试时长（秒），可以让测试持续更长时间。
+> - `-x <sl>`：设置服务等级（Service Level）。
+>
+> ### **性能优化**
+>
+> - `--cpu_util`：启用 CPU 使用率统计。
+> - `--report_gbps`：结果以 Gbps 为单位报告。
+>
+> ### **结果输出**
+>
+> - `-o <file>`：将测试结果保存到指定文件。
+> - `--report_format <format>`：指定输出格式，例如 CSV。
+
+## 6、pod中使用
+
+#### 步骤一：安装和配置InfiniBand硬件和驱动
+
+在物理机上安装InfiniBand网卡，并安装相应的驱动程序。
+
+#### 步骤二：部署InfiniBand CNI插件
+
+首先，在Kubernetes集群中安装InfiniBand CNI插件，例如`rdma-cni`插件。
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/Mellanox/rdma-cni/master/k8s-rdma-cni.yaml
+```
+
+#### 步骤三：创建IB网络资源
+
+创建一个IB网络资源，例如名为`ib-network`的网络。
+
+```yaml
+apiVersion: "rdma.cni.k8s.io/v1"
+kind: RDMAConfiguration
+metadata:
+name: ib-network
+spec:
+ibDevices: ["mlx5_1"]
+```
+
+保存为`ib-network.yaml`文件，并执行以下命令：
+
+```bash
+kubectl apply -f ib-network.yaml
+```
+
+#### 步骤四：部署Pod并指定使用IB网络
+
+创建一个Pod，并在Pod的配置中指定使用`ib-network`网络资源。
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+name: ib-pod
+spec:
+containers:
+- name: ib-container
+image: nginx
+resources:
+limits:
+rdma/ib-network: 1
+```
+
+保存为`ib-pod.yaml`文件，并执行以下命令：
+
+```bash
+kubectl apply -f ib-pod.yaml
+```
