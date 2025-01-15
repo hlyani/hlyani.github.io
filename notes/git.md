@@ -70,7 +70,7 @@ git blame  <file-name>
 git config --global http.sslVerify false
 
 # 更新 author
-git commit --amend --author="hl <hl@tmp.com>"
+git commit --amend --author="hl <hl@tmp.com>" --no-edit
 ```
 ##### 2、查看状态
 ```

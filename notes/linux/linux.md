@@ -890,7 +890,39 @@ Ctrl+H
 \1\n
 ```
 
+## 三十一、 清理内存缓存
 
+```
+sync
+echo 3 > /proc/sys/vm/drop_caches
+```
+
+- echo 3
+
+  意味着向这个文件写入数字3，这将会执行以下三种缓存清理操作：
+
+  - 页面缓存（pagecache）清理：这包括用于文件内容的缓存。
+  - dentries和inodes清理：dentries是目录项缓存，用于加快文件路径名的解析；inodes是文件系统用来存储文件和目录元数据的结构体。
+  - slab对象（如目录项缓存和inode缓存）回收：slab分配器是Linux内核中用于管理内存的一种机制，用于缓存经常分配和释放的对象。
+
+## 三十二、nohup
+
+```
+local cmd="docker exec -t kubeasz ezctl add-node ${CLUSTER} ${ip}"
+local log="/tmp/add-node.log"
+
+nohup $cmd > $log 2>&1 &
+
+tail -n +1 -f $log
+```
+
+## 三十三、dos2unix
+
+> LF 或 CRLF
+
+```
+dos2unix filename
+```
 
 ## Linux系统启动过程
 

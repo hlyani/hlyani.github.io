@@ -609,6 +609,17 @@ kubectl get nodes -o custom-columns="NAME:.metadata.name,GPU_ALLOCATED:.status.a
 <service_name>.<namespace>.svc.cluster.local
 ```
 
+```
+<service_name>.<namespace>.svc.<后缀>
+```
+
+```
+vim /var/lib/kubelet/config.yaml
+...
+clusterDomain: cluster.local
+...
+```
+
 # 四、证书过期
 
 ```

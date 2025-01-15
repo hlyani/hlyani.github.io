@@ -1067,6 +1067,29 @@ options timeout:1 attempts:3 rotate
 
 ```
 
+```
+nodeSelector:
+  ingress: "true"
+  
+  nodeSelector:
+    {{ ingress_label }}: "true"
+```
+
+```
+  tolerations:
+  - key: CriticalAddonsOnly
+    operator: Exists
+  - effect: NoSchedule
+    operator: Exists
+  - effect: NoExecute
+    operator: Exists
+
+# indent=0 指定转换时不增加额外的缩进。
+# indent(2)：在生成的 YAML 内容前面添加 2 个空格的缩进，以便在嵌套上下文中正确对齐。
+  tolerations:
+  {{ tolerations | to_nice_yaml(indent=0) | indent(2) }}
+```
+
 # ansible
 
 ```
