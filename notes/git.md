@@ -777,7 +777,71 @@ cd /var/opt/gitlab/git-data/repositories
 /usr/bin/gitlab-rake gitlab:backup:create
 ```
 
-# 四、FAQ
+# 四、autobak
+
+```
+cat > /hl/auto_bak.sh << 'EOF'
+#!/bin/bash
+
+# Enable strict mode
+set -e
+
+# Log file
+LOG_FILE="/var/log/auto_bak.log"
+
+# Log function
+log() {
+    echo "$(date +"%Y-%m-%d %H:%M:%S") $1" | tee -a "$LOG_FILE"
+}
+
+# Set working directory
+WORK_DIR="/hl"
+cd "$WORK_DIR"
+
+# Check if Git is installed
+if ! command -v git &> /dev/null; then
+    log "Git is not installed. Please install Git and retry."
+    exit 1
+fi
+
+# Check for uncommitted changes
+if [[ -n $(git status --porcelain) ]]; then
+    log "Changes detected. Preparing to commit and push."
+
+    # Add all changes
+    git add .
+
+    # Commit changes and push
+    git commit -am "Auto backup $(date -u +"%Y%m%d%H%M")"
+    if git push; then
+        log "Changes have been successfully pushed to the remote repository."
+    else
+        log "Push failed. Please check your network connection or remote repository settings."
+        exit 1
+    fi
+else
+    log "No changes detected. Nothing to commit."
+fi
+EOF
+
+chmod +x /hl/auto_bak.sh
+```
+
+```
+cluster_branch=hl
+git init
+git remote add origin https://root:123@gitlab.xxx.com/hl
+git checkout -b ${cluster_branch}
+git push --set-upstream origin ${cluster_branch}
+```
+
+```
+crontab -e
+crontab -l
+crontab -d
+```
+
+# 五、FAQ
 
 > error: RPC failed; curl 56 GnuTLS recv error (-9): Error decoding the received TLS packet.
 > error: 4254 bytes of body are still expected

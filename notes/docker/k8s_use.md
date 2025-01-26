@@ -450,6 +450,53 @@ spec:
       storage: 10Gi
 ```
 
+## 9、获取 kubeconfig 并在 pod 中使用
+
+```
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hpa-kubeconfig
+  namespace: hpa
+type: Opaque
+data:
+  config: $(kubectl config view --raw|base64|tr -d '\n')
+EOF
+```
+
+```
+kubectl apply -f - <<EOF
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hpa-cronjob
+  namespace: hpa
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hpa-cronjob
+            image: kubectl:v1.26.8
+            command:
+            - "/bin/sh"
+            - "-c"
+            - "kubectl get no"
+            volumeMounts:
+            - name: kubeconfig
+              mountPath: /root/.kube/config
+              subPath: config
+          volumes:
+          - name: kubeconfig
+            secret:
+              secretName: hpa-kubeconfig
+          restartPolicy: OnFailure
+EOF
+```
+
 
 
 # 二、常用helm源
