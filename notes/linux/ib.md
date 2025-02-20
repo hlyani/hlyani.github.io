@@ -506,7 +506,7 @@ modprobe acpi_cpufreq
 echo "performance" | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
 ```
 
-## 其他命令
+## 6、其他命令
 
 ```
 ibstat
@@ -557,7 +557,7 @@ mlxconfig: 网卡配置（mlxconfig -d mlx5_1 q 查询网卡配置信息）
 > - `-o <file>`：将测试结果保存到指定文件。
 > - `--report_format <format>`：指定输出格式，例如 CSV。
 
-## 6、pod中使用
+## 7、pod中使用
 
 #### 步骤一：安装和配置InfiniBand硬件和驱动
 
@@ -613,3 +613,15 @@ rdma/ib-network: 1
 ```bash
 kubectl apply -f ib-pod.yaml
 ```
+
+## 8、修改设备名
+
+```
+systemctl stop NetworkManager
+ip link property del dev ibs4 altname ibp97s0
+ip link set ibs4 down
+ip link set ibs4 name ibp97s0
+ip link set ibp97s0 up
+systemctl start NetworkManager
+```
+
