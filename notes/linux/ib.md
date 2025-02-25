@@ -616,12 +616,101 @@ kubectl apply -f ib-pod.yaml
 
 ## 8、修改设备名
 
+临时修改
+
 ```
-systemctl stop NetworkManager
-ip link property del dev ibs4 altname ibp97s0
-ip link set ibs4 down
-ip link set ibs4 name ibp97s0
-ip link set ibp97s0 up
-systemctl start NetworkManager
+ip link property del dev ibp178s0 altname ibs4
+ip link set ibp178s0 down
+ip link set ibp178s0 name ib0
+ip link set ibp178s0 up
+```
+
+永久修改
+
+> 查看ib卡信息
+
+```
+udevadm info -a -p /sys/class/net/ibp178s0
+...
+  looking at device '/devices/pci0000:a3/0000:a3:01.0/0000:a4:00.0/0000:a5:0c.0/0000:af:00.0/0000:b0:10.0/0000:b2:00.0/net/ibp178s0':
+    KERNEL=="ibp178s0"
+    SUBSYSTEM=="net"
+    ATTR{addr_assign_type}=="0"
+    ATTR{addr_len}=="20"
+    ATTR{address}=="00:00:02:d7:fe:80:00:00:00:00:00:00:94:6d:ae:03:00:9c:e3:f8"
+    ATTR{broadcast}=="00:ff:ff:ff:ff:12:40:1b:ff:ff:00:00:00:00:00:00:ff:ff:ff:ff"
+    ATTR{carrier_changes}=="0"
+    ATTR{carrier_down_count}=="0"
+    ATTR{carrier_up_count}=="0"
+    ATTR{dev_id}=="0x0"
+    ATTR{dev_port}=="0"
+    ATTR{flags}=="0x1002"
+...
+    ATTR{threaded}=="0"
+    ATTR{tx_queue_len}=="256"
+    ATTR{type}=="32"
+    ATTR{umcast}=="0"
+...
+```
+
+```
+ip l|grep ib
+
+8: ibp178s0: <BROADCAST,MULTICAST> mtu 4092 qdisc noop state DOWN mode DEFAULT group default qlen 256
+    link/infiniband 00:00:02:d7:fe:80:00:00:00:00:00:00:94:6d:ae:03:00:9c:e3:f8 brd 00:ff:ff:ff:ff:12:40:1b:ff:ff:00:00:00:00:00:00:ff:ff:ff:ff
+```
+
+> 创建 udev 规则
+
+```
+vim /etc/udev/rules.d/70-persistent-net.rules
+ACTION=="add", SUBSYSTEM=="net", DRIVERS=="?*", ATTR{type}=="32", ATTR{address}=="?*00:94:6d:ae:03:00:9c:e3:f8", NAME="ib0"
+```
+
+> 配置网络
+
+```
+vim /etc/netplan/01-network-manager-all.yaml
+network:
+  version: 2
+  ethernets:
+    ens8f0np0:
+      dhcp4: no
+      optional: true
+    ens8f0np1:
+      dhcp4: no
+      optional: true
+  bonds:
+    bond0:
+      dhcp4: no
+      addresses:
+        - 10.1.6.27/24
+      nameservers:
+        addresses:
+          - 114.114.114.114
+      interfaces:
+        - ens8f0np0
+        - ens8f0np1
+      parameters:
+        mode: 802.3ad
+        mii-monitor-interval: 100
+        lacp-rate: fast
+        transmit-hash-policy: layer3+4
+      routes:
+        - to: 0.0.0.0/0
+          via: 10.1.6.254
+          on-link: true
+  ethernets:
+    ib0:
+      addresses: [12.1.6.27/16]
+```
+
+> 重启
+
+```
+#udevadm control --reload-rules
+#udevadm trigger
+
+reboot
 ```
 
