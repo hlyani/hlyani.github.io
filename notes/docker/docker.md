@@ -21,6 +21,16 @@ docker --version
 docker info
 ```
 
+> install buildx
+
+```
+mkdir -p ~/.docker/cli-plugins
+curl -sL https://github.com/docker/buildx/releases/download/v0.21.2/buildx-v0.21.2.linux-amd64 -o ~/.docker/cli-plugins/docker-buildx
+chmod +x ~/.docker/cli-plugins/docker-buildx
+
+docker buildx version
+```
+
 ## 2、二进制安装
 
 ```
@@ -159,6 +169,8 @@ docker tag [imageID] [remoteURL]:[imageTag]
 docker push [remoteURL]:[imageTag]
 docker pull [remoteURL]:[imageTag]
 docker diff
+
+docker commit --change='CMD ["gunicorn", "-b", "0.0.0.0:80", "httpbin:app", "-k", "gevent"]' c24d49252bdc httpbin:test
 ```
 
 ## 10、--restart
@@ -797,6 +809,40 @@ docker system prune：删除悬挂的镜像、停止的容器、未使用的网�
 docker system prune -a：删除所有未使用的资源。
 
 docker rmi $(docker images -f "dangling=true" -q)
+```
+
+## 56、debug
+
+```
+kubectl debug -it aaaa --image=busybox:1.28  -n kube-system -- bash
+```
+
+## 57、secret
+
+```
+kubectl get secret kubeconfig-admin -n kubesphere-system -o jsonpath='{.data.token}'|base64 --decode > token
+kubectl get secret kubeconfig-admin -n kubesphere-system -o jsonpath='{.data.ca\.crt}'|base64 --decode > ca.crt
+kubectl --server=https://127.0.0.1:6443 --kubeconfig=./ca.crt  get po
+```
+
+```
+kubectl config view --raw > kubeconfig.yaml
+cat kubeconfig.yaml | base64
+
+kubectl config view --raw|base64
+```
+
+```
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-kubeconfig
+  namespace: test
+type: Opaque
+data:
+  config: $(kubectl config view --raw|base64|tr -d '\n')
+EOF
 ```
 
 # 二、linux实现docker资源隔离

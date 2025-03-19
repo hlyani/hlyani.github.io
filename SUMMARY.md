@@ -69,6 +69,7 @@
 * Linux 相关
     * [alpine](notes/linux/alpine.md)
     * [ib](notes/linux/ib.md)
+    * [loki](notes/linux/loki.md)
     * [HTTP 状态码](notes/linux/http_status_code.md)
     * [yq](notes/linux/yq.md)
     * [conda](notes/linux/conda.md)

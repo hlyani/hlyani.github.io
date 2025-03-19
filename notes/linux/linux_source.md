@@ -1,6 +1,19 @@
 # Linux 源制作
 
-## 一、apt 下载软件做离线源
+# 一、国内常用镜像站地址
+
+| 网址                                  | 官方镜像站       |
+| :------------------------------------ | :--------------- |
+| https://developer.aliyun.com/mirror/  | 阿里云           |
+| https://mirrors.huaweicloud.com/home  | 华为             |
+| http://mirrors.163.com/               | 网易             |
+| https://mirrors.cloud.tencent.com/    | 腾讯             |
+| https://mirrors.tuna.tsinghua.edu.cn/ | 清华大学开       |
+| http://mirrors.pku.edu.cn/Mirrors     | 北京大学         |
+| http://mirrors.hust.edu.cn/           | 华中科技大学     |
+| https://chinanet.mirrors.ustc.edu.cn/ | 中国科技技术大学 |
+
+# 二、apt 下载软件做离线源
 
 ##### 1、拷贝所需安装软件包
 
@@ -63,7 +76,7 @@ dist-upgrade - 发布版升级
 ## deb file:///opt/chuandge /packs/
 ```
 
-## 二、使用 apt-mirror 建立本地 ubuntu 源
+# 三、使用 apt-mirror 建立本地 ubuntu 源
 
 ##### 1、安装apt-mirror
 

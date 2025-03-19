@@ -125,12 +125,26 @@ server
 
 # 二、使用
 
-##### 1、常用配置
+## 1、常用配置
 
 ```
 autoindex on;# 显示目录
 autoindex_exact_size on;# 显示文件大小
 autoindex_localtime on;# 显示文件时间
+```
+
+## 2、rewrite
+
+```
+location /aa {
+    rewrite "^/aa/(.*)$" /$1 break;
+    proxy_pass http://127.0.0.1:1027;
+    proxy_http_version 1.1;
+    proxy_set_header  Host             $host;
+    proxy_set_header  X-Real-IP        $remote_addr;
+    proxy_set_header X-Forwarded-scheme $scheme;
+    proxy_buffering off;
+}
 ```
 
 # 三、yaml

@@ -924,6 +924,21 @@ tail -n +1 -f $log
 dos2unix filename
 ```
 
+## 三十四、kill
+
+```
+kill -HUP $(pgrep -f gunicorn)
+kill -USR2 1
+pkill -f gunicorn
+kill -9 $(pgrep python)
+```
+
+## 三十五、base64
+
+```
+echo -n 'qwe'|base64 -w0|openssl rsautl -encrypt -pubin -inkey public.pem|base64 -w0
+```
+
 ## Linux系统启动过程
 
 > Linux系统的启动过程：内核引导、运行init、系统初始化、建立终端、用户登录系统

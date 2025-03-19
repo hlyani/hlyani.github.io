@@ -352,3 +352,11 @@ https://github.com.cnpmjs.org
 https://hub.fastgit.org
 ```
 
+# 十一二、systemd
+
+```
+vim /etc/systemd/system.conf
+[Manager]
+DefaultEnvironment="http_proxy=http://proxy:port" "https_proxy=http://proxy:port"
+```
+
