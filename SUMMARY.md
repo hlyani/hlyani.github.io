@@ -68,6 +68,7 @@
     * [Lfs上安装OpenStack](notes/openstack/lsf_install_openstack.md)
 * Linux 相关
     * [alpine](notes/linux/alpine.md)
+    * [redis](notes/linux/redis.md)
     * [ib](notes/linux/ib.md)
     * [loki](notes/linux/loki.md)
     * [HTTP 状态码](notes/linux/http_status_code.md)

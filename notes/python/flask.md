@@ -373,3 +373,94 @@ def index():
         return redirect(url_for('login'), 302)
 ```
 
+##### 12、配置热加载
+
+1. watchdog
+
+```
+pip install watchdog
+
+import json
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
+
+CONFIG_PATH = "config.json"
+config = {}
+
+class ConfigHandler(FileSystemEventHandler):
+    def on_modified(self, event):
+        if event.src_path.endswith(CONFIG_PATH):
+            load_config()
+
+def load_config():
+    global config
+    with open(CONFIG_PATH, "r") as f:
+        config = json.load(f)
+    print("配置已更新:", config)
+
+# 监听配置文件变更
+event_handler = ConfigHandler()
+observer = Observer()
+observer.schedule(event_handler, ".", recursive=False)
+observer.start()
+
+try:
+    while True:
+        pass
+except KeyboardInterrupt:
+    observer.stop()
+observer.join()
+```
+
+2. importlib.reload()
+
+```
+import importlib
+import config  # 假设配置在 config.py 中
+
+def reload_config():
+    global config
+    importlib.reload(config)
+    print("配置已重新加载:", config.settings)  # 例如 config.py 里有 settings 变量
+
+# 调用 reload_config() 即可刷新配置
+```
+
+3. inotify-tools
+
+```
+apk add inotify-tools  # Alpine
+apt-get update && apt-get install -y inotify-tools  # Debian/Ubuntu
+
+while inotifywait -e modify /conf/app.conf; do
+    echo "Config file changed, reloading..."
+    # 在这里可以执行重载命令，比如：
+    # nginx -s reload
+done
+
+```
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+  - name: app-container
+    image: my-app
+    volumeMounts:
+    - name: config-volume
+      mountPath: /conf
+  - name: reload-sidecar
+    image: busybox
+    command: [ "sh", "-c", "while inotifywait -e modify /conf/app.conf; do echo 'Reloading...'; kill -HUP 1; done" ]
+    volumeMounts:
+    - name: config-volume
+      mountPath: /conf
+  volumes:
+  - name: config-volume
+    configMap:
+      name: my-config	
+```
+
