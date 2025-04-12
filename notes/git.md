@@ -330,6 +330,16 @@ git clone --single-branch --branch=v1.0.0 --depth=1 http://XXX build/src/XXX
 git reset --hard origin/master 
 ```
 
+##### 28、统计分支直接的差异
+
+```
+git diff --numstat main dev | awk '{add+=$1; del+=$2} END {print "Added:", add, "Deleted:", del, "Total:", add+del}'
+```
+
+```
+git ls-files | xargs cat | wc -l
+```
+
 # 二、常用
 
 ## （一）、修改之前的commit

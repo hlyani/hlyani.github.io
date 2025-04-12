@@ -4,23 +4,22 @@
 
 [Flask 教程]( https://www.w3cschool.cn/flask/ ) 
 
-### 一、准备
+# 一、准备
 
-##### 1、安装
+## 1、安装
 
 ```
 pip install Flask
 ```
 
-##### 2、测试
+## 2、测试
 
 ```
 python -c "import flask"
-
 flask --version
 ```
 
-##### 3、一般flask项目的目录结构
+## 3、一般flask项目的目录结构
 
 ```
 flask-demo/
@@ -43,9 +42,9 @@ flask-demo/
       └ views.py     # 存放所有视图函数，如果多，将其变为一个包
 ```
 
-### 二、使用
+# 二、使用
 
-##### 1、新建文件 hello.py ，并输入以下内容
+## 1、新建文件 hello.py ，并输入以下内容
 
 ```
 from flask import Flask
@@ -60,7 +59,7 @@ if __name__ == '__main__':
 	app.run(host="0.0.0.0")
 ```
 
-##### 2、运行
+## 2、运行
 
 ```
 python hello.py
@@ -74,7 +73,9 @@ python hello.py
 >
 > http://192.168.1.1:5000
 
-##### 3、模板，flask基于jinja2模板引擎实现
+## 3、模板
+
+flask基于jinja2模板引擎实现
 
 [jinja2 相关](https://hlyani.github.io/notes/python/jinja2.html)
 
@@ -112,7 +113,7 @@ if  __name__  ==  '__main__':
 
 > 浏览器访问： http://192.168.1.1:5000/hello/man 
 
-##### 4、模板继承
+## 4、模板继承
 
 > 新建，并编辑 layout.html 的模板
 
@@ -148,7 +149,7 @@ if  __name__  ==  '__main__':
 
 > 浏览器访问： http://192.168.1.1:5000/hello/man ，查看源码
 
-##### 5、HTML自动转义
+## 5、HTML自动转义
 
 > 打开页面，你会看到”Hello Flask”字样，而且”Flask”是斜体的，因为我们加了”em”标签。但有时我们并不想让这些HTML标签自动转义，特别是传递表单参数时，很容易导致HTML注入的漏洞。我们把上面的代码改下，引入”Markup”类：
 
@@ -163,9 +164,9 @@ def  index():
     return  Markup('<div>Hello %s</div>')  %  '<em>Flask</em>'
 ```
 
-##### 6、request 对象
+## 6、request 对象
 
-#####  layout.html
+##### layout.html
 
 {% raw %}
 ```
@@ -213,7 +214,7 @@ if __name__ == "__main__":
 >
 >  在当前目录下，创建一个子目录”templates”（注意，一定要使用这个名字）。然后在”templates”目录下，添加 
 
-##### 7、会话 session
+## 7、会话 session
 
 ```
 from flask import Flask,url_for,request,render_template,redirect,session
@@ -242,7 +243,7 @@ if __name__ == "__main__":
 
 > 可以看到，”admin”登陆成功后，再打开”login”页面就不会出现表单了。然后打开logout页面可以登出。session对象的操作就跟一个字典一样。特别提醒，使用session时一定要设置一个密钥”app.secret_key”，如上例。不然会得到一个运行时错误，内容大致是”RuntimeError: the session is unavailable because no secret key was set”。密钥要尽量复杂，最好使用一个随机数，这样不会有重复，上面的例子不是一个好密钥。
 
-##### 8、构建响应
+## 8、构建响应
 
 >  在之前的例子中，请求的响应都是直接返回字符串内容，或者通过模板来构建响应内容然后返回。其实也可以先构建响应对象，设置一些参数（比如响应头）后，再将其返回。修改下上例中的Get请求部分： 
 
@@ -264,7 +265,7 @@ if __name__ == "__main__":
     app.run(debug=True)
 ```
 
-##### 9、Cookie的使用
+## 9、Cookie的使用
 
 ```
 from flask import Flask,url_for,request,render_template,redirect,session,make_response
@@ -291,7 +292,7 @@ if __name__ == "__main__":
     app.run(debug=True)
 ```
 
-##### 10、错误处理
+## 10、错误处理
 
 ```
 from flask import Flask,abort
@@ -343,7 +344,7 @@ if __name__ == "__main__":
 
 > 在上面的代码中定义了一个异常”InvalidUsage”，同时通过装饰器”@app.errorhandler()”修饰了函数”invalid_usage()”，装饰器中注册了我们刚定义的异常类。这也就意味着，一但遇到”InvalidUsage”异常被抛出，这个”invalid_usage()”函数就会被调用。
 
-##### 11、url 重定向
+## 11、url 重定向
 
 >  Flask的URL规则是基于Werkzeug的路由模块。模块背后的思想是基于 Apache 以及更早的 HTTP 服务器主张的先例，保证优雅且唯一的 URL。 
 
@@ -373,7 +374,7 @@ def index():
         return redirect(url_for('login'), 302)
 ```
 
-##### 12、配置热加载
+## 12、配置热加载
 
 1. watchdog
 
@@ -463,4 +464,247 @@ spec:
     configMap:
       name: my-config	
 ```
+
+## 13、gunicorn
+
+> gunicorn_config.py
+
+```
+from gevent import monkey
+monkey.patch_all()
+
+from api.utils.log_utils import initRootLogger
+initRootLogger("ragflow_server")
+
+import logging
+import gevent
+import signal
+
+from api import settings
+from api.db.runtime_config import RuntimeConfig
+from api.db.services.document_service import DocumentService
+from api import utils
+from gevent.event import Event
+
+from api.db.db_models import init_database_tables as init_web_db
+from api.db.init_data import init_web_data
+from api.versions import get_ragflow_version
+from api.utils import show_configs
+from rag.settings import print_rag_settings
+from rag.utils.redis_conn import RedisDistributedLock
+
+
+stop_event = Event()
+
+def update_progress():
+    redis_lock = RedisDistributedLock("update_progress", timeout=60)
+    while not stop_event.is_set():
+        acquired = False
+        try:
+            acquired = redis_lock.acquire()
+            if not acquired:
+                gevent.sleep(2)
+                continue
+            DocumentService.update_progress()
+            gevent.sleep(6)
+        except Exception as e:
+            logging.exception("update_progress exception: %s", e)
+        finally:
+            if acquired:
+                try:
+                    redis_lock.release()
+                except Exception as e:
+                    logging.warning("Failed to release Redis lock: %s", e)
+
+def start_prometheus_server():
+    logging.info("promethues HTTP server start...")
+    from prometheus_client import start_http_server as prometheus_start_http_server
+    # TODO settings.METRICS_PORT
+    try:
+        prometheus_start_http_server(8000)
+    except Exception as e:
+        logging.error("Failed to start promethues: %s", e)
+
+def start_background_task():
+    gevent.spawn(update_progress)
+    gevent.spawn(start_prometheus_server)
+
+def signal_handler(signum, frame):
+    logging.info(f"Received signal {signum}, shutting down...")
+    if not stop_event.is_set():
+        stop_event.set()
+
+def register_nacos_server():
+    if settings.NACOS.get("address"):
+        logging.info("Regist to nacos start...")
+        import nacos
+        try:
+            address = settings.NACOS.get("address")
+            namespace = settings.NACOS.get("namespace")
+            username = settings.NACOS.get("username")
+            password = settings.NACOS.get("password")
+            instance_ip = settings.NACOS.get("instance_ip")
+            instance_port = settings.NACOS.get("instance_port")
+
+            client = nacos.NacosClient(
+                address, namespace=namespace, username=username, password=password
+            )
+            client.add_naming_instance(
+                "ragflow", instance_ip, instance_port,
+                cluster_name="DEFAULT", ephemeral=True, heartbeat_interval=5
+            )
+            logging.info("Successfully registered to Nacos")
+        except Exception as e:
+            logging.error("Failed to register to Nacos: %s", e)
+
+def on_starting(server):
+	pass
+
+def post_fork(server, worker):
+    settings.init_settings()
+    RuntimeConfig.init_env()
+    RuntimeConfig.init_config(JOB_SERVER_HOST=settings.HOST_IP, HTTP_PORT=settings.HOST_PORT)
+    if not server.WORKERS:  # 只有主进程的 worker的 server.WORKERS 为 {}
+        logging.info(r"""
+            ____   ___    ______ ______ __               
+        / __ \ /   |  / ____// ____// /____  _      __
+        / /_/ // /| | / / __ / /_   / // __ \| | /| / /
+        / _, _// ___ |/ /_/ // __/  / // /_/ /| |/ |/ / 
+        /_/ |_|/_/  |_|\____//_/    /_/ \____/ |__/|__/                             
+
+        """)
+        logging.info(
+            f'RAGFlow version: {get_ragflow_version()}'
+        )
+        logging.info(
+            f'project base: {utils.file_utils.get_project_base_directory()}'
+        )
+        show_configs()
+        print_rag_settings()
+        init_web_db()
+        init_web_data()
+        register_nacos_server()
+        start_background_task()
+    signal.signal(signal.SIGTERM, signal_handler)
+    signal.signal(signal.SIGINT, signal_handler)
+```
+
+> apps.py
+
+```
+from pathlib import Path
+from flask import Blueprint, Flask
+
+__all__ = ["app"]
+
+app = Flask(__name__)
+
+pages_dir = [
+    Path(__file__).parent,
+    Path(__file__).parent.parent / "api" / "apps",
+    Path(__file__).parent.parent / "api" / "apps" / "sdk",
+]
+
+client_urls_prefix = [
+    register_page(path) for dir in pages_dir for path in search_pages_path(dir)
+]
+```
+
+> 包安装
+
+```
+pip install gunicorn==23.0.0 gevent==24.2.1
+```
+
+> entrypoint.sh
+
+```
+host=0.0.0.0
+port=9380
+
+while [ 1 -eq 1 ];do
+    python3 -m gunicorn -w 2 -k gevent -b $host:$port -c /api/gunicorn_config.py api.apps:app
+done
+
+wait;
+```
+
+**进程生命周期钩子**
+
+| 钩子函数                    | 触发时机                  | 作用                                                         |
+| --------------------------- | ------------------------- | ------------------------------------------------------------ |
+| `on_starting(server)`       | **主进程启动时**          | 在 Gunicorn **启动之前** 执行，适合做全局初始化              |
+| `post_fork(server, worker)` | **Worker 进程 fork 之后** | 适合 Worker 进程的初始化操作                                 |
+| `pre_fork(server, worker)`  | **Worker 进程 fork 之前** | 在主进程里执行，适用于日志初始化、环境变量设置               |
+| `pre_exec(server)`          | **执行 exec 之前**        | 在 Gunicorn 重新执行（restart）前触发                        |
+| `when_ready(server)`        | **主进程完成启动**        | 适用于 Gunicorn **完成所有 worker 进程初始化后**，可以用来发送通知 |
+| `on_exit(server)`           | **主进程退出前**          | 适合做清理工作，如释放资源、发送日志等进程生命周期钩子       |
+
+**Worker 进程相关钩子**
+
+| 钩子函数                                   | 触发时机                     | 作用                                         |
+| ------------------------------------------ | ---------------------------- | -------------------------------------------- |
+| `pre_request(worker, req)`                 | **收到请求之前**             | 适用于日志记录、限流等操作                   |
+| `post_request(worker, req, environ, resp)` | **请求处理完毕**             | 适用于记录访问日志、统计请求数等             |
+| `worker_int(worker)`                       | **Worker 进程收到 `SIGINT`** | 适合做 Worker 进程内的清理，如关闭数据库连接 |
+| `worker_abort(worker)`                     | **Worker 进程因超时被杀死**  | 可以用于记录异常日志                         |
+| `worker_exit(server, worker)`              | **Worker 进程退出**          | 可以用于释放资源，比如关闭数据库连接、缓存等 |
+| `worker_ready(server, worker)`             | **Worker 进程初始化完成**    | Worker 完成启动后触发                        |
+| `nanny_callback(server, worker)`           | **Worker 进程异常时触发**    | 适用于健康检查、异常恢复                     |
+
+## 14、uv
+
+> `uv` 是一个比 `pip` 更快的 Python 依赖管理工具的命令
+
+```
+pip3 config set global.index-url https://mirrors.aliyun.com/pypi/simple && \
+pip3 config set global.trusted-host mirrors.aliyun.com; \
+mkdir -p /etc/uv && \
+echo "[[index]]" > /etc/uv/uv.toml && \
+echo 'url = "https://mirrors.aliyun.com/pypi/simple"' >> /etc/uv/uv.toml && \
+echo "default = true" >> /etc/uv/uv.toml; \
+pipx install uv
+```
+
+**pyproject.toml**
+
+```
+uv init
+```
+
+> `pyproject.toml` 取代了 `setup.py` 和 `requirements.txt`，让 Python 项目更加标准化。
+
+```
+uv add requests
+```
+
+**uv.lock**
+
+>  重新解析 `pyproject.toml` 并更新 `uv.lock`
+
+```
+uv resolve
+```
+
+> 遇到依赖冲突，可以删除 uv.lock 并重新解析：
+
+```
+rm uv.lock
+uv resolve
+```
+
+> 用于**在 Python 3.10 环境下，根据 `uv.lock` 严格安装锁定版本的依赖**，不会重新解析 `pyproject.toml`
+
+```
+uv sync --python 3.10 --frozen
+```
+
+> `--frozen`：严格按照锁定文件（如 `requirements.txt` 或 `poetry.lock` / `pipenv.lock` / `uv.lock`）中的版本安装，**不做版本解析**（类似于 `pip install --require-hashes`）。
+
+| 命令                                               | 速度 | 依赖解析 | 严格版本         |
+| -------------------------------------------------- | ---- | -------- | ---------------- |
+| `pip install -r requirements.txt`                  | 慢   | 需要解析 | 允许部分版本变动 |
+| `pip install --require-hashes -r requirements.txt` | 慢   | 需要解析 | 严格             |
+| `uv pip install -r requirements.txt`               | 快   | 需要解析 | 允许部分版本变动 |
+| `uv sync --frozen`                                 | 快   | 不解析   | 严格             |
 
