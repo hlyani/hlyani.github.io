@@ -497,7 +497,28 @@ spec:
 EOF
 ```
 
+## 10、日志轮转
 
+```
+kubelet
+--container-log-max-size=50Mi
+--container-log-max-files=3
+--container-log-dir=/path/to/custom/logs
+```
+
+```
+/var/lib/kubelet/config.yaml
+containerLogMaxFiles: 3 
+containerLogMaxSize: 10Mi
+```
+
+```
+containerd
+[plugins."io.containerd.grpc.v1.cri".containerd]
+  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+    log-driver = "json-file"
+    log-opts = ["max-size=50m", "max-file=3"]
+```
 
 # 二、常用helm源
 

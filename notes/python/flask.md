@@ -708,3 +708,112 @@ uv sync --python 3.10 --frozen
 | `uv pip install -r requirements.txt`               | 快   | 需要解析 | 允许部分版本变动 |
 | `uv sync --frozen`                                 | 快   | 不解析   | 严格             |
 
+| 命令                        | 描述                                    |
+| --------------------------- | --------------------------------------- |
+| `run`                       | 运行命令或脚本                          |
+| `init`                      | 创建一个新项目                          |
+| `add`                       | 向项目中添加依赖项                      |
+| `remove`                    | 从项目中移除依赖项                      |
+| `sync`                      | 更新项目的环境                          |
+| `lock`                      | 更新项目的锁定文件                      |
+| `export`                    | 将项目的锁定文件导出为其他格式          |
+| `tree`                      | 显示项目的依赖树                        |
+| `tool`                      | 运行和安装由 Python 包提供的命令        |
+| `python`                    | 管理 Python 版本和安装                  |
+| `pip`                       | 使用兼容 pip 的接口管理 Python 包       |
+| `venv`                      | 创建虚拟环境                            |
+| `build`                     | 将 Python 包构建为源代码分发包和 wheels |
+| `publish`                   | 将分发包上传到索引                      |
+| `cache`                     | 管理 uv 的缓存                          |
+| `self`                      | 管理 uv 可执行文件                      |
+| `version`                   | 显示 uv 的版本                          |
+| `generate-shell-completion` | 生成 shell 自动补全脚本                 |
+| `help`                      | 显示某个命令的文档                      |
+
+| 执行命令        | 环境处理                                                     |
+| --------------- | ------------------------------------------------------------ |
+| `uv run xxx`    | **自动关联虚拟环境： - 优先使用当前目录下的`.venv` - 若不存在会自动创建 - 无需手动激活/停用** |
+| `python xxx.py` | **依赖当前Shell环境： - 需手动激活虚拟环境**                 |
+
+sync
+
+```
+# 同步所有依赖（包括dev）
+uv sync
+
+# 仅同步生产依赖
+uv sync --production
+
+# 同步并清理多余包
+uv sync --clean
+```
+
+lock
+
+```
+# 生成新锁定文件
+uv lock
+
+# 检查更新但不写入（dry-run）
+uv lock --check
+
+# 强制重新解析
+uv lock --update
+```
+
+tree
+
+```
+# 显示完整依赖树
+uv tree
+
+# 仅显示指定包的依赖路径
+uv tree flask
+
+# 反向追溯依赖（谁依赖了这个包）
+uv tree --reverse sqlalchemy
+
+# 输出为JSON格式
+uv tree --format json
+```
+
+uv python
+
+| 命令        | 描述                     |
+| ----------- | ------------------------ |
+| `list`      | 列出可用的Python安装版本 |
+| `install`   | 下载并安装Python版本     |
+| `find`      | 显示当前Python安装位置   |
+| `pin`       | 固定使用特定Python版本   |
+| `dir`       | 显示uv Python安装目录    |
+| `uninstall` | 卸载Python版本           |
+
+## 15、skywalking
+
+```
+uv pip install apache-skywalking==1.1.0
+```
+
+```
+def register_skywalking_server():
+    services = os.environ.get('SW_AGENT_COLLECTOR_BACKEND_SERVICES')
+    if services:
+        logging.info("starting registered to skywalking..")
+        from skywalking import agent
+        try:
+            agent.start()   
+            logging.info("Successfully register to skywalking")
+        except Exception as e:
+            logging.error("Failed to register to skywalking: %s", e)
+```
+
+## 16、logging
+
+```
+logging.getLogger("nacos").setLevel(logging.WARNING)
+
+logging.getLogger("nacos").disabled = True
+
+logging.getLogger("nacos.heartbeat").setLevel(logging.WARNING)
+```
+
