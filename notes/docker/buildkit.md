@@ -325,13 +325,13 @@ RUN FOO=abc ash /app/script.sh
 git clone https://github.com/moby/buildkit.git
 ```
 
-# 2、安装 buildx 插件
+## 2、安装 buildx 插件(buildkit)
 
 ```
-wget https://github.com/docker/buildx/releases/download/v0.11.2/buildx-v0.11.2.linux-amd64
-chmod a+x buildx-v0.11.2.linux-amd64
+wget https://github.com/docker/buildx/releases/download/v0.23.0/buildx-v0.23.0.linux-amd64
+chmod a+x buildx-v0.23.0.linux-amd64
 mkdir -p ~/.docker/cli-plugins
-mv buildx-v0.11.2.linux-amd64 ~/.docker/cli-plugins/docker-buildx
+mv buildx-v0.23.0.linux-amd64 ~/.docker/cli-plugins/docker-buildx
 ```
 
 ## 3、编译

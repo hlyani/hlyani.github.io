@@ -175,10 +175,12 @@
     * [pyecharts 相关](notes/bigdata/pyecharts.md)
     * [matplotlib 相关](notes/bigdata/matplotlib.md)
 * 机器学习相关
-    * [ML](notes/machinelearning/ML.md)
-    * [tensorflow 和 keras 相关](notes/machinelearning/tensorflow_and_keras.md)
-    * [cifar-10 相关](notes/machinelearning/cifar_10.md)
-    * [Darknet to Caffe](notes/machinelearning/darknet_to_caffe.md)
+    * [MCP And Function Call](notes/ai/mcp_functioncall.md)
+    * [ollama and vllm](notes/ai/ollama_vllm.md)
+    * [ML](notes/ai/ML.md)
+    * [tensorflow 和 keras 相关](notes/ai/tensorflow_and_keras.md)
+    * [cifar-10 相关](notes/ai/cifar_10.md)
+    * [Darknet to Caffe](notes/ai/darknet_to_caffe.md)
 * 其他
     * [Nativefier 相关](notes/other/nativefier.md)
     * [ptp 相关](notes/other/ptp.md)
