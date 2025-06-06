@@ -175,6 +175,7 @@
     * [pyecharts 相关](notes/bigdata/pyecharts.md)
     * [matplotlib 相关](notes/bigdata/matplotlib.md)
 * 机器学习相关
+    * [LangGraph](notes/ai/langgraph.md)
     * [MCP And Function Call](notes/ai/mcp_functioncall.md)
     * [ollama and vllm](notes/ai/ollama_vllm.md)
     * [ML](notes/ai/ML.md)

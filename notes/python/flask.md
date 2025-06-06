@@ -777,6 +777,14 @@ uv tree --reverse sqlalchemy
 uv tree --format json
 ```
 
+创建虚拟环境
+
+```
+uv venv -p 3.12
+
+uv pip install -e .
+```
+
 uv python
 
 | 命令        | 描述                     |
