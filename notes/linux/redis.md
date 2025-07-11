@@ -2,15 +2,40 @@
 
 # 一、高可用部署
 
+[redis-stack-sentinel](https://github.com/hlyani/redis-stack-sentinel)
 
+```
+SENTINEL get-master-addr-by-name mymaster
+SENTINEL masters
+SENTINEL replicas mymaster
+SENTINEL FAILOVER mymaster
+SENTINEL slaves mymaster
+INFO SENTINEL
+ACL LIST
+```
 
+普通认证 √
 
+```
+# redis
+requirepass qwe
+masterauth qwe
 
+# sentinel
+sentinel auth-user mymaster default
+sentinel auth-pass mymaster qwe
+```
 
+~~acl 认证~~ × 未验证通过
 
+```
+# redis
+user sentinel on >{{ .Values.auth.password }} +client +subscribe +publish +ping +info +multi +slaveof +config +exec
 
-
-
+# sentinel
+sentinel auth-user mymaster sentinel
+sentinel auth-pass mymaster qwe
+```
 
 # 二、基础使用
 
@@ -18,6 +43,10 @@
 
 ```
 redis-cli -h 127.0.0.1 -p 6379 --user redis -a infini_rag_flow_helm ping
+```
+
+```
+REDISCLI_AUTH=qwe redis-cli --user default -p 6379 ping
 ```
 
 ```
@@ -225,46 +254,109 @@ JSON.DEL user:1 $.age
 
 # 四、优化
 
-[sentinel配置](https://github.com/redis/redis/blob/unstable/sentinel.conf)
-
-[redis配置](https://github.com/redis/redis/blob/unstable/redis.conf)
+[redis配置](https://github.com/redis/redis/blob/7.4.4/redis.conf)
 
 ```
+# Redis 监听端口
 port 6379
+
+# 监听所有网卡（用于 Kubernetes 或外部访问）
 bind 0.0.0.0
+
+# 启用 AOF 持久化机制（适合数据安全性要求高的业务）
 appendonly yes
+
+# 设置最大客户端连接数，防止连接耗尽资源
 maxclients 10000
+
+# 启用 TCP keepalive，单位为秒（建议开启以发现死连接）
 tcp-keepalive 60
+
+# 禁用 protected mode，适用于内网或 Kubernetes 环境
 protected-mode no
+
+# 限制 Redis 最大内存，防止系统 OOM（单位可为 kb, mb, gb）
 maxmemory 6gb
+
+# 内存淘汰策略：从所有键中优先淘汰最少使用的键（LRU）
 maxmemory-policy allkeys-lru
+
+# 启用主动碎片整理（默认关闭，建议开启以优化长期运行性能）
 activedefrag yes
 
+# Redis 7.x 的碎片整理参数（默认值即可，如需调优可参考以下）
+# 当碎片率超过该值时触发整理
+active-defrag-threshold-lower 10
+# 达到更高碎片率后提升整理频率
+active-defrag-threshold-upper 100
+# 最小整理周期占 CPU 百分比
+active-defrag-cycle-min 25
+# 最大整理周期占 CPU 百分比
+active-defrag-cycle-max 75
 
-# 限制最大内存使用，防止系统 OOM
-maxmemory 6gb
-# 内存淘汰策略：优先淘汰最近最少使用的键
-maxmemory-policy allkeys-lru
-# 开启主动碎片整理（默认关闭，建议开启）
-activedefrag yes
-
-# Redis 7.x 的碎片整理参数（默认值即可，视情况可微调）
-activedefrag-threshold-lower 10
-activedefrag-threshold-upper 100
-activedefrag-cycle-min 25
-activedefrag-cycle-max 75
-
-# 设置密码（强烈建议）
+# 设置密码（强烈建议设置强密码以保障安全）
 requirepass yourStrongPasswordHere
 
-# 最大连接数（根据业务量设置）
-maxclients 10000
+# 设置数据库数量（默认 16；如业务只需一个，可设为 1 降低开销）
+databases 1
 
-# 保护模式，生产建议关闭（依赖防火墙而非本地网络）
+# =========================
+# 🧑 ACL 用户权限配置
+# =========================
+
+# 默认用户：允许所有命令和键
+user default on >strongDefaultPass allcommands allkeys
+
+# 只读用户（readonly）：只能读不能写
+user readonly on >readonlyPass +@read -@write ~*
+
+# 只写用户（writer）：只能写不能读
+user writer on >writerPass +@write -@read ~*
+
+
+# 主节点设置访问密码
+requirepass yourStrongPasswordHere
+
+# 从节点设置 masterauth，用于向主节点认证
+masterauth yourStrongPasswordHere
+
+# 从节点向主节点请求完整的 RDB 快照（全量同步）；
+# 然后持续执行命令传播（增量同步）以保持数据一致性。
+replicaof redis-0.redis-headless 6379
+```
+
+> ACL SETUSER default on >yourStrongPassword allcommands allkeys
+
+[sentinel配置](https://github.com/redis/redis/blob/7.4.4/sentinel.conf)
+
+```
+port 26379
+dir /tmp
+
+# Sentinel 监控主节点（mymaster 是主集群名称）
+sentinel monitor mymaster redis-0.redis-headless 6379 2
+
+# 设置主节点密码（和 Redis 的 requirepass 保持一致）
+# 设置用于连接主/从 Redis 的密码
+sentinel auth-pass mymaster {{ .Values.redis.password }}
+
+# 判断主节点“故障”需要 5 秒没有回应
+sentinel down-after-milliseconds mymaster 5000
+
+# 故障转移最多等待 10 秒
+sentinel failover-timeout mymaster 10000
+
+# 故障转移时最多同时对几个从节点同步新主节点数据
+sentinel parallel-syncs mymaster 1
+
+# 防止错误选主（主从未完全同步前不选）
+sentinel deny-scripts-reconfig yes
+
+# 控制 Redis 实例在 无密码保护时是否限制访问。
 protected-mode no
 
-# 设置数据库数量（默认 16，实际用不到可设为 1 减少 overhead）
-databases 1
+# 启用后，Redis Sentinel 将动态解析主节点或从节点的主机名（DNS 名称），而不是只解析一次并缓存 IP 地址。
+sentinel resolve-hostnames yes
 ```
 
 # 五、测试
@@ -315,6 +407,8 @@ kubectl logs redis-sentinel-0
 
 # 验证新的 master 是否生效
 redis-cli -p 26379 sentinel get-master-addr-by-name mymaster
+
+redis-cli -p 26379 sentinel masters
 ```
 
 ## 4.内存/稳定性/模块压力测试
@@ -371,3 +465,38 @@ if lock:
 else:
     print("锁已被占用")
 ```
+
+哨兵连接
+
+```
+redis:
+  enable: true
+  host: 127.0.0.1
+  sentinel:
+    - redis-sentinel-0.redis-sentinel-headless.default.svc.cluster.local
+    - redis-sentinel-1.redis-sentinel-headless.default.svc.cluster.local
+    - redis-sentinel-2.redis-sentinel-headless.default.svc.cluster.local
+  port: 26379
+  db: 0
+  masterSet: mymaster
+  max_connections: 100
+  default_ttl: 60
+  socket_timeout: 0.1
+  health_check_interval: 30
+  refresh_on_read: true
+  retry_on_timeout: true
+
+
+sentinels = [
+    (host, port) for host in sentinel
+]
+sentinel_client = Sentinel(
+    sentinels,
+    socket_timeout=socket_timeout,
+    retry_on_timeout=retry_on_timeout,
+    health_check_interval=health_check_interval
+)
+redis_client = sentinel_client.master_for(master)
+response = await redis_client.ping()
+```
+
