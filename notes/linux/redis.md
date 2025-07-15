@@ -129,6 +129,8 @@ XREAD BLOCK 0 STREAMS rag_flow_svr_queue $ # 持续监听新消息
 | config set <param> <value>     | 动态修改 Redis 配置，例如 `config set maxmemory 512mb` |
 | redis-cli --scan --pattern "*" | 简化的 scan 语法，便于在 shell 使用（默认使用游标）    |
 | redis-cli -n 1                 | 使用 redis-cli 操作第 1 个数据库                       |
+| FT._LIST                       | 查看索引                                               |
+| FT.INFO checkpoints            | 可查看每个索引的详细结构与配置                         |
 
 ## 2.字符串(String)
 
@@ -252,7 +254,42 @@ JSON.ARRAPPEND user:1 $.tags '"admin"'
 JSON.DEL user:1 $.age
 ```
 
-# 四、优化
+# 四、其他
+
+```
+# 直接搜索 checkpoints 索引中 @thread_id 为 1943868169984831490 的文档，返回全部字段和匹配结果。
+FT.SEARCH checkpoints "@thread_id:{1943868169984831490}"
+# 执行搜索但不返回任何文档，只返回匹配的文档数量
+FT.SEARCH checkpoints "@thread_id:{1943840008152707073}" LIMIT 0 0
+# 搜索并仅返回 1 个匹配的文档（只返回 document id，不返回字段内容）
+FT.SEARCH checkpoints "@thread_id:{1943840008152707073}" LIMIT 0 1 RETURN 0
+```
+
+```
+import redis
+
+# 连接 Redis
+r = redis.Redis(host='localhost', port=6379, decode_responses=True)
+
+# 执行 FT.SEARCH 查询（thread_id 是 TAG 类型，需要加 {}）
+query = '@thread_id:{1943868169984831490}'
+result = r.execute_command('FT.SEARCH', 'checkpoints', query)
+```
+
+```
+# 模糊查询 json key 所占用内存和每个key 占用内存
+redis-cli --scan --pattern "checkpoint:*" | while read key; do
+  redis-cli MEMORY USAGE "$key"
+done | awk '
+  {sum += $1; count += 1}
+  END {
+    printf "Total Keys: %d\n", count;
+    printf "Total Memory: %.2f MB\n", sum / 1024 / 1024;
+    printf "Average per Key: %.2f KB\n", sum / count / 1024;
+  }'
+```
+
+# 五、优化
 
 [redis配置](https://github.com/redis/redis/blob/7.4.4/redis.conf)
 
@@ -260,11 +297,16 @@ JSON.DEL user:1 $.age
 # Redis 监听端口
 port 6379
 
+dir /tmp
+
 # 监听所有网卡（用于 Kubernetes 或外部访问）
 bind 0.0.0.0
 
 # 启用 AOF 持久化机制（适合数据安全性要求高的业务）
 appendonly yes
+
+appendfsync no
+no-appendfsync-on-rewrite yes
 
 # 设置最大客户端连接数，防止连接耗尽资源
 maxclients 10000
@@ -272,11 +314,17 @@ maxclients 10000
 # 启用 TCP keepalive，单位为秒（建议开启以发现死连接）
 tcp-keepalive 60
 
+tcp-backlog 10240
+
+timeout 300
+
+hz 100
+
 # 禁用 protected mode，适用于内网或 Kubernetes 环境
 protected-mode no
 
 # 限制 Redis 最大内存，防止系统 OOM（单位可为 kb, mb, gb）
-maxmemory 6gb
+maxmemory 8gb
 
 # 内存淘汰策略：从所有键中优先淘汰最少使用的键（LRU）
 maxmemory-policy allkeys-lru
@@ -293,6 +341,10 @@ active-defrag-threshold-upper 100
 active-defrag-cycle-min 25
 # 最大整理周期占 CPU 百分比
 active-defrag-cycle-max 75
+
+repl-backlog-size 128mb
+client-output-buffer-limit normal 0 0 0
+client-output-buffer-limit pubsub 32mb 8mb 60
 
 # 设置密码（强烈建议设置强密码以保障安全）
 requirepass yourStrongPasswordHere
@@ -341,7 +393,7 @@ sentinel monitor mymaster redis-0.redis-headless 6379 2
 sentinel auth-pass mymaster {{ .Values.redis.password }}
 
 # 判断主节点“故障”需要 5 秒没有回应
-sentinel down-after-milliseconds mymaster 5000
+sentinel down-after-milliseconds mymaster 6000
 
 # 故障转移最多等待 10 秒
 sentinel failover-timeout mymaster 10000
@@ -359,7 +411,7 @@ protected-mode no
 sentinel resolve-hostnames yes
 ```
 
-# 五、测试
+# 六、测试
 
 ## 1.功能测试
 
@@ -417,7 +469,7 @@ redis-cli -p 26379 sentinel masters
 
 [redis-py 脚本测试](https://github.com/redis/redis-py)：你可用 Python 写脚本循环写入、删除、并发测试
 
-# 六、编码
+# 七、编码
 
 ```
 import redis
@@ -479,9 +531,10 @@ redis:
   port: 26379
   db: 0
   masterSet: mymaster
-  max_connections: 100
+  max_connections: 1000
   default_ttl: 60
-  socket_timeout: 0.1
+  socket_timeout: 3
+  socket_keepalive: true
   health_check_interval: 30
   refresh_on_read: true
   retry_on_timeout: true
