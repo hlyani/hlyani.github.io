@@ -4,6 +4,15 @@
 
 # 一、部署
 
+## docker buildx/buildkit
+
+```
+wget https://github.com/docker/buildx/releases/download/v0.25.0/buildx-v0.25.0.linux-amd64
+mkdir -p ~/.docker/cli-plugins
+cp buildx-v0.25.0.linux-amd64 ~/.docker/cli-plugins/docker-buildx
+chmod +x ~/.docker/cli-plugins/docker-buildx
+```
+
 ## 1、下载
 
 ```
@@ -13,7 +22,7 @@ curl -LO https://github.com/moby/buildkit/releases/download/v0.11.6/buildkit-v0.
 ## 2、安装
 
 ```
-tar -zxvf buildkit-v0.11.6.linux-amd64.tar.gz 
+tar -zxvf buildkit-v0.11.6.linux-amd64.tar.gz
 cp bin/* /usr/bin/
 ```
 

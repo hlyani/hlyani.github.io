@@ -8,6 +8,9 @@
 git config --global credential.helper store
 
 git fetch --all && git reset --hard origin/master
+
+# 获取分支名，以 '/' 拆分，取最后一个值
+git rev-parse --abbrev-ref HEAD | awk -F'/' '{print $NF}'
 ```
 
 ## 2.Other

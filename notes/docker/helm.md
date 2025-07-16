@@ -408,3 +408,9 @@ hl \
 oci://my.harbor.com:5000/test/template --version 1.0.0
 ```
 
+```
+helm pull oci://my.harbor.com:5000/test/gradiant/jupyter --version 6.0.3
+helm upgrade --install -n {NAMESPACE} sagflow .
+helm install -n {NAMESPACE} -f values.yaml jupyter jupyter-6.0.3.tgz
+```
+
