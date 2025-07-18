@@ -520,6 +520,34 @@ containerd
     log-opts = ["max-size=50m", "max-file=3"]
 ```
 
+## 11、配置变化重启pod
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "app.fullname" . }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+    app.kubernetes.io/component: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "app.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: app
+  template:
+    metadata:
+      labels:
+        {{- include "app.labels" . | nindent 8 }}
+        app.kubernetes.io/component: app
+      annotations:
+        configHash: {{ include (print $.Template.BasePath "/config.yaml") . | sha256sum | quote }}
+        # configHash: {{ .Values.sagflow.config | toYaml | sha256sum | quote }}
+```
+
+> $.Template.BasePath "/config.yaml" -> templates/configmap.yaml
+
 # 二、常用helm源
 
 ```
