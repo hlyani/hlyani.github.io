@@ -845,6 +845,12 @@ data:
 EOF
 ```
 
+## 58、docker build proxy
+
+```
+docker build --build-arg HTTP_PROXY=http://192.168.0.127:1080 --build-arg HTTPS_PROXY=http://192.168.0.127:1080 .
+```
+
 # 二、linux实现docker资源隔离
 
 Linux 提供的主要的 NameSpace

@@ -548,6 +548,16 @@ spec:
 
 > $.Template.BasePath "/config.yaml" -> templates/configmap.yaml
 
+## 12、会话粘滞
+
+```
+spec:
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 3600  # 粘性时间为 1 小时
+```
+
 # 二、常用helm源
 
 ```

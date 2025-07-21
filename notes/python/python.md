@@ -93,3 +93,19 @@ def load_modules(package="src.agents"):
             print(f"加载模块 {module_name} 失败: {e}")
 ```
 
+## 5、exc_info=True
+
+```
+logger.error(f"Failed to connect to Redis: {e}", exc_info=True)
+```
+
+## 6、列表推导式、生成器表达式
+
+```
+# 列表推导式
+lst = [x * 2 for x in range(5)]  # [0, 2, 4, 6, 8]
+
+# 生成器表达式
+gen = (x * 2 for x in range(5))  # 生成器对象
+```
+

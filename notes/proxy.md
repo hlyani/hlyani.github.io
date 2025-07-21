@@ -311,6 +311,13 @@ Acquire::http::proxy "http://192.168.0.127:1080";
 Acquire::https::proxy "http://192.168.0.127:1080";
 ```
 
+
+
+```
+echo 'Acquire::http::Proxy "http://192.168.0.127:1080";' > /etc/apt/apt.conf.d/proxy.conf
+echo 'Acquire::https::Proxy "http://192.168.0.127:1080";' >> /etc/apt/apt.conf.d/proxy.conf
+```
+
 # 九、yum 代理
 
 ```
