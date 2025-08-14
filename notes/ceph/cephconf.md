@@ -2,38 +2,38 @@
 
 # 一、优化
 
-##### 1、 Kernel pid max
+## 1、 Kernel pid max
 
 ```
 echo 4194303 > /proc/sys/kernel/pid_max
 ```
 
-##### 2、 设置MTU，交换机端需要支持该功能，系统网卡设置才有效果
+## 2、 设置MTU，交换机端需要支持该功能，系统网卡设置才有效果
 
 ```
 配置文件追加MTU=9000
 ```
 
-##### 3、 read_ahead, 通过数据预读并且记载到随机访问内存方式提高磁盘读操作
+## 3、 read_ahead, 通过数据预读并且记载到随机访问内存方式提高磁盘读操作
 
 ```
 echo “8192” > /sys/block/sda/queue/read_ahead_kb
 ```
 
-##### 4、 swappiness, 主要控制系统对swap的使用
+## 4、 swappiness, 主要控制系统对swap的使用
 
 ```
 echo “vm.swappiness = 0″/etc/sysctl.conf ; sysctl –p
 ```
 
-##### 5、 I/O Scheduler，SSD要用noop，SATA/SAS使用deadline
+## 5、 I/O Scheduler，SSD要用noop，SATA/SAS使用deadline
 
 ```
 echo “deadline” >/sys/block/sd[x]/queue/scheduler
 echo “noop” >/sys/block/sd[x]/queue/scheduler
 ```
 
-# 二、ceph.conf
+# 二、配置
 
 ```
 [global]

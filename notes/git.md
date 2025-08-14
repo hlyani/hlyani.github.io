@@ -11,11 +11,16 @@ git fetch --all && git reset --hard origin/master
 
 # 获取分支名，以 '/' 拆分，取最后一个值
 git rev-parse --abbrev-ref HEAD | awk -F'/' '{print $NF}'
+
+git format-patch -s -1
+
+git reset --hard       # 撤销所有已暂存和未暂存的更改（基于最新提交）
+git clean -fd          # 删除所有未跟踪的文件和目录（-f 强制，-d 包括目录）
 ```
 
 ## 2.Other
 
-##### 1、Git 配置
+### 1、Git 配置
 
 ```
 /etc/gitconfig 所有用户，git config --system
@@ -75,14 +80,14 @@ git config --global http.sslVerify false
 # 更新 author
 git commit --amend --author="hl <hl@tmp.com>" --no-edit
 ```
-##### 2、查看状态
+### 2、查看状态
 ```
 git status -s
 git log --oneline
 git tags
 git branch
 ```
-##### 3、rebase
+### 3、rebase
 ```
 git fetch --all
 git rebase origin/master
@@ -91,58 +96,76 @@ git rebase -i HEAD~4
 
 git rebase -i 113sff3e4f
 ```
-##### 4、cherry-pick
+### 4、cherry-pick
 ```
 git cherry-pick sdfs32233
 git add .
 git commit --amend
-git  cherry-pick --continue
+git cherry-pick --continue
 git push origin hl -f
 ```
-##### 5、amend
+### 5、amend
 ```
 git add .
 git commit --amend
 git rebase continue
 git push origin hl -f
 ```
-##### 6、checkout
+### 6、checkout
 ```
 git checkout .
-
 git checkout -b dev origin/master  
 ```
-##### 7、remote add
+### 7、remote add
 ```
 git remote add test http://192.168.0.1/test/test.git
-
 git remote -vv
 ```
-##### 8、format am apply
+### 8、format am apply
 ```
 git format-patch -s -2
 git am 0001-let-chinese-text-no-wrap.patch
 
 git format-patch 32399a0518ed22bc69ed413310eca4a5f50fa0d1^..8a03a7f472664641023fb08f5d55d16dfb192af9
 
+# 检查是否有冲突
 git apply --check 4.2.2.2_to_4.2.2.6/*.patch	
 ```
-##### 9、reset
+```
+git format-patch -s -1
+git apply --3way 0001-let-chinese-text-no-wrap.patch
+# 解决冲突
+git add .
+git commit -am "xxxx"
+```
+
+> --3way 选项会尝试三向合并，若失败则在工作区文件中插入冲突标记。
+
+```
+git format-patch -s -1
+git am 0001-let-chinese-text-no-wrap.patch
+git apply --3way 0001-let-chinese-text-no-wrap.patch
+# 解决冲突
+git am --continue
+```
+
+### 9、reset
+
 ```
 git reset --hard 7f575c8
 ```
-##### 10、reset-author
+### 10、reset-author
 ```
 git commit --amend --reset-author 
 ```
-##### 11、color
+### 11、color
 ```
 git config --global color.status auto  
 git config --global color.diff auto  
 git config --global color.branch auto  
 git config --global color.interactive auto  
 ```
-##### 12、log
+### 12、log
 ```
 git log --pretty=oneline 32399a0518ed22bc69ed413310eca4a5f50fa0d1..8a03a7f472664641023fb08f5d55d16dfb192af9
 
@@ -153,7 +176,7 @@ git log -p master..origin/master
 
 git log -p
 ```
-##### 13、stash
+### 13、stash
 ```
 git stash
 git stash save "test-cmd-stash"
@@ -166,7 +189,7 @@ git stash apply
 # 清空栈中所有记录
 git stash clear
 ```
-##### 13、submodule
+### 13、submodule
 
 [submodule](https://segmentfault.com/a/1190000003076028)
 
@@ -178,7 +201,7 @@ git submodule init
 git push
 ```
 
-##### 14、merge
+### 14、merge
 
 ```
 合并dev分支到master分支
@@ -193,7 +216,7 @@ git push -u origin master
 git merge origin/master
 ```
 
-##### 15、branch
+### 15、branch
 
 ```
 删除temp
@@ -205,14 +228,14 @@ git branch -vv
 git branch --all
 ```
 
-##### 16、diff
+### 16、diff
 
 ```
 比较master分支和temp分支的不同
 git diff temp
 ```
 
-##### 17、fetch
+### 17、fetch
 
 ```
 从远程的origin仓库的master分支下载代码到本地的origin master
@@ -222,14 +245,14 @@ git fetch origin master
 git fetch origin master:temp
 ```
 
-##### 18、add
+### 18、add
 
 ```
 交互地添加文件至缓存区
 git add -i
 ```
 
-##### 19、config
+### 19、config
 
 ```
 彩色的 git 输出：
@@ -239,7 +262,7 @@ git config color.ui true
 git config format.pretty oneline
 ```
 
-##### 20、archive
+### 20、archive
 
 ```
 # --format 表示打包的格式，如 zip，-v 表示对应的 tag 名，后面跟的是 tag 名，如 v0.1
@@ -248,7 +271,7 @@ git archive -v -format=zip v0.1>v0.1.zip
 git archive --format=tar --output /full/path/to/zipfile.zip master | gzip
 ```
 
-##### 21、subtree
+### 21、subtree
 
 ```
 git subtree pull --prefix=<子目录名> <远程分支> <分支> 
@@ -282,7 +305,7 @@ git commit -m "Deploying to ${BRANCH} from ${BASE_BRANCH:-master} ${GITHUB_SHA}"
 git push $REPOSITORY_PATH `git subtree split --prefix $FOLDER ${BASE_BRANCH:-master}`:$BRANCH --force 
 ```
 
-##### 22、使用用户名和密码
+### 22、使用用户名和密码
 
 ```
 git clone http://邮箱(或用户名):密码@仓库
@@ -292,10 +315,10 @@ git clone http://邮箱(或用户名):密码@仓库
 git clone -b master --depth 1 http://admin:123@192.168.0.1/demo/demo.git
 ```
 
-##### 23、tag
+### 23、tag
 
 ```
-git tag -a v1.0 -m "v1.0"
+git tag -a "v1.0" -m "v1.0"
 
 推送所有tag
 git push origin --tags
@@ -307,13 +330,13 @@ git tag -d v1.0
 git push origin :refs/tags/v1.0
 ```
 
-##### 24、拉取单个分支到指定目录
+### 24、拉取单个分支到指定目录
 
 ```
 git clone --single-branch --branch=v1.0.0 --depth=1 http://192.168.0.1/test/tmp test
 ```
 
-##### 25、强制推送所有分支
+### 25、强制推送所有分支
 
 ```
 需要推送的分支需要每个都 git checkout xx
@@ -321,19 +344,19 @@ git clone --single-branch --branch=v1.0.0 --depth=1 http://192.168.0.1/test/tmp 
 git push --all origin -f
 ```
 
-##### 26、只拉取单个分支
+### 26、只拉取单个分支
 
 ```
 git clone --single-branch --branch=v1.0.0 --depth=1 http://XXX build/src/XXX
 ```
 
-##### 27、重置分支
+### 27、重置分支
 
 ```
 git reset --hard origin/master 
 ```
 
-##### 28、统计分支直接的差异
+### 28、统计分支直接的差异
 
 ```
 git diff --numstat main dev | awk '{add+=$1; del+=$2} END {print "Added:", add, "Deleted:", del, "Total:", add+del}'
@@ -341,6 +364,19 @@ git diff --numstat main dev | awk '{add+=$1; del+=$2} END {print "Added:", add, 
 
 ```
 git ls-files | xargs cat | wc -l
+```
+
+### 29、忽略空格变化
+
+```
+# 使用 --ignore-space-change 选项忽略空格变化
+git apply --ignore-space-change ..\0001-feat.patch
+
+# 使用 --ignore-whitespace 选项忽略所有空白字符差异
+git apply --ignore-whitespace ..\0001-feat.patch
+
+# 使用 --whitespace=nowarn 选项忽略空白字符警告
+git apply --whitespace=nowarn ..\0001-feat.patch
 ```
 
 # 二、常用

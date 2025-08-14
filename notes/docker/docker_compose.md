@@ -1,8 +1,19 @@
 # docker compose 相关
 
-# 一、介绍
+# 一、安装
 
-略
+https://github.com/docker/compose/releases
+
+```
+mkdir -p ~/.docker/cli-plugins/
+curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) \
+    -o ~/.docker/cli-plugins/docker-compose
+chmod +x ~/.docker/cli-plugins/docker-compose
+```
+
+```
+docker compose version
+```
 
 # 二、docker-compose --help
 

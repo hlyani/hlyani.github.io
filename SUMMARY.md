@@ -130,11 +130,9 @@
     * [将 home 目录空间扩容到根目录](notes/linux/root_extend.md)
     * [将虚拟机作为router](notes/linux/vm_to_router.md)
 * Ceph 相关
-    * [Ceph 部署](notes/ceph/ceph_deploy.md)
-    * [Ceph 调优](notes/ceph/ceph_optimize.md)
+    * [Ceph](notes/ceph/ceph.md)
     * [crushmap](notes/ceph/crushmap.md)
     * [ceph.conf](notes/ceph/cephconf.md)
-    * [Ceph 启用 Dashboard](notes/ceph/ceph_dashboard.md)
 * Python 相关
     * [xpath 相关](notes/python/xpath.md)
     * [正则表达式相关](notes/python/regular_expression.md)

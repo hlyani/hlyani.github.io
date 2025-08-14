@@ -2,25 +2,25 @@
 
 # 一、获取与使用 crushmap
 
-##### 1、获得 crush map，获得默认 crushmap (加密)
+## 1、获得 crush map，获得默认 crushmap (加密)
 
 ```
 ceph osd getcrushmap -o crushmap.dump
 ```
 
-##### 2、转换 crushmap 格式 (加密 -> 明文格式)
+## 2、转换 crushmap 格式 (加密 -> 明文格式)
 
 ```
 crushtool -d crushmap.dump -o crushmap.txt
 ```
 
-##### 3、转换 crushmap 格式(明文 -> 加密格式)
+## 3、转换 crushmap 格式(明文 -> 加密格式)
 
 ```
 crushtool -c crushmap.txt -o crushmap.done
 ```
 
-##### 4、重新使用新 crushmap
+## 4、重新使用新 crushmap
 
 ```
 ceph osd setcrushmap -i crushmap.done

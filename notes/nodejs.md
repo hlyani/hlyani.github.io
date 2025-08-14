@@ -57,13 +57,12 @@ echo -e "export PATH=$(npm prefix -g)/bin:$PATH" >> ~/.bashrc && source ~/.bashr
 npm config list
 npm config set registry https://registry.npmjs.org
 npm config delete registry
+
 nvm install 10.14.1
 nvm use 10.14.1 
+
+npm cache clean --force
 ```
 
-## 10、TODO
 
-```
-。。。
-```
 
