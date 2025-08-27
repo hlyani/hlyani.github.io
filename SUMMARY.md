@@ -31,6 +31,7 @@
     * [k8s 常用 yaml](notes/docker/k8s_yaml.md)
     * [k8s 安装部署](notes/docker/k8s_deploy.md)
     * [k8s 使用](notes/docker/k8s_use.md)
+    * [k8s hpa](notes/docker/k8s_hpa.md)
     * [k8s 使用 ceph 储存](notes/docker/k8s_ceph.md)
     * [chartmuseum 相关](notes/docker/chartmuseum.md)
     * [harbor 相关](notes/docker/harbor.md)

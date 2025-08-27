@@ -286,6 +286,41 @@ spec:
   failedJobsHistoryLimit: 1
 ```
 
+```
+kubectl apply -f - <<EOF
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hpa-cronjob
+  namespace: hpa
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hpa-cronjob
+            image: image.ac.com:5000/k8s/kubectl:v1.26.8
+            command:
+            - "/bin/sh"
+            - "-c"
+            - "kubectl get no"
+            volumeMounts:
+            - name: kubeconfig
+              mountPath: /root/.kube/config
+              subPath: config
+          volumes:
+          - name: kubeconfig
+            secret:
+              secretName: hpa-kubeconfig
+          restartPolicy: OnFailure
+EOF
+```
+
+> schedule: "0 8-9 * * *"  # 每天的 8:00 AM 和 9:00 AM 执行
+> schedule: "0,59 8-10 * * *"  # 每小时的第 0 分钟和第 59 分钟，执行一次
+
 # ConfigMap
 
 ```
@@ -681,6 +716,26 @@ spec:
   containers:
   - name: test-pod
     image: docker.io/library/nginx:1.21.3
+```
+
+# Secret
+
+```
+kubectl config view --raw > kubeconfig.yaml
+cat kubeconfig.yaml | base64
+
+kubectl config view --raw|base64
+
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hpa-kubeconfig
+  namespace: hpa
+type: Opaque
+data:
+  config: $(kubectl config view --raw|base64|tr -d '\n')
+EOF
 ```
 
 # ServiceMonitor

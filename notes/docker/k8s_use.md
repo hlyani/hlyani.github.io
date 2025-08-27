@@ -558,6 +558,31 @@ spec:
       timeoutSeconds: 3600  # 粘性时间为 1 小时
 ```
 
+## 13、CronJob
+
+```
+并发控制
+通过 spec.concurrencyPolicy 字段，控制 CronJob 在新任务触发时是否允许并发运行：
+
+Allow（默认值）：允许并发运行多个任务。
+Forbid：禁止并发运行，若前一个任务未完成，新任务会被跳过。
+Replace：如果上一个任务未完成，会终止上一个任务，并启动新任务。
+任务重试策略
+通过 spec.jobTemplate.spec.backoffLimit 定义失败任务的重试次数（默认为 6 次）。超过重试次数后，任务标记为失败。
+
+超时控制
+通过 spec.jobTemplate.spec.activeDeadlineSeconds 设置任务的最长运行时间（以秒为单位）。如果超过这个时间，任务会被强制终止。
+
+历史保留策略
+spec.successfulJobsHistoryLimit：保留成功任务的数量（默认 3）。
+spec.failedJobsHistoryLimit：保留失败任务的数量（默认 1）。
+
+spec:
+  schedule: "*/5 * * * *"  # 每 5 分钟触发一次
+  successfulJobsHistoryLimit: 0  # 保留所有成功任务
+  failedJobsHistoryLimit: 0  # 保留所有失败任务
+```
+
 # 二、常用helm源
 
 ```

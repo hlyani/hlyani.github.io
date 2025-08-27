@@ -20,6 +20,7 @@ kubectl completion bash
 ```
 
 ```
+# 使用 openssl 命令来验证 ca.crt 是否有效
 openssl x509 -in /etc/nginx/ssl/server.crt -noout -dates
 ```
 
@@ -31,6 +32,11 @@ ps -efww|grep python
 ```
 ss -tunl
 netstat -ntlp
+```
+
+```
+base64 -d /hl/ca.base64 > /hl/ca.crt
+cat /hl/token|tr -d '\n'  > token1
 ```
 
 # Skills
