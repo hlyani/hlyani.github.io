@@ -553,3 +553,99 @@ redis_client = sentinel_client.master_for(master)
 response = await redis_client.ping()
 ```
 
+# 八、实例化redis
+
+```
+def __open__(self):
+    if self.REDIS:
+        try:
+            self.REDIS.ping()
+            logging.info("Redis connection is still alive, reuse it")
+            return self.REDIS
+        except Exception:
+            logging.info("Existing Redis connection is broken, reconnecting...")
+            self.REDIS = None
+
+    logging.info("Connecting to Redis...")
+    logging.info(self.config)
+    socket_timeout=3
+    socket_keepalive=True
+    health_check_interval=30
+    retry_on_timeout=True
+    max_connections=5000
+    decode_responses=True
+
+    password = self.config.get("password", None)
+    if password == "":
+        password = None
+    db = int(self.config.get("db", 1))        
+    try:
+        if self.config.get("sentinel", None):
+            logging.info("Using Redis Sentinel")
+            master = self.config.get("master", "mymaster")
+            port = int(self.config.get("port", 26379))
+
+            sentinels = [
+                (host.strip(), port) for host in self.config["sentinel"].strip("[]").split(" ")
+            ]
+
+            logging.info(f"Sentinels: {sentinels}")
+
+            sentinel_kwargs = {
+                "socket_timeout": socket_timeout,
+                "retry_on_timeout": retry_on_timeout,
+                "health_check_interval": health_check_interval,
+                "socket_keepalive": socket_keepalive,
+                "decode_responses": decode_responses
+            }
+            if password:
+                sentinel_kwargs['password'] = password
+
+            sentinel_client = Sentinel(
+                sentinels,
+                **sentinel_kwargs
+            )
+
+            master_kwargs = {
+                'db': db,
+                'max_connections': max_connections,
+                'socket_timeout': socket_timeout,
+                'retry_on_timeout': retry_on_timeout,
+                'health_check_interval': health_check_interval,
+                'socket_keepalive': socket_keepalive,
+                "decode_responses": decode_responses
+            }
+            if password:
+                master_kwargs['password'] = password
+
+            self.REDIS = sentinel_client.master_for(
+                service_name=master,
+                **master_kwargs
+            )
+        else:
+            self.REDIS = redis.StrictRedis(
+                host=self.config["host"].split(":")[0],
+                port=int(self.config.get("host", ":6379").split(":")[1]),
+                db=db,
+                password=password,
+                decode_responses=True,
+                socket_timeout=socket_timeout,
+                socket_keepalive=socket_keepalive,
+                health_check_interval=health_check_interval,
+                retry_on_timeout=retry_on_timeout,
+                max_connections=max_connections
+            )
+
+        if self.REDIS:
+            ping_result = self.REDIS.ping()
+            logging.info(f"Redis ping result: {ping_result}")
+            self.register_scripts()
+            logging.info("Redis connected successfully")
+        else:
+            logging.warning("Failed to create Redis connection")
+    except Exception as e:
+        logging.error(f"Redis can't be connected: {e}")
+        self.REDIS = None
+    return self.REDIS
+```
+
