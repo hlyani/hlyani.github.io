@@ -348,7 +348,16 @@ export GOPROXY="https://mirrors.tencent.com/go/"
 export GOPROXY="https://mirrors.aliyun.com/goproxy/"
 ```
 
-# 十一、GitHub
+# 十一、nodejs/npm 代理
+
+```
+npm config set registry https://registry.npmmirror.com
+npm config set cache /root/.npm
+npm config set proxy http://192.168.0.127:1080
+npm config set https-proxy http://192.168.0.127:1080
+```
+
+# 十二、GitHub
 
 [提高访问 github](https://mp.weixin.qq.com/s?__biz=MzI0ODU0NDI1Mg==&mid=2247517171&idx=3&sn=e06c6ed3c104ea3d001883e8cb1dcd36&chksm=e99ded60deea6476ecb19a43a94b25e4a0d57e7ed9ac653ac8d9c33bae8e6836eba28251a0f1&scene=132#wechat_redirect)
 
@@ -359,7 +368,7 @@ https://github.com.cnpmjs.org
 https://hub.fastgit.org
 ```
 
-# 十一二、systemd
+# 十三、systemd
 
 ```
 vim /etc/systemd/system.conf

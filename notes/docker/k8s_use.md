@@ -751,6 +751,12 @@ clusterDomain: cluster.local
 ...
 ```
 
+## 14.设置默认命名空间
+
+```
+kubectl config set-context --current --namespace=hl
+```
+
 # 四、证书过期
 
 ```

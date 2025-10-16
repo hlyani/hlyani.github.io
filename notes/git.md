@@ -16,6 +16,8 @@ git format-patch -s -1
 
 git reset --hard       # 撤销所有已暂存和未暂存的更改（基于最新提交）
 git clean -fd          # 删除所有未跟踪的文件和目录（-f 强制，-d 包括目录）
+
+git reset --hard HEAD && git clean -fd
 ```
 
 ## 2.Other
@@ -377,6 +379,14 @@ git apply --ignore-whitespace ..\0001-feat.patch
 
 # 使用 --whitespace=nowarn 选项忽略空白字符警告
 git apply --whitespace=nowarn ..\0001-feat.patch
+```
+
+## 30、上传文件带格式
+
+```
+git ls-files --stage build_docker_image.sh
+git rm --cached build_docker_image.sh
+git add --chmod=+x build_docker_image.sh
 ```
 
 # 二、常用

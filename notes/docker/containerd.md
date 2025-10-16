@@ -6,7 +6,7 @@ TODO
 
 # 二、ctr
 
-##### 1、拉取
+## 1、拉取
 
 ```
 ctr i pull docker.io/library/ubuntu:latest
@@ -17,27 +17,27 @@ https_proxy=http://192.168.0.169:1080 http_proxy=http://192.168.0.169:1080 ctr -
 ctr --plain-text XXX
 ```
 
-##### 2、查看
+## 2、查看
 
 ```
 ctr c ls
 ctr -n k8s.io i ls -q
 ```
 
-##### 3、运行
+## 3、运行
 
 ```
 ctr run -t docker.io/library/ubuntu:latest test bash
 ctr run -d docker.io/library/ubuntu:latest test bash
 ```
 
-##### 4、删除
+## 4、删除
 
 ```
 ctr c rm test
 ```
 
-##### 5、导入导出镜像
+## 5、导入导出镜像
 
 ```
 bzip2 -cd aaa_v1.0.0_image_amd64.tar.bz2 | k3s ctr -n k8s.io i import -
@@ -55,7 +55,7 @@ ctr containers export <container_id> /path/to/exported-fs.tar
 ctr -n default i export /dev/stdout docker.io/library/myimage:latest |ctr -n k8s.io i import -
 ```
 
-##### 6、推送镜像
+## 6、推送镜像
 
 ```
 ctr -n k8s.io i push -k 192.168.0.127:5000/test:1.0.0
@@ -92,9 +92,24 @@ vim /etc/containerd/config.toml
 systemctl restart containerd
 ```
 
+# 五、仓库用户名密码
+
+```
+vim /etc/containerd/config.toml
+...
+      [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
+        [plugins."io.containerd.grpc.v1.cri".registry.mirrors."easzlab.io.local:5000"]
+          endpoint = ["http://easzlab.io.local:5000"]
+
+      [plugins."io.containerd.grpc.v1.cri".registry.configs."easzlab.io.local:5000".auth]
+        username = "xxx"
+        password = "xxx"
+...
+```
+
 # 其他
 
-##### 1、解压OCI镜像
+1、解压OCI镜像
 
 ```
 ctr i export - docker.io/library/vm1:1.0.0 | tar xvf -
