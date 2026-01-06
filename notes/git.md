@@ -146,7 +146,10 @@ git commit -am "xxxx"
 ```
 git format-patch -s -1
 git am 0001-let-chinese-text-no-wrap.patch
-git apply --3way 0001-let-chinese-text-no-wrap.patch
+
+git am --3way < patch.txt
+
+#git apply --3way 0001-let-chinese-text-no-wrap.patch
 # 解决冲突
 git am --continue
 ```

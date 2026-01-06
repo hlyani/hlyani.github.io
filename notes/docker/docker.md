@@ -307,11 +307,11 @@ systemctl restart docker
 
 ## 26、azk8s.cn 支持镜像转换列表
 
-| global                                                       | proxy in China                                               | format                  | example                                                      |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ----------------------- | ------------------------------------------------------------ |
+| global                                                                     | proxy in China                                                                     | format                  | example                                                                                 |
+| -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ----------------------- | --------------------------------------------------------------------------------------- |
 | [dockerhub](https://www.cnblogs.com/xuxinkun/p/hub.docker.com) (docker.io) | [dockerhub.azk8s.cn](http://mirror.azk8s.cn/help/docker-registry-proxy-cache.html) | `dockerhub.azk8s.cn//:` | `dockerhub.azk8s.cn/microsoft/azure-cli:2.0.61` `dockerhub.azk8s.cn/library/nginx:1.15` |
-| gcr.io                                                       | [gcr.azk8s.cn](http://mirror.azk8s.cn/help/gcr-proxy-cache.html) | `gcr.azk8s.cn//:`       | `gcr.azk8s.cn/google_containers/hyperkube-amd64:v1.13.5`     |
-| quay.io                                                      | [quay.azk8s.cn](http://mirror.azk8s.cn/help/quay-proxy-cache.html) | `quay.azk8s.cn//:`      | `quay.azk8s.cn/deis/go-dev:v1.10.0`                          |
+| gcr.io                                                                     | [gcr.azk8s.cn](http://mirror.azk8s.cn/help/gcr-proxy-cache.html)                   | `gcr.azk8s.cn//:`       | `gcr.azk8s.cn/google_containers/hyperkube-amd64:v1.13.5`                                |
+| quay.io                                                                    | [quay.azk8s.cn](http://mirror.azk8s.cn/help/quay-proxy-cache.html)                 | `quay.azk8s.cn//:`      | `quay.azk8s.cn/deis/go-dev:v1.10.0`                                                     |
 
 ## 27、docker in docker
 
@@ -380,7 +380,7 @@ xhost + > /dev/null 2>&1
 
 ```
 #!/bin/bash
-  
+
 xhost + > /dev/null 2>&1
 
 create_data_volume(){
@@ -505,7 +505,6 @@ docker info
 
 du -d1 -h /var/lib/docker/containers | sort -h
 cat /dev/null > /var/lib/docker/containers/container_id/container_log_name
-
 ```
 
 ##### 2、容器默认大小限制
@@ -713,18 +712,18 @@ dfimage -sV=1.36 mariadb:10.4
 [rules_docker](https://github.com/bazelbuild/rules_docker)
 
 > static      2.34MB
->
+> 
 > base       20.3MB
->
+> 
 > cc            22.6MB
 
->latest
->
->nonroot
->
->debug
->
->debug-nonroot
+> latest
+> 
+> nonroot
+> 
+> debug
+> 
+> debug-nonroot
 
 ```
 docker pull gcr.io/distroless/base
@@ -849,6 +848,19 @@ EOF
 
 ```
 docker build --build-arg HTTP_PROXY=http://192.168.0.127:1080 --build-arg HTTPS_PROXY=http://192.168.0.127:1080 .
+```
+
+## 59、docker build  --build-arg
+
+```
+ARG REGISTRY=image.aa.cn:5000/
+ARG NAME_TAG=uv:python3.12-bookworm-slim
+ARG IMAGE=${REGISTRY}/${NAME_TAG}
+FROM ${IMAGE} AS builder
+```
+
+```
+docker build -t a:latest -f Dockerfile --build-arg REGISTRY=image.bb.cn:5000 .
 ```
 
 # 二、linux实现docker资源隔离
@@ -1216,4 +1228,3 @@ echo <YOUR_ACCESS_TOKEN> | docker login ghcr.io -u <GITHUB_USERNAME> --password-
 ```
 docker run --rm -it ghcr.io/macoscontainers/macos-jail/ventura:latest echo "Hello from macOS container ^_^"
 ```
-

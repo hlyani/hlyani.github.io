@@ -404,3 +404,9 @@ docker run -d \
 hagb/docker-easyconnect:cli
 ```
 
+## 16、redis-stack
+
+```
+docker run -d --restart always --name redis-stack -p 6379:6379 redis/redis-stack:latest
+```
+
