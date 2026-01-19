@@ -410,3 +410,39 @@ hagb/docker-easyconnect:cli
 docker run -d --restart always --name redis-stack -p 6379:6379 redis/redis-stack:latest
 ```
 
+## 17、memos
+
+```
+docker run -d \
+ --name memos \
+ -p 5230:5230 \
+ -v ~/.memos/:/var/opt/memos \
+ -e MEMOS_DATA=/var/opt/memos \
+ neosmemo/memos:stable
+```
+
+```
+docker run -d \
+ --name memos \
+ -p 5230:5230 \
+ -v ~/.memos/:/var/opt/memos \
+ -e MEMOS_S3_ENDPOINT=http://10.0.0.127:9000 \
+ -e MEMOS_S3_BUCKET=memos \
+ -e MEMOS_S3_ACCESS_KEY=NSfl77weyzAvzO7FkLuv \
+ -e MEMOS_S3_SECRET_KEY=KEk35c5ffkvgG4FEy0cSKQgGMmdvgDAszzEcAVn6 \
+ -e MEMOS_S3_REGION=us-east-1 \
+ -e MEMOS_S3_USE_SSL=false \
+ neosmemo/memos:stable
+```
+
+## 18、minio
+
+```
+docker run -d \
+  --name minio \
+  -p 9000:9000 -p 9001:9001 \
+  -e MINIO_ROOT_USER=admin \
+  -e MINIO_ROOT_PASSWORD=12345678 \
+  mexiaow/minio:latest server /data --console-address ":9001"
+```
+

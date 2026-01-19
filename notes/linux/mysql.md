@@ -1,6 +1,6 @@
 # mysql 相关
 
-##### 1、允许远程访问
+## 1、允许远程访问
 ```
 use mysql;
 update db set host = '%' where user = 'root'; 
@@ -13,7 +13,7 @@ vim /etc/mysql/my.cnf
 #重启服务
 service mysql restart
 ```
-##### 2、修改密码
+## 2、修改密码
 ```
 1、连接数据库
 2、use mysql:
@@ -32,7 +32,7 @@ service mysql restart
 9、退出  quit。
 ```
 
-##### 3、使用docker创建mysql服务
+## 3、使用docker创建mysql服务
 
 ```
 docker run -itd --name mariadb --restart=always -v /opt/mysql:/etc/mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mariadb
@@ -43,7 +43,7 @@ flush privileges;
 mysql -h 127.0.0.1 -u root -p123456
 ```
 
-##### 4、my.cnf常用配置
+## 4、my.cnf常用配置
 
 ```
 [mysqld]
@@ -54,11 +54,35 @@ mysql -h 127.0.0.1 -u root -p123456
     interactive_timeout=30
 ```
 
-##### 5、数据库修复
+## 5、数据库修复
 
 ```
 ib_logfile0和ib_logfile1PPH
 
 innodb_force_recovery=6
+```
+
+## 6、命令
+
+```
+select*from tasks limit 10;
+show create table tasks;
+select count(*) from tasks;
+```
+
+```
+SELECT
+  JSON_UNQUOTE(
+    JSON_EXTRACT(CAST(tasks AS JSON), '$[*].task')
+  ) AS task_list
+FROM tasks
+WHERE id = 187;
+
+SELECT
+  JSON_LENGTH(
+    JSON_EXTRACT(CAST(tasks AS JSON), '$[*].task')
+  ) AS task_count
+FROM tasks
+WHERE id = 187;
 ```
 
