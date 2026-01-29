@@ -1,0 +1,4073 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Ceph · hlyani</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="hlyani">
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search-pro/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-expandable-chapters/expandable-chapters.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-back-to-top-button/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-splitter/splitter.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-pageview-count/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-page-toc-button/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="crushmap.html" />
+    
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../proxy.html">
+            
+                <a href="../proxy.html">
+            
+                    
+                    proxy 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../pip.html">
+            
+                <a href="../pip.html">
+            
+                    
+                    pip 源相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../linux_source.html">
+            
+                <a href="../linux_source.html">
+            
+                    
+                    linux 源相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../git.html">
+            
+                <a href="../git.html">
+            
+                    
+                    git 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="../skills.html">
+            
+                <a href="../skills.html">
+            
+                    
+                    skills
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" >
+            
+                <span>
+            
+                    
+                    容器相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="../docker/usual_software.html">
+            
+                <a href="../docker/usual_software.html">
+            
+                    
+                    常用软件安装
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2" data-path="../docker/kubeflow.html">
+            
+                <a href="../docker/kubeflow.html">
+            
+                    
+                    kubeflow
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3" data-path="../docker/kube-scheduler.html">
+            
+                <a href="../docker/kube-scheduler.html">
+            
+                    
+                    kube-scheduler
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.4" data-path="../docker/volcano.html">
+            
+                <a href="../docker/volcano.html">
+            
+                    
+                    volcano
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.5" data-path="../docker/kubeasz.html">
+            
+                <a href="../docker/kubeasz.html">
+            
+                    
+                    kubeasz
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.6" data-path="../docker/calico.html">
+            
+                <a href="../docker/calico.html">
+            
+                    
+                    calico
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.7" data-path="../docker/ingress.html">
+            
+                <a href="../docker/ingress.html">
+            
+                    
+                    ingress
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.8" data-path="../docker/apisix.html">
+            
+                <a href="../docker/apisix.html">
+            
+                    
+                    apisix
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.9" data-path="../docker/kubebuilder.html">
+            
+                <a href="../docker/kubebuilder.html">
+            
+                    
+                    kubebuilder
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.10" data-path="../docker/containerd.html">
+            
+                <a href="../docker/containerd.html">
+            
+                    
+                    Containerd
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.11" data-path="../docker/buildah.html">
+            
+                <a href="../docker/buildah.html">
+            
+                    
+                    Buildah
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.12" data-path="../docker/buildkit.html">
+            
+                <a href="../docker/buildkit.html">
+            
+                    
+                    Buildkit
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.13" data-path="../docker/docker.html">
+            
+                <a href="../docker/docker.html">
+            
+                    
+                    docker 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.14" data-path="../docker/multiarch.html">
+            
+                <a href="../docker/multiarch.html">
+            
+                    
+                    容器交叉编译
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.15" data-path="../docker/kubeedge.html">
+            
+                <a href="../docker/kubeedge.html">
+            
+                    
+                    kubeedge
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.16" data-path="../docker/k3s_deploy.html">
+            
+                <a href="../docker/k3s_deploy.html">
+            
+                    
+                    k3s 安装与使用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.17" data-path="../docker/k3s_make.html">
+            
+                <a href="../docker/k3s_make.html">
+            
+                    
+                    k3s 源码编译
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.18" data-path="../docker/rancher.html">
+            
+                <a href="../docker/rancher.html">
+            
+                    
+                    rancher 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.19" data-path="../docker/debootstrap.html">
+            
+                <a href="../docker/debootstrap.html">
+            
+                    
+                    容器基础镜像构建
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.20" data-path="../docker/overlay2.html">
+            
+                <a href="../docker/overlay2.html">
+            
+                    
+                    overlay2
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.21" data-path="../docker/k8s.html">
+            
+                <a href="../docker/k8s.html">
+            
+                    
+                    k8s 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.22" data-path="../docker/k8s_yaml.html">
+            
+                <a href="../docker/k8s_yaml.html">
+            
+                    
+                    k8s 常用 yaml
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.23" data-path="../docker/k8s_deploy.html">
+            
+                <a href="../docker/k8s_deploy.html">
+            
+                    
+                    k8s 安装部署
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.24" data-path="../docker/k8s_use.html">
+            
+                <a href="../docker/k8s_use.html">
+            
+                    
+                    k8s 使用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.25" data-path="../docker/k8s_hpa.html">
+            
+                <a href="../docker/k8s_hpa.html">
+            
+                    
+                    k8s hpa
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.26" data-path="../docker/k8s_ceph.html">
+            
+                <a href="../docker/k8s_ceph.html">
+            
+                    
+                    k8s 使用 ceph 储存
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.27" data-path="../docker/chartmuseum.html">
+            
+                <a href="../docker/chartmuseum.html">
+            
+                    
+                    chartmuseum 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.28" data-path="../docker/harbor.html">
+            
+                <a href="../docker/harbor.html">
+            
+                    
+                    harbor 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.29" data-path="../docker/helm.html">
+            
+                <a href="../docker/helm.html">
+            
+                    
+                    helm 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.30" data-path="../docker/docker_net.html">
+            
+                <a href="../docker/docker_net.html">
+            
+                    
+                    docker 网络相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.31" data-path="../docker/docker_swarm.html">
+            
+                <a href="../docker/docker_swarm.html">
+            
+                    
+                    docker swarm 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.32" data-path="../docker/docker_compose.html">
+            
+                <a href="../docker/docker_compose.html">
+            
+                    
+                    docker compose 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.33" data-path="../docker/docker_registry.html">
+            
+                <a href="../docker/docker_registry.html">
+            
+                    
+                    docker registry 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.34" data-path="../docker/openshift.html">
+            
+                <a href="../docker/openshift.html">
+            
+                    
+                    openshift 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.35" data-path="../docker/convert_iso_to_docker_img.html">
+            
+                <a href="../docker/convert_iso_to_docker_img.html">
+            
+                    
+                    将ISO镜像转换为docker镜像
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.36" data-path="../docker/mount_usb_to_docker.html">
+            
+                <a href="../docker/mount_usb_to_docker.html">
+            
+                    
+                    挂载USB到docker容器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.37" data-path="../docker/local_static_provisioner.html">
+            
+                <a href="../docker/local_static_provisioner.html">
+            
+                    
+                    local-static-provisioner
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.38" data-path="../docker/change_ssl.md">
+            
+                <span>
+            
+                    
+                    change_ssl
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" >
+            
+                <span>
+            
+                    
+                    Golang 相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="../golang/go.html">
+            
+                <a href="../golang/go.html">
+            
+                    
+                    golang 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2" data-path="../golang/go_authens.md">
+            
+                <span>
+            
+                    
+                    GO Authens 代理
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" >
+            
+                <span>
+            
+                    
+                    OpenStack 相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.9.1" data-path="../openstack/whatisruntime.html">
+            
+                <a href="../openstack/whatisruntime.html">
+            
+                    
+                    区分当前系统运行环境
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.2" data-path="../openstack/qemu_make.html">
+            
+                <a href="../openstack/qemu_make.html">
+            
+                    
+                    QEMU 源码编译
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.3" data-path="../openstack/openstack.html">
+            
+                <a href="../openstack/openstack.html">
+            
+                    
+                    OpenStack 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.4" data-path="../openstack/openstack_faq.html">
+            
+                <a href="../openstack/openstack_faq.html">
+            
+                    
+                    OpenStack 中遇到的问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.5" data-path="../openstack/delete_cinder_volume.html">
+            
+                <a href="../openstack/delete_cinder_volume.html">
+            
+                    
+                    删除 Cinder 僵尸实例
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.6" data-path="../openstack/add_nic_to_vm.html">
+            
+                <a href="../openstack/add_nic_to_vm.html">
+            
+                    
+                    给虚拟机添加网卡
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.7" data-path="../openstack/make_openstack_image.html">
+            
+                <a href="../openstack/make_openstack_image.html">
+            
+                    
+                    制作 OpenStack 镜像
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.8" data-path="../openstack/openstack_win_vm_diaplay.html">
+            
+                <a href="../openstack/openstack_win_vm_diaplay.html">
+            
+                    
+                    OpenStack Windows 虚拟机分辨率问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.9" data-path="../openstack/kolla_network.html">
+            
+                <a href="../openstack/kolla_network.html">
+            
+                    
+                    Kolla 网络规划
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.10" data-path="../openstack/kolla_deploy.html">
+            
+                <a href="../openstack/kolla_deploy.html">
+            
+                    
+                    Kolla 部署相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.11" data-path="../openstack/kolla_image_build.html">
+            
+                <a href="../openstack/kolla_image_build.html">
+            
+                    
+                    Kolla 镜像构建
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.12" data-path="../openstack/devstack.html">
+            
+                <a href="../openstack/devstack.html">
+            
+                    
+                    Devstack 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.13" data-path="../openstack/heat.html">
+            
+                <a href="../openstack/heat.html">
+            
+                    
+                    Heat 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.14" data-path="../openstack/qga.html">
+            
+                <a href="../openstack/qga.html">
+            
+                    
+                    qemu-guest-agent 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.15" data-path="../openstack/ovs.html">
+            
+                <a href="../openstack/ovs.html">
+            
+                    
+                    OVS 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.16" data-path="../openstack/migrate_to_other_platform.html">
+            
+                <a href="../openstack/migrate_to_other_platform.html">
+            
+                    
+                    迁移虚拟机到其他平台
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.17" data-path="../openstack/openstack_hygon_patch.html">
+            
+                <a href="../openstack/openstack_hygon_patch.html">
+            
+                    
+                    OpenStack对hygon的兼容
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.18" data-path="../openstack/lsf_install_openstack.html">
+            
+                <a href="../openstack/lsf_install_openstack.html">
+            
+                    
+                    Lfs上安装OpenStack
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" >
+            
+                <span>
+            
+                    
+                    Linux 相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.1" data-path="../linux/alpine.html">
+            
+                <a href="../linux/alpine.html">
+            
+                    
+                    alpine
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.2" data-path="../linux/redis.html">
+            
+                <a href="../linux/redis.html">
+            
+                    
+                    redis
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.3" data-path="../linux/ib.html">
+            
+                <a href="../linux/ib.html">
+            
+                    
+                    ib
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.4" data-path="../linux/loki.html">
+            
+                <a href="../linux/loki.html">
+            
+                    
+                    loki
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.5" data-path="../linux/http_status_code.html">
+            
+                <a href="../linux/http_status_code.html">
+            
+                    
+                    HTTP 状态码
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.6" data-path="../linux/yq.html">
+            
+                <a href="../linux/yq.html">
+            
+                    
+                    yq
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.7" data-path="../linux/conda.html">
+            
+                <a href="../linux/conda.html">
+            
+                    
+                    conda
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.8" data-path="../linux/minio.html">
+            
+                <a href="../linux/minio.html">
+            
+                    
+                    minio
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.9" data-path="../linux/prometheus.html">
+            
+                <a href="../linux/prometheus.html">
+            
+                    
+                    prometheus
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.10" data-path="../linux/test_tools.html">
+            
+                <a href="../linux/test_tools.html">
+            
+                    
+                    test_tools
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.11" data-path="../linux/gitlab.html">
+            
+                <a href="../linux/gitlab.html">
+            
+                    
+                    gitlab
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.12" data-path="../linux/etcd.html">
+            
+                <a href="../linux/etcd.html">
+            
+                    
+                    etcd
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.13" data-path="../linux/frp.html">
+            
+                <a href="../linux/frp.html">
+            
+                    
+                    frp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.14" data-path="../linux/synology.html">
+            
+                <a href="../linux/synology.html">
+            
+                    
+                    synology
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.15" data-path="../linux/adb.md">
+            
+                <span>
+            
+                    
+                    adb
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.16" data-path="../linux/netns.html">
+            
+                <a href="../linux/netns.html">
+            
+                    
+                    netns
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.17" data-path="../linux/uboot.html">
+            
+                <a href="../linux/uboot.html">
+            
+                    
+                    uboot
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.18" data-path="../linux/linux_network.html">
+            
+                <a href="../linux/linux_network.html">
+            
+                    
+                    linux 网络配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.19" data-path="../linux/qemu_img.html">
+            
+                <a href="../linux/qemu_img.html">
+            
+                    
+                    qemu-img
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.20" data-path="../linux/systemd.html">
+            
+                <a href="../linux/systemd.html">
+            
+                    
+                    systemd
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.21" data-path="../linux/dd.html">
+            
+                <a href="../linux/dd.html">
+            
+                    
+                    dd 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.22" data-path="../linux/kernel_make.html">
+            
+                <a href="../linux/kernel_make.html">
+            
+                    
+                    kernel 内核编译
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.23" data-path="../nodejs.html">
+            
+                <a href="../nodejs.html">
+            
+                    
+                    nodejs 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.24" data-path="../linux/unixbench.html">
+            
+                <a href="../linux/unixbench.html">
+            
+                    
+                    UnixBench 虚拟机性能测试工具
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.25" data-path="../linux/pypi_local_source.html">
+            
+                <a href="../linux/pypi_local_source.html">
+            
+                    
+                    pip 本地源
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.26" data-path="../linux/lvm.html">
+            
+                <a href="../linux/lvm.html">
+            
+                    
+                    LVM 逻辑卷相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.27" data-path="../linux/tcpdump.html">
+            
+                <a href="../linux/tcpdump.html">
+            
+                    
+                    tcpdump 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.28" data-path="../linux/libvirt.html">
+            
+                <a href="../linux/libvirt.html">
+            
+                    
+                    libvirt 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.29" data-path="../linux/linux.html">
+            
+                <a href="../linux/linux.html">
+            
+                    
+                    Linux 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.30" data-path="../linux/change_centos_boot_kernel.html">
+            
+                <a href="../linux/change_centos_boot_kernel.html">
+            
+                    
+                    CentOS 修改默认启动内核
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.31" data-path="../linux/vim.html">
+            
+                <a href="../linux/vim.html">
+            
+                    
+                    Vim 常用命令
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.32" data-path="../linux/nested.html">
+            
+                <a href="../linux/nested.html">
+            
+                    
+                    嵌套虚拟化
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.33" data-path="../linux/net_bridge.html">
+            
+                <a href="../linux/net_bridge.html">
+            
+                    
+                    创建网桥
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.34" data-path="../linux/nic_bond.html">
+            
+                <a href="../linux/nic_bond.html">
+            
+                    
+                    网络端口聚合绑定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.35" data-path="../linux/ramdisk.html">
+            
+                <a href="../linux/ramdisk.html">
+            
+                    
+                    虚拟内存盘
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.36" data-path="../linux/ssh_interval.html">
+            
+                <a href="../linux/ssh_interval.html">
+            
+                    
+                    ssh 自动断开
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.37" data-path="../linux/ssh_forwading.html">
+            
+                <a href="../linux/ssh_forwading.html">
+            
+                    
+                    ssh 转发
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.38" data-path="../linux/samba.html">
+            
+                <a href="../linux/samba.html">
+            
+                    
+                    Samba 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.39" data-path="../linux/ftp.html">
+            
+                <a href="../linux/ftp.html">
+            
+                    
+                    ftp 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.40" data-path="../linux/iscsi.html">
+            
+                <a href="../linux/iscsi.html">
+            
+                    
+                    iscsi 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.41" data-path="../linux/guestfish.html">
+            
+                <a href="../linux/guestfish.html">
+            
+                    
+                    guestfish 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.42" data-path="../linux/nginx.html">
+            
+                <a href="../linux/nginx.html">
+            
+                    
+                    nginx 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.43" data-path="../linux/haproxy.html">
+            
+                <a href="../linux/haproxy.html">
+            
+                    
+                    haproxy 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.44" data-path="../linux/build_pypi.html">
+            
+                <a href="../linux/build_pypi.html">
+            
+                    
+                    发布pypi软件包
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.45" data-path="../linux/mysql.html">
+            
+                <a href="../linux/mysql.html">
+            
+                    
+                    mysql 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.46" data-path="../linux/ssr_privoxy.html">
+            
+                <a href="../linux/ssr_privoxy.html">
+            
+                    
+                    ssr privoxy 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.47" data-path="../linux/proxychains_ng.html">
+            
+                <a href="../linux/proxychains_ng.html">
+            
+                    
+                    proxychains-ng 代理工具
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.48" data-path="../linux/virt_manager.html">
+            
+                <a href="../linux/virt_manager.html">
+            
+                    
+                    virt-manager 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.49" data-path="../linux/linux_source.html">
+            
+                <a href="../linux/linux_source.html">
+            
+                    
+                    Linux 源制作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.50" data-path="../linux/rpm_build.html">
+            
+                <a href="../linux/rpm_build.html">
+            
+                    
+                    Python rpm编译
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.51" data-path="../linux/yum_install_conf_conflict.md">
+            
+                <span>
+            
+                    
+                    yum 安装时文件冲突
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.52" data-path="../linux/crontabs.html">
+            
+                <a href="../linux/crontabs.html">
+            
+                    
+                    crontabs 计划任务相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.53" data-path="../linux/diy_centos_iso.html">
+            
+                <a href="../linux/diy_centos_iso.html">
+            
+                    
+                    CentOS iso 镜像定制
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.54" data-path="../linux/ansible.html">
+            
+                <a href="../linux/ansible.html">
+            
+                    
+                    ansible 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.55" data-path="../linux/cobbler.html">
+            
+                <a href="../linux/cobbler.html">
+            
+                    
+                    cobbler 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.56" data-path="../linux/apache_multi_ports.html">
+            
+                <a href="../linux/apache_multi_ports.html">
+            
+                    
+                    apache 多端口
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.57" data-path="../linux/dns.html">
+            
+                <a href="../linux/dns.html">
+            
+                    
+                    搭建本地 dns 服务器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.58" data-path="../linux/linux_u.html">
+            
+                <a href="../linux/linux_u.html">
+            
+                    
+                    Linux U盘占用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.59" data-path="../linux/ssh.html">
+            
+                <a href="../linux/ssh.html">
+            
+                    
+                    ssh 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.60" data-path="../linux/mdadm.html">
+            
+                <a href="../linux/mdadm.html">
+            
+                    
+                    软 raid
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.61" data-path="../linux/root_extend.html">
+            
+                <a href="../linux/root_extend.html">
+            
+                    
+                    将 home 目录空间扩容到根目录
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.62" data-path="../linux/vm_to_router.html">
+            
+                <a href="../linux/vm_to_router.html">
+            
+                    
+                    将虚拟机作为router
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" >
+            
+                <span>
+            
+                    
+                    Ceph 相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter active" data-level="1.11.1" data-path="ceph.html">
+            
+                <a href="ceph.html">
+            
+                    
+                    Ceph
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.2" data-path="crushmap.html">
+            
+                <a href="crushmap.html">
+            
+                    
+                    crushmap
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.3" data-path="cephconf.html">
+            
+                <a href="cephconf.html">
+            
+                    
+                    ceph.conf
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12" >
+            
+                <span>
+            
+                    
+                    Python 相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.12.1" data-path="../python/ruff.html">
+            
+                <a href="../python/ruff.html">
+            
+                    
+                    ruff 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.2" data-path="../python/xpath.html">
+            
+                <a href="../python/xpath.html">
+            
+                    
+                    xpath 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.3" data-path="../python/regular_expression.html">
+            
+                <a href="../python/regular_expression.html">
+            
+                    
+                    正则表达式相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.4" data-path="../python/django.html">
+            
+                <a href="../python/django.html">
+            
+                    
+                    Django 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.5" data-path="../python/flask.html">
+            
+                <a href="../python/flask.html">
+            
+                    
+                    Flask 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.6" data-path="../python/python.html">
+            
+                <a href="../python/python.html">
+            
+                    
+                    Python 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.7" data-path="../python/python_obfuscated_code.html">
+            
+                <a href="../python/python_obfuscated_code.html">
+            
+                    
+                    Python 代码混淆
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.8" data-path="../python/sqlalchemy.html">
+            
+                <a href="../python/sqlalchemy.html">
+            
+                    
+                    Python Sqlalchemy
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.9" data-path="../python/python_logging.html">
+            
+                <a href="../python/python_logging.html">
+            
+                    
+                    Python logging模块
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.10" data-path="../python/python_decorators.html">
+            
+                <a href="../python/python_decorators.html">
+            
+                    
+                    Python 装饰器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.11" data-path="../python/python_file.html">
+            
+                <a href="../python/python_file.html">
+            
+                    
+                    Python 文件操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.12" data-path="../python/scrapy.html">
+            
+                <a href="../python/scrapy.html">
+            
+                    
+                    scrapy 爬虫
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.13" data-path="../python/urllib2.html">
+            
+                <a href="../python/urllib2.html">
+            
+                    
+                    urllib2 爬虫
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.14" data-path="../python/yield.html">
+            
+                <a href="../python/yield.html">
+            
+                    
+                    yield
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.15" data-path="../python/jinja2.html">
+            
+                <a href="../python/jinja2.html">
+            
+                    
+                    Jinja2 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.16" data-path="../python/python_code_standards.html">
+            
+                <a href="../python/python_code_standards.html">
+            
+                    
+                    Python 代码规范
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13" >
+            
+                <span>
+            
+                    
+                    大数据相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.13.1" data-path="../bigdata/bigdata_deploy.html">
+            
+                <a href="../bigdata/bigdata_deploy.html">
+            
+                    
+                    大数据相关环境安装
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.2" data-path="../bigdata/hadoop.html">
+            
+                <a href="../bigdata/hadoop.html">
+            
+                    
+                    Hadoop 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.3" data-path="../bigdata/hadoop_single.html">
+            
+                <a href="../bigdata/hadoop_single.html">
+            
+                    
+                    Hadoop 单机伪分布式部署
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.4" data-path="../bigdata/hadoop_cluster.html">
+            
+                <a href="../bigdata/hadoop_cluster.html">
+            
+                    
+                    Hadoop 集群搭建
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.5" data-path="../bigdata/hive.html">
+            
+                <a href="../bigdata/hive.html">
+            
+                    
+                    Hive 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.6" data-path="../bigdata/hbase.html">
+            
+                <a href="../bigdata/hbase.html">
+            
+                    
+                    Hbase 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.7" data-path="../bigdata/spark.html">
+            
+                <a href="../bigdata/spark.html">
+            
+                    
+                    spark 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.8" data-path="../bigdata/spark_sql.html">
+            
+                <a href="../bigdata/spark_sql.html">
+            
+                    
+                    spark sql 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.9" data-path="../bigdata/storm.html">
+            
+                <a href="../bigdata/storm.html">
+            
+                    
+                    storm 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.10" data-path="../bigdata/scala.html">
+            
+                <a href="../bigdata/scala.html">
+            
+                    
+                    scala 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.11" data-path="../bigdata/sqoop.html">
+            
+                <a href="../bigdata/sqoop.html">
+            
+                    
+                    sqoop 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.12" data-path="../bigdata/flink.html">
+            
+                <a href="../bigdata/flink.html">
+            
+                    
+                    flink 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.13" data-path="../bigdata/flume.html">
+            
+                <a href="../bigdata/flume.html">
+            
+                    
+                    flume 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.14" data-path="../bigdata/elasticsearch.html">
+            
+                <a href="../bigdata/elasticsearch.html">
+            
+                    
+                    elasticsearch 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.15" data-path="../bigdata/etl.html">
+            
+                <a href="../bigdata/etl.html">
+            
+                    
+                    ETL 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.16" data-path="../bigdata/mapreduce.html">
+            
+                <a href="../bigdata/mapreduce.html">
+            
+                    
+                    mapreduce 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.17" data-path="../bigdata/numpy.html">
+            
+                <a href="../bigdata/numpy.html">
+            
+                    
+                    numpy 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.18" data-path="../bigdata/pandas.html">
+            
+                <a href="../bigdata/pandas.html">
+            
+                    
+                    pandas 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.19" data-path="../bigdata/pyhdfs.html">
+            
+                <a href="../bigdata/pyhdfs.html">
+            
+                    
+                    pyhdfs 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.20" data-path="../bigdata/reptile.html">
+            
+                <a href="../bigdata/reptile.html">
+            
+                    
+                    reptile 爬虫相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.21" data-path="../bigdata/pyecharts.html">
+            
+                <a href="../bigdata/pyecharts.html">
+            
+                    
+                    pyecharts 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.22" data-path="../bigdata/matplotlib.html">
+            
+                <a href="../bigdata/matplotlib.html">
+            
+                    
+                    matplotlib 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14" >
+            
+                <span>
+            
+                    
+                    机器学习相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.14.1" data-path="../ai/clawdbot.html">
+            
+                <a href="../ai/clawdbot.html">
+            
+                    
+                    clawdbot
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.2" data-path="../ai/langgraph.html">
+            
+                <a href="../ai/langgraph.html">
+            
+                    
+                    LangGraph
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.3" data-path="../ai/mcp_functioncall.html">
+            
+                <a href="../ai/mcp_functioncall.html">
+            
+                    
+                    MCP And Function Call
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.4" data-path="../ai/ollama_vllm.html">
+            
+                <a href="../ai/ollama_vllm.html">
+            
+                    
+                    ollama and vllm
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.5" data-path="../ai/ML.html">
+            
+                <a href="../ai/ML.html">
+            
+                    
+                    ML
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.6" data-path="../ai/tensorflow_and_keras.html">
+            
+                <a href="../ai/tensorflow_and_keras.html">
+            
+                    
+                    tensorflow 和 keras 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.7" data-path="../ai/cifar_10.html">
+            
+                <a href="../ai/cifar_10.html">
+            
+                    
+                    cifar-10 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.8" data-path="../ai/darknet_to_caffe.html">
+            
+                <a href="../ai/darknet_to_caffe.html">
+            
+                    
+                    Darknet to Caffe
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15" >
+            
+                <span>
+            
+                    
+                    其他
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.15.1" data-path="../other/nativefier.html">
+            
+                <a href="../other/nativefier.html">
+            
+                    
+                    Nativefier 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.2" data-path="../other/ptp.html">
+            
+                <a href="../other/ptp.html">
+            
+                    
+                    ptp 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.3" data-path="../other/xenserver.html">
+            
+                <a href="../other/xenserver.html">
+            
+                    
+                    xenserver 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.4" data-path="../other/computer_network_foundation.html">
+            
+                <a href="../other/computer_network_foundation.html">
+            
+                    
+                    计算机网络基础
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.5" data-path="../other/ovirt.html">
+            
+                <a href="../other/ovirt.html">
+            
+                    
+                    Ovirt 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.6" data-path="../other/mqtt.html">
+            
+                <a href="../other/mqtt.html">
+            
+                    
+                    MQTT 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.7" data-path="../other/kafka.html">
+            
+                <a href="../other/kafka.html">
+            
+                    
+                    Kafka 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.8" data-path="../other/pyqt5.html">
+            
+                <a href="../other/pyqt5.html">
+            
+                    
+                    PyQt5 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.9" data-path="../other/ionic_cordova.html">
+            
+                <a href="../other/ionic_cordova.html">
+            
+                    
+                    ionic 、cordova  编译 andriod
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.10" data-path="../other/cloudfoundry.html">
+            
+                <a href="../other/cloudfoundry.html">
+            
+                    
+                    cloudfoundry 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.11" data-path="../other/svn.html">
+            
+                <a href="../other/svn.html">
+            
+                    
+                    svn 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.12" data-path="../other/anaconda.html">
+            
+                <a href="../other/anaconda.html">
+            
+                    
+                    anaconda 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.13" data-path="../other/jupyter.html">
+            
+                <a href="../other/jupyter.html">
+            
+                    
+                    jupyter 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.14" data-path="../other/webdriver.html">
+            
+                <a href="../other/webdriver.html">
+            
+                    
+                    webdriver 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.15" data-path="../other/java.html">
+            
+                <a href="../other/java.html">
+            
+                    
+                    Java 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.16" data-path="../other/websocket.html">
+            
+                <a href="../other/websocket.html">
+            
+                    
+                    websocket 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.17" data-path="../other/stratos_ui.html">
+            
+                <a href="../other/stratos_ui.html">
+            
+                    
+                    stratos-ui 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.18" data-path="../other/apidoc.html">
+            
+                <a href="../other/apidoc.html">
+            
+                    
+                    apidoc 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.19" data-path="../other/keepalived.html">
+            
+                <a href="../other/keepalived.html">
+            
+                    
+                    keepalived 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.20" data-path="../other/linux_desktop_rdp.html">
+            
+                <a href="../other/linux_desktop_rdp.html">
+            
+                    
+                    Linux Desktop rdp 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.21" data-path="../other/gitbook.html">
+            
+                <a href="../other/gitbook.html">
+            
+                    
+                    GitBook 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.22" data-path="../other/github_pages.html">
+            
+                <a href="../other/github_pages.html">
+            
+                    
+                    GitHub Pages
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.23" data-path="../other/web.html">
+            
+                <a href="../other/web.html">
+            
+                    
+                    Web 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.24" data-path="../other/build_atlas.html">
+            
+                <a href="../other/build_atlas.html">
+            
+                    
+                    Atlas 驱动构建
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.25" data-path="../other/be_mined.html">
+            
+                <a href="../other/be_mined.html">
+            
+                    
+                    记一次被挖矿
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >Ceph</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="ceph-&#x76F8;&#x5173;">Ceph &#x76F8;&#x5173;</h1>
+<h1 id="&#x4E00;&#x3001;&#x5E38;&#x7528;&#x547D;&#x4EE4;">&#x4E00;&#x3001;&#x5E38;&#x7528;&#x547D;&#x4EE4;</h1>
+<h2 id="1&#x3001;&#x67E5;&#x8BE2;&#x96C6;&#x7FA4;&#x72B6;&#x6001;">1&#x3001;&#x67E5;&#x8BE2;&#x96C6;&#x7FA4;&#x72B6;&#x6001;</h2>
+<pre><code># &#x5065;&#x5EB7;&#x72B6;&#x6001;
+ceph -s
+ceph health
+ceph health detail
+ceph pg stat
+ceph pg dump_stuck unclean|grep unknown
+ceph crash ls
+
+# &#x67E5;&#x770B;&#x96C6;&#x7FA4;&#x5F97;&#x5206;
+ceph balancer eval
+
+# pool
+ceph osd lspools
+ceph osd pool ls
+ceph osd pool ls detail
+
+# osd
+ceph osd tree
+
+# &#x8D44;&#x6E90;&#x4F7F;&#x7528;&#x72B6;&#x6001;
+ceph df
+ceph df detail
+ceph osd df
+ceph osd df rbd
+ceph osd df tree
+
+# &#x5176;&#x4ED6;
+ ceph quorum_status --format json-pretty
+ ceph osd pool get-quota volumes
+ ceph osd pool get rbd crush_rule
+</code></pre><h2 id="2&#x3001;&#x5220;&#x9664;data&#xFF0C;metadata&#x6C60;">2&#x3001;&#x5220;&#x9664;data&#xFF0C;metadata&#x6C60;</h2>
+<pre><code>ceph osd pool delete metadata metadata --yes-i-really-really-mean-it
+ceph osd pool delete data data --yes-i-really-really-mean-it
+</code></pre><h2 id="3&#x3001;&#x521B;&#x5EFA;volumes&#x5B58;&#x50A8;&#x6C60;">3&#x3001;&#x521B;&#x5EFA;volumes&#x5B58;&#x50A8;&#x6C60;</h2>
+<pre><code>ceph osd pool create volumes 4000 4000
+</code></pre><h2 id="4&#x3001;&#x67E5;&#x8BE2;-volumes-&#x6C60;&#x5F53;&#x524D;&#x590D;&#x5236;&#x526F;&#x672C;&#x6570;&#x91CF;">4&#x3001;&#x67E5;&#x8BE2; volumes &#x6C60;&#x5F53;&#x524D;&#x590D;&#x5236;&#x526F;&#x672C;&#x6570;&#x91CF;</h2>
+<pre><code>ceph osd dump | grep &apos;replicated size&apos; | grep volumes
+</code></pre><h2 id="5&#x3001;&#x4FEE;&#x6539;&#x590D;&#x5236;&#x526F;&#x672C;&#x4E3A;-2-&#x5E76;&#x9A8C;&#x8BC1;">5&#x3001;&#x4FEE;&#x6539;&#x590D;&#x5236;&#x526F;&#x672C;&#x4E3A; 2 &#x5E76;&#x9A8C;&#x8BC1;</h2>
+<pre><code>ceph osd pool set volumes size 2
+ceph osd dump | grep &apos;replicated size&apos; | grep volumes
+</code></pre><h2 id="6&#x3001;&#x67E5;&#x770B;&#x5B58;&#x50A8;&#x4F7F;&#x7528;&#x60C5;&#x51B5;">6&#x3001;&#x67E5;&#x770B;&#x5B58;&#x50A8;&#x4F7F;&#x7528;&#x60C5;&#x51B5;</h2>
+<pre><code>ceph df
+</code></pre><h2 id="7&#x3001;&#x67E5;&#x770B;&#x96C6;&#x7FA4;&#x5F97;&#x5206;">7&#x3001;&#x67E5;&#x770B;&#x96C6;&#x7FA4;&#x5F97;&#x5206;</h2>
+<blockquote>
+<p>&#x5206;&#x6570;&#x8D8A;&#x4F4E;&#x8D8A;&#x597D;</p>
+</blockquote>
+<pre><code>ceph balancer eval
+
+current cluster score 0.032004 (lower is better)
+</code></pre><h2 id="8&#x3001;&#x4FEE;&#x590D;">8&#x3001;&#x4FEE;&#x590D;</h2>
+<pre><code>ceph pg deep-scrub 4.b6
+ceph pg repair 4.b6
+</code></pre><h2 id="9&#x3001;&#x6682;&#x505C;&#x4E0E;&#x6062;&#x590D;osd&#x5BF9;&#x5916;&#x8BBF;&#x95EE;">9&#x3001;&#x6682;&#x505C;&#x4E0E;&#x6062;&#x590D;osd&#x5BF9;&#x5916;&#x8BBF;&#x95EE;</h2>
+<pre><code>ceph osd pause
+ceph osd unpause
+</code></pre><h2 id="10&#x3001;&#x6570;&#x636E;&#x5747;&#x8861;&#x8C03;&#x6574;">10&#x3001;&#x6570;&#x636E;&#x5747;&#x8861;&#x8C03;&#x6574;</h2>
+<blockquote>
+<p>&#x6309;&#x5229;&#x7528;&#x7387;&#x8C03;&#x6574;OSD&#x7684;&#x6743;&#x91CD;</p>
+</blockquote>
+<pre><code>ceph osd reweight-by-utilization
+</code></pre><blockquote>
+<p>&#x6309;&#x5F52;&#x7F6E;&#x7EC4;&#x5206;&#x5E03;&#x60C5;&#x51B5;&#x8C03;&#x6574;OSD&#x7684;&#x6743;&#x91CD;</p>
+</blockquote>
+<pre><code>ceph osd reweight-by-pg
+</code></pre><h2 id="11&#x3001;&#x91CD;&#x65B0;&#x8BBE;&#x7F6E;osd&#x6743;&#x91CD;">11&#x3001;&#x91CD;&#x65B0;&#x8BBE;&#x7F6E;OSD&#x6743;&#x91CD;</h2>
+<blockquote>
+<p>crush &#x663E;&#x793A;osd&#x78C1;&#x76D8;&#x672C;&#x8EAB;&#x5927;&#x5C0F;&#x7684;&#x6807;&#x7B7E;</p>
+</blockquote>
+<pre><code>ceph osd crush reweight osd.8 1
+ceph osd reweight osd.8 0.2
+</code></pre><h2 id="12&#x3001;&#x5220;&#x9664;pool">12&#x3001;&#x5220;&#x9664;pool</h2>
+<pre><code>ceph tell mon.\* injectargs &apos;--mon-allow-pool-delete=true&apos;
+ceph osd pool rm tmp tmp --yes-i-really-really-mean-it
+ceph tell mon.\* injectargs &apos;--mon-allow-pool-delete=false&apos;
+</code></pre><h2 id="13&#x3001;rbdmap">13&#x3001;rbdmap</h2>
+<pre><code>apt -y install ceph-common
+
+cat &gt; /etc/ceph/rbdmap &lt;&lt;EOF
+foo/bar1    id=admin,keyring=/etc/ceph/ceph.client.admin.keyring
+foo/bar2    id=admin,keyring=/etc/ceph/ceph.client.admin.keyring,options=&apos;lock_on_read,queue_depth=1024&apos;
+EOF
+
+systemctl enable rbdmap.service
+systemctl restart rbdmap.service
+</code></pre><h2 id="14&#x3001;rbd&#x5FEB;&#x7167;">14&#x3001;rbd&#x5FEB;&#x7167;</h2>
+<pre><code>rbd snap create --snap snapshot1 rbd/hl
+rbd snap list rbd/hl
+rbd info rbd/hl
+rbd snap rollback rbd/hl@snapshot1
+rbd snap rm rbd/hl@snapshot1
+</code></pre><h2 id="15&#x3001;rbd&#x8C03;&#x6574;&#x5927;&#x5C0F;">15&#x3001;rbd&#x8C03;&#x6574;&#x5927;&#x5C0F;</h2>
+<pre><code>rbd showmapped
+
+rbd info foo
+rbd resize --size 20480 foo
+blockdev --getsize64 /dev/rbd0
+resize2fs /dev/rbd0
+</code></pre><h2 id="16&#x3001;pg-pgp">16&#x3001;PG PGP</h2>
+<pre><code>PG = Placement Group
+PGP = Placement Group for Placement purpose
+
+pg_num = number of placement groups mapped to an OSD
+
+When pg_num is increased for any pool, every PG of this pool splits into half, but they all remain mapped to their parent OSD.
+
+Until this time, Ceph does not start rebalancing. Now, when you increase the pgp_num value for the same pool, PGs start to migrate from the parent to some other OSD, and cluster rebalancing starts. This is how PGP plays an important role.
+By Karan Singh
+
+
+PG&#x662F;&#x6307;&#x5B9A;&#x5B58;&#x50A8;&#x6C60;&#x5B58;&#x50A8;&#x5BF9;&#x8C61;&#x7684;&#x76EE;&#x5F55;&#x6709;&#x591A;&#x5C11;&#x4E2A;&#xFF0C;PGP&#x662F;&#x5B58;&#x50A8;&#x6C60;PG&#x7684;OSD&#x5206;&#x5E03;&#x7EC4;&#x5408;&#x4E2A;&#x6570;
+PG&#x7684;&#x589E;&#x52A0;&#x4F1A;&#x5F15;&#x8D77;PG&#x5185;&#x7684;&#x6570;&#x636E;&#x8FDB;&#x884C;&#x5206;&#x88C2;&#xFF0C;&#x5206;&#x88C2;&#x5230;&#x76F8;&#x540C;&#x7684;OSD&#x4E0A;&#x65B0;&#x751F;&#x6210;&#x7684;PG&#x5F53;&#x4E2D;
+PGP&#x7684;&#x589E;&#x52A0;&#x4F1A;&#x5F15;&#x8D77;&#x90E8;&#x5206;PG&#x7684;&#x5206;&#x5E03;&#x8FDB;&#x884C;&#x53D8;&#x5316;&#xFF0C;&#x4F46;&#x662F;&#x4E0D;&#x4F1A;&#x5F15;&#x8D77;PG&#x5185;&#x5BF9;&#x8C61;&#x7684;&#x53D8;&#x52A8;
+
+pg_num&#x7684;&#x589E;&#x52A0;&#x4F1A;&#x4F7F;&#x539F;&#x6765;PG&#x4E2D;&#x7684;&#x5BF9;&#x8C61;&#x5747;&#x5300;&#x5730;&#x5206;&#x5E03;&#x5230;&#x65B0;&#x5EFA;&#x7684;PG&#x4E2D;&#xFF0C;&#x539F;&#x6765;&#x7684;&#x526F;&#x672C;&#x5206;&#x5E03;&#x65B9;&#x5F0F;&#x4E0D;&#x53D8;
+pgp_num&#x7684;&#x589E;&#x52A0;&#x4F1A;&#x4F7F;PG&#x7684;&#x5206;&#x5E03;&#x65B9;&#x5F0F;&#x53D1;&#x751F;&#x53D8;&#x5316;&#xFF0C;&#x4F46;&#x662F;PG&#x5185;&#x7684;&#x5BF9;&#x8C61;&#x5E76;&#x4E0D;&#x4F1A;&#x53D8;&#x52A8;
+pgp&#x51B3;&#x5B9A;pg&#x5206;&#x5E03;&#x65F6;&#x7684;&#x7EC4;&#x5408;&#x65B9;&#x5F0F;&#x7684;&#x53D8;&#x5316;
+</code></pre><h1 id="&#x4E8C;&#x3001;&#x90E8;&#x7F72;">&#x4E8C;&#x3001;&#x90E8;&#x7F72;</h1>
+<h2 id="1&#x3001;cephadm">1&#x3001;cephadm</h2>
+<h3 id="1&#x5B89;&#x88C5;&#x4F9D;&#x8D56;">1.&#x5B89;&#x88C5;&#x4F9D;&#x8D56;</h3>
+<pre><code>apt install -y cephadm
+
+#curl --silent --remote-name --location https://github.com/ceph/ceph/raw/pacific/src/cephadm/cephadm
+#chmod +x cephadm
+
+cephadm add-repo --release pacific
+cephadm install ceph-common
+</code></pre><h3 id="2&#x521D;&#x59CB;&#x5316;">2.&#x521D;&#x59CB;&#x5316;</h3>
+<pre><code>cephadm bootstrap --mon-ip 192.168.0.31
+</code></pre><pre><code>#ceph config assimilate-conf -i &lt;input file&gt; -o &lt;output file&gt;
+
+cat &lt;&lt;EOF &gt; initial-ceph.conf
+[global]
+    osd_pool_default_size = 2
+    osd_pool_default_min_size = 1
+    mon_osd_full_ratio = .90
+    mon_osd_nearfull_ratio = .80
+    public_network = 192.168.0.0/24
+    cluster_network = 10.0.0.0/24
+EOF
+
+cephadm bootstrap --config initial-ceph.conf --mon-ip 192.168.0.31
+
+cephadm shell -- ceph -s
+#cephadm shell --fsid XXX -c /etc/ceph/ceph.conf -k /etc/ceph/ceph.client.admin.keyring
+</code></pre><h3 id="3host-&#x914D;&#x7F6E;">3.host &#x914D;&#x7F6E;</h3>
+<pre><code>ssh-copy-id -f -i /etc/ceph/ceph.pub node2
+ssh-copy-id -f -i /etc/ceph/ceph.pub node3
+</code></pre><pre><code>ceph orch host add node2 mon
+#ceph orch host rm node2
+
+ceph orch host add node3 mon
+
+ceph orch host label add node1 mon
+#ceph orch host label rm node1 mon
+</code></pre><pre><code>ceph orch apply mon &quot;node1,node2,node3&quot;
+ceph orch host ls
+</code></pre><pre><code>&#x7981;&#x7528;&#x81EA;&#x52A8;&#x90E8;&#x7F72; mon
+ceph orch apply mon --unmanaged
+
+&#x4E0D;&#x540C;&#x7F51;&#x7EDC;&#x6DFB;&#x52A0; mon
+ceph orch apply mon --unmanaged
+ceph orch daemon add mon newhost1:10.1.2.123
+ceph orch daemon add mon newhost2:10.1.2.0/24
+</code></pre><h3 id="4osd-&#x914D;&#x7F6E;">4.osd &#x914D;&#x7F6E;</h3>
+<pre><code>ceph orch device ls
+ceph orch apply osd --all-available-devices  
+#ceph orch daemon add osd node1:/dev/sdb
+</code></pre><pre><code>&#x5220;&#x9664; osd
+ceph osd crush remove {name}
+ceph auth del osd.{osd-num}
+ceph osd stop {osd-num}
+ceph osd rm {osd-num}
+</code></pre><h3 id="5&#x4F7F;&#x7528;-cephfs">5.&#x4F7F;&#x7528; cephfs</h3>
+<pre><code>ceph fs volume create fs
+</code></pre><blockquote>
+<p>_netdev&#xFF1A;&#x8868;&#x793A;&#x5F53;&#x7CFB;&#x7EDF;&#x8054;&#x7F51;&#x540E;&#x518D;&#x8FDB;&#x884C;&#x6302;&#x8F7D;&#x64CD;&#x4F5C;
+noatime&#xFF1A;&#x8FD9;&#x4E2A;&#x53C2;&#x6570;&#x6765;&#x7981;&#x6B62;&#x8BB0;&#x5F55;&#x6700;&#x8FD1;&#x4E00;&#x6B21;&#x8BBF;&#x95EE;&#x65F6;&#x95F4;&#x6233;&#xFF0C;&#x63D0;&#x9AD8;&#x6027;&#x80FD;</p>
+</blockquote>
+<pre><code>&#x4F7F;&#x7528; ceph-fuse
+cephadm install ceph-fuse
+#apt install -y ceph-fuse
+
+ceph-fuse -m 192.168.0.31:6789,192.168.0.32:6789,192.168.0.33:6789 /fs
+
+scp -r 192.168.0.61:/etc/ceph /etc
+vim /etc/fstab
+192.168.0.61:6789,192.168.0.62:6789,192.168.0.64:6789:/ /fs fuse.ceph ceph.id=admin,ceph.conf=/etc/ceph/ceph.conf,noatime,_netdev,defaults 0 0
+</code></pre><pre><code>ceph fs authorize *file_system_name* client.*client_name* /*specified_directory* rw
+
+ceph fs authorize fs client.fs / rw
+[client.fs]
+        key = AQA8DK5g7FkeFhAA4B6gk6M5nc+17XVKzjv27Q==
+
+#ceph auth rm client.fs
+
+mount -t ceph :/ /fs -o name=fs,secret=AQA8DK5g7FkeFhAA4B6gk6M5nc+17XVKzjv27Q==
+
+ceph fs authorize fs client.fs /yani rw
+mount -t ceph :/yani /fs -o name=fs,secret=AQA8DK5g7FkeFhAA4B6gk6M5nc+17XVKzjv27Q==
+</code></pre><pre><code>&#x4F7F;&#x7528; linux kernel
+
+ssh 192.168.0.61 &quot;ceph-authtool -p /etc/ceph/ceph.client.admin.keyring&quot; &gt; admin.key
+
+mount -t ceph 192.168.0.61:6789,192.168.0.62:6789,192.168.0.64:6789:/ /fs -o name=admin,secret=AQDXXXXX==
+#mount -t ceph :/ /fs -o name=admin,secret=AQDXXXXX==
+#mount -t ceph 192.168.0.61:6789,192.168.0.62:6789,192.168.0.64:6789:/ /fs -o name=admin,secretfile=admin.key
+vim /etc/fstab
+192.168.0.61:6789,192.168.0.62:6789,192.168.0.64:6789:/ /fs ceph name=admin,secret=AQDXXXXX==,noatime,_netdev,defaults 0 0
+#:/ /fs ceph name=admin,secret=AQDXXXXX==,noatime,_netdev,defaults 0 0
+</code></pre><h3 id="6&#x4F7F;&#x7528;-rbd">6.&#x4F7F;&#x7528; rbd</h3>
+<pre><code>1&#x3001;&#x521B;&#x5EFA; rbd
+ceph osd pool create rbd
+rbd pool init rbd
+
+#rbd create --size {megabytes} {pool-name}/{image-name}
+
+&#x8981;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;1GB&#x7684;&#x6620;&#x50CF;test&#xFF0C;&#x8BE5;&#x6620;&#x50CF;&#x5C06;&#x4FE1;&#x606F;&#x5B58;&#x50A8;&#x5728;rbd Pool&#x4E2D;
+rbd create --size 1024 rbd/test
+
+#&#x5F00;&#x673A;&#x81EA;&#x52A8;&#x6620;&#x5C04;
+ls /etc/ceph/
+ceph.client.guest.keyring  ceph.conf  rbdmap
+
+vim /etc/ceph/rbdmap
+#poolname/imagename     id=client,keyring=/etc/ceph/ceph.client.guest.keyring
+rbd/test id=guest,keyring=/etc/ceph/ceph.client.guest.keyring
+
+vim /etc/fstab
+/dev/rbd0 /test xfs noatime,_netdev,defaults 0 0
+
+# &#x67E5;&#x770B;&#x5DF2;&#x6620;&#x5C04;
+rbd showmapped 
+
+rbdmap unmap 
+rbdmap unmap-all
+
+&#x521B;&#x5EFA;&#x5757;&#x5B58;&#x50A8; pool &#x7528;&#x6237;
+ceph auth get-or-create client.libvirt mon &apos;profile rbd&apos; osd &apos;profile rbd pool=rbd&apos;
+[client.libvirt]
+        key = AQCUD65goRI3ARAAtMHtLBivJ39eikR4ZRjEgg==
+
+rbd map rbd/test
+/dev/rbd1
+
+mkfs.xfs -f /dev/rbd1
+mount /dev/rbd1 /mnt
+
+2&#x3001;&#x521B;&#x5EFA;&#x5FEB;&#x7167;
+rbd snap create --snap mysnap rbd/test
+#rbd snap create rbd/test@mysnap
+rbd snap list rbd/test
+rbd ls -l
+rbd info rbd/test@mysnap
+
+&#x56DE;&#x6EDA;
+rbd snap rollback rbd/test@mysnap
+
+&#x5220;&#x9664;&#x5FEB;&#x7167;
+rbd snap remove rbd/test@mysnap
+
+3&#x3001;&#x6A21;&#x677F;&#x4E0E;&#x514B;&#x9686;
+
+&#x67E5;&#x770B;&#x8BBE;&#x5907;&#x662F;&#x5426;&#x652F;&#x6301;&#x521B;&#x5EFA;&#x5FEB;&#x7167;&#x6A21;&#x677F;&#xFF0C;image-format &#x5FC5;&#x987B;&#x4E3A;2
+rbd info rbd/test
+rbd image &apos;test&apos;:
+        size 1 GiB in 256 objects
+        order 22 (4 MiB objects)
+        snapshot_count: 0
+        id: 170e5acc1f4a7
+        block_name_prefix: rbd_data.170e5acc1f4a7
+        format: 2
+        features: layering, exclusive-lock, object-map, fast-diff, deep-flatten
+        op_features: 
+        flags: 
+        create_timestamp: Wed May 26 11:13:38 2021
+        access_timestamp: Wed May 26 11:13:38 2021
+        modify_timestamp: Wed May 26 11:13:38 2021
+
+rbd create rbd/test --size 1024 --image-format 2
+
+&#x628A;&#x8BE5;&#x5757;&#x505A;&#x6210;&#x6A21;&#x677F;&#xFF0C;&#x9996;&#x5148;&#x8981;&#x628A;&#x505A;&#x6210;&#x6A21;&#x677F;&#x7684;&#x5FEB;&#x7167;&#x505A;&#x6210;protect
+rbd snap protect rbd/test@mysnap
+
+&#x53EF;&#x4EE5;&#x53BB;&#x6389;&#x8FD9;&#x4E2A;&#x4FDD;&#x62A4;&#xFF0C;&#x4F46;&#x662F;&#x8FD9;&#x6837;&#x7684;&#x8BDD;&#x5C31;&#x4E0D;&#x80FD;&#x514B;&#x9686;
+rbd snap unprotect rbd/test@mysnap
+
+&#x514B;&#x9686;
+rbd clone rbd/test@mysnap rbd/test1
+
+&#x67E5;&#x770B;&#x5FEB;&#x7167;children
+rbd children rbd/test@mysnap
+
+&#x8FD9;&#x4E2A;&#x65F6;&#x5019;&#x7684;test1&#x8FD8;&#x662F;&#x4F9D;&#x8D56;test&#x7684;&#x955C;&#x50CF;mysnap&#x7684;&#xFF0C;&#x5982;&#x679C;test&#x7684;mysnap&#x88AB;&#x5220;&#x9664;&#x6216;&#x8005;&#x600E;&#x4E48;&#x6837;&#xFF0C;test1&#x4E5F;&#x4E0D;&#x80FD;&#x591F;&#x4F7F;&#x7528;&#x4E86;&#xFF0C;&#x8981;&#x60F3;&#x72EC;&#x7ACB;&#x51FA;&#x53BB;&#xFF0C;&#x5C31;&#x5FC5;&#x987B;&#x5C06;&#x7236;&#x955C;&#x50CF;&#x7684;&#x4FE1;&#x606F;&#x5408;&#x5E76;flattern&#x5230;&#x5B50;&#x955C;&#x50CF;&#x4E2D;
+&#x53BB;&#x6389;&#x5FEB;&#x7167;&#x7684;parent
+rbd flatten rbd/test1
+</code></pre><pre><code>rbd create       &#x521B;&#x5EFA;&#x5757;&#x8BBE;&#x5907;&#x6620;&#x50CF;
+rbd ls           &#x5217;&#x51FA; rbd &#x5B58;&#x50A8;&#x6C60;&#x4E2D;&#x7684;&#x5757;&#x8BBE;&#x5907;
+rbd info         &#x67E5;&#x770B;&#x5757;&#x8BBE;&#x5907;&#x4FE1;&#x606F;
+rbd diff         &#x53EF;&#x4EE5;&#x7EDF;&#x8BA1; rbd &#x4F7F;&#x7528;&#x91CF;
+rbd map          &#x6620;&#x5C04;&#x5757;&#x8BBE;&#x5907;
+rbd showmapped   &#x67E5;&#x770B;&#x5DF2;&#x6620;&#x5C04;&#x5757;&#x8BBE;&#x5907;
+rbd remove       &#x5220;&#x9664;&#x5757;&#x8BBE;&#x5907;
+rbd resize       &#x66F4;&#x6539;&#x5757;&#x8BBE;&#x5907;&#x7684;&#x5927;&#x5C0F;
+rbd export rbd/test /tmp/test                     &#x5BFC;&#x51FA;rbd&#x955C;&#x50CF;
+rbd import /tmp/test rbd/test --image-format 2    &#x5BFC;&#x5165;rbd&#x955C;&#x50CF;
+</code></pre><h3 id="7&#x6027;&#x80FD;&#x6D4B;&#x8BD5;">7.&#x6027;&#x80FD;&#x6D4B;&#x8BD5;</h3>
+<pre><code>rados bench -p $poolname 60 write  [ --no-cleanup ]  #&#x6D4B;&#x8BD5;&#x5199;&#x6027;&#x80FD;&#xFF0C;&#x4E0D;&#x5220;&#x9664;&#x5199;&#x5165;&#x7684;&#x6570;&#x636E;&#x7528;&#x6765;&#x6D4B;&#x8BD5;&#x8BFB;&#x53D6;&#x6027;&#x80FD;
+rados bench -p $poolname 60 [ seq | rand ]  #&#x6D4B;&#x8BD5;&#x8BFB;&#x53D6;&#x6027;&#x80FD;
+rados -p $poolname cleanup #&#x6E05;&#x7406;&#x6D4B;&#x8BD5;&#x5199;&#x6027;&#x80FD;&#x65F6;&#x5199;&#x5165;&#x7684;&#x6570;&#x636E;
+</code></pre><h3 id="8&#x5176;&#x4ED6;">8.&#x5176;&#x4ED6;</h3>
+<pre><code>&#x521B;&#x5EFA; pool
+ceph osd pool create test_metadata 32 32
+
+&#x91CD;&#x65B0;&#x8BBE;&#x7F6E;&#x6743;&#x91CD;
+ceph osd crush reweight osd.3 3.3
+ceph osd reweight osd.4 0.3
+ceph osd crush tree --show-shadow
+
+&#x83B7;&#x53D6; osdmap
+ceph osd dump
+ceph osd getmap -o osds.map
+osdmaptool --print osds.map
+
+&#x83B7;&#x53D6; monmap
+ceph mon dump
+ceph mon getmap -o monmap.map
+monmaptool --print monmap.map
+
+&#x83B7;&#x53D6; crushmap
+ceph osd getcrushmap -o crushmap.dump
+crushtool -d crushmap.dump -o crushmap.txt
+
+crushtool -c crushmap.txt -o crushmap.done
+ceph osd setcrushmap -i crushmap.done
+
+&#x65B0;&#x521B;&#x5EFA;&#x7684; osd &#x4E0D;&#x4F1A;&#x81EA;&#x52A8;&#x52A0;&#x5165; crushmap
+osd crush update on start = false
+
+ceph osd lspools
+rbd ls -l
+rbd remove rbd-name
+rbd map disk01
+rbd showmapped
+ceph fs ls
+ceph mds stat
+</code></pre><h2 id="2&#x3001;ceph-deploy">2&#x3001;ceph deploy</h2>
+<h3 id="1&#x3001;&#x6DFB;&#x52A0;releasekey">1&#x3001;&#x6DFB;&#x52A0;release.key</h3>
+<pre><code>apt-get update &amp;&amp; apt-get -y upgrade
+
+wget -q -O- &apos;https://download.ceph.com/keys/autobuild.asc&apos; | apt-key add -
+</code></pre><h3 id="2&#x3001;&#x67E5;&#x770B;&#x5F53;&#x524D;&#x7CFB;&#x7EDF;&#x7684;&#x53D1;&#x884C;&#x7248;&#x672C;&#x4FE1;&#x606F;">2&#x3001;&#x67E5;&#x770B;&#x5F53;&#x524D;&#x7CFB;&#x7EDF;&#x7684;&#x53D1;&#x884C;&#x7248;&#x672C;&#x4FE1;&#x606F;</h3>
+<pre><code>lsb_release -sc
+</code></pre><h3 id="3&#x3001;&#x6DFB;&#x52A0;ceph&#x8F6F;&#x4EF6;&#x5305;&#x6E90;&#xFF0C;&#x7528;ceph&#x7A33;&#x5B9A;&#x7248;&#xFF08;&#x5982;cuttlefish&#x3001;dumpling&#x3001;emperor&#x3001;firefly&#x3001;hammer&#x3001;jewel&#x7B49;&#xFF09;&#x66FF;&#x6362;&#x6389;jewel">3&#x3001;&#x6DFB;&#x52A0;Ceph&#x8F6F;&#x4EF6;&#x5305;&#x6E90;&#xFF0C;&#x7528;Ceph&#x7A33;&#x5B9A;&#x7248;&#xFF08;&#x5982;cuttlefish&#x3001;dumpling&#x3001;emperor&#x3001;firefly&#x3001;hammer&#x3001;jewel&#x7B49;&#xFF09;&#x66FF;&#x6362;&#x6389;jewel</h3>
+<pre><code>echo deb http://mirrors.aliyun.com/ceph/debian-jewel/ $(lsb_release -sc) main | tee /etc/apt/sources.list.d/ceph.list
+
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E84AC2C0460F3994
+</code></pre><h3 id="4&#x3001;&#x66F4;&#x65B0;&#x6E90;&#x4ED3;&#x5E93;&#x5E76;&#x5B89;&#x88C5;ceph">4&#x3001;&#x66F4;&#x65B0;&#x6E90;&#x4ED3;&#x5E93;&#x5E76;&#x5B89;&#x88C5;Ceph</h3>
+<pre><code>apt-get update &amp;&amp; apt-get -y install ceph-deploy
+</code></pre><h3 id="5&#x3001;&#x5C06;ceph-deploy&#x6E90;&#x6362;&#x4E3A;&#x56FD;&#x5185;&#x6E90;">5&#x3001;&#x5C06;ceph deploy&#x6E90;&#x6362;&#x4E3A;&#x56FD;&#x5185;&#x6E90;</h3>
+<pre><code>vim /usr/lib/python2.7/dist-packages/ceph_deploy/hosts/debian/install.py
+
+sed -i &apos;s/{protocol}:\/\/download.ceph.com/http:\/\/mirrors.aliyun.com\/ceph/g&apos; /usr/lib/python2.7/dist-packages/ceph_deploy/hosts/debian/install.py
+sed -i &apos;s/{protocol}:\/\/download.ceph.com/http:\/\/mirrors.aliyun.com\/ceph/g&apos; /usr/lib/python2.7/dist-packages/ceph_deploy/hosts/debian/install.py
+sed -i &apos;s/download.ceph.com/mirrors.tuna.tsinghua.edu.cn\/ceph/g&apos; /usr/lib/python2.7/dist-packages/ceph_deploy/util/constants.py
+</code></pre><h3 id="6&#x3001;&#x5B89;&#x88C5;ntp&#xFF08;&#x4EE5;&#x514D;&#x56E0;&#x65F6;&#x949F;&#x6F02;&#x79FB;&#x5BFC;&#x81F4;&#x6545;&#x969C;&#xFF09;">6&#x3001;&#x5B89;&#x88C5;NTP&#xFF08;&#x4EE5;&#x514D;&#x56E0;&#x65F6;&#x949F;&#x6F02;&#x79FB;&#x5BFC;&#x81F4;&#x6545;&#x969C;&#xFF09;</h3>
+<pre><code>apt-get -y install ntp
+</code></pre><h3 id="7&#x3001;&#x5B89;&#x88C5;-ssh-&#x670D;&#x52A1;&#x5668;">7&#x3001;&#x5B89;&#x88C5; SSH &#x670D;&#x52A1;&#x5668;</h3>
+<pre><code>apt-get -y install openssh-server
+</code></pre><h3 id="8&#x3001;&#x914D;&#x7F6E;hosts">8&#x3001;&#x914D;&#x7F6E;hosts</h3>
+<pre><code>echo &quot;
+172.18.20.181 ceph-node1
+172.18.20.182 ceph-node2
+172.18.20.183 ceph-node3&quot; | tee &gt;&gt; /etc/hosts
+</code></pre><h3 id="9&#x3001;&#x521B;&#x5EFA;&#x90E8;&#x7F72;-ceph-&#x7684;&#x7528;&#x6237;&#xFF08;&#x53EF;&#x4E0D;&#x7528;&#xFF09;">9&#x3001;&#x521B;&#x5EFA;&#x90E8;&#x7F72; CEPH &#x7684;&#x7528;&#x6237;&#xFF08;&#x53EF;&#x4E0D;&#x7528;&#xFF09;</h3>
+<pre><code>1&#x3001;&#x5728;&#x5404; Ceph &#x8282;&#x70B9;&#x521B;&#x5EFA;&#x65B0;&#x7528;&#x6237;&#x3002;
+useradd -d /home/myCeph -m myCeph
+passwd myCeph
+2&#x3001;&#x786E;&#x4FDD;&#x5404; Ceph &#x8282;&#x70B9;&#x4E0A;&#x65B0;&#x521B;&#x5EFA;&#x7684;&#x7528;&#x6237;&#x90FD;&#x6709; sudo &#x6743;&#x9650;&#x3002;
+echo &quot;myCeph ALL = (root) NOPASSWD:ALL&quot; | sudo tee /etc/sudoers.d/myCeph
+chmod 0440 /etc/sudoers.d/myCeph
+</code></pre><h3 id="10&#x3001;&#x5141;&#x8BB8;&#x65E0;&#x5BC6;&#x7801;-ssh-&#x767B;&#x5F55;">10&#x3001;&#x5141;&#x8BB8;&#x65E0;&#x5BC6;&#x7801; SSH &#x767B;&#x5F55;</h3>
+<pre><code>1&#x3001;&#x751F;&#x6210; SSH &#x5BC6;&#x94A5;&#x5BF9;&#xFF0C;&#x4F46;&#x4E0D;&#x8981;&#x7528; sudo &#x6216; root &#x7528;&#x6237;&#x3002;&#x63D0;&#x793A; &#x201C;Enter passphrase&#x201D; &#x65F6;&#xFF0C;&#x76F4;&#x63A5;&#x56DE;&#x8F66;&#xFF0C;&#x53E3;&#x4EE4;&#x5373;&#x4E3A;&#x7A7A;&#xFF1A;
+ssh-keygen
+2&#x3001;&#x628A;&#x516C;&#x94A5;&#x62F7;&#x8D1D;&#x5230;&#x5404; Ceph &#x8282;&#x70B9;&#xFF0C;&#x628A;&#x4E0B;&#x5217;&#x547D;&#x4EE4;&#x4E2D;&#x7684; myCeph &#x66FF;&#x6362;&#x6210;&#x524D;&#x9762;&#x521B;&#x5EFA;&#x90E8;&#x7F72; Ceph &#x7684;&#x7528;&#x6237;&#x91CC;&#x7684;&#x7528;&#x6237;&#x540D;&#x3002;
+ssh-copy-id myCeph@node1
+3&#x3001;&#xFF08;&#x63A8;&#x8350;&#x505A;&#x6CD5;&#xFF09;&#x4FEE;&#x6539; ceph-deploy &#x7BA1;&#x7406;&#x8282;&#x70B9;&#x4E0A;&#x7684; ~/.ssh/config &#x6587;&#x4EF6;&#xFF0C;&#x8FD9;&#x6837; ceph-deploy &#x5C31;&#x80FD;&#x7528;&#x4F60;&#x6240;&#x5EFA;&#x7684;&#x7528;&#x6237;&#x540D;&#x767B;&#x5F55; Ceph &#x8282;&#x70B9;&#x4E86;&#xFF0C;&#x800C;&#x65E0;&#x9700;&#x6BCF;&#x6B21;&#x6267;&#x884C; ceph-deploy &#x90FD;&#x8981;&#x6307;&#x5B9A; --username {username} &#x3002;&#x8FD9;&#x6837;&#x505A;&#x540C;&#x65F6;&#x4E5F;&#x7B80;&#x5316;&#x4E86; ssh &#x548C; scp &#x7684;&#x7528;&#x6CD5;&#x3002;&#x628A; {username} &#x66FF;&#x6362;&#x6210;&#x4F60;&#x521B;&#x5EFA;&#x7684;&#x7528;&#x6237;&#x540D;&#x3002;
+
+Host node1
+   Hostname node1
+   User myCeph
+
+ssh-copy-id ceph-node1
+</code></pre><h3 id="11&#x3001;&#x5B89;&#x88C5;ceph">11&#x3001;&#x5B89;&#x88C5;Ceph</h3>
+<pre><code>ceph-deploy install controller compute{2,3,4,5,6,7,8}
+</code></pre><h3 id="12&#x3001;&#x521B;&#x5EFA;&#x96C6;&#x7FA4;">12&#x3001;&#x521B;&#x5EFA;&#x96C6;&#x7FA4;</h3>
+<pre><code>ceph-deploy new controller compute{2,3,4,5}
+</code></pre><h3 id="13&#x3001;&#x4FEE;&#x6539;&#x914D;&#x7F6E;&#x6587;&#x4EF6;-&#xFF0C;&#x628A;&#x4E0B;&#x9762;&#x8FD9;&#x884C;&#x52A0;&#x5165;-global-&#x6BB5;&#xFF1A;">13&#x3001;&#x4FEE;&#x6539;&#x914D;&#x7F6E;&#x6587;&#x4EF6; &#xFF0C;&#x628A;&#x4E0B;&#x9762;&#x8FD9;&#x884C;&#x52A0;&#x5165; [global] &#x6BB5;&#xFF1A;</h3>
+<pre><code>echo &quot;osd crush chooseleaf type = 0&quot; &gt;&gt; ceph.conf
+        echo &quot;osd pool default size = 1&quot; &gt;&gt; ceph.conf
+        echo &quot;osd journal size = 100&quot; &gt;&gt; ceph.conf
+</code></pre><h3 id="14&#x3001;&#x914D;&#x7F6E;&#x521D;&#x59CB;monitors&#x3001;&#x5E76;&#x6536;&#x96C6;&#x6240;&#x6709;&#x79D8;&#x94A5;&#xFF1A;">14&#x3001;&#x914D;&#x7F6E;&#x521D;&#x59CB;monitor(s)&#x3001;&#x5E76;&#x6536;&#x96C6;&#x6240;&#x6709;&#x79D8;&#x94A5;&#xFF1A;</h3>
+<pre><code>#ceph-deploy mon create-initial
+
+ceph-deploy mon create controller compute{2,3,4,5}
+
+ceph-deploy gatherkeys controller compute{2,3,4,5}
+</code></pre><h3 id="15&#x3001;&#x64E6;&#x51C0;&#x78C1;&#x76D8;">15&#x3001;&#x64E6;&#x51C0;&#x78C1;&#x76D8;</h3>
+<pre><code>ceph-deploy disk zap controller:sd{b,c,d,e} compute2:sd{b,c,d} compute{3,4,5,6,7,8}:sd{b,c,d,e}
+</code></pre><h3 id="16&#x3001;&#x51C6;&#x5907;&#x78C1;&#x76D8;">16&#x3001;&#x51C6;&#x5907;&#x78C1;&#x76D8;</h3>
+<pre><code>ceph-deploy osd prepare controller:sd{b,c,d,e} compute2:sd{b,c,d} compute{3,4,5,6,7,8}:sd{b,c,d,e}
+
+ceph-deploy osd prepare ceph-node1:xvdb ceph-node1:xvdc ceph-node1:xvde ceph-node2:xvdb ceph-node2:xvdc ceph-node2:xvde ceph-node3:xvdb ceph-node3:xvdc ceph-node3:xvde
+</code></pre><h3 id="17&#x3001;&#x6FC0;&#x6D3B;&#x78C1;&#x76D8;">17&#x3001;&#x6FC0;&#x6D3B;&#x78C1;&#x76D8;</h3>
+<pre><code>ceph-deploy osd activate controller:sd{b1,c1,d1,e1} compute2:sd{b1,c1,d1} compute{3,4,5,6,7,8}:sd{b1,c1,d1,e1}
+</code></pre><h3 id="18&#x3001;&#x590D;&#x5236;">18&#x3001;&#x590D;&#x5236;</h3>
+<p>&#x590D;&#x5236;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x5230;&#x6240;&#x6709;&#x8282;&#x70B9;&#xFF0C;&#x7528;ceph-deploy &#x628A;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x548C; admin &#x5BC6;&#x94A5;&#x62F7;&#x8D1D;&#x5230;&#x7BA1;&#x7406;&#x8282;&#x70B9;&#x548C; Ceph &#x8282;&#x70B9;&#xFF0C;&#x8FD9;&#x6837;&#x6BCF;&#x6B21;&#x6267;&#x884C; Ceph &#x547D;&#x4EE4;&#x884C;&#x65F6;&#x5C31;&#x65E0;&#x9700;&#x6307;&#x5B9A; monitor &#x5730;&#x5740;&#x548C; ceph.client.admin.keyring &#x4E86;&#x3002;</p>
+<pre><code>ceph-deploy admin node1
+
+ceph-deploy --overwrite-conf admin ceph-node1 ceph-node2 ceph-node3
+</code></pre><h3 id="19&#x3001;&#x786E;&#x4FDD;&#x4F60;&#x5BF9;-cephclientadminkeyring-&#x6709;&#x6B63;&#x786E;&#x7684;&#x64CD;&#x4F5C;&#x6743;&#x9650;&#x3002;">19&#x3001;&#x786E;&#x4FDD;&#x4F60;&#x5BF9; ceph.client.admin.keyring &#x6709;&#x6B63;&#x786E;&#x7684;&#x64CD;&#x4F5C;&#x6743;&#x9650;&#x3002;</h3>
+<pre><code>chmod +r /etc/ceph/ceph.client.admin.keyring
+</code></pre><h3 id="20&#x3001;&#x68C0;&#x67E5;&#x96C6;&#x7FA4;&#x7684;&#x5065;&#x5EB7;&#x72B6;&#x51B5;">20&#x3001;&#x68C0;&#x67E5;&#x96C6;&#x7FA4;&#x7684;&#x5065;&#x5EB7;&#x72B6;&#x51B5;</h3>
+<pre><code>ceph health
+ceph -s
+ceph osd tree
+</code></pre><h3 id="21&#x3001;&#x6E05;&#x9664;&#x90E8;&#x7F72;">21&#x3001;&#x6E05;&#x9664;&#x90E8;&#x7F72;</h3>
+<pre><code>ceph-deploy purge ceph-node1 ceph-node2 ceph-node3
+ceph-deploy purgedata ceph-node1 ceph-node2 ceph-node3
+ceph-deploy forgetkeys
+
+ceph osd pool delete rbd rbd --yes-i-really-really-mean-it
+</code></pre><h3 id="22&#x3001;&#x4FEE;&#x6539;crushmap">22&#x3001;&#x4FEE;&#x6539;crushmap</h3>
+<pre><code>1&#x3001;&#x83B7;&#x5F97; crush map&#xFF0C;&#x83B7;&#x5F97;&#x9ED8;&#x8BA4; crushmap (&#x52A0;&#x5BC6;)
+ceph osd getcrushmap -o crushmap.dump
+2&#x3001;&#x8F6C;&#x6362; crushmap &#x683C;&#x5F0F; (&#x52A0;&#x5BC6; -&gt; &#x660E;&#x6587;&#x683C;&#x5F0F;)
+crushtool -d crushmap.dump -o crushmap.txt
+3&#x3001;&#x8F6C;&#x6362; crushmap &#x683C;&#x5F0F;(&#x660E;&#x6587; -&gt; &#x52A0;&#x5BC6;&#x683C;&#x5F0F;)
+crushtool -c crushmap.txt -o crushmap.done
+4&#x3001;&#x91CD;&#x65B0;&#x4F7F;&#x7528;&#x65B0; crushmap
+ceph osd setcrushmap -i crushmap.done
+</code></pre><h3 id="23&#x3001;&#x4FEE;&#x6539;osd&#x6743;&#x91CD;">23&#x3001;&#x4FEE;&#x6539;osd&#x6743;&#x91CD;</h3>
+<pre><code>ceph osd crush reweight osd.1 1
+</code></pre><h1 id="&#x4E09;&#x3001;&#x4F7F;&#x7528;">&#x4E09;&#x3001;&#x4F7F;&#x7528;</h1>
+<h2 id="1&#x3001;&#x5C06;ceph&#x914D;&#x7F6E;&#x6587;openstack&#x7684;&#x540E;&#x7AEF;&#x914D;&#x7F6E;">1&#x3001;&#x5C06;ceph&#x914D;&#x7F6E;&#x6587;openstack&#x7684;&#x540E;&#x7AEF;&#x914D;&#x7F6E;</h2>
+<p>1&#x3001;&#x521B;&#x5EFA;pool&#xFF0C;&#x521D;&#x59CB;&#x5316;pool&#x3002;</p>
+<pre><code>ceph osd pool create volumes 128
+ceph osd pool create images 128
+ceph osd pool create backups 128
+ceph osd pool create vms 128
+
+rbd pool init volumes
+rbd pool init images
+rbd pool init backups
+rbd pool init vms
+</code></pre><p>2&#x3001;&#x5728;glance-api&#x8282;&#x70B9;&#x5B89;&#x88C5;&#x4EE5;&#x4E0B;&#x5305;&#x3002;</p>
+<pre><code>apt-get -y install python-rbd
+yum -y install python-rbd
+</code></pre><p>3&#x3001;&#x5728;nova-compute, cinder-backup,cinder-volume&#x5B89;&#x88C5;&#x4EE5;&#x4E0B;&#x5305;&#x3002;</p>
+<pre><code>apt-get -y install ceph-common
+yum -y install ceph-common
+</code></pre><p>4&#x3001;&#x5982;&#x679C;&#x5F00;&#x542F;&#x4E86; cephx authentication, &#x9700;&#x8981;&#x4E3A;nova&#x3001;cinder&#x3001;glance&#x521B;&#x5EFA;&#x65B0;&#x7528;&#x6237;&#x3002;</p>
+<pre><code>#ceph auth get-or-create client.glance mon &apos;allow r&apos; osd &apos;allow class-read object_prefix rbd_children, allow rwx pool=images, allow rwx pool=images.cache&apos;
+
+ceph auth get-or-create client.glance mon &apos;profile rbd&apos; osd &apos;profile rbd pool=images&apos;
+
+ceph auth get-or-create client.cinder mon &apos;profile rbd&apos; osd &apos;profile rbd pool=volumes, profile rbd pool=vms, profile rbd-read-only pool=images&apos;
+
+ceph auth get-or-create client.cinder-backup mon &apos;profile rbd&apos; osd &apos;profile rbd pool=backups&apos;
+</code></pre><p>5&#x3001;&#x4E3A;&#x76F8;&#x5E94;&#x8282;&#x70B9;&#x7684;client.cinder, client.glance, client.cinder-backup&#x6DFB;&#x52A0;keyrings&#xFF0C;&#x6539;&#x53D8;&#x5B83;&#x4EEC;&#x7684;&#x6240;&#x6709;&#x6743;&#x3002;</p>
+<pre><code>ceph auth get-or-create client.glance | ssh {your-glance-api-server} tee /etc/ceph/ceph.client.glance.keyring
+ssh {your-glance-api-server} chown glance:glance /etc/ceph/ceph.client.glance.keyring
+ceph auth get-or-create client.cinder | ssh {your-volume-server} tee /etc/ceph/ceph.client.cinder.keyring
+ssh {your-cinder-volume-server} chown cinder:cinder /etc/ceph/ceph.client.cinder.keyring
+ceph auth get-or-create client.cinder-backup | ssh {your-cinder-backup-server} tee /etc/ceph/ceph.client.cinder-backup.keyring
+ssh {your-cinder-backup-server} chown cinder:cinder /etc/ceph/ceph.client.cinder-backup.keyring
+</code></pre><p>6&#x3001;&#x8FD0;&#x884C;&#x4E86;nova-compute&#x7684;&#x8282;&#x70B9;&#x9700;&#x8981;keyring&#x6587;&#x4EF6;&#x3002;</p>
+<pre><code>ceph auth get-or-create client.cinder | ssh {your-nova-compute-server} tee /etc/ceph/ceph.client.cinder.keyring
+</code></pre><p>7&#x3001;&#x9700;&#x8981;&#x5C06;client.cinder&#x7528;&#x6237;&#x7684;&#x79D8;&#x94A5;&#x914D;&#x7F6E;&#x5230;libvirt&#x4E2D;&#xFF0C;libvirt&#x8FDB;&#x7A0B;&#x4ECE;cinder&#x6302;&#x8F7D;&#x5757;&#x8BBE;&#x5907;&#x65F6;&#xFF0C;&#x9700;&#x8981;&#x6709;&#x6743;&#x9650;&#x8BBF;&#x95EE;ceph&#x96C6;&#x7FA4;&#x3002;&#x83B7;&#x53D6;&#x5E76;&#x62F7;&#x8D1D;&#x4E00;&#x4E2A;&#x4E34;&#x65F6;&#x7684;secret key&#x5230;&#x6240;&#x6709;&#x8FD0;&#x884C;&#x7684;nova-compute&#x8282;&#x70B9;&#x3002;</p>
+<pre><code>ceph auth get-key client.cinder | ssh {your-compute-node} tee client.cinder.key
+</code></pre><p>8&#x3001;&#x7136;&#x540E;&#xFF0C;&#x5728;compute&#x8282;&#x70B9;&#xFF0C;&#x6DFB;&#x52A0;secret key&#x5230;libvirt&#xFF0C;&#x518D;&#x5220;&#x9664;&#x4E34;&#x65F6;&#x7684;secret key&#x3002;</p>
+<pre><code># &#x4FDD;&#x5B58;uuid&#xFF0C;&#x540E;&#x9762;&#x4F1A;&#x7528;&#x5230;
+uuidgen
+457eb676-33da-42ec-9a8c-9293d545c337
+
+cat &gt; secret.xml &lt;&lt;EOF
+&lt;secret ephemeral=&apos;no&apos; private=&apos;no&apos;&gt;
+  &lt;uuid&gt;457eb676-33da-42ec-9a8c-9293d545c337&lt;/uuid&gt;
+  &lt;usage type=&apos;ceph&apos;&gt;
+    &lt;name&gt;client.cinder secret&lt;/name&gt;
+  &lt;/usage&gt;
+&lt;/secret&gt;
+EOF
+virsh secret-define --file secret.xml
+Secret 457eb676-33da-42ec-9a8c-9293d545c337 created
+
+virsh secret-set-value --secret 457eb676-33da-42ec-9a8c-9293d545c337 --base64 $(cat client.cinder.key) &amp;&amp; rm client.cinder.key secret.xml
+</code></pre><p>9&#x3001;&#x4FEE;&#x6539;glance-api.conf&#x3002;</p>
+<pre><code>[glance_store]
+stores = rbd
+default_store = rbd
+rbd_store_pool = images
+rbd_store_user = glance
+rbd_store_ceph_conf = /etc/ceph/ceph.conf
+rbd_store_chunk_size = 8
+...
+# &#x542F;&#x7528;copy-on-write
+[DEFAULT]
+show_image_direct_url = True
+...
+[paste_deploy]
+flavor = keystone
+</code></pre><p>10&#x3001;&#x4FEE;&#x6539;cinder.conf&#x3002;</p>
+<pre><code>[DEFAULT]
+...
+enabled_backends = ceph
+glance_api_version = 2
+...
+# &#x914D;&#x7F6E;cinder backup
+backup_driver = cinder.backup.drivers.ceph
+backup_ceph_conf = /etc/ceph/ceph.conf
+backup_ceph_user = cinder-backup
+backup_ceph_chunk_size = 134217728
+backup_ceph_pool = backups
+backup_ceph_stripe_unit = 0
+backup_ceph_stripe_count = 0
+restore_discard_excess_bytes = true
+...
+[ceph]
+volume_driver = cinder.volume.drivers.rbd.RBDDriver
+volume_backend_name = ceph
+rbd_pool = volumes
+rbd_ceph_conf = /etc/ceph/ceph.conf
+rbd_flatten_volume_from_snapshot = false
+rbd_max_clone_depth = 5
+rbd_store_chunk_size = 4
+rados_connect_timeout = -1
+rbd_user = cinder
+rbd_secret_uuid = 457eb676-33da-42ec-9a8c-9293d545c337
+</code></pre><p>11&#x3001;&#x914D;&#x7F6E;nova.conf&#x5C06;nova&#x6302;&#x8F7D;&#x5230;ceph rbd&#x5757;&#x8BBE;&#x5907;&#x3002;</p>
+<pre><code>[libvirt]
+...
+images_type = rbd
+images_rbd_pool = vms
+images_rbd_ceph_conf = /etc/ceph/ceph.conf
+rbd_user = cinder
+rbd_secret_uuid = 457eb676-33da-42ec-9a8c-9293d545c337
+disk_cachemodes=&quot;network=writeback&quot;
+</code></pre><p>12&#x3001;&#x91CD;&#x542F;&#x670D;&#x52A1;</p>
+<pre><code>glance-control api restart
+service nova-compute restart
+service cinder-volume restart
+service cinder-backup restart
+
+service openstack-glance-api restart
+service openstack-nova-compute restart
+service openstack-cinder-volume restart
+service openstack-cinder-backup restart
+</code></pre><p>13&#x3001;&#x4F7F;&#x7528;&#x5757;&#x8BBE;&#x5907;</p>
+<pre><code>cinder create --image-id {id of image} --display-name {name of volume} {size of volume}
+
+qemu-img convert -f {source-format} -O {output-format} {source-filename} {output-filename}
+qemu-img convert -f qcow2 -O raw precise-cloudimg.img precise-cloudimg.raw
+</code></pre><h2 id="2&#x3001;&#x4F7F;&#x7528;glance-task-create&#x4E0A;&#x4F20;&#x955C;&#x50CF;&#x5E76;&#x5C06;&#x683C;&#x5F0F;&#x8F6C;&#x4E3A;raw&#x3002;">2&#x3001;&#x4F7F;&#x7528;glance task-create&#x4E0A;&#x4F20;&#x955C;&#x50CF;&#x5E76;&#x5C06;&#x683C;&#x5F0F;&#x8F6C;&#x4E3A;raw&#x3002;</h2>
+<p>1&#x3001;&#x7F16;&#x8F91;glance-api.conf&#x3002;</p>
+<pre><code>[task]
+task_executor = taskflow
+work_dir=/tmp
+
+[taskflow_executor]
+engine_mode = serial
+max_workers = 10
+conversion_format=raw
+</code></pre><p>2&#x3001;&#x91CD;&#x542F;&#x670D;&#x52A1;</p>
+<pre><code>glance-control api restart
+
+service openstack-glance-api restart
+</code></pre><p>3&#x3001;&#x4E0A;&#x4F20;&#x955C;&#x50CF;</p>
+<pre><code>glance task-create --type import --input &apos;{&quot;import_from_format&quot;: &quot;qcow2&quot;, &quot;import_from&quot;: &quot;http://172.18.20.160/cirros-0.3.4-x86_64-disk.img&quot;, &quot;image_properties&quot;: {&quot;name&quot;: &quot;cirros-RAW&quot;, &quot;disk_format&quot;: &quot;qcow2&quot;, &quot;container_format&quot;: &quot;bare&quot;}}&apos;
+</code></pre><p>4.&#x79FB;&#x9664;osd&#x3002;</p>
+<pre><code>ceph osd tree
+ceph osd out osd.0
+ceph osd crush rm osd.0
+ceph auth del osd.0
+ceph osd rm osd.0
+</code></pre><h2 id="3&#x3001;&#x6DFB;&#x52A0;mon&#xFF0C;&#x79FB;&#x9664;mon">3&#x3001;&#x6DFB;&#x52A0;mon&#xFF0C;&#x79FB;&#x9664;mon</h2>
+<pre><code>ceph-deploy install ctrl
+ceph-deploy mon create ctrl 
+ceph-deploy mon add ctrl
+ceph-deploy mon create-initial
+ceph quorum_status --format json-pretty
+
+ceph-deploy mon destroy comp-3
+ceph quorum_status --format json-pretty
+
+ceph-deploy gatherkeys comp-1
+</code></pre><h2 id="4&#x3001;&#x542F;&#x52A8;ceph&#x81EA;&#x5E26;&#x76D1;&#x63A7;&#x754C;&#x9762;">4&#x3001;&#x542F;&#x52A8;ceph&#x81EA;&#x5E26;&#x76D1;&#x63A7;&#x754C;&#x9762;</h2>
+<p>1&#x3001;&#x67E5;&#x770B; ceph &#x72B6;&#x6001;</p>
+<pre><code>ceph -s
+</code></pre><p>2&#x3001;&#x542F;&#x7528; dashboard</p>
+<pre><code>ceph mgr module enable dashboard
+</code></pre><p>3&#x3001;&#x751F;&#x6210;&#x5E76;&#x5B89;&#x88C5;&#x4E00;&#x4E2A;&#x81EA;&#x7B7E;&#x540D;&#x8BC1;&#x4E66;</p>
+<pre><code>ceph dashboard create-self-signed-cert
+</code></pre><p>4&#x3001;&#x914D;&#x7F6E;&#x670D;&#x52A1;&#x5730;&#x5740;&#x3001;&#x7AEF;&#x53E3;&#xFF0C;&#x9ED8;&#x8BA4;&#x7684;&#x7AEF;&#x53E3;&#x662F;8443</p>
+<pre><code>ceph config set mgr mgr/dashboard/server_addr 192.168.0.127
+ceph config set mgr mgr/dashboard/server_port 8443
+ceph mgr services
+</code></pre><p>5&#x3001;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x7528;&#x6237;&#x3001;&#x5BC6;&#x7801;</p>
+<pre><code>ceph dashboard set-login-credentials admin admin
+</code></pre><p>6&#x3001;&#x91CD;&#x542F; mgr</p>
+<pre><code>systemctl restart ceph-mgr@node1
+</code></pre><h5 id="7&#x3001;&#x8BBF;&#x95EE;">7&#x3001;&#x8BBF;&#x95EE;</h5>
+<pre><code>https://192.168.0.127:8443
+</code></pre><h2 id="5&#x3001;kolla-&#x4E2D;ceph&#x76F8;&#x5173;">5&#x3001;kolla &#x4E2D;ceph&#x76F8;&#x5173;</h2>
+<pre><code>parted /dev/xvdb -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP 1 -1
+
+&#x4FEE;&#x6539;globalsl.yaml
+enable_ceph: &quot;yes&quot;
+ceph_enable_cache: &quot;yes&quot;
+ceph_cache_mode: &quot;writeback&quot;
+
+2&#x4E2A;240 &#x56FA;&#x6001;(&#x4E00;&#x4E2A;&#x505A;journal&#xFF0C;&#x4E00;&#x4E2A;&#x505A;cache)
+
+&#x3010;cache&#x3011;
+parted /dev/xvdc -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_CACHE_BOOTSTRAP 1 -1
+
+&#x3010;journal&#x3011;
+parted /dev/xvdd \
+-s mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDB_J 0% 5G \
+-s mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC_J 5G 10G \
+-s mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC_J 10G 15G \
+-s mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC_J 15G 20G \
+-s mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC_J 20G 25G \
+-s mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC_J 25G 30G \
+-s mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC_J 30G 35G \
+-s mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC_J 35G 40G \
+-s mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC_J 40G 45G
+
+9&#x4E2A;2T SATA
+
+parted /dev/vdb -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDB 1 -1
+parted /dev/vdc -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC 1 -1
+parted /dev/vdc -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC 1 -1
+parted /dev/vdc -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC 1 -1
+parted /dev/vdc -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC 1 -1
+parted /dev/vdc -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC 1 -1
+parted /dev/vdc -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC 1 -1
+parted /dev/vdc -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC 1 -1
+parted /dev/vdc -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_VDC 1 -1
+</code></pre><p>8&#x3001;pg&#x72B6;&#x6001;&#x8868;</p>
+<table>
+<thead>
+<tr>
+<th><strong>&#x72B6;&#x6001;</strong></th>
+<th><strong>&#x63CF;&#x8FF0;</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Activating</td>
+<td>PG&#x5DF2;&#x7ECF;&#x4E92;&#x8054;&#xFF0C;&#x4F46;&#x662F;&#x8FD8;&#x6CA1;&#x6709;active&#x3002;  <em>Peering<strong>&#x5DF2;&#x7ECF;&#x5B8C;&#x6210;&#xFF0C;</strong>PG<strong>&#x6B63;&#x5728;&#x7B49;&#x5F85;&#x6240;&#x6709;</strong>PG<strong>&#x5B9E;&#x4F8B;&#x540C;&#x6B65;&#x5E76;&#x56FA;&#x5316;</strong>Peering<strong>&#x7684;&#x7ED3;&#x679C;</strong>(Info<strong>&#x3001;</strong>Log<strong>&#x7B49;</strong>)</em></td>
+</tr>
+<tr>
+<td>Active</td>
+<td>&#x6D3B;&#x8DC3;&#x6001;&#x3002;PG&#x53EF;&#x4EE5;&#x6B63;&#x5E38;&#x5904;&#x7406;&#x6765;&#x81EA;&#x5BA2;&#x6237;&#x7AEF;&#x7684;&#x8BFB;&#x5199;&#x8BF7;&#x6C42;  PG&#x6B63;&#x5E38;&#x7684;&#x72B6;&#x6001;&#x5E94;&#x8BE5;&#x662F;Active+Clean&#x7684;&#x3002;</td>
+</tr>
+<tr>
+<td>Backfilling</td>
+<td>Ceph&#x6B63;&#x5E38;&#x626B;&#x63CF;&#x5E76;&#x540C;&#x6B65;&#x6574;&#x4E2A;PG&#x7684;&#x6570;&#x636E;&#xFF0C;&#x800C;&#x4E0D;&#x662F;&#x4ECE;&#x6700;&#x8FD1;&#x7684;&#x64CD;&#x4F5C;&#x65E5;&#x5FD7;&#x4E2D;&#x63A8;&#x65AD;&#x9700;&#x8981;&#x540C;&#x6B65;&#x7684;&#x6570;&#x636E;&#xFF0C;Backfill&#xFF08;&#x56DE;&#x586B;&#xFF09;&#x662F;&#x6062;&#x590D;&#x7684;&#x4E00;&#x4E2A;&#x7279;&#x6B8A;&#x72B6;&#x6001;&#x3002;  &#x6B63;&#x5728;&#x540E;&#x53F0;&#x586B;&#x5145;&#x6001;&#x3002; backfill&#x662F;recovery&#x7684;&#x4E00;&#x79CD;&#x7279;&#x6B8A;&#x573A;&#x666F;&#xFF0C;&#x6307;peering&#x5B8C;&#x6210;&#x540E;&#xFF0C;&#x5982;&#x679C;&#x57FA;&#x4E8E;&#x5F53;&#x524D;&#x6743;&#x5A01;&#x65E5;&#x5FD7;&#x65E0;&#x6CD5;&#x5BF9;Up Set&#x5F53;&#x4E2D;&#x7684;&#x67D0;&#x4E9B;PG&#x5B9E;&#x4F8B;&#x5B9E;&#x65BD;&#x589E;&#x91CF;&#x540C;&#x6B65;(&#x4F8B;&#x5982;&#x627F;&#x8F7D;&#x8FD9;&#x4E9B;PG&#x5B9E;&#x4F8B;&#x7684;OSD&#x79BB;&#x7EBF;&#x592A;&#x4E45;&#xFF0C;&#x6216;&#x8005;&#x662F;&#x65B0;&#x7684;OSD&#x52A0;&#x5165;&#x96C6;&#x7FA4;&#x5BFC;&#x81F4;&#x7684;PG&#x5B9E;&#x4F8B;&#x6574;&#x4F53;&#x8FC1;&#x79FB;) &#x5219;&#x901A;&#x8FC7;&#x5B8C;&#x5168;&#x62F7;&#x8D1D;&#x5F53;&#x524D;Primary&#x6240;&#x6709;&#x5BF9;&#x8C61;&#x7684;&#x65B9;&#x5F0F;&#x8FDB;&#x884C;&#x5168;&#x91CF;&#x540C;&#x6B65;</td>
+</tr>
+<tr>
+<td>Backfill-toofull</td>
+<td><em>backfill_toofull</em> backfill&#x64CD;&#x4F5C;&#x56E0;&#x4E3A;&#x76EE;&#x6807;OSD&#x5BB9;&#x91CF;&#x8D85;&#x8FC7;&#x6307;&#x6807;&#x800C;&#x6302;&#x8D77;  &#x67D0;&#x4E2A;&#x9700;&#x8981;&#x88AB;Backfill&#x7684;PG&#x5B9E;&#x4F8B;&#xFF0C;&#x5176;&#x6240;&#x5728;&#x7684;OSD&#x53EF;&#x7528;&#x7A7A;&#x95F4;&#x4E0D;&#x8DB3;&#xFF0C;Backfill&#x6D41;&#x7A0B;&#x5F53;&#x524D;&#x88AB;&#x6302;&#x8D77;</td>
+</tr>
+<tr>
+<td><em>backfill_unfound</em></td>
+<td>Backfill&#x56E0;&#x4E3A;&#x6CA1;&#x6709;&#x627E;&#x5230;&#x5BF9;&#x5E94;&#x5BF9;&#x8C61;&#x800C;&#x505C;&#x6B62;</td>
+</tr>
+<tr>
+<td>Backfill-wait</td>
+<td><em>backfill_wait</em> PG&#x6B63;&#x5728;&#x7B49;&#x5F85;backfill&#x88AB;&#x8C03;&#x5EA6;&#x6267;&#x884C;&#x3002;  &#x7B49;&#x5F85;Backfill &#x8D44;&#x6E90;&#x9884;&#x7559;</td>
+</tr>
+<tr>
+<td>Clean</td>
+<td>&#x5E72;&#x51C0;&#x6001;&#x3002;PG&#x5185;&#x6240;&#x6709;&#x7684;&#x5BF9;&#x8C61;&#x90FD;&#x88AB;&#x6B63;&#x786E;&#x7684;&#x590D;&#x5236;&#x4E86;&#x5BF9;&#x5E94;&#x7684;&#x4EFD;&#x6570;&#x3002;  <em>PG**&#x5F53;&#x524D;&#x4E0D;&#x5B58;&#x5728;&#x5F85;&#x4FEE;&#x590D;&#x7684;&#x5BF9;&#x8C61;&#xFF0C;</em> <em>Acting Set<strong>&#x548C;</strong>Up Set**&#x5185;&#x5BB9;&#x4E00;&#x81F4;&#xFF0C;&#x5E76;&#x4E14;&#x5927;&#x5C0F;&#x7B49;&#x4E8E;&#x5B58;&#x50A8;&#x6C60;&#x7684;&#x526F;&#x672C;&#x6570;</em></td>
+</tr>
+<tr>
+<td>Creating</td>
+<td>PG&#x6B63;&#x5728;&#x88AB;&#x521B;&#x5EFA;</td>
+</tr>
+<tr>
+<td>Deep</td>
+<td>Ceph &#x6B63;&#x5728;&#x68C0;&#x67E5;PG&#x6570;&#x636E;&#x548C;checksums&#x7684;&#x4E00;&#x81F4;&#x6027;&#x3002;  <em>PG**&#x6B63;&#x5728;&#x6216;&#x8005;&#x5373;&#x5C06;&#x8FDB;&#x884C;&#x5BF9;&#x8C61;&#x4E00;&#x81F4;&#x6027;&#x626B;&#x63CF;&#x6E05;&#x6D17;</em></td>
+</tr>
+<tr>
+<td>Degraded</td>
+<td>PG&#x4E2D;&#x7684;&#x4E00;&#x4E9B;&#x5BF9;&#x8C61;&#x8FD8;&#x6CA1;&#x6709;&#x88AB;&#x590D;&#x5236;&#x5230;&#x89C4;&#x5B9A;&#x7684;&#x4EFD;&#x6570;&#x3002;  <em>&#x964D;&#x7EA7;&#x72B6;&#x6001;&#x3002;<strong>Peering</strong>&#x5B8C;&#x6210;&#x540E;&#xFF0C;<strong>PG</strong>&#x68C0;&#x6D4B;&#x5230;&#x4EFB;&#x610F;&#x4E00;&#x4E2A;<strong>PG</strong>&#x5B9E;&#x4F8B;&#x5B58;&#x5728;&#x4E0D;&#x4E00;&#x81F4;<strong>(</strong>&#x9700;&#x8981;&#x88AB;&#x540C;&#x6B65;<strong>/</strong>&#x4FEE;&#x590D;<strong>)</strong>&#x7684;&#x5BF9;&#x8C61;&#xFF0C;&#x6216;&#x8005;&#x5F53;&#x524D;**ActingSet</em> <em>&#x5C0F;&#x4E8E;&#x5B58;&#x50A8;&#x6C60;&#x526F;&#x672C;&#x6570;</em></td>
+</tr>
+<tr>
+<td>Down</td>
+<td>&#x4E00;&#x4E2A;&#x5305;&#x542B;&#x5FC5;&#x5907;&#x6570;&#x636E;&#x7684;&#x526F;&#x672C;&#x79BB;&#x7EBF;&#xFF0C;&#x6240;&#x4EE5;PG&#x4E5F;&#x79BB;&#x7EBF;&#x4E86;  <em>Peering<strong>&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;</strong>PG<strong>&#x68C0;&#x6D4B;&#x5230;&#x67D0;&#x4E2A;&#x4E0D;&#x80FD;&#x88AB;&#x8DF3;&#x8FC7;&#x7684;</strong>Interval<strong>&#x4E2D;</strong>(<strong>&#x4F8B;&#x5982;&#x8BE5;</strong>Interval<strong>&#x671F;&#x95F4;&#xFF0C;</strong>PG<strong>&#x5B8C;&#x6210;&#x4E86;</strong>Peering<strong>&#xFF0C;&#x5E76;&#x4E14;&#x6210;&#x529F;&#x5207;&#x6362;&#x81F3;</strong>Active<strong>&#x72B6;&#x6001;&#xFF0C;&#x4ECE;&#x800C;&#x6709;&#x53EF;&#x80FD;&#x6B63;&#x5E38;&#x5904;&#x7406;&#x4E86;&#x6765;&#x81EA;&#x5BA2;&#x6237;&#x7AEF;&#x7684;&#x8BFB;&#x5199;&#x8BF7;&#x6C42;</strong>),<strong>&#x5F53;&#x524D;&#x5269;&#x4F59;&#x5728;&#x7EBF;&#x7684;</strong>OSD**&#x4E0D;&#x8DB3;&#x4EE5;&#x5B8C;&#x6210;&#x6570;&#x636E;&#x4FEE;&#x590D;</em></td>
+</tr>
+<tr>
+<td>Incomplete</td>
+<td>Ceph &#x63A2;&#x6D4B;&#x5230;&#x67D0;&#x4E00;PG&#x53EF;&#x80FD;&#x4E22;&#x5931;&#x4E86;&#x5199;&#x5165;&#x4FE1;&#x606F;&#xFF0C;&#x6216;&#x8005;&#x6CA1;&#x6709;&#x5065;&#x5EB7;&#x7684;&#x526F;&#x672C;&#x3002;&#x5982;&#x679C;&#x4F60;&#x770B;&#x5230;&#x4E86;&#x8FD9;&#x4E2A;&#x72B6;&#x6001;&#xFF0C;&#x5C1D;&#x8BD5;&#x542F;&#x52A8;&#x6709;&#x53EF;&#x80FD;&#x5305;&#x542B;&#x6240;&#x9700;&#x4FE1;&#x606F;&#x7684;&#x5931;&#x8D25;OSD&#xFF0C;  &#x5982;&#x679C;&#x662F;erasure coded  pool&#x7684;&#x8BDD;&#xFF0C;&#x4E34;&#x65F6;&#x8C03;&#x6574;&#x4E00;&#x4E0B;<code>min_size</code>&#x4E5F;&#x53EF;&#x80FD;&#x5B8C;&#x6210;&#x6062;&#x590D;  <em>Peering**&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;</em> <em>&#x7531;&#x4E8E;</em> <em>a.</em> <em>&#x65E0;&#x975E;&#x9009;&#x51FA;&#x6743;&#x5A01;&#x65E5;&#x5FD7;</em> <em>b.</em> <em>&#x901A;&#x8FC7;<strong>choose_acting</strong>&#x9009;&#x51FA;&#x7684;<strong>Acting Set</strong>&#x540E;&#x7EED;&#x4E0D;&#x8DB3;&#x4EE5;&#x5B8C;&#x6210;&#x6570;&#x636E;&#x4FEE;&#x590D;&#xFF0C;&#x5BFC;&#x81F4;<strong>Peering</strong>&#x65E0;&#x975E;&#x6B63;&#x5E38;&#x5B8C;&#x6210;</em></td>
+</tr>
+<tr>
+<td>Inconsistent</td>
+<td>Ceph&#x68C0;&#x6D4B;&#x5230;PG&#x4E2D;&#x5BF9;&#x8C61;&#x7684;&#x4E00;&#x4EFD;&#x6216;&#x591A;&#x4EFD;&#x6570;&#x636E;&#x4E0D;&#x4E00;&#x81F4;&#xFF08;&#x6BD4;&#x5982;&#x5BF9;&#x8C61;&#x5927;&#x5B66;&#x4E0D;&#x4E00;&#x76F4;&#xFF0C;&#x6216;&#x8005;&#x6062;&#x590D;&#x6210;&#x529F;&#x540E;&#x5BF9;&#x8C61;&#x4F9D;&#x7136;&#x6CA1;&#x6709;&#x7B49;&#xFF09;  <em>&#x4E0D;&#x4E00;&#x81F4;&#x6001;&#x3002;&#x96C6;&#x7FA4;&#x6E05;&#x7406;&#x548C;&#x6DF1;&#x5EA6;&#x6E05;&#x7406;&#x540E;&#x68C0;&#x6D4B;&#x5230;<strong>PG</strong>&#x4E2D;&#x7684;&#x5BF9;&#x8C61;&#x5728;&#x526F;&#x672C;&#x5B58;&#x5728;&#x4E0D;&#x4E00;&#x81F4;&#xFF0C;&#x4F8B;&#x5982;&#x5BF9;&#x8C61;&#x7684;&#x6587;&#x4EF6;&#x5927;&#x5C0F;&#x4E0D;&#x4E00;&#x81F4;&#x6216;<strong>Recovery</strong>&#x7ED3;&#x675F;&#x540E;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#x7684;&#x526F;&#x672C;&#x4E22;&#x5931;</em></td>
+</tr>
+<tr>
+<td>Peered</td>
+<td>PG&#x5DF2;&#x4E92;&#x8054;&#xFF0C;&#x4F46;&#x662F;&#x4E0D;&#x80FD;&#x5411;&#x5BA2;&#x6237;&#x7AEF;&#x63D0;&#x4F9B;&#x670D;&#x52A1;&#xFF0C;&#x56E0;&#x4E3A;&#x5176;&#x526F;&#x672C;&#x6570;&#x6CA1;&#x8FBE;&#x5230;&#x672C;&#x5B58;&#x50A8;&#x6C60;&#x7684;&#x914D;&#x7F6E;&#x503C;&#xFF08; min_size &#x53C2;&#x6570;&#xFF09;&#x3002;  &#x5728;&#x6B64;&#x72B6;&#x6001;&#x4E0B;&#x6062;&#x590D;&#x4F1A;&#x8FDB;&#x884C;&#xFF0C;&#x6240;&#x4EE5;&#x6B64;PG&#x6700;&#x7EC8;&#x80FD;&#x8FBE;&#x5230; min_size &#x3002;  Peering&#x5DF2;&#x7ECF;&#x5B8C;&#x6210;&#xFF0C;&#x4F46;&#x662F;PG&#x5F53;&#x524D;ActingSet&#x89C4;&#x6A21;&#x5C0F;&#x4E8E;&#x5B58;&#x50A8;&#x6C60;&#x89C4;&#x5B9A;&#x7684;&#x6700;&#x5C0F;&#x526F;&#x672C;&#x6570;(min_size)</td>
+</tr>
+<tr>
+<td>Peering</td>
+<td>PG&#x6B63;&#x5728;&#x4E92;&#x8054;&#x8FC7;&#x7A0B;&#x4E2D;&#x3002;&#x6B63;&#x5728;&#x540C;&#x6B65;&#x6001;&#x3002;PG&#x6B63;&#x5728;&#x6267;&#x884C;&#x540C;&#x6B65;&#x5904;&#x7406;&#x3002;  &#x7C7B;&#x4F3C;Raft&#x7684;Leader&#x9009;&#x4E3E;&#xFF0C;&#x4F7F;&#x4E00;&#x4E2A;PG&#x5185;&#x7684;OSD&#x8FBE;&#x6210;&#x4E00;&#x81F4;&#xFF0C;&#x4E0D;&#x6D89;&#x53CA;&#x6570;&#x636E;&#x8FC1;&#x79FB;&#x7B49;&#x64CD;&#x4F5C;&#x3002;</td>
+</tr>
+<tr>
+<td>Recovering</td>
+<td>&#x6B63;&#x5728;&#x6062;&#x590D;&#x6001;&#x3002;&#x96C6;&#x7FA4;&#x6B63;&#x5728;&#x6267;&#x884C;&#x8FC1;&#x79FB;&#x6216;&#x540C;&#x6B65;&#x5BF9;&#x8C61;&#x548C;&#x4ED6;&#x4EEC;&#x7684;&#x526F;&#x672C;</td>
+</tr>
+<tr>
+<td>Recovering-wait</td>
+<td>&#x7B49;&#x5F85;recovery&#x8D44;&#x6E90;&#x9884;&#x7559;&#x3002;PG&#x6B63;&#x5728;&#x7B49;&#x5F85;&#x6062;&#x590D;&#x88AB;&#x8C03;&#x5EA6;&#x6267;&#x884C;&#x3002;</td>
+</tr>
+<tr>
+<td>recovery_toofull</td>
+<td>&#x6062;&#x590D;&#x64CD;&#x4F5C;&#x56E0;&#x4E3A;&#x76EE;&#x6807;OSD&#x5BB9;&#x91CF;&#x8D85;&#x8FC7;&#x6307;&#x6807;&#x800C;&#x6302;&#x8D77;&#x3002;</td>
+</tr>
+<tr>
+<td><em>recovery_unfound</em></td>
+<td>&#x6062;&#x590D;&#x56E0;&#x4E3A;&#x6CA1;&#x6709;&#x627E;&#x5230;&#x5BF9;&#x5E94;&#x5BF9;&#x8C61;&#x800C;&#x505C;&#x6B62;&#x3002;</td>
+</tr>
+<tr>
+<td>Remapped</td>
+<td>PG&#x88AB;&#x4E34;&#x65F6;&#x5206;&#x914D;&#x5230;&#x4E86;&#x548C;CRUSH&#x6240;&#x6307;&#x5B9A;&#x7684;&#x4E0D;&#x540C;&#x7684;OSD&#x4E0A;&#x3002;  &#x91CD;&#x65B0;&#x6620;&#x5C04;&#x6001;&#x3002;PG&#x6D3B;&#x52A8;&#x96C6;&#x4EFB;&#x4F55;&#x7684;&#x4E00;&#x4E2A;&#x6539;&#x53D8;&#xFF0C;&#x6570;&#x636E;&#x53D1;&#x751F;&#x4ECE;&#x8001;&#x6D3B;&#x52A8;&#x96C6;&#x5230;&#x65B0;&#x6D3B;&#x52A8;&#x96C6;&#x7684;&#x8FC1;&#x79FB;&#x3002;&#x5728;&#x8FC1;&#x79FB;&#x671F;&#x95F4;&#x8FD8;&#x662F;&#x7528;&#x8001;&#x7684;&#x6D3B;&#x52A8;&#x96C6;&#x4E2D;&#x7684;&#x4E3B;OSD&#x5904;&#x7406;&#x5BA2;&#x6237;&#x7AEF;&#x8BF7;&#x6C42;&#xFF0C;&#x4E00;&#x65E6;&#x8FC1;&#x79FB;&#x5B8C;&#x6210;&#x65B0;&#x6D3B;&#x52A8;&#x96C6;&#x4E2D;&#x7684;&#x4E3B;OSD&#x5F00;&#x59CB;&#x5904;&#x7406;</td>
+</tr>
+<tr>
+<td>Repair</td>
+<td>Ceph&#x6B63;&#x5728;&#x68C0;&#x67E5;PG&#x5E76;&#x4E14;&#x4FEE;&#x590D;&#x6240;&#x6709;&#x53D1;&#x73B0;&#x7684;&#x4E0D;&#x4E00;&#x81F4;&#x60C5;&#x51B5;&#xFF08;&#x5982;&#x679C;&#x6709;&#x7684;&#x8BDD;&#xFF09;  <em>PG<strong>&#x5728;&#x6267;&#x884C;</strong>Scrub**&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x5982;&#x679C;&#x53D1;&#x73B0;&#x5B58;&#x5728;&#x4E0D;&#x4E00;&#x81F4;&#x7684;&#x5BF9;&#x8C61;&#xFF0C;&#x5E76;&#x4E14;&#x80FD;&#x591F;&#x4FEE;&#x590D;&#xFF0C;&#x5219;&#x81EA;&#x52A8;&#x8FDB;&#x884C;&#x4FEE;&#x590D;&#x72B6;&#x6001;</em></td>
+</tr>
+<tr>
+<td>Scrubbing</td>
+<td>Ceph &#x6B63;&#x5728;&#x68C0;&#x67E5;PG metadata&#x7684;&#x4E00;&#x81F4;&#x6027;&#x3002;  PG&#x6B63;&#x5728;&#x6216;&#x8005;&#x5373;&#x5C06;&#x8FDB;&#x884C;&#x5BF9;&#x8C61;&#x4E00;&#x81F4;&#x6027;&#x626B;&#x63CF;</td>
+</tr>
+<tr>
+<td>Unactive</td>
+<td>&#x975E;&#x6D3B;&#x8DC3;&#x6001;&#x3002;PG&#x4E0D;&#x80FD;&#x5904;&#x7406;&#x8BFB;&#x5199;&#x8BF7;&#x6C42;</td>
+</tr>
+<tr>
+<td>Unclean</td>
+<td>&#x975E;&#x5E72;&#x51C0;&#x6001;&#x3002;PG&#x4E0D;&#x80FD;&#x4ECE;&#x4E0A;&#x4E00;&#x4E2A;&#x5931;&#x8D25;&#x4E2D;&#x6062;&#x590D;</td>
+</tr>
+<tr>
+<td>Stale</td>
+<td>PG&#x72B6;&#x6001;&#x672A;&#x77E5;&#xFF0C;&#x4ECE;PG mapping&#x66F4;&#x65B0;&#x540E;Monitor&#x4E00;&#x76F4;&#x6CA1;&#x6709;&#x6536;&#x5230;&#x66F4;&#x65B0;  <em>&#x672A;&#x5237;&#x65B0;&#x6001;&#x3002;<strong>PG</strong>&#x72B6;&#x6001;&#x6CA1;&#x6709;&#x88AB;&#x4EFB;&#x4F55;<strong>OSD</strong>&#x66F4;&#x65B0;&#xFF0C;&#x8FD9;&#x8BF4;&#x660E;&#x6240;&#x6709;&#x5B58;&#x50A8;&#x8FD9;&#x4E2A;<strong>PG</strong>&#x7684;<strong>OSD</strong>&#x53EF;&#x80FD;&#x6302;&#x6389;**,</em> <em>&#x6216;&#x8005;<strong>Mon</strong>&#x6CA1;&#x6709;&#x68C0;&#x6D4B;&#x5230;<strong>Primary</strong>&#x7EDF;&#x8BA1;&#x4FE1;&#x606F;<strong>(</strong>&#x7F51;&#x7EDC;&#x6296;&#x52A8;**)</em></td>
+</tr>
+<tr>
+<td><em>snaptrim</em></td>
+<td>&#x6B63;&#x5728;&#x5BF9;&#x5FEB;&#x7167;&#x505A;Trim&#x64CD;&#x4F5C;&#x3002;</td>
+</tr>
+<tr>
+<td><em>snaptrim_Wait</em></td>
+<td>Trim&#x64CD;&#x4F5C;&#x7B49;&#x5F85;&#x88AB;&#x8C03;&#x5EA6;&#x6267;&#x884C;</td>
+</tr>
+<tr>
+<td><em>snaptrim_Error</em></td>
+<td>Trim&#x64CD;&#x4F5C;&#x56E0;&#x4E3A;&#x9519;&#x8BEF;&#x800C;&#x505C;&#x6B62;</td>
+</tr>
+<tr>
+<td>Undersized</td>
+<td>&#x8BE5;PG&#x7684;&#x526F;&#x672C;&#x6570;&#x91CF;&#x5C0F;&#x4E8E;&#x5B58;&#x50A8;&#x6C60;&#x6240;&#x914D;&#x7F6E;&#x7684;&#x526F;&#x672C;&#x6570;&#x91CF;&#x3002;  PG&#x5F53;&#x524D;Acting Set&#x5C0F;&#x4E8E;&#x5B58;&#x50A8;&#x6C60;&#x526F;&#x672C;&#x6570;&#x3002;ceph&#x9ED8;&#x8BA4;3&#x526F;&#x672C;&#xFF0C;min_size&#x53C2;&#x6570;&#x901A;&#x5E38;&#x4E3A;2&#xFF0C;&#x5373;&#x526F;&#x672C;&#x6570;&gt;=2&#x65F6;&#x5C31;&#x53EF;&#x4EE5;&#x8FDB;&#x884C;IO&#xFF0C;&#x5426;&#x5219;&#x963B;&#x585E;IO&#x3002;</td>
+</tr>
+<tr>
+<td>forced_recovery</td>
+<td>&#x7528;&#x6237;&#x6307;&#x5B9A;&#x7684;PG&#x9AD8;&#x4F18;&#x5148;&#x7EA7;&#x6062;&#x590D;</td>
+</tr>
+<tr>
+<td><em>forced_backfill</em></td>
+<td>&#x7528;&#x6237;&#x6307;&#x5B9A;&#x7684;&#x9AD8;&#x4F18;&#x5148;&#x7EA7;backfill</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6&#x3001;&#x53C2;&#x6570;&#x8C03;&#x4F18;">6&#x3001;&#x53C2;&#x6570;&#x8C03;&#x4F18;</h2>
+<pre><code>ceph -s
+  cluster:                                                                                                                       
+    id:     79d60ec1-cece-464e-9d2c-37ed3581a3dd                                                                                 
+    health: HEALTH_ERR                                                                                                           
+            1 scrub errors                                                                                                       
+            Possible data damage: 1 pg inconsistent
+
+ceph health detail
+ceph healthrepair 14.1a
+
+#&#x4FDD;&#x7559;&#x4E00;&#x6BB5;&#x65F6;&#x95F4;&#x4EE5;&#x6765;&#x7684;&#x8BBF;&#x95EE;&#x8BB0;&#x5F55;&#xFF0C;&#x8FD9;&#x6837; Ceph &#x5C31;&#x80FD;&#x5224;&#x65AD;&#x4E00;&#x5BA2;&#x6237;&#x7AEF;&#x5728;&#x4E00;&#x6BB5;&#x65F6;&#x95F4;&#x5185;&#x8BBF;&#x95EE;&#x4E86;&#x67D0;&#x5BF9;&#x8C61;&#x4E00;&#x6B21;&#x3001;&#x8FD8;&#x662F;&#x591A;&#x6B21;&#xFF08;&#x5B58;&#x6D3B;&#x671F;&#x4E0E;&#x70ED;&#x5EA6;&#xFF09;&#x3002;
+#&#x4E3A;&#x7F13;&#x5B58;&#x5B58;&#x50A8;&#x6C60;&#x4FDD;&#x7559;&#x7684;&#x547D;&#x4E2D;&#x96C6;&#x6570;&#x91CF;
+ceph osd pool set vms.cache hit_set_count 1
+
+#&#x4E3A;&#x7F13;&#x5B58;&#x5B58;&#x50A8;&#x6C60;&#x4FDD;&#x7559;&#x7684;&#x547D;&#x4E2D;&#x96C6;&#x6709;&#x6548;&#x671F;
+ceph osd pool set vms.cache hit_set_period 3600
+
+#&#x7F13;&#x5B58;&#x5B58;&#x50A8;&#x6C60;&#x5305;&#x542B;&#x7684;&#x810F;&#x5BF9;&#x8C61;&#x8FBE;&#x5230;&#x591A;&#x5C11;&#x6BD4;&#x4F8B;&#x65F6;&#x5C31;&#x628A;&#x5B83;&#x4EEC;&#x56DE;&#x5199;&#x5230;&#x540E;&#x7AEF;&#x7684;&#x5B58;&#x50A8;&#x6C60;
+ceph osd pool set vms.cache cache_target_dirty_ratio 0.4
+
+#&#x7F13;&#x5B58;&#x5B58;&#x50A8;&#x6C60;&#x5185;&#x5305;&#x542B;&#x7684;&#x5DF2;&#x4FEE;&#x6539;&#xFF08;&#x810F;&#x7684;&#xFF09;&#x5BF9;&#x8C61;&#x8FBE;&#x5230;&#x6B64;&#x6BD4;&#x4F8B;&#x65F6;&#xFF0C;&#x7F13;&#x5B58;&#x5C42;&#x4EE3;&#x7406;&#x5C31;&#x4F1A;&#x66F4;&#x5FEB;&#x5730;&#x628A;&#x810F;&#x5BF9;&#x8C61;&#x5237;&#x56DE;&#x5230;&#x540E;&#x7AEF;&#x5B58;&#x50A8;&#x6C60;
+ceph osd pool set vms.cache cache_target_dirty_high_ratio 0.6
+
+#&#x7F13;&#x5B58;&#x5B58;&#x50A8;&#x6C60;&#x5305;&#x542B;&#x7684;&#x5E72;&#x51C0;&#x5BF9;&#x8C61;&#x8FBE;&#x5230;&#x591A;&#x5C11;&#x6BD4;&#x4F8B;&#x65F6;&#xFF0C;&#x7F13;&#x5B58;&#x4EE3;&#x7406;&#x5C31;&#x628A;&#x5B83;&#x4EEC;&#x8D76;&#x51FA;&#x7F13;&#x5B58;&#x5B58;&#x50A8;&#x6C60;
+ceph osd pool set vms.cache cache_target_full_ratio 0.8
+
+#&#x8FBE;&#x5230; max_bytes &#x9600;&#x503C;&#x65F6; Ceph &#x5C31;&#x56DE;&#x5199;&#x6216;&#x8D76;&#x51FA;&#x5BF9;&#x8C61;&#xFF08;200G&#xFF09;
+ceph osd pool set vms.cache target_max_bytes 200000000000
+
+#&#x8FBE;&#x5230; max_objects &#x9600;&#x503C;&#x65F6; Ceph &#x5C31;&#x56DE;&#x5199;&#x6216;&#x8D76;&#x51FA;&#x5BF9;&#x8C61;(&#x6BCF;&#x4E2A;&#x5BF9;&#x8C61;1M)
+ceph osd pool set vms.cache target_max_objects 200000
+
+#&#x8FBE;&#x5230;&#x6B64;&#x65F6;&#x95F4;&#xFF08;&#x5355;&#x4F4D;&#x4E3A;&#x79D2;&#xFF09;&#x65F6;&#xFF0C;&#x7F13;&#x5B58;&#x4EE3;&#x7406;&#x5C31;&#x628A;&#x67D0;&#x4E9B;&#x5BF9;&#x8C61;&#x4ECE;&#x7F13;&#x5B58;&#x5B58;&#x50A8;&#x6C60;&#x5237;&#x56DE;&#x5230;&#x5B58;&#x50A8;&#x6C60;
+ceph osd pool set vms.cache cache_min_flush_age 600
+
+#&#x8FBE;&#x5230;&#x6B64;&#x65F6;&#x95F4;&#xFF08;&#x5355;&#x4F4D;&#x4E3A;&#x79D2;&#xFF09;&#x65F6;&#xFF0C;&#x7F13;&#x5B58;&#x4EE3;&#x7406;&#x5C31;&#x628A;&#x67D0;&#x4E9B;&#x5BF9;&#x8C61;&#x4ECE;&#x7F13;&#x5B58;&#x5B58;&#x50A8;&#x6C60;&#x8D76;&#x51FA;
+ceph osd pool set vms.cache cache_min_evict_age 1800
+
+hit_set_count
+&#x63CF;&#x8FF0;:    &#x4E3A;&#x7F13;&#x5B58;&#x5B58;&#x50A8;&#x6C60;&#x4FDD;&#x7559;&#x7684;&#x547D;&#x4E2D;&#x96C6;&#x6570;&#x91CF;&#x3002;&#x6B64;&#x503C;&#x8D8A;&#x9AD8;&#xFF0C; ceph-osd &#x5B88;&#x62A4;&#x8FDB;&#x7A0B;&#x6D88;&#x8017;&#x7684;&#x5185;&#x5B58;&#x8D8A;&#x591A;&#x3002;
+&#x7C7B;&#x578B;:    &#x6574;&#x6570;
+&#x6709;&#x6548;&#x8303;&#x56F4;:    1. Agent doesn&#x2019;t handle &gt; 1 yet.
+
+hit_set_period
+&#x63CF;&#x8FF0;:    &#x4E3A;&#x7F13;&#x5B58;&#x5B58;&#x50A8;&#x6C60;&#x4FDD;&#x7559;&#x7684;&#x547D;&#x4E2D;&#x96C6;&#x6709;&#x6548;&#x671F;&#x3002;&#x6B64;&#x503C;&#x8D8A;&#x9AD8;&#xFF0C; ceph-osd &#x6D88;&#x8017;&#x7684;&#x5185;&#x5B58;&#x8D8A;&#x591A;&#x3002;
+&#x7C7B;&#x578B;:    &#x6574;&#x6570;
+&#x5B9E;&#x4F8B;:    3600 1hr
+
+ceph osd pool set vms-cache hit_set_count 1
+ceph osd pool set vms-cache hit_set_period 3600
+ceph osd pool set vms-cache cache_target_dirty_ratio 0.4
+ceph osd pool set vms-cache cache_target_dirty_high_ratio 0.6
+ceph osd pool set vms-cache cache_target_full_ratio 0.8
+ceph osd pool set vms-cache target_max_bytes 200000000000
+ceph osd pool set vms-cache target_max_objects 200000
+ceph osd pool set vms-cache cache_min_flush_age 600
+ceph osd pool set vms-cache cache_min_evict_age 1800
+
+ceph osd pool set images-cache hit_set_count 1
+ceph osd pool set images-cache hit_set_period 3600
+ceph osd pool set images-cache cache_target_dirty_ratio 0.4
+ceph osd pool set images-cache cache_target_dirty_high_ratio 0.6
+ceph osd pool set images-cache cache_target_full_ratio 0.8
+ceph osd pool set images-cache target_max_bytes 200000000000
+ceph osd pool set images-cache target_max_objects 200000
+ceph osd pool set images-cache cache_min_flush_age 600
+ceph osd pool set images-cache cache_min_evict_age 1800
+
+ceph osd pool set volumes-cache hit_set_count 1
+ceph osd pool set volumes-cache hit_set_period 3600
+ceph osd pool set volumes-cache cache_target_dirty_ratio 0.4
+ceph osd pool set volumes-cache cache_target_dirty_high_ratio 0.6
+ceph osd pool set volumes-cache cache_target_full_ratio 0.8
+ceph osd pool set volumes-cache target_max_bytes 200000000000
+ceph osd pool set volumes-cache target_max_objects 200000
+ceph osd pool set volumes-cache cache_min_flush_age 600
+ceph osd pool set volumes-cache cache_min_evict_age 1800
+
+ceph osd pool set backups-cache hit_set_count 1
+ceph osd pool set backups-cache hit_set_period 3600
+ceph osd pool set backups-cache cache_target_dirty_ratio 0.4
+ceph osd pool set backups-cache cache_target_dirty_high_ratio 0.6
+ceph osd pool set backups-cache cache_target_full_ratio 0.8
+ceph osd pool set backups-cache target_max_bytes 200000000000
+ceph osd pool set backups-cache target_max_objects 200000
+ceph osd pool set backups-cache cache_min_flush_age 600
+ceph osd pool set backups-cache cache_min_evict_age 1800
+
+ceph osd pool set gnocchi-cache hit_set_count 1
+ceph osd pool set gnocchi-cache hit_set_period 3600
+ceph osd pool set gnocchi-cache cache_target_dirty_ratio 0.4
+ceph osd pool set gnocchi-cache cache_target_dirty_high_ratio 0.6
+ceph osd pool set gnocchi-cache cache_target_full_ratio 0.8
+ceph osd pool set gnocchi-cache target_max_bytes 200000000000
+ceph osd pool set gnocchi-cache target_max_objects 200000
+ceph osd pool set gnocchi-cache cache_min_flush_age 600
+ceph osd pool set gnocchi-cache cache_min_evict_age 1800
+</code></pre><h1 id="&#x56DB;&#x3001;faq">&#x56DB;&#x3001;FAQ</h1>
+<p>1&#x3001;&#x65E5;&#x5FD7;&#x76D8;bug</p>
+<pre><code>ceph-disk list
+
+vim /usr/lib/python2.7/dist-packages/ceph_disk/main.py
+
+sgdisk --typecode=6:4fbd7e29-9d25-41b8-afd0-062c0ceff05d -- /dev/sda
+
+sgdisk --typecode=1:45b0969e-9b03-4f30-b4c6-b4b80ceff106 -- /dev/ssd
+
+chown -R ceph:ceph /dev/nvme0n1p2
+
+parted /dev/sdg
+mklabel        GPT
+
+mkpart cache xfs 0G 380G
+mkpart sdb_journal xfs 380G 385G
+</code></pre><p>2&#x3001;NO_PUBKEY E84AC2C0460F3994</p>
+<pre><code>apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E84AC2C0460F3994
+</code></pre><p>3&#x3001;** ERROR: error creating empty object store in /var/lib/ceph/tmp/mnt.blV9DA: (13) Permission denied</p>
+<pre><code>&#x5C06;ceph&#x96C6;&#x7FA4;&#x9700;&#x8981;&#x4F7F;&#x7528;&#x7684;&#x6240;&#x6709;&#x78C1;&#x76D8;&#x6743;&#x9650;&#xFF0C;&#x6240;&#x5C5E;&#x7528;&#x6237;&#x3001;&#x7528;&#x6237;&#x7EC4;&#x6539;&#x7ED9;ceph
+
+chown ceph:ceph /dev/xvdb
+</code></pre><p>4&#x3001;clock skew detected on mon.ceph-node2, mon.ceph-node3  Monitor clock skew detected </p>
+<pre><code>/etc/init.d/ntpd stop
+
+service chrony stop
+ntpdate time.nist.gov
+service chrony start
+</code></pre><p>5&#x3001; OSD_SCRUB_ERRORS: 1 scrub errors&#xFF1B;PG_DAMAGED: Possible data damage: 1 pg inconsistent</p>
+<pre><code>docker exec ceph_mon sh -c &apos;for i in &quot;`ceph health detail|grep -vE \&quot;(PG_DAMAGED|HEALTH_ERR|OSD_SCRUB_ERRORS)\&quot;|awk \&quot;{print $2}\&quot;`&quot;;do ceph pg repair $i ;done&apos;
+
+for i in `ceph health  detail|grep &apos;active+clean+inconsistent&apos;|awk &apos;{print $2}&apos;`;do ceph pg repair $i ;done
+ceph -s
+</code></pre><p>6&#x3001;&#x5F80;&#x4E0B;&#x5237;&#x7F13;&#x5B58;</p>
+<pre><code>rados -p images-cache cache-flush-evict-all
+rados -p volumes-cache cache-flush-evict-all
+rados -p backups-cache cache-flush-evict-all
+rados -p vms-cache cache-flush-evict-all
+rados -p gnocchi-cache cache-flush-evict-all
+</code></pre><p>7&#x3001;application not enabled on 1 pool(s)</p>
+<pre><code>ceph osd pool application enable k8s rbd
+</code></pre><p>8&#x3001;&#x624B;&#x52A8;&#x5237;&#x65B0; ceph-cache</p>
+<pre><code>rados -p cache cache-flush-evict-all
+</code></pre><p>9&#x3001;&#x65B0;&#x7248;&#x672C;&#x7279;&#x6027;&#x95EE;&#x9898;</p>
+<blockquote>
+<p>rbd: image foo: image uses unsupported features: 0x38</p>
+</blockquote>
+<pre><code>rbd info foo
+
+rbd image &apos;foo&apos;:
+    size 1024 MB in 256 objects
+    order 22 (4096 kB objects)
+    block_name_prefix: rbd_data.10612ae7234b
+    format: 2    features: layering, exclusive-lock, object-map, fast-diff, deep-flatten
+    flags:
+layering: &#x652F;&#x6301;&#x5206;&#x5C42;
+striping: &#x652F;&#x6301;&#x6761;&#x5E26;&#x5316; v2
+exclusive-lock: &#x652F;&#x6301;&#x72EC;&#x5360;&#x9501;
+object-map: &#x652F;&#x6301;&#x5BF9;&#x8C61;&#x6620;&#x5C04;&#xFF08;&#x4F9D;&#x8D56; exclusive-lock &#xFF09;
+fast-diff: &#x5FEB;&#x901F;&#x8BA1;&#x7B97;&#x5DEE;&#x5F02;&#xFF08;&#x4F9D;&#x8D56; object-map &#xFF09;
+deep-flatten: &#x652F;&#x6301;&#x5FEB;&#x7167;&#x6241;&#x5E73;&#x5316;&#x64CD;&#x4F5C;
+journaling: &#x652F;&#x6301;&#x8BB0;&#x5F55; IO &#x64CD;&#x4F5C;&#xFF08;&#x4F9D;&#x8D56;&#x72EC;&#x5360;&#x9501;&#xFF09;
+</code></pre><pre><code>rbd feature disable foo exclusive-lock, object-map, fast-diff, deep-flatten
+</code></pre><p>10&#x3001;&#x6E90;</p>
+<pre><code>echo &quot;deb https://download.ceph.com/debian-octopus/ bionic main&quot; &gt; /etc/apt/sources.list.d/ceph.list
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E84AC2C0460F3994
+apt update
+apt install ceph-common
+</code></pre><p>11&#x3001;&#x65F6;&#x95F4;&#x540C;&#x6B65;&#x95EE;&#x9898;</p>
+<blockquote>
+<p>Server</p>
+</blockquote>
+<pre><code>server 0.centos.pool.ntp.org iburst
+server 1.centos.pool.ntp.org iburst
+server 2.centos.pool.ntp.org iburst
+server 3.centos.pool.ntp.org iburst
+
+# &#x8BB0;&#x5F55;&#x7CFB;&#x7EDF;&#x65F6;&#x949F;&#x7684;&#x6F02;&#x79FB;
+driftfile /var/lib/chrony/drift
+
+# &#x521D;&#x59CB;&#x540C;&#x6B65;&#x5141;&#x8BB8;&#x8F83;&#x5927;&#x65F6;&#x95F4;&#x504F;&#x5DEE;&#xFF0C;&#x5141;&#x8BB8;&#x5927;&#x5E45;&#x8C03;&#x6574;&#x65F6;&#x95F4;&#xFF0C;&#x8BE5;&#x914D;&#x7F6E;&#x5141;&#x8BB8;&#x5728;&#x524D; 3 &#x6B21;&#x540C;&#x6B65;&#x65F6;&#x76F4;&#x63A5;&#x8C03;&#x6574;&#x65F6;&#x95F4;
+makestep 1.0 3
+
+# &#x542F;&#x7528;&#x5B9E;&#x65F6;&#x786C;&#x4EF6;&#x65F6;&#x949F;&#x540C;&#x6B65;
+rtcsync
+
+# Allow NTP client access from local network.
+allow 192.168.0.0/16
+allow 10.0.0.0/24
+
+# &#x5982;&#x679C;&#x4E0D;&#x9700;&#x8981;&#x5176;&#x4ED6;&#x673A;&#x5668;&#x8BBF;&#x95EE;&#x8BE5;&#x5BA2;&#x6237;&#x7AEF;&#x7684; NTP &#x670D;&#x52A1;&#xFF0C;&#x53EF;&#x4EE5;&#x7981;&#x7528;&#x8BBF;&#x95EE;
+# deny all
+
+logdir /var/log/chrony
+</code></pre><blockquote>
+<p>Client</p>
+</blockquote>
+<pre><code>server 10.0.0.1 iburst
+driftfile /var/lib/chrony/drift
+makestep 1.0 3
+rtcsync
+logdir /var/log/chrony
+</code></pre><blockquote>
+<p>&#x9A8C;&#x8BC1;</p>
+</blockquote>
+<pre><code>chronyc sources -v
+
+210 Number of sources = 1
+  .-- Source mode  &apos;^&apos; = server, &apos;=&apos; = peer, &apos;#&apos; = local clock.
+ / .- Source state &apos;*&apos; = current synced, &apos;+&apos; = combined, &apos;-&apos; = not combined,
+| /   &apos;?&apos; = unreachable, &apos;x&apos; = time may be in error, &apos;~&apos; = too variable.
+||                                                 .- xxxx [ xxxx ]
+||      Reachability register (octal) -.          +----------------
+||      Log2(Polling interval) --.       -.       |   Last sample
+||                               |     .--|----.  |  (time offset)
+MS Name/IP address         Stratum Poll Reach LastRx Last sample
+===============================================================================
+^* 10.0.0.1                    2   6   377    32   -10us[  -15us] +/-  100ms
+</code></pre><blockquote>
+<p><code>^*</code> &#x8868;&#x793A;&#x5DF2;&#x6210;&#x529F;&#x4E0E; <code>10.0.31.13</code> &#x540C;&#x6B65;&#x3002;</p>
+<p><code>Reach</code> &#x7684;&#x503C;&#x4E3A; <code>377</code> &#x8868;&#x793A;&#x4E0E;&#x670D;&#x52A1;&#x5668;&#x7684;&#x901A;&#x4FE1;&#x826F;&#x597D;&#x3002;</p>
+</blockquote>
+<pre><code># &#x68C0;&#x67E5;&#x5F53;&#x524D;&#x65F6;&#x95F4;&#x5DEE;
+chronyc tracking
+# &#x5F3A;&#x5236;&#x540C;&#x6B65;&#x65F6;&#x95F4;&#x6E90;
+chronyc -a makestep
+timedatectl
+</code></pre><blockquote>
+<p>&#x9002;&#x7528;&#x4E8E;&#x4E00;&#x6B21;&#x6027;&#x624B;&#x52A8;&#x65F6;&#x95F4;&#x540C;&#x6B65;&#xFF0C;&#x975E;&#x6301;&#x7EED;&#x670D;&#x52A1;</p>
+</blockquote>
+<pre><code>ntpdate ntp8.flashdance.cx
+</code></pre><p>12&#x3001;ceph&#x5728;&#x5BB9;&#x5668;&#x542F;&#x52A8;&#x524D;&#x5148;&#x542F;&#x52A8;</p>
+<pre><code>&#x9700;&#x8981;&#x5728;&#x6BCF;&#x4E2A;&#x8282;&#x70B9;&#x7684; service &#x4E2D;&#x6DFB;&#x52A0; docker.service&#xFF0C;&#x7B49; docker &#x5148;&#x542F;&#x52A8;
+
+vim /etc/systemd/system/ceph-de9c839a-bd3e-11eb-aefc-377d8c7eac71@.service
+...
+After=network-online.target local-fs.target time-sync.target docker.service
+Wants=network-online.target local-fs.target time-sync.target docker.service
+...
+</code></pre><p>13&#x3001;Possible data damage: 1 pg inconsistent</p>
+<blockquote>
+<p>&#x4E0D;&#x4E00;&#x81F4;&#x6027;&#x6821;&#x9A8C;&#x5931;&#x8D25;&#xFF0C;&#x6570;&#x636E;&#x4E0D;&#x4E00;&#x81F4;&#x6027;&#xFF08;inconsisitent&#xFF09;&#x6307;&#x5BF9;&#x8C61;&#x7684;&#x5927;&#x5C0F;&#x4E0D;&#x6B63;&#x786E;&#xFF0C;&#x6062;&#x590D;&#x7ED3;&#x675F;&#x540E;&#x67D0;&#x526F;&#x672C;&#x51FA;&#x73B0;&#x4E86;&#x5BF9;&#x8C61;&#x4E22;&#x5931;&#x7684;&#x60C5;&#x51B5;&#xFF0C;&#x6570;&#x636E;&#x4E0D;&#x4E00;&#x81F4;&#x4F1A;&#x5BFC;&#x81F4;&#x6E05;&#x7406;&#x5931;&#x8D25;&#xFF08;scrub error&#xFF09;&#x3002;Ceph&#x5728;&#x5B58;&#x50A8;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x7531;&#x4E8E;&#x7279;&#x6B8A;&#x539F;&#x56E0;&#xFF0C;&#x53EF;&#x80FD;&#x9047;&#x5230;&#x5BF9;&#x8C61;&#x4FE1;&#x606F;&#x5927;&#x5C0F;&#x548C;&#x7269;&#x7406;&#x78C1;&#x76D8;&#x4E0A;&#x5B9E;&#x9645;&#x6570;&#x636E;&#x5927;&#x5C0F;&#x4E0D;&#x4E00;&#x81F4;&#x7684;&#x60C5;&#x51B5;&#xFF0C;&#x4E5F;&#x4F1A;&#x5BFC;&#x81F4;&#x6E05;&#x7406;&#x5931;&#x8D25;&#x3002;</p>
+</blockquote>
+<p>(1)&#x505C;&#x6B62;osd</p>
+<blockquote>
+<p> &#x5148;&#x67E5;&#x770B;&#x6240;&#x8981;&#x6062;&#x590D;pg</p>
+</blockquote>
+<pre><code>ceph health detail
+</code></pre><pre><code>ceph pg repair 4.3f
+</code></pre><pre><code>systemctl stop ceph-de9c839a-bd3e-11eb-aefc-377d8c7eac71@osd.14.service
+</code></pre><p>(2)&#x5237;&#x5165;&#x65E5;&#x5FD7;</p>
+<blockquote>
+<p>&#x9700;&#x5C06;&#x76F8;&#x5E94;&#x6570;&#x636E;&#x590D;&#x5236;&#x8FDB;&#x5BB9;&#x5668;</p>
+</blockquote>
+<pre><code>docker cp /etc/ceph b951114a1b9d:/etc
+docker cp /var/lib/ceph/de9c839a-bd3e-11eb-aefc-377d8c7eac71/osd.14/ b951114a1b9d:/var/lib/ceph/osd/ceph-14/
+docker exec -it b951114a1b9d bash
+</code></pre><pre><code>ceph-osd -i 14 --flush-journal
+</code></pre><p>(3)&#x542F;&#x52A8;osd</p>
+<pre><code>systemctl start ceph-de9c839a-bd3e-11eb-aefc-377d8c7eac71@osd.14.service
+</code></pre><p>(4)&#x4FEE;&#x590D;</p>
+<pre><code>ceph health detail
+</code></pre><pre><code>ceph pg repair 4.3f
+</code></pre>
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                
+                <a href="crushmap.html" class="navigation navigation-next navigation-unique" aria-label="Next page: crushmap">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Ceph","level":"1.11.1","depth":2,"next":{"title":"crushmap","level":"1.11.2","depth":2,"path":"notes/ceph/crushmap.md","ref":"notes/ceph/crushmap.md","articles":[]},"previous":{"title":"Ceph 相关","level":"1.11","depth":1,"ref":"","articles":[{"title":"Ceph","level":"1.11.1","depth":2,"path":"notes/ceph/ceph.md","ref":"notes/ceph/ceph.md","articles":[]},{"title":"crushmap","level":"1.11.2","depth":2,"path":"notes/ceph/crushmap.md","ref":"notes/ceph/crushmap.md","articles":[]},{"title":"ceph.conf","level":"1.11.3","depth":2,"path":"notes/ceph/cephconf.md","ref":"notes/ceph/cephconf.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["-lunr","-search","search-pro","-sharing","expandable-chapters","back-to-top-button","code","splitter","pageview-count","page-toc-button","github","hide-element"],"styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"github":{"url":"https://github.com/hlyani"},"splitter":{},"search-pro":{},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"page-toc-button":{"maxTocDepth":"2","minTocSize":"2"},"back-to-top-button":{},"pageview-count":{},"theme-default":{"styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"showLevel":false},"expandable-chapters":{}},"theme":"default","author":"hlyani","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"hlyani","gitbook":"*","description":"hl notes"},"file":{"path":"notes/ceph/ceph.md","mtime":"2026-01-29T02:41:05.140Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2026-01-29T02:41:33.564Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search-pro/jquery.mark.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search-pro/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-expandable-chapters/expandable-chapters.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-back-to-top-button/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-code/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-splitter/splitter.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-pageview-count/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-page-toc-button/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-hide-element/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

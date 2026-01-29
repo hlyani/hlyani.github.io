@@ -1,0 +1,3736 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>k8s 使用 · hlyani</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="hlyani">
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search-pro/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-expandable-chapters/expandable-chapters.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-back-to-top-button/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-splitter/splitter.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-pageview-count/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-page-toc-button/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="k8s_hpa.html" />
+    
+    
+    <link rel="prev" href="k8s_deploy.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../proxy.html">
+            
+                <a href="../proxy.html">
+            
+                    
+                    proxy 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../pip.html">
+            
+                <a href="../pip.html">
+            
+                    
+                    pip 源相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../linux_source.html">
+            
+                <a href="../linux_source.html">
+            
+                    
+                    linux 源相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../git.html">
+            
+                <a href="../git.html">
+            
+                    
+                    git 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="../skills.html">
+            
+                <a href="../skills.html">
+            
+                    
+                    skills
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" >
+            
+                <span>
+            
+                    
+                    容器相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="usual_software.html">
+            
+                <a href="usual_software.html">
+            
+                    
+                    常用软件安装
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2" data-path="kubeflow.html">
+            
+                <a href="kubeflow.html">
+            
+                    
+                    kubeflow
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3" data-path="kube-scheduler.html">
+            
+                <a href="kube-scheduler.html">
+            
+                    
+                    kube-scheduler
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.4" data-path="volcano.html">
+            
+                <a href="volcano.html">
+            
+                    
+                    volcano
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.5" data-path="kubeasz.html">
+            
+                <a href="kubeasz.html">
+            
+                    
+                    kubeasz
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.6" data-path="calico.html">
+            
+                <a href="calico.html">
+            
+                    
+                    calico
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.7" data-path="ingress.html">
+            
+                <a href="ingress.html">
+            
+                    
+                    ingress
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.8" data-path="apisix.html">
+            
+                <a href="apisix.html">
+            
+                    
+                    apisix
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.9" data-path="kubebuilder.html">
+            
+                <a href="kubebuilder.html">
+            
+                    
+                    kubebuilder
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.10" data-path="containerd.html">
+            
+                <a href="containerd.html">
+            
+                    
+                    Containerd
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.11" data-path="buildah.html">
+            
+                <a href="buildah.html">
+            
+                    
+                    Buildah
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.12" data-path="buildkit.html">
+            
+                <a href="buildkit.html">
+            
+                    
+                    Buildkit
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.13" data-path="docker.html">
+            
+                <a href="docker.html">
+            
+                    
+                    docker 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.14" data-path="multiarch.html">
+            
+                <a href="multiarch.html">
+            
+                    
+                    容器交叉编译
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.15" data-path="kubeedge.html">
+            
+                <a href="kubeedge.html">
+            
+                    
+                    kubeedge
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.16" data-path="k3s_deploy.html">
+            
+                <a href="k3s_deploy.html">
+            
+                    
+                    k3s 安装与使用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.17" data-path="k3s_make.html">
+            
+                <a href="k3s_make.html">
+            
+                    
+                    k3s 源码编译
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.18" data-path="rancher.html">
+            
+                <a href="rancher.html">
+            
+                    
+                    rancher 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.19" data-path="debootstrap.html">
+            
+                <a href="debootstrap.html">
+            
+                    
+                    容器基础镜像构建
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.20" data-path="overlay2.html">
+            
+                <a href="overlay2.html">
+            
+                    
+                    overlay2
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.21" data-path="k8s.html">
+            
+                <a href="k8s.html">
+            
+                    
+                    k8s 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.22" data-path="k8s_yaml.html">
+            
+                <a href="k8s_yaml.html">
+            
+                    
+                    k8s 常用 yaml
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.23" data-path="k8s_deploy.html">
+            
+                <a href="k8s_deploy.html">
+            
+                    
+                    k8s 安装部署
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.7.24" data-path="k8s_use.html">
+            
+                <a href="k8s_use.html">
+            
+                    
+                    k8s 使用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.25" data-path="k8s_hpa.html">
+            
+                <a href="k8s_hpa.html">
+            
+                    
+                    k8s hpa
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.26" data-path="k8s_ceph.html">
+            
+                <a href="k8s_ceph.html">
+            
+                    
+                    k8s 使用 ceph 储存
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.27" data-path="chartmuseum.html">
+            
+                <a href="chartmuseum.html">
+            
+                    
+                    chartmuseum 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.28" data-path="harbor.html">
+            
+                <a href="harbor.html">
+            
+                    
+                    harbor 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.29" data-path="helm.html">
+            
+                <a href="helm.html">
+            
+                    
+                    helm 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.30" data-path="docker_net.html">
+            
+                <a href="docker_net.html">
+            
+                    
+                    docker 网络相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.31" data-path="docker_swarm.html">
+            
+                <a href="docker_swarm.html">
+            
+                    
+                    docker swarm 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.32" data-path="docker_compose.html">
+            
+                <a href="docker_compose.html">
+            
+                    
+                    docker compose 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.33" data-path="docker_registry.html">
+            
+                <a href="docker_registry.html">
+            
+                    
+                    docker registry 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.34" data-path="openshift.html">
+            
+                <a href="openshift.html">
+            
+                    
+                    openshift 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.35" data-path="convert_iso_to_docker_img.html">
+            
+                <a href="convert_iso_to_docker_img.html">
+            
+                    
+                    将ISO镜像转换为docker镜像
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.36" data-path="mount_usb_to_docker.html">
+            
+                <a href="mount_usb_to_docker.html">
+            
+                    
+                    挂载USB到docker容器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.37" data-path="local_static_provisioner.html">
+            
+                <a href="local_static_provisioner.html">
+            
+                    
+                    local-static-provisioner
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.38" data-path="change_ssl.md">
+            
+                <span>
+            
+                    
+                    change_ssl
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" >
+            
+                <span>
+            
+                    
+                    Golang 相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="../golang/go.html">
+            
+                <a href="../golang/go.html">
+            
+                    
+                    golang 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2" data-path="../golang/go_authens.md">
+            
+                <span>
+            
+                    
+                    GO Authens 代理
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" >
+            
+                <span>
+            
+                    
+                    OpenStack 相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.9.1" data-path="../openstack/whatisruntime.html">
+            
+                <a href="../openstack/whatisruntime.html">
+            
+                    
+                    区分当前系统运行环境
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.2" data-path="../openstack/qemu_make.html">
+            
+                <a href="../openstack/qemu_make.html">
+            
+                    
+                    QEMU 源码编译
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.3" data-path="../openstack/openstack.html">
+            
+                <a href="../openstack/openstack.html">
+            
+                    
+                    OpenStack 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.4" data-path="../openstack/openstack_faq.html">
+            
+                <a href="../openstack/openstack_faq.html">
+            
+                    
+                    OpenStack 中遇到的问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.5" data-path="../openstack/delete_cinder_volume.html">
+            
+                <a href="../openstack/delete_cinder_volume.html">
+            
+                    
+                    删除 Cinder 僵尸实例
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.6" data-path="../openstack/add_nic_to_vm.html">
+            
+                <a href="../openstack/add_nic_to_vm.html">
+            
+                    
+                    给虚拟机添加网卡
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.7" data-path="../openstack/make_openstack_image.html">
+            
+                <a href="../openstack/make_openstack_image.html">
+            
+                    
+                    制作 OpenStack 镜像
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.8" data-path="../openstack/openstack_win_vm_diaplay.html">
+            
+                <a href="../openstack/openstack_win_vm_diaplay.html">
+            
+                    
+                    OpenStack Windows 虚拟机分辨率问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.9" data-path="../openstack/kolla_network.html">
+            
+                <a href="../openstack/kolla_network.html">
+            
+                    
+                    Kolla 网络规划
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.10" data-path="../openstack/kolla_deploy.html">
+            
+                <a href="../openstack/kolla_deploy.html">
+            
+                    
+                    Kolla 部署相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.11" data-path="../openstack/kolla_image_build.html">
+            
+                <a href="../openstack/kolla_image_build.html">
+            
+                    
+                    Kolla 镜像构建
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.12" data-path="../openstack/devstack.html">
+            
+                <a href="../openstack/devstack.html">
+            
+                    
+                    Devstack 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.13" data-path="../openstack/heat.html">
+            
+                <a href="../openstack/heat.html">
+            
+                    
+                    Heat 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.14" data-path="../openstack/qga.html">
+            
+                <a href="../openstack/qga.html">
+            
+                    
+                    qemu-guest-agent 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.15" data-path="../openstack/ovs.html">
+            
+                <a href="../openstack/ovs.html">
+            
+                    
+                    OVS 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.16" data-path="../openstack/migrate_to_other_platform.html">
+            
+                <a href="../openstack/migrate_to_other_platform.html">
+            
+                    
+                    迁移虚拟机到其他平台
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.17" data-path="../openstack/openstack_hygon_patch.html">
+            
+                <a href="../openstack/openstack_hygon_patch.html">
+            
+                    
+                    OpenStack对hygon的兼容
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.18" data-path="../openstack/lsf_install_openstack.html">
+            
+                <a href="../openstack/lsf_install_openstack.html">
+            
+                    
+                    Lfs上安装OpenStack
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" >
+            
+                <span>
+            
+                    
+                    Linux 相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.1" data-path="../linux/alpine.html">
+            
+                <a href="../linux/alpine.html">
+            
+                    
+                    alpine
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.2" data-path="../linux/redis.html">
+            
+                <a href="../linux/redis.html">
+            
+                    
+                    redis
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.3" data-path="../linux/ib.html">
+            
+                <a href="../linux/ib.html">
+            
+                    
+                    ib
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.4" data-path="../linux/loki.html">
+            
+                <a href="../linux/loki.html">
+            
+                    
+                    loki
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.5" data-path="../linux/http_status_code.html">
+            
+                <a href="../linux/http_status_code.html">
+            
+                    
+                    HTTP 状态码
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.6" data-path="../linux/yq.html">
+            
+                <a href="../linux/yq.html">
+            
+                    
+                    yq
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.7" data-path="../linux/conda.html">
+            
+                <a href="../linux/conda.html">
+            
+                    
+                    conda
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.8" data-path="../linux/minio.html">
+            
+                <a href="../linux/minio.html">
+            
+                    
+                    minio
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.9" data-path="../linux/prometheus.html">
+            
+                <a href="../linux/prometheus.html">
+            
+                    
+                    prometheus
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.10" data-path="../linux/test_tools.html">
+            
+                <a href="../linux/test_tools.html">
+            
+                    
+                    test_tools
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.11" data-path="../linux/gitlab.html">
+            
+                <a href="../linux/gitlab.html">
+            
+                    
+                    gitlab
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.12" data-path="../linux/etcd.html">
+            
+                <a href="../linux/etcd.html">
+            
+                    
+                    etcd
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.13" data-path="../linux/frp.html">
+            
+                <a href="../linux/frp.html">
+            
+                    
+                    frp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.14" data-path="../linux/synology.html">
+            
+                <a href="../linux/synology.html">
+            
+                    
+                    synology
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.15" data-path="../linux/adb.md">
+            
+                <span>
+            
+                    
+                    adb
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.16" data-path="../linux/netns.html">
+            
+                <a href="../linux/netns.html">
+            
+                    
+                    netns
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.17" data-path="../linux/uboot.html">
+            
+                <a href="../linux/uboot.html">
+            
+                    
+                    uboot
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.18" data-path="../linux/linux_network.html">
+            
+                <a href="../linux/linux_network.html">
+            
+                    
+                    linux 网络配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.19" data-path="../linux/qemu_img.html">
+            
+                <a href="../linux/qemu_img.html">
+            
+                    
+                    qemu-img
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.20" data-path="../linux/systemd.html">
+            
+                <a href="../linux/systemd.html">
+            
+                    
+                    systemd
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.21" data-path="../linux/dd.html">
+            
+                <a href="../linux/dd.html">
+            
+                    
+                    dd 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.22" data-path="../linux/kernel_make.html">
+            
+                <a href="../linux/kernel_make.html">
+            
+                    
+                    kernel 内核编译
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.23" data-path="../nodejs.html">
+            
+                <a href="../nodejs.html">
+            
+                    
+                    nodejs 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.24" data-path="../linux/unixbench.html">
+            
+                <a href="../linux/unixbench.html">
+            
+                    
+                    UnixBench 虚拟机性能测试工具
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.25" data-path="../linux/pypi_local_source.html">
+            
+                <a href="../linux/pypi_local_source.html">
+            
+                    
+                    pip 本地源
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.26" data-path="../linux/lvm.html">
+            
+                <a href="../linux/lvm.html">
+            
+                    
+                    LVM 逻辑卷相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.27" data-path="../linux/tcpdump.html">
+            
+                <a href="../linux/tcpdump.html">
+            
+                    
+                    tcpdump 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.28" data-path="../linux/libvirt.html">
+            
+                <a href="../linux/libvirt.html">
+            
+                    
+                    libvirt 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.29" data-path="../linux/linux.html">
+            
+                <a href="../linux/linux.html">
+            
+                    
+                    Linux 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.30" data-path="../linux/change_centos_boot_kernel.html">
+            
+                <a href="../linux/change_centos_boot_kernel.html">
+            
+                    
+                    CentOS 修改默认启动内核
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.31" data-path="../linux/vim.html">
+            
+                <a href="../linux/vim.html">
+            
+                    
+                    Vim 常用命令
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.32" data-path="../linux/nested.html">
+            
+                <a href="../linux/nested.html">
+            
+                    
+                    嵌套虚拟化
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.33" data-path="../linux/net_bridge.html">
+            
+                <a href="../linux/net_bridge.html">
+            
+                    
+                    创建网桥
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.34" data-path="../linux/nic_bond.html">
+            
+                <a href="../linux/nic_bond.html">
+            
+                    
+                    网络端口聚合绑定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.35" data-path="../linux/ramdisk.html">
+            
+                <a href="../linux/ramdisk.html">
+            
+                    
+                    虚拟内存盘
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.36" data-path="../linux/ssh_interval.html">
+            
+                <a href="../linux/ssh_interval.html">
+            
+                    
+                    ssh 自动断开
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.37" data-path="../linux/ssh_forwading.html">
+            
+                <a href="../linux/ssh_forwading.html">
+            
+                    
+                    ssh 转发
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.38" data-path="../linux/samba.html">
+            
+                <a href="../linux/samba.html">
+            
+                    
+                    Samba 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.39" data-path="../linux/ftp.html">
+            
+                <a href="../linux/ftp.html">
+            
+                    
+                    ftp 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.40" data-path="../linux/iscsi.html">
+            
+                <a href="../linux/iscsi.html">
+            
+                    
+                    iscsi 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.41" data-path="../linux/guestfish.html">
+            
+                <a href="../linux/guestfish.html">
+            
+                    
+                    guestfish 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.42" data-path="../linux/nginx.html">
+            
+                <a href="../linux/nginx.html">
+            
+                    
+                    nginx 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.43" data-path="../linux/haproxy.html">
+            
+                <a href="../linux/haproxy.html">
+            
+                    
+                    haproxy 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.44" data-path="../linux/build_pypi.html">
+            
+                <a href="../linux/build_pypi.html">
+            
+                    
+                    发布pypi软件包
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.45" data-path="../linux/mysql.html">
+            
+                <a href="../linux/mysql.html">
+            
+                    
+                    mysql 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.46" data-path="../linux/ssr_privoxy.html">
+            
+                <a href="../linux/ssr_privoxy.html">
+            
+                    
+                    ssr privoxy 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.47" data-path="../linux/proxychains_ng.html">
+            
+                <a href="../linux/proxychains_ng.html">
+            
+                    
+                    proxychains-ng 代理工具
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.48" data-path="../linux/virt_manager.html">
+            
+                <a href="../linux/virt_manager.html">
+            
+                    
+                    virt-manager 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.49" data-path="../linux/linux_source.html">
+            
+                <a href="../linux/linux_source.html">
+            
+                    
+                    Linux 源制作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.50" data-path="../linux/rpm_build.html">
+            
+                <a href="../linux/rpm_build.html">
+            
+                    
+                    Python rpm编译
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.51" data-path="../linux/yum_install_conf_conflict.md">
+            
+                <span>
+            
+                    
+                    yum 安装时文件冲突
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.52" data-path="../linux/crontabs.html">
+            
+                <a href="../linux/crontabs.html">
+            
+                    
+                    crontabs 计划任务相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.53" data-path="../linux/diy_centos_iso.html">
+            
+                <a href="../linux/diy_centos_iso.html">
+            
+                    
+                    CentOS iso 镜像定制
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.54" data-path="../linux/ansible.html">
+            
+                <a href="../linux/ansible.html">
+            
+                    
+                    ansible 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.55" data-path="../linux/cobbler.html">
+            
+                <a href="../linux/cobbler.html">
+            
+                    
+                    cobbler 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.56" data-path="../linux/apache_multi_ports.html">
+            
+                <a href="../linux/apache_multi_ports.html">
+            
+                    
+                    apache 多端口
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.57" data-path="../linux/dns.html">
+            
+                <a href="../linux/dns.html">
+            
+                    
+                    搭建本地 dns 服务器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.58" data-path="../linux/linux_u.html">
+            
+                <a href="../linux/linux_u.html">
+            
+                    
+                    Linux U盘占用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.59" data-path="../linux/ssh.html">
+            
+                <a href="../linux/ssh.html">
+            
+                    
+                    ssh 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.60" data-path="../linux/mdadm.html">
+            
+                <a href="../linux/mdadm.html">
+            
+                    
+                    软 raid
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.61" data-path="../linux/root_extend.html">
+            
+                <a href="../linux/root_extend.html">
+            
+                    
+                    将 home 目录空间扩容到根目录
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.62" data-path="../linux/vm_to_router.html">
+            
+                <a href="../linux/vm_to_router.html">
+            
+                    
+                    将虚拟机作为router
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" >
+            
+                <span>
+            
+                    
+                    Ceph 相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.11.1" data-path="../ceph/ceph.html">
+            
+                <a href="../ceph/ceph.html">
+            
+                    
+                    Ceph
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.2" data-path="../ceph/crushmap.html">
+            
+                <a href="../ceph/crushmap.html">
+            
+                    
+                    crushmap
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.3" data-path="../ceph/cephconf.html">
+            
+                <a href="../ceph/cephconf.html">
+            
+                    
+                    ceph.conf
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12" >
+            
+                <span>
+            
+                    
+                    Python 相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.12.1" data-path="../python/ruff.html">
+            
+                <a href="../python/ruff.html">
+            
+                    
+                    ruff 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.2" data-path="../python/xpath.html">
+            
+                <a href="../python/xpath.html">
+            
+                    
+                    xpath 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.3" data-path="../python/regular_expression.html">
+            
+                <a href="../python/regular_expression.html">
+            
+                    
+                    正则表达式相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.4" data-path="../python/django.html">
+            
+                <a href="../python/django.html">
+            
+                    
+                    Django 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.5" data-path="../python/flask.html">
+            
+                <a href="../python/flask.html">
+            
+                    
+                    Flask 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.6" data-path="../python/python.html">
+            
+                <a href="../python/python.html">
+            
+                    
+                    Python 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.7" data-path="../python/python_obfuscated_code.html">
+            
+                <a href="../python/python_obfuscated_code.html">
+            
+                    
+                    Python 代码混淆
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.8" data-path="../python/sqlalchemy.html">
+            
+                <a href="../python/sqlalchemy.html">
+            
+                    
+                    Python Sqlalchemy
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.9" data-path="../python/python_logging.html">
+            
+                <a href="../python/python_logging.html">
+            
+                    
+                    Python logging模块
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.10" data-path="../python/python_decorators.html">
+            
+                <a href="../python/python_decorators.html">
+            
+                    
+                    Python 装饰器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.11" data-path="../python/python_file.html">
+            
+                <a href="../python/python_file.html">
+            
+                    
+                    Python 文件操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.12" data-path="../python/scrapy.html">
+            
+                <a href="../python/scrapy.html">
+            
+                    
+                    scrapy 爬虫
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.13" data-path="../python/urllib2.html">
+            
+                <a href="../python/urllib2.html">
+            
+                    
+                    urllib2 爬虫
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.14" data-path="../python/yield.html">
+            
+                <a href="../python/yield.html">
+            
+                    
+                    yield
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.15" data-path="../python/jinja2.html">
+            
+                <a href="../python/jinja2.html">
+            
+                    
+                    Jinja2 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.16" data-path="../python/python_code_standards.html">
+            
+                <a href="../python/python_code_standards.html">
+            
+                    
+                    Python 代码规范
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13" >
+            
+                <span>
+            
+                    
+                    大数据相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.13.1" data-path="../bigdata/bigdata_deploy.html">
+            
+                <a href="../bigdata/bigdata_deploy.html">
+            
+                    
+                    大数据相关环境安装
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.2" data-path="../bigdata/hadoop.html">
+            
+                <a href="../bigdata/hadoop.html">
+            
+                    
+                    Hadoop 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.3" data-path="../bigdata/hadoop_single.html">
+            
+                <a href="../bigdata/hadoop_single.html">
+            
+                    
+                    Hadoop 单机伪分布式部署
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.4" data-path="../bigdata/hadoop_cluster.html">
+            
+                <a href="../bigdata/hadoop_cluster.html">
+            
+                    
+                    Hadoop 集群搭建
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.5" data-path="../bigdata/hive.html">
+            
+                <a href="../bigdata/hive.html">
+            
+                    
+                    Hive 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.6" data-path="../bigdata/hbase.html">
+            
+                <a href="../bigdata/hbase.html">
+            
+                    
+                    Hbase 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.7" data-path="../bigdata/spark.html">
+            
+                <a href="../bigdata/spark.html">
+            
+                    
+                    spark 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.8" data-path="../bigdata/spark_sql.html">
+            
+                <a href="../bigdata/spark_sql.html">
+            
+                    
+                    spark sql 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.9" data-path="../bigdata/storm.html">
+            
+                <a href="../bigdata/storm.html">
+            
+                    
+                    storm 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.10" data-path="../bigdata/scala.html">
+            
+                <a href="../bigdata/scala.html">
+            
+                    
+                    scala 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.11" data-path="../bigdata/sqoop.html">
+            
+                <a href="../bigdata/sqoop.html">
+            
+                    
+                    sqoop 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.12" data-path="../bigdata/flink.html">
+            
+                <a href="../bigdata/flink.html">
+            
+                    
+                    flink 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.13" data-path="../bigdata/flume.html">
+            
+                <a href="../bigdata/flume.html">
+            
+                    
+                    flume 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.14" data-path="../bigdata/elasticsearch.html">
+            
+                <a href="../bigdata/elasticsearch.html">
+            
+                    
+                    elasticsearch 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.15" data-path="../bigdata/etl.html">
+            
+                <a href="../bigdata/etl.html">
+            
+                    
+                    ETL 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.16" data-path="../bigdata/mapreduce.html">
+            
+                <a href="../bigdata/mapreduce.html">
+            
+                    
+                    mapreduce 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.17" data-path="../bigdata/numpy.html">
+            
+                <a href="../bigdata/numpy.html">
+            
+                    
+                    numpy 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.18" data-path="../bigdata/pandas.html">
+            
+                <a href="../bigdata/pandas.html">
+            
+                    
+                    pandas 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.19" data-path="../bigdata/pyhdfs.html">
+            
+                <a href="../bigdata/pyhdfs.html">
+            
+                    
+                    pyhdfs 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.20" data-path="../bigdata/reptile.html">
+            
+                <a href="../bigdata/reptile.html">
+            
+                    
+                    reptile 爬虫相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.21" data-path="../bigdata/pyecharts.html">
+            
+                <a href="../bigdata/pyecharts.html">
+            
+                    
+                    pyecharts 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.22" data-path="../bigdata/matplotlib.html">
+            
+                <a href="../bigdata/matplotlib.html">
+            
+                    
+                    matplotlib 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14" >
+            
+                <span>
+            
+                    
+                    机器学习相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.14.1" data-path="../ai/clawdbot.html">
+            
+                <a href="../ai/clawdbot.html">
+            
+                    
+                    clawdbot
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.2" data-path="../ai/langgraph.html">
+            
+                <a href="../ai/langgraph.html">
+            
+                    
+                    LangGraph
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.3" data-path="../ai/mcp_functioncall.html">
+            
+                <a href="../ai/mcp_functioncall.html">
+            
+                    
+                    MCP And Function Call
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.4" data-path="../ai/ollama_vllm.html">
+            
+                <a href="../ai/ollama_vllm.html">
+            
+                    
+                    ollama and vllm
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.5" data-path="../ai/ML.html">
+            
+                <a href="../ai/ML.html">
+            
+                    
+                    ML
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.6" data-path="../ai/tensorflow_and_keras.html">
+            
+                <a href="../ai/tensorflow_and_keras.html">
+            
+                    
+                    tensorflow 和 keras 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.7" data-path="../ai/cifar_10.html">
+            
+                <a href="../ai/cifar_10.html">
+            
+                    
+                    cifar-10 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.8" data-path="../ai/darknet_to_caffe.html">
+            
+                <a href="../ai/darknet_to_caffe.html">
+            
+                    
+                    Darknet to Caffe
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15" >
+            
+                <span>
+            
+                    
+                    其他
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.15.1" data-path="../other/nativefier.html">
+            
+                <a href="../other/nativefier.html">
+            
+                    
+                    Nativefier 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.2" data-path="../other/ptp.html">
+            
+                <a href="../other/ptp.html">
+            
+                    
+                    ptp 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.3" data-path="../other/xenserver.html">
+            
+                <a href="../other/xenserver.html">
+            
+                    
+                    xenserver 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.4" data-path="../other/computer_network_foundation.html">
+            
+                <a href="../other/computer_network_foundation.html">
+            
+                    
+                    计算机网络基础
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.5" data-path="../other/ovirt.html">
+            
+                <a href="../other/ovirt.html">
+            
+                    
+                    Ovirt 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.6" data-path="../other/mqtt.html">
+            
+                <a href="../other/mqtt.html">
+            
+                    
+                    MQTT 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.7" data-path="../other/kafka.html">
+            
+                <a href="../other/kafka.html">
+            
+                    
+                    Kafka 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.8" data-path="../other/pyqt5.html">
+            
+                <a href="../other/pyqt5.html">
+            
+                    
+                    PyQt5 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.9" data-path="../other/ionic_cordova.html">
+            
+                <a href="../other/ionic_cordova.html">
+            
+                    
+                    ionic 、cordova  编译 andriod
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.10" data-path="../other/cloudfoundry.html">
+            
+                <a href="../other/cloudfoundry.html">
+            
+                    
+                    cloudfoundry 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.11" data-path="../other/svn.html">
+            
+                <a href="../other/svn.html">
+            
+                    
+                    svn 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.12" data-path="../other/anaconda.html">
+            
+                <a href="../other/anaconda.html">
+            
+                    
+                    anaconda 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.13" data-path="../other/jupyter.html">
+            
+                <a href="../other/jupyter.html">
+            
+                    
+                    jupyter 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.14" data-path="../other/webdriver.html">
+            
+                <a href="../other/webdriver.html">
+            
+                    
+                    webdriver 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.15" data-path="../other/java.html">
+            
+                <a href="../other/java.html">
+            
+                    
+                    Java 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.16" data-path="../other/websocket.html">
+            
+                <a href="../other/websocket.html">
+            
+                    
+                    websocket 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.17" data-path="../other/stratos_ui.html">
+            
+                <a href="../other/stratos_ui.html">
+            
+                    
+                    stratos-ui 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.18" data-path="../other/apidoc.html">
+            
+                <a href="../other/apidoc.html">
+            
+                    
+                    apidoc 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.19" data-path="../other/keepalived.html">
+            
+                <a href="../other/keepalived.html">
+            
+                    
+                    keepalived 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.20" data-path="../other/linux_desktop_rdp.html">
+            
+                <a href="../other/linux_desktop_rdp.html">
+            
+                    
+                    Linux Desktop rdp 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.21" data-path="../other/gitbook.html">
+            
+                <a href="../other/gitbook.html">
+            
+                    
+                    GitBook 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.22" data-path="../other/github_pages.html">
+            
+                <a href="../other/github_pages.html">
+            
+                    
+                    GitHub Pages
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.23" data-path="../other/web.html">
+            
+                <a href="../other/web.html">
+            
+                    
+                    Web 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.24" data-path="../other/build_atlas.html">
+            
+                <a href="../other/build_atlas.html">
+            
+                    
+                    Atlas 驱动构建
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.25" data-path="../other/be_mined.html">
+            
+                <a href="../other/be_mined.html">
+            
+                    
+                    记一次被挖矿
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >k8s 使用</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="k8s-&#x4F7F;&#x7528;">K8S &#x4F7F;&#x7528;</h1>
+<h1 id="&#x4E00;&#x3001;&#x5E38;&#x7528;&#x64CD;&#x4F5C;">&#x4E00;&#x3001;&#x5E38;&#x7528;&#x64CD;&#x4F5C;</h1>
+<h2 id="1&#x3001;&#x63A2;&#x9488;">1&#x3001;&#x63A2;&#x9488;</h2>
+<pre><code>livenessProbe:
+  exec:
+    command: [&quot;cat&quot;, &quot;/app/index.html&quot;]
+  # tcpSocket:
+  #   port: http
+  initialDelaySeconds: 30
+  timeoutSeconds: 5
+  failureThreshold: 6
+readinessProbe:
+  exec:
+    command: [&quot;cat&quot;, &quot;/app/index.html&quot;]
+  # tcpSocket:
+  #   port: http
+  initialDelaySeconds: 5
+  timeoutSeconds: 3
+  periodSeconds: 5
+</code></pre><h2 id="2&#x3001;&#x4EB2;&#x548C;&#x6027;&#x3001;&#x6807;&#x7B7E;">2&#x3001;&#x4EB2;&#x548C;&#x6027;&#x3001;&#x6807;&#x7B7E;</h2>
+<ul>
+<li>In: label&#x7684;&#x503C;&#x5728;&#x67D0;&#x4E2A;&#x5217;&#x8868;&#x4E2D;</li>
+<li>NotIn&#xFF1A;label&#x7684;&#x503C;&#x4E0D;&#x5728;&#x67D0;&#x4E2A;&#x5217;&#x8868;&#x4E2D;</li>
+<li>Exists&#xFF1A;&#x67D0;&#x4E2A;label&#x5B58;&#x5728;</li>
+<li>DoesNotExist&#xFF1A;&#x67D0;&#x4E2A;label&#x4E0D;&#x5B58;&#x5728;</li>
+<li>Gt&#xFF1A;label&#x7684;&#x503C;&#x5927;&#x4E8E;&#x67D0;&#x4E2A;&#x503C;&#xFF08;&#x5B57;&#x7B26;&#x4E32;&#x6BD4;&#x8F83;&#xFF09;</li>
+<li>Lt&#xFF1A;label&#x7684;&#x503C;&#x5C0F;&#x4E8E;&#x67D0;&#x4E2A;&#x503C;&#xFF08;&#x5B57;&#x7B26;&#x4E32;&#x6BD4;&#x8F83;&#xFF09;</li>
+</ul>
+<blockquote>
+<p>&#x5982;&#x679C;nodeAffinity&#x4E2D;nodeSelector&#x6709;&#x591A;&#x4E2A;&#x9009;&#x9879;&#xFF0C;&#x8282;&#x70B9;&#x6EE1;&#x8DB3;&#x4EFB;&#x4F55;&#x4E00;&#x4E2A;&#x6761;&#x4EF6;&#x5373;&#x53EF;&#xFF1B;</p>
+<p>&#x5982;&#x679C;matchExpressions&#x6709;&#x591A;&#x4E2A;&#x9009;&#x9879;&#xFF0C;&#x5219;&#x8282;&#x70B9;&#x5FC5;&#x987B;&#x540C;&#x65F6;&#x6EE1;&#x8DB3;&#x8FD9;&#x4E9B;&#x9009;&#x9879;&#x624D;&#x80FD;&#x8FD0;&#x884C;pod &#x3002;</p>
+</blockquote>
+<h3 id="1&#x8282;&#x70B9;&#x4EB2;&#x548C;&#x6027;&#x53CD;&#x4EB2;&#x548C;&#x6027;">1.&#x8282;&#x70B9;&#x4EB2;&#x548C;&#x6027;/&#x53CD;&#x4EB2;&#x548C;&#x6027;</h3>
+<pre><code>NodeAffinity:                                        &#x8282;&#x70B9;&#x4EB2;&#x548C;&#x6027;
+    requiredDuringSchedulingIgnoredDuringExecution:  &#x786C;&#x4EB2;&#x548C;&#x6027;&#xFF0C;&#x5FC5;&#x987B;&#x90E8;&#x7F72;&#x5728;&#x6307;&#x5B9A;&#x7684;&#x8282;&#x70B9;&#x4E0A;&#xFF0C;&#x6216;&#x5FC5;&#x987B;&#x4E0D;&#x90E8;&#x7F72;&#x5728;&#x6307;&#x5B9A;&#x8282;&#x70B9;&#x4E0A;
+    preferredDuringSchedulingIgnoredDuringExecution: &#x8F6F;&#x4EB2;&#x548C;&#x6027;&#xFF0C;&#x5C3D;&#x91CF;&#x90E8;&#x7F72;&#x5728;&#x6EE1;&#x8DB3;&#x6761;&#x4EF6;&#x7684;&#x8282;&#x70B9;&#x4E0A;&#xFF0C;&#x6216;&#x8005;&#x5C3D;&#x91CF;&#x4E0D;&#x90E8;&#x7F72;&#x5728;&#x88AB;&#x5339;&#x914D;&#x7684;&#x8282;&#x70B9;&#x4E0A;
+</code></pre><h3 id="2pod&#x4EB2;&#x548C;&#x6027;&#x53CD;&#x4EB2;&#x548C;&#x6027;">2.Pod&#x4EB2;&#x548C;&#x6027;/&#x53CD;&#x4EB2;&#x548C;&#x6027;</h3>
+<pre><code>podAffinity:                                      Pod &#x4EB2;&#x548C;&#x6027;
+podAntiAffinity:                                  Pod &#x53CD;&#x4EB2;&#x548C;&#x6027;
+    requiredDuringSchedulingIgnoredDuringExecution:   &#x5C06;a&#x5E94;&#x7528;&#x548C;b&#x5E94;&#x7528;&#x90E8;&#x7F72;&#x5728;&#x4E00;&#x8D77;&#xFF0C;&#x6216;&#x4E0D;&#x90E8;&#x7F72;&#x5728;&#x4E00;&#x8D77;
+        labelSelector
+            matchExpressions
+            matchLabels
+        namespaceSelector
+        namespaces
+        topologyKey
+    preferredDuringSchedulingIgnoredDuringExecution:  &#x5C3D;&#x91CF;&#x5C06;a&#x5E94;&#x7528;&#x548C;b&#x5E94;&#x7528;&#x90E8;&#x7F72;&#x5728;&#x4E00;&#x8D77;&#xFF0C;&#x6216;&#x4E0D;&#x90E8;&#x7F72;&#x5728;&#x4E00;&#x8D77;
+        podAffinityTerm
+        weight                                         1-100
+</code></pre><pre><code>affinity:
+podAntiAffinity:
+  preferredDuringSchedulingIgnoredDuringExecution:
+  - weight: 1
+    podAffinityTerm:
+      labelSelector:
+        matchExpressions:
+          - key: aaa
+            operator: In
+            values:
+              - aaa
+      topologyKey: &quot;kubernetes.io/hostname&quot;
+</code></pre><pre><code>affinity:
+podAntiAffinity:
+  requiredDuringSchedulingIgnoredDuringExecution:
+    - labelSelector:
+        matchExpressions:
+          - key: aaa
+            operator: In
+            values:
+              - bbb
+      topologyKey: kubernetes.io/hostname
+</code></pre><h3 id="3&#x4EB2;&#x548C;&#x6027;">3.&#x4EB2;&#x548C;&#x6027;</h3>
+<pre><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:       # &#x5FC5;&#x987B;&#x6EE1;&#x8DB3;
+        labelSelector:
+        - matchExpressions:
+          - key: disktype                                   # &#x6807;&#x7B7E; disktype
+            operator: In                                    # &#x7B49;&#x4E8E;
+            values:
+            - ssd                                           # ssd
+      preferredDuringSchedulingIgnoredDuringExecution:      # &#x5C3D;&#x91CF;&#x6EE1;&#x8DB3;
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: processor                                  # labels key  
+            operator: In                                    # &#x7B49;&#x4E8E;
+            values:
+            - gpu                                           # gpu
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+</code></pre><pre><code>spec:
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: meme
+            operator: In
+            values:
+            - bus  
+        namespaces:              #&#x5982;&#x679C;&#x5199;&#x4E86;namespaces&#x4F46;&#x662F;&#x7559;&#x7A7A;&#xFF0C;&#x5339;&#x914D;&#x6240;&#x6709;namespace&#x4E0B;&#x7684;&#x6307;&#x5B9A;label&#x7684;pod
+          - kube-system
+        topologyKey: kubernetes.io/hostname
+</code></pre><h3 id="4&#x53CD;&#x4EB2;&#x548C;&#x6027;">4.&#x53CD;&#x4EB2;&#x548C;&#x6027;</h3>
+<pre><code>spec:
+  affinity:
+    podAntiAffinity:                                      # &#x5C31;&#x8FD9;&#x91CC;&#x52A0; Anti
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: meme
+            operator: In
+            values:
+            - bus  
+        topologyKey: kubernetes.io/hostname
+</code></pre><h3 id="5&#x793A;&#x4F8B;">5.&#x793A;&#x4F8B;</h3>
+<pre><code>spec:
+    template:
+        metadata:
+          labels:
+            ddp: worker
+    spec:
+      affinity:
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: ddp
+                  operator: In
+                  values:
+                  - worker
+              topologyKey: kubernetes.io/hostname
+</code></pre><p>&#x67E5;&#x770B;&#x6807;&#x7B7E;</p>
+<pre><code>kubectl get no --show-labels
+kubectl get no -l testtag=error
+kubectl get pods -l time=2019 --show-labels
+</code></pre><p>&#x8BBE;&#x7F6E;&#x6807;&#x7B7E;</p>
+<pre><code>kubectl label nodes node2 node-role.kubernetes.io/worker=
+kubectl label no node3 testtag=error
+kubectl label no node1 testtag=node1
+kubectl label node node2 role=worker
+</code></pre><pre><code>kubectl label no node1 disktype=ssd
+
+spec:
+  nodeSelector:
+    disktype: ssd1
+</code></pre><pre><code>spec:
+    nodeSelector:
+        kubernetes.io/hostname: master.cluster.k8s
+</code></pre><pre><code>spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        labelSelector:
+        - matchExpressions:
+          - key: testtag
+            operator: In
+            values:
+            - node1
+            - node2
+</code></pre><p>&#x5220;&#x9664;&#x6807;&#x7B7E;</p>
+<pre><code>kubectl label no node3 testtag-
+</code></pre><h2 id="3&#x3001;&#x96C6;&#x7FA4;&#x8D44;&#x6E90;&#x67E5;&#x8BE2;">3&#x3001;&#x96C6;&#x7FA4;&#x8D44;&#x6E90;&#x67E5;&#x8BE2;</h2>
+<pre><code>kubectl top
+</code></pre><pre><code>kubectl describe node &lt;NODEMAME&gt;
+</code></pre><blockquote>
+<p>Capacity&#xFF08;&#x5BB9;&#x91CF;&#xFF09;: &#x6307;&#x7684;&#x662F;&#x8282;&#x70B9;&#x4E0A;&#x7406;&#x8BBA;&#x4E0A;&#x7684;&#x6700;&#x5927;&#x8D44;&#x6E90;&#x91CF;&#xFF0C;&#x5373;&#x8282;&#x70B9;&#x4E0A;&#x672A;&#x505A;&#x4EFB;&#x4F55;&#x9884;&#x7559;&#xFF0C;&#x5168;&#x90E8;&#x53EF;&#x7528;&#x4E8E;&#x8FD0;&#x884C;Pods&#x7684;&#x6700;&#x5927;&#x8D44;&#x6E90;&#x603B;&#x91CF;&#x3002;&#x8FD9;&#x901A;&#x5E38;&#x53CD;&#x6620;&#x4E86;&#x786C;&#x4EF6;&#x7684;&#x6781;&#x9650;&#x6216;&#x7BA1;&#x7406;&#x5458;&#x8BBE;&#x5B9A;&#x7684;&#x4E0A;&#x9650;&#x3002;</p>
+<p>Allocatable&#xFF08;&#x53EF;&#x5206;&#x914D;&#xFF09;: &#x5219;&#x662F;&#x6307;&#x5728;&#x8003;&#x8651;&#x4E86;&#x7CFB;&#x7EDF;&#x9884;&#x7559;&#xFF08;system reserve&#xFF09;&#x3001;kubelet&#x9884;&#x7559;&#x4EE5;&#x53CA;&#x5176;&#x4ED6;&#x7CFB;&#x7EDF;&#x7EC4;&#x4EF6;&#xFF08;&#x5982;kube-proxy&#x3001;runtime&#x7B49;&#xFF09;&#x6240;&#x9700;&#x8D44;&#x6E90;&#x540E;&#xFF0C;&#x771F;&#x6B63;&#x53EF;&#x7528;&#x4E8E;&#x8FD0;&#x884C;&#x7528;&#x6237;Pods&#x7684;&#x8D44;&#x6E90;&#x91CF;&#x3002;&#x5B83;&#x662F;Kubernetes&#x5728;&#x8C03;&#x5EA6;Pod&#x65F6;&#x5B9E;&#x9645;&#x53C2;&#x8003;&#x7684;&#x53EF;&#x7528;&#x8D44;&#x6E90;&#x91CF;&#xFF0C;&#x786E;&#x4FDD;&#x7CFB;&#x7EDF;&#x7EC4;&#x4EF6;&#x80FD;&#x591F;&#x6B63;&#x5E38;&#x8FD0;&#x884C;&#xFF0C;&#x9632;&#x6B62;&#x8D44;&#x6E90;&#x88AB;&#x5B8C;&#x5168;&#x8017;&#x5C3D;&#x800C;&#x5BFC;&#x81F4;&#x8282;&#x70B9;&#x4E0D;&#x7A33;&#x5B9A;&#x3002;</p>
+<p>requests&#x5173;&#x6CE8;&#x7684;&#x662F;&#x4FDD;&#x969C;&#x5BB9;&#x5668;&#x7684;&#x6700;&#x4F4E;&#x8D44;&#x6E90;&#x9700;&#x6C42;&#xFF0C;&#x800C;limits&#x5219;&#x7528;&#x6765;&#x9650;&#x5236;&#x5BB9;&#x5668;&#x8D44;&#x6E90;&#x4F7F;&#x7528;&#x7684;&#x4E0A;&#x9650;</p>
+<p>&#x5185;&#x5B58;&#x4F7F;&#x7528;&#x8D85;&#x51FA;&#x9650;&#x5236;&#x65F6;&#x53EF;&#x80FD;&#x4F1A;&#x88AB;Kubernetes OOM Killer&#xFF08;Out Of Memory killer&#xFF09;&#x7EC8;&#x6B62;</p>
+<p>m &#x5343;&#x5206;&#x4E4B;&#x4E00; &#x6BEB;&#x6838;</p>
+</blockquote>
+<pre><code>kubectl proxy
+http://127.0.0.1:8001/apis/metrics.k8s.io/v1beta1/nodes
+http://127.0.0.1:8001/apis/metrics.k8s.io/v1beta1/nodes/&lt;node-name&gt;
+http://127.0.0.1:8001/apis/metrics.k8s.io/v1beta1/pods
+http://127.0.0.1:8001/apis/metrics.k8s.io/v1beta1/namespaces/&lt;namespace-name&gt;/pods/&lt;pod-name&gt;
+</code></pre><pre><code>kubectl get --raw /apis/metrics.k8s.io/v1beta1/nodes
+kubectl get --raw /apis/metrics.k8s.io/v1beta1/pods
+kubectl get --raw /apis/metrics.k8s.io/v1beta1/nodes/&lt;node-name&gt;
+kubectl get --raw /apis/metrics.k8s.io/v1beta1/namespaces/&lt;namespace-name&gt;/pods/&lt;pod-name&gt;
+</code></pre><h2 id="4&#x3001;&#x547D;&#x540D;&#x7A7A;&#x95F4;&#x76F8;&#x5173;">4&#x3001;&#x547D;&#x540D;&#x7A7A;&#x95F4;&#x76F8;&#x5173;</h2>
+<h3 id="1&#x521B;&#x5EFA;&#x3001;&#x5207;&#x6362;&#x547D;&#x540D;&#x7A7A;&#x95F4;">1.&#x521B;&#x5EFA;&#x3001;&#x5207;&#x6362;&#x547D;&#x540D;&#x7A7A;&#x95F4;</h3>
+<pre><code>kubectl get ns
+kubectl create namespace my-namespace
+kubectl config set-context $(kubectl config current-context) --namespace=&lt;insert-namespace-name-here&gt;
+kubectl config set-context kubernetes-admin@cluster.local --namespace=kube-system
+kubectl config view | grep namespace:
+</code></pre><h3 id="2namespace-&#x4E00;&#x76F4;-teminating">2.namespace &#x4E00;&#x76F4; Teminating</h3>
+<pre><code>kubectl delete ns test
+kubectl edit ns test
+&#x5220;&#x9664; finalizers
+</code></pre><h3 id="3&#x5220;&#x9664;&#x547D;&#x540D;&#x7A7A;&#x95F4;&#x6240;&#x6709;&#x5185;&#x5BB9;">3.&#x5220;&#x9664;&#x547D;&#x540D;&#x7A7A;&#x95F4;&#x6240;&#x6709;&#x5185;&#x5BB9;</h3>
+<pre><code>kubectl delete pods --all -n test
+</code></pre><pre><code>kubectl api-resources --verbs=list --namespaced -o name|xargs -I {} kubectl delete --all {} -n test
+</code></pre><h2 id="5&#x3001;&#x7EF4;&#x62A4;&#x8282;&#x70B9;">5&#x3001;&#x7EF4;&#x62A4;&#x8282;&#x70B9;</h2>
+<h3 id="1&#x8BBE;&#x7F6E;&#x8282;&#x70B9;&#x4E0D;&#x53EF;&#x8C03;&#x5EA6;">1.&#x8BBE;&#x7F6E;&#x8282;&#x70B9;&#x4E0D;&#x53EF;&#x8C03;&#x5EA6;</h3>
+<pre><code>kuberctl cordon node2
+</code></pre><h3 id="2&#x9A71;&#x9010;&#x8282;&#x70B9;&#x4E0A;&#x7684;pod">2.&#x9A71;&#x9010;&#x8282;&#x70B9;&#x4E0A;&#x7684;pod</h3>
+<pre><code>kubectl drain node2 --delete-local-data --ignore-daemonsets --force
+</code></pre><h3 id="3&#x7EF4;&#x62A4;&#x7ED3;&#x675F;">3.&#x7EF4;&#x62A4;&#x7ED3;&#x675F;</h3>
+<pre><code>kubectl uncordon node2
+</code></pre><h3 id="4&#x5220;&#x9664;&#x8282;&#x70B9;">4.&#x5220;&#x9664;&#x8282;&#x70B9;</h3>
+<pre><code>kubectl cordon node2
+kubectl drain node2 --delete-local-data --ignore-daemonsets --forece
+kubectl delete node node2
+</code></pre><blockquote>
+<p>--delete-local-data  &#x5373;&#x4F7F;pod&#x4F7F;&#x7528;&#x4E86;emptyDir&#x4E5F;&#x5220;&#x9664;
+--ignore-daemonsets  &#x5FFD;&#x7565;deamonset&#x63A7;&#x5236;&#x5668;&#x7684;pod&#xFF0C;&#x5982;&#x679C;&#x4E0D;&#x5FFD;&#x7565;&#xFF0C;deamonset&#x63A7;&#x5236;&#x5668;&#x63A7;&#x5236;&#x7684;pod&#x88AB;&#x5220;&#x9664;&#x540E;&#x53EF;&#x80FD;&#x9A6C;&#x4E0A;&#x53C8;&#x5728;&#x6B64;&#x8282;&#x70B9;&#x4E0A;&#x542F;&#x52A8;&#x8D77;&#x6765;,&#x4F1A;&#x6210;&#x4E3A;&#x6B7B;&#x5FAA;&#x73AF;&#xFF1B;
+--force  &#x4E0D;&#x52A0;force&#x53C2;&#x6570;&#x53EA;&#x4F1A;&#x5220;&#x9664;&#x8BE5;NODE&#x4E0A;&#x7531;ReplicationController, ReplicaSet, DaemonSet,StatefulSet or Job&#x521B;&#x5EFA;&#x7684;Pod&#xFF0C;&#x52A0;&#x4E86;&#x540E;&#x8FD8;&#x4F1A;&#x5220;&#x9664;&apos;&#x88F8;&#x5954;&#x7684;pod&apos;(&#x6CA1;&#x6709;&#x7ED1;&#x5B9A;&#x5230;&#x4EFB;&#x4F55;replication controller)</p>
+</blockquote>
+<h3 id="5&#x91CD;&#x65B0;&#x52A0;&#x5165;">5.&#x91CD;&#x65B0;&#x52A0;&#x5165;</h3>
+<pre><code>[root@master] kubeadm token create --print-join-command
+[root@node2] kubeadm join 172.27.9.131:6443 --token svrip0.lajrfl4jgal0ul6i     --discovery-token-ca-cert-hash sha256:5f656ae26b5e7d4641a979cbfdffeb7845cc5962bbfcd1d5435f00a25c02ea50
+</code></pre><h2 id="6&#x3001;annotation">6&#x3001;annotation</h2>
+<p>&#x4FEE;&#x6539;annotation</p>
+<pre><code>kubectl annotate --overwrite pod test action=StopContainer
+</code></pre><h2 id="7&#x3001;&#x6C61;&#x70B9;&#x4E0E;&#x5BB9;&#x5FCD;&#x5EA6;">7&#x3001;&#x6C61;&#x70B9;&#x4E0E;&#x5BB9;&#x5FCD;&#x5EA6;</h2>
+<blockquote>
+<p>&#x6C61;&#x70B9;&#xFF08;Taint&#xFF09;&#xFF0C;&#x6392;&#x65A5;&#x4E00;&#x7C7B;&#x7279;&#x5B9A;&#x7684;Pod&#x3002;</p>
+<p>&#x5BB9;&#x5FCD;&#x5EA6;&#xFF08;Toleration&#xFF09;&#xFF0C;&#x5141;&#x8BB8;&#x8C03;&#x5EA6;&#x5668;&#x8C03;&#x5EA6;&#x5E26;&#x6709;&#x5BF9;&#x5E94;&#x6C61;&#x70B9;&#x7684;Pod&#xFF0C;&#x5E94;&#x7528;&#x4E8E;Pod&#x4E0A;&#x3002;</p>
+</blockquote>
+<ul>
+<li><p>NoExecute</p>
+<p>&#x8FD9;&#x4F1A;&#x5F71;&#x54CD;&#x5DF2;&#x5728;&#x8282;&#x70B9;&#x4E0A;&#x8FD0;&#x884C;&#x7684; Pod&#xFF0C;&#x5177;&#x4F53;&#x5F71;&#x54CD;&#x5982;&#x4E0B;&#xFF1A;</p>
+<ul>
+<li>&#x5982;&#x679C; Pod &#x4E0D;&#x80FD;&#x5BB9;&#x5FCD;&#x8FD9;&#x7C7B;&#x6C61;&#x70B9;&#xFF0C;&#x4F1A;&#x9A6C;&#x4E0A;&#x88AB;&#x9A71;&#x9010;&#x3002;</li>
+<li>&#x679C; Pod &#x80FD;&#x591F;&#x5BB9;&#x5FCD;&#x8FD9;&#x7C7B;&#x6C61;&#x70B9;&#xFF0C;&#x4F46;&#x662F;&#x5728;&#x5BB9;&#x5FCD;&#x5EA6;&#x5B9A;&#x4E49;&#x4E2D;&#x6CA1;&#x6709;&#x6307;&#x5B9A; tolerationSeconds&#xFF0C; &#x5219; Pod &#x8FD8;&#x4F1A;&#x4E00;&#x76F4;&#x5728;&#x8FD9;&#x4E2A;&#x8282;&#x70B9;&#x4E0A;&#x8FD0;&#x884C;&#x3002;</li>
+<li>&#x5982;&#x679C; Pod &#x80FD;&#x591F;&#x5BB9;&#x5FCD;&#x8FD9;&#x7C7B;&#x6C61;&#x70B9;&#xFF0C;&#x800C;&#x4E14;&#x6307;&#x5B9A;&#x4E86; <code>tolerationSeconds</code>&#xFF0C; &#x5219; Pod &#x8FD8;&#x80FD;&#x5728;&#x8FD9;&#x4E2A;&#x8282;&#x70B9;&#x4E0A;&#x7EE7;&#x7EED;&#x8FD0;&#x884C;&#x8FD9;&#x4E2A;&#x6307;&#x5B9A;&#x7684;&#x65F6;&#x95F4;&#x957F;&#x5EA6;&#x3002; &#x8FD9;&#x6BB5;&#x65F6;&#x95F4;&#x8FC7;&#x53BB;&#x540E;&#xFF0C;&#x8282;&#x70B9;&#x751F;&#x547D;&#x5468;&#x671F;&#x63A7;&#x5236;&#x5668;&#x4ECE;&#x8282;&#x70B9;&#x9A71;&#x9664;&#x8FD9;&#x4E9B; Pod&#x3002;</li>
+</ul>
+</li>
+<li><p>NoSchedule</p>
+<p>&#x9664;&#x975E;&#x5177;&#x6709;&#x5339;&#x914D;&#x7684;&#x5BB9;&#x5FCD;&#x5EA6;&#x89C4;&#x7EA6;&#xFF0C;&#x5426;&#x5219;&#x65B0;&#x7684; Pod &#x4E0D;&#x4F1A;&#x88AB;&#x8C03;&#x5EA6;&#x5230;&#x5E26;&#x6709;&#x6C61;&#x70B9;&#x7684;&#x8282;&#x70B9;&#x4E0A;&#x3002; &#x5F53;&#x524D;&#x6B63;&#x5728;&#x8282;&#x70B9;&#x4E0A;&#x8FD0;&#x884C;&#x7684; Pod &#x4E0D;&#x4F1A;&#x88AB;&#x9A71;&#x9010;&#x3002;</p>
+</li>
+<li><p>PreferNoScheduler</p>
+</li>
+</ul>
+<p>&#x200B;    &#x63A7;&#x5236;&#x5E73;&#x9762;&#x5C06;&#x5C1D;&#x8BD5;&#x907F;&#x514D;&#x5C06;&#x4E0D;&#x80FD;&#x5BB9;&#x5FCD;&#x6C61;&#x70B9;&#x7684; Pod &#x8C03;&#x5EA6;&#x5230;&#x7684;&#x8282;&#x70B9;&#x4E0A;&#xFF0C;&#x4F46;&#x4E0D;&#x80FD;&#x4FDD;&#x8BC1;&#x5B8C;&#x5168;&#x907F;&#x514D;&#x3002;</p>
+<pre><code>kubectl taint nodes 192.168.0.127 key1=value1:NoExecute --overwrite
+</code></pre><pre><code>tolerations:
+- key: &quot;key1&quot;
+  operator: &quot;Equal&quot;
+  value: &quot;value1&quot;
+  effect: &quot;NoExecute&quot;
+  tolerationSeconds: 6000
+</code></pre><blockquote>
+<p>operator&#x7684;&#x9ED8;&#x8BA4;&#x503C;&#x662F;Equal</p>
+<p>&#x5176;&#x4ED6;&#x503C;&#xFF1A;Exists</p>
+<p>tolerationSeconds&#x662F;&#x5F53;pod&#x9700;&#x8981;&#x88AB;&#x9A71;&#x9010;&#x65F6;&#xFF0C;&#x53EF;&#x4EE5;&#x7EE7;&#x7EED;&#x5728;node&#x4E0A;&#x8FD0;&#x884C;&#x7684;&#x65F6;&#x95F4;&#xFF0C;&#x53EF;&#x9009;&#x53C2;&#x6570;&#x3002;</p>
+</blockquote>
+<p>&#x5220;&#x9664;</p>
+<pre><code>kubectl taint nodes 192.168.0.127 key1=value1:NoExecute-
+</code></pre><blockquote>
+<p>&#x5141;&#x8BB8;&#x5728;&#x6C61;&#x70B9;&#x4E0A;&#x8C03;&#x5EA6;</p>
+</blockquote>
+<pre><code>tolerations:
+- key: &quot;CriticalAddonsOnly&quot;
+  operator: &quot;Exists&quot;
+- operator: &quot;Exists&quot;
+  effect: &quot;NoSchedule&quot;
+- operator: &quot;Exists&quot;
+  effect: &quot;NoExecute&quot;
+</code></pre><h2 id="8&#x3001;hostpath">8&#x3001;HostPath</h2>
+<table>
+<thead>
+<tr>
+<th><strong>&#x6302;&#x8F7D;&#x6A21;&#x5F0F;</strong></th>
+<th><strong>&#x63CF;&#x8FF0;</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DirectoryOrCreate</strong></td>
+<td>&#x5982;&#x679C;&#x5728;&#x7ED9;&#x5B9A;&#x8DEF;&#x5F84;&#x4E0A;&#x4EC0;&#x4E48;&#x90FD;&#x4E0D;&#x5B58;&#x5728;&#xFF0C;&#x5C06;&#x6839;&#x636E;&#x9700;&#x8981;&#x521B;&#x5EFA;&#x7A7A;&#x76EE;&#x5F55;&#xFF0C;&#x6743;&#x9650;&#x8BBE;&#x7F6E;&#x4E3A;0755&#xFF0C;&#x4E0E;Kubelet&#x5177;&#x6709;&#x76F8;&#x540C;&#x7684;&#x7EC4;&#x548C;&#x5C5E;&#x4E3B;&#x4FE1;&#x606F;&#x3002;</td>
+</tr>
+<tr>
+<td><strong>Directory</strong></td>
+<td>&#x5728;&#x7ED9;&#x5B9A;&#xF937;&#x5F84;&#x4E0A;&#x5FC5;&#x987B;&#x5B58;&#x5728;&#x76EE;&#x5F55;&#x3002;</td>
+</tr>
+<tr>
+<td><strong>FileOrCreate</strong></td>
+<td>&#x5982;&#x679C;&#x5728;&#x7ED9;&#x5B9A;&#x8DEF;&#x5F84;&#x4E0A;&#x4EC0;&#x4E48;&#x90FD;&#x4E0D;&#x5B58;&#x5728;&#xFF0C;&#x90A3;&#x4E48;&#x5C06;&#x5728;&#x7ED9;&#x5B9A;&#x8DEF;&#x5F84;&#x6839;&#x636E;&#x9700;&#x8981;&#x521B;&#x5EFA;&#x7A7A;&#x6587;&#x4EF6;&#xFF0C;&#x6743;&#x9650;&#x8BBE;&#x7F6E;&#x4E3A;0644&#xFF0C;&#x5177;&#x6709;&#x4E0E;Kubelet&#x76F8;&#x540C;&#x7684;&#x7EC4;&#x548C;&#x6240;&#x6709;&#x6743;&#x3002;</td>
+</tr>
+<tr>
+<td><strong>File</strong></td>
+<td>&#x5728;&#x7ED9;&#x5B9A;&#x8DEF;&#x5F84;&#x4E0A;&#x5FC5;&#x987B;&#x5B58;&#x5728;&#x6587;&#x4EF6;&#x3002;</td>
+</tr>
+</tbody>
+</table>
+<pre><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: test
+spec:
+  containers:
+  - image: nginx:1.7.9
+    name: test
+    volumeMounts:
+    - mountPath: /test
+      name: test-volume
+  volumes:
+  - name: test-volume
+    hostPath:
+      path: /data
+      type: DirectoryOrCreate
+</code></pre><pre><code>apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: task-pv-volume
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: &quot;/data&quot;
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hostpath
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+</code></pre><h2 id="9&#x3001;&#x83B7;&#x53D6;-kubeconfig-&#x5E76;&#x5728;-pod-&#x4E2D;&#x4F7F;&#x7528;">9&#x3001;&#x83B7;&#x53D6; kubeconfig &#x5E76;&#x5728; pod &#x4E2D;&#x4F7F;&#x7528;</h2>
+<pre><code>kubectl apply -f - &lt;&lt;EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hpa-kubeconfig
+  namespace: hpa
+type: Opaque
+data:
+  config: $(kubectl config view --raw|base64|tr -d &apos;\n&apos;)
+EOF
+</code></pre><pre><code>kubectl apply -f - &lt;&lt;EOF
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hpa-cronjob
+  namespace: hpa
+spec:
+  schedule: &quot;* * * * *&quot;
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hpa-cronjob
+            image: kubectl:v1.26.8
+            command:
+            - &quot;/bin/sh&quot;
+            - &quot;-c&quot;
+            - &quot;kubectl get no&quot;
+            volumeMounts:
+            - name: kubeconfig
+              mountPath: /root/.kube/config
+              subPath: config
+          volumes:
+          - name: kubeconfig
+            secret:
+              secretName: hpa-kubeconfig
+          restartPolicy: OnFailure
+EOF
+</code></pre><h2 id="10&#x3001;&#x65E5;&#x5FD7;&#x8F6E;&#x8F6C;">10&#x3001;&#x65E5;&#x5FD7;&#x8F6E;&#x8F6C;</h2>
+<pre><code>kubelet
+--container-log-max-size=50Mi
+--container-log-max-files=3
+--container-log-dir=/path/to/custom/logs
+</code></pre><pre><code>/var/lib/kubelet/config.yaml
+containerLogMaxFiles: 3 
+containerLogMaxSize: 10Mi
+</code></pre><pre><code>containerd
+[plugins.&quot;io.containerd.grpc.v1.cri&quot;.containerd]
+  [plugins.&quot;io.containerd.grpc.v1.cri&quot;.containerd.runtimes.runc.options]
+    log-driver = &quot;json-file&quot;
+    log-opts = [&quot;max-size=50m&quot;, &quot;max-file=3&quot;]
+</code></pre><h2 id="11&#x3001;&#x914D;&#x7F6E;&#x53D8;&#x5316;&#x91CD;&#x542F;pod">11&#x3001;&#x914D;&#x7F6E;&#x53D8;&#x5316;&#x91CD;&#x542F;pod</h2>
+<pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include &quot;app.fullname&quot; . }}
+  labels:
+    {{- include &quot;app.labels&quot; . | nindent 4 }}
+    app.kubernetes.io/component: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include &quot;app.selectorLabels&quot; . | nindent 6 }}
+      app.kubernetes.io/component: app
+  template:
+    metadata:
+      labels:
+        {{- include &quot;app.labels&quot; . | nindent 8 }}
+        app.kubernetes.io/component: app
+      annotations:
+        configHash: {{ include (print $.Template.BasePath &quot;/config.yaml&quot;) . | sha256sum | quote }}
+        # configHash: {{ .Values.sagflow.config | toYaml | sha256sum | quote }}
+</code></pre><blockquote>
+<p>$.Template.BasePath &quot;/config.yaml&quot; -&gt; templates/configmap.yaml</p>
+</blockquote>
+<h2 id="12&#x3001;&#x4F1A;&#x8BDD;&#x7C98;&#x6EDE;">12&#x3001;&#x4F1A;&#x8BDD;&#x7C98;&#x6EDE;</h2>
+<pre><code>spec:
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 3600  # &#x7C98;&#x6027;&#x65F6;&#x95F4;&#x4E3A; 1 &#x5C0F;&#x65F6;
+</code></pre><h2 id="13&#x3001;cronjob">13&#x3001;CronJob</h2>
+<pre><code>&#x5E76;&#x53D1;&#x63A7;&#x5236;
+&#x901A;&#x8FC7; spec.concurrencyPolicy &#x5B57;&#x6BB5;&#xFF0C;&#x63A7;&#x5236; CronJob &#x5728;&#x65B0;&#x4EFB;&#x52A1;&#x89E6;&#x53D1;&#x65F6;&#x662F;&#x5426;&#x5141;&#x8BB8;&#x5E76;&#x53D1;&#x8FD0;&#x884C;&#xFF1A;
+
+Allow&#xFF08;&#x9ED8;&#x8BA4;&#x503C;&#xFF09;&#xFF1A;&#x5141;&#x8BB8;&#x5E76;&#x53D1;&#x8FD0;&#x884C;&#x591A;&#x4E2A;&#x4EFB;&#x52A1;&#x3002;
+Forbid&#xFF1A;&#x7981;&#x6B62;&#x5E76;&#x53D1;&#x8FD0;&#x884C;&#xFF0C;&#x82E5;&#x524D;&#x4E00;&#x4E2A;&#x4EFB;&#x52A1;&#x672A;&#x5B8C;&#x6210;&#xFF0C;&#x65B0;&#x4EFB;&#x52A1;&#x4F1A;&#x88AB;&#x8DF3;&#x8FC7;&#x3002;
+Replace&#xFF1A;&#x5982;&#x679C;&#x4E0A;&#x4E00;&#x4E2A;&#x4EFB;&#x52A1;&#x672A;&#x5B8C;&#x6210;&#xFF0C;&#x4F1A;&#x7EC8;&#x6B62;&#x4E0A;&#x4E00;&#x4E2A;&#x4EFB;&#x52A1;&#xFF0C;&#x5E76;&#x542F;&#x52A8;&#x65B0;&#x4EFB;&#x52A1;&#x3002;
+&#x4EFB;&#x52A1;&#x91CD;&#x8BD5;&#x7B56;&#x7565;
+&#x901A;&#x8FC7; spec.jobTemplate.spec.backoffLimit &#x5B9A;&#x4E49;&#x5931;&#x8D25;&#x4EFB;&#x52A1;&#x7684;&#x91CD;&#x8BD5;&#x6B21;&#x6570;&#xFF08;&#x9ED8;&#x8BA4;&#x4E3A; 6 &#x6B21;&#xFF09;&#x3002;&#x8D85;&#x8FC7;&#x91CD;&#x8BD5;&#x6B21;&#x6570;&#x540E;&#xFF0C;&#x4EFB;&#x52A1;&#x6807;&#x8BB0;&#x4E3A;&#x5931;&#x8D25;&#x3002;
+
+&#x8D85;&#x65F6;&#x63A7;&#x5236;
+&#x901A;&#x8FC7; spec.jobTemplate.spec.activeDeadlineSeconds &#x8BBE;&#x7F6E;&#x4EFB;&#x52A1;&#x7684;&#x6700;&#x957F;&#x8FD0;&#x884C;&#x65F6;&#x95F4;&#xFF08;&#x4EE5;&#x79D2;&#x4E3A;&#x5355;&#x4F4D;&#xFF09;&#x3002;&#x5982;&#x679C;&#x8D85;&#x8FC7;&#x8FD9;&#x4E2A;&#x65F6;&#x95F4;&#xFF0C;&#x4EFB;&#x52A1;&#x4F1A;&#x88AB;&#x5F3A;&#x5236;&#x7EC8;&#x6B62;&#x3002;
+
+&#x5386;&#x53F2;&#x4FDD;&#x7559;&#x7B56;&#x7565;
+spec.successfulJobsHistoryLimit&#xFF1A;&#x4FDD;&#x7559;&#x6210;&#x529F;&#x4EFB;&#x52A1;&#x7684;&#x6570;&#x91CF;&#xFF08;&#x9ED8;&#x8BA4; 3&#xFF09;&#x3002;
+spec.failedJobsHistoryLimit&#xFF1A;&#x4FDD;&#x7559;&#x5931;&#x8D25;&#x4EFB;&#x52A1;&#x7684;&#x6570;&#x91CF;&#xFF08;&#x9ED8;&#x8BA4; 1&#xFF09;&#x3002;
+
+spec:
+  schedule: &quot;*/5 * * * *&quot;  # &#x6BCF; 5 &#x5206;&#x949F;&#x89E6;&#x53D1;&#x4E00;&#x6B21;
+  successfulJobsHistoryLimit: 0  # &#x4FDD;&#x7559;&#x6240;&#x6709;&#x6210;&#x529F;&#x4EFB;&#x52A1;
+  failedJobsHistoryLimit: 0  # &#x4FDD;&#x7559;&#x6240;&#x6709;&#x5931;&#x8D25;&#x4EFB;&#x52A1;
+</code></pre><h1 id="&#x4E8C;&#x3001;&#x5E38;&#x7528;helm&#x6E90;">&#x4E8C;&#x3001;&#x5E38;&#x7528;helm&#x6E90;</h1>
+<pre><code>helm repo add aliyuncs https://apphub.aliyuncs.com
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo add stable https://kubernetes-charts.storage.googleapis.com
+helm repo add local https://local.com/chartrepo/k8s
+helm repo add az https://mirror.azure.cn/kubernetes/charts/
+helm repo add goharbor https://helm.goharbor.io
+helm repo add emqx https://repos.emqx.io/charts
+</code></pre><pre><code>helm repo add --ca-file /etc/docker/certs.d/local.com/ca.crt --username=admin --password=XXX local https://local.com/chartrepo/k8s
+</code></pre><h1 id="&#x4E09;&#x3001;&#x5E38;&#x7528;&#x547D;&#x4EE4;">&#x4E09;&#x3001;&#x5E38;&#x7528;&#x547D;&#x4EE4;</h1>
+<h2 id="1jsonpath">1.jsonpath</h2>
+<pre><code>kubectl get deploy -l app.kubernetes.io/name=controller -o jsonpath={.items[0].status.availableReplicas}
+
+kubectl get nodes --namespace default -o jsonpath=&quot;{.items[0].status.addresses[0].address}&quot;
+</code></pre><h2 id="2&#x5F3A;&#x5236;&#x5220;&#x9664;&#x5BB9;&#x5668;">2.&#x5F3A;&#x5236;&#x5220;&#x9664;&#x5BB9;&#x5668;</h2>
+<pre><code>kubectl delete pod PODNAME --force --grace-period=0
+</code></pre><pre><code>helm uninstall --timeout 1s test &amp; kubectl get po -o=name|grep test|xargs kubectl delete --grace-period=0 --force
+</code></pre><h2 id="3&#x4ECE;&#x96C6;&#x7FA4;&#x4E2D;&#x5BFC;&#x51FA;&#x914D;&#x7F6E;">3.&#x4ECE;&#x96C6;&#x7FA4;&#x4E2D;&#x5BFC;&#x51FA;&#x914D;&#x7F6E;</h2>
+<pre><code>kubectl get daemonset -n kube-system kube-flannel-ds -o yaml &gt; kube-system-kube-flannel-ds.yaml
+</code></pre><h2 id="4&#x6D4B;&#x8BD5;-api-sever">4.&#x6D4B;&#x8BD5; api sever</h2>
+<pre><code>curl -kv https://10.96.0.1:443/version
+</code></pre><h2 id="5&#x96C6;&#x7FA4;&#x7EC4;&#x4EF6;&#x72B6;&#x6001;">5.&#x96C6;&#x7FA4;&#x7EC4;&#x4EF6;&#x72B6;&#x6001;</h2>
+<pre><code>kubectl get --raw=&apos;/readyz?verbose&apos;
+</code></pre><h2 id="6events">6.events</h2>
+<pre><code>kubectl get events --sort-by=.metadata.creationTimestamp --field-selector=involvedObject.kind=Pod,involvedObject.name=&lt;pod-name&gt;
+</code></pre><pre><code>kubectl get events --sort-by=.metadata.creationTimestamp --field-selector=involvedObject.kind=Pod,involvedObject.name=nginx-deployment-7bc4686759-m7h4l
+</code></pre><pre><code>kubectl get events
+kubectl get events --field-selector type=Warning
+kubectl get events --sort-by=.metadata.creationTimestamp
+kubectl get events --field-selector involvedObject.kind!=Pod
+kubectl get events --field-selector involvedObject.kind=Node, involvedObject.name=&lt;node_name&gt;
+kubectl get events --field-selector type!=Normal
+</code></pre><h2 id="7http-&#x8BBF;&#x95EE;apiserver">7.http &#x8BBF;&#x95EE;apiserver</h2>
+<pre><code>kubectl proxy --address=&apos;0.0.0.0&apos; --accept-hosts=&apos;^*$&apos; --port=8080
+</code></pre><h2 id="8logs">8.logs</h2>
+<pre><code>kubectl logs &lt;pod_name&gt;
+kubectl logs --since=6h &lt;pod_name&gt;
+kubectl logs --tail=50 &lt;pod_name&gt;
+kubectl logs -f &lt;service_name&gt; [-c &lt;$container&gt;]
+kubectl logs -f &lt;pod_name&gt;
+kubectl logs -c &lt;container_name&gt; &lt;pod_name&gt;
+kubectl logs &lt;pod_name&gt; pod.log
+kubectl logs --previous &lt;pod_name&gt;
+</code></pre><h2 id="9port-forward">9.port-forward</h2>
+<pre><code>kubectl port-forward $POD_NAME 8080:8080 -n default
+kubectl port-forward svc/test 8080:31000
+</code></pre><h2 id="10&#x5176;&#x4ED6;&#x547D;&#x4EE4;">10.&#x5176;&#x4ED6;&#x547D;&#x4EE4;</h2>
+<pre><code>docker inspect 5c3af3101afb -f &quot;{{.HostConfig.Memory}}&quot;
+
+docker stats --format &apos;table {{.CPUPerc}}\t{{.MemPerc}}&apos; --no-stream d17 2&gt;/dev/null | tail -1 | sed &apos;s/ //g&apos;| sed &apos;s/%/,/g&apos;
+</code></pre><pre><code>kubectl run limit-test --image=busybox --limits &quot;memory=100Mi&quot; --command -- /bin/sh -c &quot;while true; do sleep 2; done&quot;
+
+kubectl run limit-test --image=busybox --requests &quot;cpu=50m&quot; --command -- /bin/sh -c &quot;while true; do sleep 2; done&quot;
+</code></pre><pre><code>kubectl explain Pod.spec.volumes.hostPath
+</code></pre><pre><code>kubectl get pod test-pod -o jsonpath=&apos;{.spec.containers[*].resources.limits}&apos;
+</code></pre><pre><code>kubectl expose pod httpbin --port 80
+</code></pre><h2 id="11&#x547D;&#x4EE4;&#x8865;&#x5168;">11.&#x547D;&#x4EE4;&#x8865;&#x5168;</h2>
+<pre><code>kubectl completion bash
+</code></pre><p>/root/.bashrc</p>
+<pre><code>source &lt;(crictl completion bash)
+source &lt;(nerdctl completion bash)
+source &lt;(kubectl completion bash)
+</code></pre><h2 id="12&#x67E5;&#x770B;-gpu-&#x4F7F;&#x7528;&#x60C5;&#x51B5;">12.&#x67E5;&#x770B; gpu &#x4F7F;&#x7528;&#x60C5;&#x51B5;</h2>
+<pre><code>kubectl describe nodes | grep -E &quot;Name:|nvidia.com/gpu&quot;
+</code></pre><pre><code>kubectl get nodes -o custom-columns=&quot;NAME:.metadata.name,GPU_ALLOCATED:.status.allocatable.nvidia\.com/gpu,GPU_USED:.status.capacity.nvidia\.com/gpu&quot;
+</code></pre><h2 id="13pod-&#x8BBF;&#x95EE;-svc">13.pod &#x8BBF;&#x95EE; svc</h2>
+<p>&#x670D;&#x52A1;&#x7684;&#x89C4;&#x5219;&#x5982;&#x4E0B;</p>
+<pre><code>&lt;service_name&gt;.&lt;namespace&gt;.svc.cluster.local
+</code></pre><pre><code>&lt;service_name&gt;.&lt;namespace&gt;.svc.&lt;&#x540E;&#x7F00;&gt;
+</code></pre><pre><code>vim /var/lib/kubelet/config.yaml
+...
+clusterDomain: cluster.local
+...
+</code></pre><h2 id="14&#x8BBE;&#x7F6E;&#x9ED8;&#x8BA4;&#x547D;&#x540D;&#x7A7A;&#x95F4;">14.&#x8BBE;&#x7F6E;&#x9ED8;&#x8BA4;&#x547D;&#x540D;&#x7A7A;&#x95F4;</h2>
+<pre><code>kubectl config set-context --current --namespace=hl
+</code></pre><h1 id="&#x56DB;&#x3001;&#x8BC1;&#x4E66;&#x8FC7;&#x671F;">&#x56DB;&#x3001;&#x8BC1;&#x4E66;&#x8FC7;&#x671F;</h1>
+<pre><code>kubeadm alpha certs renew all --config=/etc/kubernetes/kubeadm-config.yaml
+
+kubeadm alpha certs check-expiration --config=/etc/kubernetes/kubeadm-config.yaml
+
+cp -r /etc/kubernetes /etc/kubernetes_bak
+
+cd /etc/kubernetes/pki/
+
+rm -rf {apiserver.crt,apiserver-kubelet-client.crt,front-proxy-ca.crt,front-proxy-client.crt,front-proxy-client.key,front-proxy-ca.key,apiserver-kubelet-client.key,apiserver.key}
+
+kubeadm init phase certs all --apiserver-advertise-address &lt;IP&gt;
+
+cd /etc/kubernetes/
+
+rm -rf {admin.conf,controller-manager.conf,kubelet.conf,scheduler.conf}
+
+kubeadm init phase kubeconfig all
+
+cp /etc/kubernetes/admin.conf $HOME/.kube/config
+</code></pre><p><a href="https://github.com/hlyani/kubernetes1.17.3" target="_blank">https://github.com/hlyani/kubernetes1.17.3</a></p>
+<pre><code>wget https://raw.githubusercontent.com/hlyani/kubernetes1.17.3/master/update-kubeadm-cert.sh
+chmod +x update-kubeadm-cert.sh
+./update-kubeadm-cert.sh all
+./update-kubeadm-cert.sh master
+</code></pre><h1 id="&#x4E94;&#x3001;&#x4FEE;&#x6539;-service-&#x9ED8;&#x8BA4;&#x7AEF;&#x53E3;&#x8303;&#x56F4;">&#x4E94;&#x3001;&#x4FEE;&#x6539; service &#x9ED8;&#x8BA4;&#x7AEF;&#x53E3;&#x8303;&#x56F4;</h1>
+<blockquote>
+<p>&#x9ED8;&#x8BA4;&#x8303;&#x56F4; 30000-32767</p>
+</blockquote>
+<h2 id="1&#x3001;k8s">1&#x3001;k8s</h2>
+<pre><code>cat /etc/systemd/system/kube-apiserver.service | grep node-port
+
+--service-node-port-range=80-32767 \
+</code></pre><h2 id="2&#x3001;k3s">2&#x3001;k3s</h2>
+<pre><code>k3s server --kube-apiserver-arg --service-node-port-range=80-32767
+</code></pre><pre><code>cat /etc/systemd/system/k3s.service
+
+ExecStart=/usr/local/bin/k3s \
+    server --kube-apiserver-arg service-node-port-range=80-32767
+
+systemctl daemon-reload
+systemctl restart docker
+</code></pre><pre><code>cat /etc/systemd/system/k3s.service
+
+ExecStart=/usr/local/bin/k3s \
+    server --kube-apiserver-arg=&quot;service-node-port-range=80-32767&quot;
+
+systemctl daemon-reload
+systemctl restart docker
+</code></pre><h1 id="&#x516D;&#x3001;pod-pid&#x9650;&#x5236;">&#x516D;&#x3001;Pod Pid&#x9650;&#x5236;</h1>
+<pre><code>vim /var/lib/kubelet/config.yaml
+podPidsLimit: 1024
+</code></pre><pre><code>/proc/sys/kernel/pid_max # &#x5B9A;&#x4E49;&#x4E86;&#x53EF;&#x4EE5;&#x5206;&#x914D;&#x7ED9;&#x8FDB;&#x7A0B;&#x7684;&#x6700;&#x5927;&#x8FDB;&#x7A0B; ID&#xFF08;PID&#xFF09; 
+
+sysctl -w kernel.pid_max=65535
+
+/etc/sysctl.conf
+kernel.pid_max = 65535
+
+sysctl -p
+</code></pre><h1 id="&#x4E03;&#x3001;faq">&#x4E03;&#x3001;FAQ</h1>
+<h2 id="1&#x3001;flannel&#x7F51;&#x7EDC;&#x5DF2;&#x5B58;&#x5728;">1&#x3001;flannel&#x7F51;&#x7EDC;&#x5DF2;&#x5B58;&#x5728;</h2>
+<ol>
+<li>NetworkPlugin cni failed to set up pod &quot;xxxxx&quot; network: failed to set bridge addr: &quot;cni0&quot; already has an IP address different from10.x.x.x - Error</li>
+</ol>
+<pre><code>ip link set cni0 down
+ip link set flannel.1 down 
+ip link delete cni0
+ip link delete flannel.1
+systemctl restart containerd
+systemctl restart kubelet
+</code></pre><ol>
+<li>k8s cluster ping 10.96.0.1 no route</li>
+</ol>
+<pre><code>kubectl edit cm kube-proxy -n kube-system
+...
+    kind: KubeProxyConfiguration
+    metricsBindAddress: &quot;&quot;
+    mode: &quot;ipvs&quot;
+...
+</code></pre><ol>
+<li>kube-proxy Failed to retrieve node info: Unauthorized</li>
+</ol>
+<blockquote>
+<p>&#x62A5;&#x9519;&#x65E5;&#x5FD7;&#x6765;&#x770B;&#x662F;&#x8BC1;&#x4E66;&#x9A8C;&#x8BC1;&#x5931;&#x8D25;&#xFF0C;github&#x4E0A;&#x770B;&#x5230;&#x4E86;&#x6709;&#x6B64;&#x95EE;&#x9898;&#x7684;&#x89E3;&#x51B3;&#x65B9;&#x6CD5; &#xFF0C;&#x9700;&#x8981;&#x5220;&#x9664;kube-proxy &#x4F9D;&#x8D56;&#x7684;secret</p>
+<p>&#x53EF;&#x80FD;&#x662F;&#x591A;&#x6B21;&#x8FD0;&#x884C;kubeadm&#xFF0C;&#x5BFC;&#x81F4;&#x96C6;&#x7FA4;&#x91CC;&#x4FDD;&#x5B58;&#x7684;&#x8BC1;&#x4E66;&#x548C;&#x65B0;&#x751F;&#x6210;&#x7684;&#x8BC1;&#x4E66;&#x4E0D;&#x4E00;&#x81F4;</p>
+</blockquote>
+<pre><code>kubectl delete secret -n kube-system kube-proxy-token-kgrw7
+</code></pre><ol>
+<li>k8s &#x4FEE;&#x6539; pod-network-cidr &#x5730;&#x5740;&#x8303;&#x56F4;</li>
+</ol>
+<blockquote>
+<p>--pod-network-cidr=10.244.0.0/16 -&gt; --pod-network-cidr=192.168.0.0/16</p>
+</blockquote>
+<pre><code>kubectl -n kube-system edit cm kubeadm-config
+vim /etc/kubernetes/manifests/kube-scheduler.yaml
+</code></pre><pre><code>kubectl cluster-info dump | grep -m 1 cluster-cidr
+</code></pre><h2 id="2&#x3001;k8s&#x8BC1;&#x4E66;&#x8FC7;&#x671F;&#xFF0C;&#x91CD;&#x65B0;&#x90E8;&#x7F72;&#x51FA;&#x95EE;&#x9898;&#xFF0C;&#x6062;&#x590D;&#x6570;&#x636E;&#x548C;&#x96C6;&#x7FA4;">2&#x3001;k8s&#x8BC1;&#x4E66;&#x8FC7;&#x671F;&#xFF0C;&#x91CD;&#x65B0;&#x90E8;&#x7F72;&#x51FA;&#x95EE;&#x9898;&#xFF0C;&#x6062;&#x590D;&#x6570;&#x636E;&#x548C;&#x96C6;&#x7FA4;</h2>
+<ol>
+<li>&#x67E5;&#x770B;&#x6E90;pvc&#x5173;&#x7CFB;</li>
+</ol>
+<pre><code>[root@node1]# kubectl get pvc
+NAME                                     STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+data-mariadb-master-0                    Bound    pvc-16840bfc-4a3b-45de-8250-3c71044c00ce   1000Gi     RWO            ceph-rbd       359d
+data-mariadb-slave-0                     Bound    pvc-3a4b00ba-7fd9-4eb3-93ef-b4ea96648761   160Gi      RWO            ceph-rbd       359d
+data-mariadb-slave-1                     Bound    pvc-12e8300a-3ef3-4ebe-a728-ec325666e675   160Gi      RWO            ceph-rbd       359d
+data-mariadb-slave-2                     Bound    pvc-be01ef0f-51f9-4654-964b-288f74f5d43f   160Gi      RWO            ceph-rbd       359d
+</code></pre><ol>
+<li>&#x67E5;&#x770B;&#x6BCF;&#x4E2A;&#x8282;&#x70B9;&#x7684;rbd&#x6302;&#x8F7D;&#x5173;&#x7CFB;</li>
+</ol>
+<pre><code>[root@node1]# mount|grep rbd
+/dev/rbd0 on /var/lib/kubelet/plugins/kubernetes.io/rbd/mounts/k8s-image-kubernetes-dynamic-pvc-d83535a2-774d-11ea-96f9-4a11faeddc0e type ext4 (rw,relatime,seclabel,stripe=1024,data=ordered)
+/dev/rbd0 on /var/lib/kubelet/pods/6f364828-81bf-4bdc-9145-3d105f140932/volumes/kubernetes.io~rbd/pvc-c9b4b571-4c3c-46bf-8c67-1f1fc204dd6b type ext4 (rw,relatime,seclabel,stripe=1024,data=ordered)
+/dev/rbd1 on /var/lib/kubelet/plugins/kubernetes.io/rbd/mounts/k8s-image-kubernetes-dynamic-pvc-d816cdfb-774d-11ea-96f9-4a11faeddc0e type ext4 (rw,relatime,seclabel,stripe=1024,data=ordered)
+/dev/rbd1 on /var/lib/kubelet/pods/f1baca67-5ae2-4916-8e67-c9a37a51b94b/volumes/kubernetes.io~rbd/pvc-292d52f7-22b3-4af9-9633-94e09a0f8bef type ext4 (rw,relatime,seclabel,stripe=1024,data=ordered)
+/dev/rbd8 on /var/lib/kubelet/plugins/kubernetes.io/rbd/mounts/k8s-image-kubernetes-dynamic-pvc-fc5a0ab3-220b-11ea-8d64-8e19e7bc2052 type ext4 (rw,relatime,seclabel,stripe=1024,data=ordered)
+/dev/rbd8 on /var/lib/kubelet/pods/45de1bb4-5863-4dac-93f1-fd801a5a2f4d/volumes/kubernetes.io~rbd/pvc-16840bfc-4a3b-45de-8250-3c71044c00ce type ext4 (rw,relatime,seclabel,stripe=1024,data=ordered)
+</code></pre><pre><code>kubectl get pv pvc-XXXXXXXXXXXXXXXXXXXXXXXXX -o yaml
+imageName: csi-vol-YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
+</code></pre><ol>
+<li>&#x67E5;&#x770B;pv pool &#x91CC;&#x9762;&#x7684;rbd</li>
+</ol>
+<pre><code>rbd ls k8s
+kubernetes-dynamic-pvc-045ec64a-2092-11ea-8d64-8e19e7bc2052
+kubernetes-dynamic-pvc-0eef530b-206b-11ea-8d64-8e19e7bc2052
+</code></pre><ol>
+<li><p>&#x91CD;&#x65B0;&#x521B;&#x5EFA;&#x5E94;&#x7528;&#xFF0C;&#x5220;&#x9664;&#x5E94;&#x7528;&#xFF0C;&#x67E5;&#x770B;&#x5F53;&#x524D;&#x5E94;&#x7528;&#x7684;pvc&#xFF0C;&#x5C06;pvc&#x5BF9;&#x5E94;&#x7684;rbd&#x5220;&#x9664;&#xFF0C;&#x5E76;&#x5C06;&#x65E7;&#x7684;rbd&#x91CD;&#x547D;&#x540D;&#x4E3A;&#x5F53;&#x524D;pvc&#xFF0C;&#x6700;&#x540E;&#x518D;&#x91CD;&#x65B0;&#x521B;&#x5EFA;&#x5E94;&#x7528;</p>
+</li>
+<li><p>remove (rm)</p>
+</li>
+<li>rename (mv)</li>
+<li>copy (cp)</li>
+</ol>
+<pre><code>rbd rm k8s/kubernetes-dynamic-pvc-d95e5e92-3c7e-11eb-9d5a-6a0e4650a17b
+rbd mv k8s/kubernetes-dynamic-pvc-fc5a0ab3-220b-11ea-8d64-8e19e7bc2052 k8s/kubernetes-dynamic-pvc-d95e5e92-3c7e-11eb-9d5a-6a0e4650a17b
+</code></pre><ol>
+<li>&#x5176;&#x4ED6;</li>
+</ol>
+<pre><code>ceph osd dump | grep full_ratio
+ceph osd set-full-ratio 0.98
+ceph osd set-backfillfull-ratio 0.95
+</code></pre><h2 id="3&#x3001;&#x8BB0;&#x4E00;&#x6B21;-kube-flannel-pod&#x542F;&#x52A8;&#x5F02;&#x5E38;">3&#x3001;&#x8BB0;&#x4E00;&#x6B21; kube-flannel pod&#x542F;&#x52A8;&#x5F02;&#x5E38;</h2>
+<blockquote>
+<p>&#x7B2C;&#x4E00;&#x73B0;&#x8C61;&#xFF0C;kube-flannel&#x4E00;&#x76F4;&#x542F;&#x4E0D;&#x8D77;&#x6765;&#xFF0C;&#x4E0D;&#x65AD;&#x91CD;&#x542F;</p>
+</blockquote>
+<pre><code>kubectl get po -A
+</code></pre><blockquote>
+<p>&#x67E5;&#x770B;pod&#x65E5;&#x5FD7;&#xFF0C;&#x663E;&#x793A;&#x8FDE;&#x63A5;&#x4E0D;&#x4E0A;10.96.0.1:443&#xFF0C;&#x5373;kube-api &#x670D;&#x52A1;&#x5730;&#x5740;</p>
+</blockquote>
+<pre><code>kubectl logs -n kube-flannel kube-flannel-ds-7bcbn
+</code></pre><pre><code>kubectl get svc -A
+
+NAMESPACE     NAME            TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                  AGE
+default       kubernetes      ClusterIP   10.96.0.1        &lt;none&gt;        443/TCP                  5d7h
+</code></pre><blockquote>
+<p>&#x5C1D;&#x8BD5;&#x53BB;&#x5404;&#x4E2A;&#x8282;&#x70B9; &#x8FDE;&#x63A5;10.96.0.1:443&#xFF0C;&#x5747;&#x4E0D;&#x901A;</p>
+</blockquote>
+<pre><code> curl -kv https://10.96.0.1:443/version
+</code></pre><blockquote>
+<p>&#x8003;&#x8651;&#x67E5;&#x770B;kube-proxy&#x65E5;&#x5FD7;</p>
+</blockquote>
+<pre><code>kubectl logs -n kube-system kube-proxy-p8fdr
+
+...
+Failed to retrieve node info: Unauthorized
+...
+</code></pre><blockquote>
+<p>&#x62A5;&#x9519;&#x65E5;&#x5FD7;&#x6765;&#x770B;&#x662F;&#x8BC1;&#x4E66;&#x9A8C;&#x8BC1;&#x5931;&#x8D25; &#xFF0C;&#x9700;&#x8981;&#x5220;&#x9664;kube-proxy &#x4F9D;&#x8D56;&#x7684;secret&#xFF0C;&#x8BA9;&#x96C6;&#x7FA4;&#x91CD;&#x65B0;&#x751F;&#x6210;&#x6700;&#x65B0;&#x7684;secret</p>
+</blockquote>
+<pre><code>kubectl delete secret -n kube-system kube-proxy-token-kgrw7
+</code></pre><blockquote>
+<p>&#x7B49;&#x5F85;secret&#x91CD;&#x521B;&#xFF0C;&#x5220;&#x9664;kube-proxy pod&#xFF0C;&#x91CD;&#x542F;kube-proxy</p>
+<p>&#x5404;&#x4E2A;&#x8282;&#x70B9;&#x8BF7;&#x6C42;api-server&#xFF0C;&#x6B63;&#x5E38;</p>
+</blockquote>
+<pre><code> curl -kv https://10.96.0.1:443/version
+</code></pre><blockquote>
+<p>&#x91CD;&#x65B0;&#x90E8;&#x7F72;kube-flannel&#xFF0C;&#x67E5;&#x770B;flannel&#x65E5;&#x5FD7;</p>
+</blockquote>
+<pre><code>NetworkPlugin cni failed to set up pod &quot;xxxxx&quot; network: failed to set bridge addr: &quot;cni0&quot; already has an IP address different from10.x.x.x - Error
+</code></pre><blockquote>
+<p>&#x5220;&#x9664;&#x4E4B;&#x524D;&#x5DF2;&#x6709;&#x7F51;&#x5361;&#xFF0C;&#x91CD;&#x65B0;&#x670D;&#x52A1;&#xFF0C;&#x7B49;&#x5F85;&#x81EA;&#x52A8;&#x91CD;&#x65B0;&#x521B;&#x5EFA;</p>
+</blockquote>
+<pre><code>ip link set cni0 down
+ip link set flannel.1 down  
+ip link delete cni0
+ip link delete flannel.1
+systemctl restart containerd / systemctl restart docker
+systemctl restart kubelet
+</code></pre>
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="k8s_deploy.html" class="navigation navigation-prev " aria-label="Previous page: k8s 安装部署">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="k8s_hpa.html" class="navigation navigation-next " aria-label="Next page: k8s hpa">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"k8s 使用","level":"1.7.24","depth":2,"next":{"title":"k8s hpa","level":"1.7.25","depth":2,"path":"notes/docker/k8s_hpa.md","ref":"notes/docker/k8s_hpa.md","articles":[]},"previous":{"title":"k8s 安装部署","level":"1.7.23","depth":2,"path":"notes/docker/k8s_deploy.md","ref":"notes/docker/k8s_deploy.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-lunr","-search","search-pro","-sharing","expandable-chapters","back-to-top-button","code","splitter","pageview-count","page-toc-button","github","hide-element"],"styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"github":{"url":"https://github.com/hlyani"},"splitter":{},"search-pro":{},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"page-toc-button":{"maxTocDepth":"2","minTocSize":"2"},"back-to-top-button":{},"pageview-count":{},"theme-default":{"styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"showLevel":false},"expandable-chapters":{}},"theme":"default","author":"hlyani","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"hlyani","gitbook":"*","description":"hl notes"},"file":{"path":"notes/docker/k8s_use.md","mtime":"2026-01-29T02:41:05.142Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2026-01-29T02:41:33.564Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search-pro/jquery.mark.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search-pro/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-expandable-chapters/expandable-chapters.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-back-to-top-button/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-code/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-splitter/splitter.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-pageview-count/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-page-toc-button/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-hide-element/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

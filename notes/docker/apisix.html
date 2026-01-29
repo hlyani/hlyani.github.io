@@ -1,0 +1,4433 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>apisix · hlyani</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="hlyani">
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search-pro/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-expandable-chapters/expandable-chapters.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-back-to-top-button/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-splitter/splitter.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-pageview-count/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-page-toc-button/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="kubebuilder.html" />
+    
+    
+    <link rel="prev" href="ingress.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../proxy.html">
+            
+                <a href="../proxy.html">
+            
+                    
+                    proxy 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../pip.html">
+            
+                <a href="../pip.html">
+            
+                    
+                    pip 源相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../linux_source.html">
+            
+                <a href="../linux_source.html">
+            
+                    
+                    linux 源相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../git.html">
+            
+                <a href="../git.html">
+            
+                    
+                    git 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="../skills.html">
+            
+                <a href="../skills.html">
+            
+                    
+                    skills
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" >
+            
+                <span>
+            
+                    
+                    容器相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="usual_software.html">
+            
+                <a href="usual_software.html">
+            
+                    
+                    常用软件安装
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2" data-path="kubeflow.html">
+            
+                <a href="kubeflow.html">
+            
+                    
+                    kubeflow
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3" data-path="kube-scheduler.html">
+            
+                <a href="kube-scheduler.html">
+            
+                    
+                    kube-scheduler
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.4" data-path="volcano.html">
+            
+                <a href="volcano.html">
+            
+                    
+                    volcano
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.5" data-path="kubeasz.html">
+            
+                <a href="kubeasz.html">
+            
+                    
+                    kubeasz
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.6" data-path="calico.html">
+            
+                <a href="calico.html">
+            
+                    
+                    calico
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.7" data-path="ingress.html">
+            
+                <a href="ingress.html">
+            
+                    
+                    ingress
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.7.8" data-path="apisix.html">
+            
+                <a href="apisix.html">
+            
+                    
+                    apisix
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.9" data-path="kubebuilder.html">
+            
+                <a href="kubebuilder.html">
+            
+                    
+                    kubebuilder
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.10" data-path="containerd.html">
+            
+                <a href="containerd.html">
+            
+                    
+                    Containerd
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.11" data-path="buildah.html">
+            
+                <a href="buildah.html">
+            
+                    
+                    Buildah
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.12" data-path="buildkit.html">
+            
+                <a href="buildkit.html">
+            
+                    
+                    Buildkit
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.13" data-path="docker.html">
+            
+                <a href="docker.html">
+            
+                    
+                    docker 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.14" data-path="multiarch.html">
+            
+                <a href="multiarch.html">
+            
+                    
+                    容器交叉编译
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.15" data-path="kubeedge.html">
+            
+                <a href="kubeedge.html">
+            
+                    
+                    kubeedge
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.16" data-path="k3s_deploy.html">
+            
+                <a href="k3s_deploy.html">
+            
+                    
+                    k3s 安装与使用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.17" data-path="k3s_make.html">
+            
+                <a href="k3s_make.html">
+            
+                    
+                    k3s 源码编译
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.18" data-path="rancher.html">
+            
+                <a href="rancher.html">
+            
+                    
+                    rancher 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.19" data-path="debootstrap.html">
+            
+                <a href="debootstrap.html">
+            
+                    
+                    容器基础镜像构建
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.20" data-path="overlay2.html">
+            
+                <a href="overlay2.html">
+            
+                    
+                    overlay2
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.21" data-path="k8s.html">
+            
+                <a href="k8s.html">
+            
+                    
+                    k8s 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.22" data-path="k8s_yaml.html">
+            
+                <a href="k8s_yaml.html">
+            
+                    
+                    k8s 常用 yaml
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.23" data-path="k8s_deploy.html">
+            
+                <a href="k8s_deploy.html">
+            
+                    
+                    k8s 安装部署
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.24" data-path="k8s_use.html">
+            
+                <a href="k8s_use.html">
+            
+                    
+                    k8s 使用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.25" data-path="k8s_hpa.html">
+            
+                <a href="k8s_hpa.html">
+            
+                    
+                    k8s hpa
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.26" data-path="k8s_ceph.html">
+            
+                <a href="k8s_ceph.html">
+            
+                    
+                    k8s 使用 ceph 储存
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.27" data-path="chartmuseum.html">
+            
+                <a href="chartmuseum.html">
+            
+                    
+                    chartmuseum 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.28" data-path="harbor.html">
+            
+                <a href="harbor.html">
+            
+                    
+                    harbor 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.29" data-path="helm.html">
+            
+                <a href="helm.html">
+            
+                    
+                    helm 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.30" data-path="docker_net.html">
+            
+                <a href="docker_net.html">
+            
+                    
+                    docker 网络相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.31" data-path="docker_swarm.html">
+            
+                <a href="docker_swarm.html">
+            
+                    
+                    docker swarm 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.32" data-path="docker_compose.html">
+            
+                <a href="docker_compose.html">
+            
+                    
+                    docker compose 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.33" data-path="docker_registry.html">
+            
+                <a href="docker_registry.html">
+            
+                    
+                    docker registry 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.34" data-path="openshift.html">
+            
+                <a href="openshift.html">
+            
+                    
+                    openshift 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.35" data-path="convert_iso_to_docker_img.html">
+            
+                <a href="convert_iso_to_docker_img.html">
+            
+                    
+                    将ISO镜像转换为docker镜像
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.36" data-path="mount_usb_to_docker.html">
+            
+                <a href="mount_usb_to_docker.html">
+            
+                    
+                    挂载USB到docker容器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.37" data-path="local_static_provisioner.html">
+            
+                <a href="local_static_provisioner.html">
+            
+                    
+                    local-static-provisioner
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.38" data-path="change_ssl.md">
+            
+                <span>
+            
+                    
+                    change_ssl
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" >
+            
+                <span>
+            
+                    
+                    Golang 相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="../golang/go.html">
+            
+                <a href="../golang/go.html">
+            
+                    
+                    golang 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2" data-path="../golang/go_authens.md">
+            
+                <span>
+            
+                    
+                    GO Authens 代理
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" >
+            
+                <span>
+            
+                    
+                    OpenStack 相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.9.1" data-path="../openstack/whatisruntime.html">
+            
+                <a href="../openstack/whatisruntime.html">
+            
+                    
+                    区分当前系统运行环境
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.2" data-path="../openstack/qemu_make.html">
+            
+                <a href="../openstack/qemu_make.html">
+            
+                    
+                    QEMU 源码编译
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.3" data-path="../openstack/openstack.html">
+            
+                <a href="../openstack/openstack.html">
+            
+                    
+                    OpenStack 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.4" data-path="../openstack/openstack_faq.html">
+            
+                <a href="../openstack/openstack_faq.html">
+            
+                    
+                    OpenStack 中遇到的问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.5" data-path="../openstack/delete_cinder_volume.html">
+            
+                <a href="../openstack/delete_cinder_volume.html">
+            
+                    
+                    删除 Cinder 僵尸实例
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.6" data-path="../openstack/add_nic_to_vm.html">
+            
+                <a href="../openstack/add_nic_to_vm.html">
+            
+                    
+                    给虚拟机添加网卡
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.7" data-path="../openstack/make_openstack_image.html">
+            
+                <a href="../openstack/make_openstack_image.html">
+            
+                    
+                    制作 OpenStack 镜像
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.8" data-path="../openstack/openstack_win_vm_diaplay.html">
+            
+                <a href="../openstack/openstack_win_vm_diaplay.html">
+            
+                    
+                    OpenStack Windows 虚拟机分辨率问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.9" data-path="../openstack/kolla_network.html">
+            
+                <a href="../openstack/kolla_network.html">
+            
+                    
+                    Kolla 网络规划
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.10" data-path="../openstack/kolla_deploy.html">
+            
+                <a href="../openstack/kolla_deploy.html">
+            
+                    
+                    Kolla 部署相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.11" data-path="../openstack/kolla_image_build.html">
+            
+                <a href="../openstack/kolla_image_build.html">
+            
+                    
+                    Kolla 镜像构建
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.12" data-path="../openstack/devstack.html">
+            
+                <a href="../openstack/devstack.html">
+            
+                    
+                    Devstack 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.13" data-path="../openstack/heat.html">
+            
+                <a href="../openstack/heat.html">
+            
+                    
+                    Heat 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.14" data-path="../openstack/qga.html">
+            
+                <a href="../openstack/qga.html">
+            
+                    
+                    qemu-guest-agent 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.15" data-path="../openstack/ovs.html">
+            
+                <a href="../openstack/ovs.html">
+            
+                    
+                    OVS 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.16" data-path="../openstack/migrate_to_other_platform.html">
+            
+                <a href="../openstack/migrate_to_other_platform.html">
+            
+                    
+                    迁移虚拟机到其他平台
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.17" data-path="../openstack/openstack_hygon_patch.html">
+            
+                <a href="../openstack/openstack_hygon_patch.html">
+            
+                    
+                    OpenStack对hygon的兼容
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.18" data-path="../openstack/lsf_install_openstack.html">
+            
+                <a href="../openstack/lsf_install_openstack.html">
+            
+                    
+                    Lfs上安装OpenStack
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" >
+            
+                <span>
+            
+                    
+                    Linux 相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.1" data-path="../linux/alpine.html">
+            
+                <a href="../linux/alpine.html">
+            
+                    
+                    alpine
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.2" data-path="../linux/redis.html">
+            
+                <a href="../linux/redis.html">
+            
+                    
+                    redis
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.3" data-path="../linux/ib.html">
+            
+                <a href="../linux/ib.html">
+            
+                    
+                    ib
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.4" data-path="../linux/loki.html">
+            
+                <a href="../linux/loki.html">
+            
+                    
+                    loki
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.5" data-path="../linux/http_status_code.html">
+            
+                <a href="../linux/http_status_code.html">
+            
+                    
+                    HTTP 状态码
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.6" data-path="../linux/yq.html">
+            
+                <a href="../linux/yq.html">
+            
+                    
+                    yq
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.7" data-path="../linux/conda.html">
+            
+                <a href="../linux/conda.html">
+            
+                    
+                    conda
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.8" data-path="../linux/minio.html">
+            
+                <a href="../linux/minio.html">
+            
+                    
+                    minio
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.9" data-path="../linux/prometheus.html">
+            
+                <a href="../linux/prometheus.html">
+            
+                    
+                    prometheus
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.10" data-path="../linux/test_tools.html">
+            
+                <a href="../linux/test_tools.html">
+            
+                    
+                    test_tools
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.11" data-path="../linux/gitlab.html">
+            
+                <a href="../linux/gitlab.html">
+            
+                    
+                    gitlab
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.12" data-path="../linux/etcd.html">
+            
+                <a href="../linux/etcd.html">
+            
+                    
+                    etcd
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.13" data-path="../linux/frp.html">
+            
+                <a href="../linux/frp.html">
+            
+                    
+                    frp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.14" data-path="../linux/synology.html">
+            
+                <a href="../linux/synology.html">
+            
+                    
+                    synology
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.15" data-path="../linux/adb.md">
+            
+                <span>
+            
+                    
+                    adb
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.16" data-path="../linux/netns.html">
+            
+                <a href="../linux/netns.html">
+            
+                    
+                    netns
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.17" data-path="../linux/uboot.html">
+            
+                <a href="../linux/uboot.html">
+            
+                    
+                    uboot
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.18" data-path="../linux/linux_network.html">
+            
+                <a href="../linux/linux_network.html">
+            
+                    
+                    linux 网络配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.19" data-path="../linux/qemu_img.html">
+            
+                <a href="../linux/qemu_img.html">
+            
+                    
+                    qemu-img
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.20" data-path="../linux/systemd.html">
+            
+                <a href="../linux/systemd.html">
+            
+                    
+                    systemd
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.21" data-path="../linux/dd.html">
+            
+                <a href="../linux/dd.html">
+            
+                    
+                    dd 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.22" data-path="../linux/kernel_make.html">
+            
+                <a href="../linux/kernel_make.html">
+            
+                    
+                    kernel 内核编译
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.23" data-path="../nodejs.html">
+            
+                <a href="../nodejs.html">
+            
+                    
+                    nodejs 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.24" data-path="../linux/unixbench.html">
+            
+                <a href="../linux/unixbench.html">
+            
+                    
+                    UnixBench 虚拟机性能测试工具
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.25" data-path="../linux/pypi_local_source.html">
+            
+                <a href="../linux/pypi_local_source.html">
+            
+                    
+                    pip 本地源
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.26" data-path="../linux/lvm.html">
+            
+                <a href="../linux/lvm.html">
+            
+                    
+                    LVM 逻辑卷相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.27" data-path="../linux/tcpdump.html">
+            
+                <a href="../linux/tcpdump.html">
+            
+                    
+                    tcpdump 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.28" data-path="../linux/libvirt.html">
+            
+                <a href="../linux/libvirt.html">
+            
+                    
+                    libvirt 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.29" data-path="../linux/linux.html">
+            
+                <a href="../linux/linux.html">
+            
+                    
+                    Linux 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.30" data-path="../linux/change_centos_boot_kernel.html">
+            
+                <a href="../linux/change_centos_boot_kernel.html">
+            
+                    
+                    CentOS 修改默认启动内核
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.31" data-path="../linux/vim.html">
+            
+                <a href="../linux/vim.html">
+            
+                    
+                    Vim 常用命令
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.32" data-path="../linux/nested.html">
+            
+                <a href="../linux/nested.html">
+            
+                    
+                    嵌套虚拟化
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.33" data-path="../linux/net_bridge.html">
+            
+                <a href="../linux/net_bridge.html">
+            
+                    
+                    创建网桥
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.34" data-path="../linux/nic_bond.html">
+            
+                <a href="../linux/nic_bond.html">
+            
+                    
+                    网络端口聚合绑定
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.35" data-path="../linux/ramdisk.html">
+            
+                <a href="../linux/ramdisk.html">
+            
+                    
+                    虚拟内存盘
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.36" data-path="../linux/ssh_interval.html">
+            
+                <a href="../linux/ssh_interval.html">
+            
+                    
+                    ssh 自动断开
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.37" data-path="../linux/ssh_forwading.html">
+            
+                <a href="../linux/ssh_forwading.html">
+            
+                    
+                    ssh 转发
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.38" data-path="../linux/samba.html">
+            
+                <a href="../linux/samba.html">
+            
+                    
+                    Samba 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.39" data-path="../linux/ftp.html">
+            
+                <a href="../linux/ftp.html">
+            
+                    
+                    ftp 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.40" data-path="../linux/iscsi.html">
+            
+                <a href="../linux/iscsi.html">
+            
+                    
+                    iscsi 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.41" data-path="../linux/guestfish.html">
+            
+                <a href="../linux/guestfish.html">
+            
+                    
+                    guestfish 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.42" data-path="../linux/nginx.html">
+            
+                <a href="../linux/nginx.html">
+            
+                    
+                    nginx 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.43" data-path="../linux/haproxy.html">
+            
+                <a href="../linux/haproxy.html">
+            
+                    
+                    haproxy 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.44" data-path="../linux/build_pypi.html">
+            
+                <a href="../linux/build_pypi.html">
+            
+                    
+                    发布pypi软件包
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.45" data-path="../linux/mysql.html">
+            
+                <a href="../linux/mysql.html">
+            
+                    
+                    mysql 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.46" data-path="../linux/ssr_privoxy.html">
+            
+                <a href="../linux/ssr_privoxy.html">
+            
+                    
+                    ssr privoxy 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.47" data-path="../linux/proxychains_ng.html">
+            
+                <a href="../linux/proxychains_ng.html">
+            
+                    
+                    proxychains-ng 代理工具
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.48" data-path="../linux/virt_manager.html">
+            
+                <a href="../linux/virt_manager.html">
+            
+                    
+                    virt-manager 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.49" data-path="../linux/linux_source.html">
+            
+                <a href="../linux/linux_source.html">
+            
+                    
+                    Linux 源制作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.50" data-path="../linux/rpm_build.html">
+            
+                <a href="../linux/rpm_build.html">
+            
+                    
+                    Python rpm编译
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.51" data-path="../linux/yum_install_conf_conflict.md">
+            
+                <span>
+            
+                    
+                    yum 安装时文件冲突
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.52" data-path="../linux/crontabs.html">
+            
+                <a href="../linux/crontabs.html">
+            
+                    
+                    crontabs 计划任务相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.53" data-path="../linux/diy_centos_iso.html">
+            
+                <a href="../linux/diy_centos_iso.html">
+            
+                    
+                    CentOS iso 镜像定制
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.54" data-path="../linux/ansible.html">
+            
+                <a href="../linux/ansible.html">
+            
+                    
+                    ansible 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.55" data-path="../linux/cobbler.html">
+            
+                <a href="../linux/cobbler.html">
+            
+                    
+                    cobbler 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.56" data-path="../linux/apache_multi_ports.html">
+            
+                <a href="../linux/apache_multi_ports.html">
+            
+                    
+                    apache 多端口
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.57" data-path="../linux/dns.html">
+            
+                <a href="../linux/dns.html">
+            
+                    
+                    搭建本地 dns 服务器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.58" data-path="../linux/linux_u.html">
+            
+                <a href="../linux/linux_u.html">
+            
+                    
+                    Linux U盘占用
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.59" data-path="../linux/ssh.html">
+            
+                <a href="../linux/ssh.html">
+            
+                    
+                    ssh 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.60" data-path="../linux/mdadm.html">
+            
+                <a href="../linux/mdadm.html">
+            
+                    
+                    软 raid
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.61" data-path="../linux/root_extend.html">
+            
+                <a href="../linux/root_extend.html">
+            
+                    
+                    将 home 目录空间扩容到根目录
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.62" data-path="../linux/vm_to_router.html">
+            
+                <a href="../linux/vm_to_router.html">
+            
+                    
+                    将虚拟机作为router
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" >
+            
+                <span>
+            
+                    
+                    Ceph 相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.11.1" data-path="../ceph/ceph.html">
+            
+                <a href="../ceph/ceph.html">
+            
+                    
+                    Ceph
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.2" data-path="../ceph/crushmap.html">
+            
+                <a href="../ceph/crushmap.html">
+            
+                    
+                    crushmap
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.3" data-path="../ceph/cephconf.html">
+            
+                <a href="../ceph/cephconf.html">
+            
+                    
+                    ceph.conf
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12" >
+            
+                <span>
+            
+                    
+                    Python 相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.12.1" data-path="../python/ruff.html">
+            
+                <a href="../python/ruff.html">
+            
+                    
+                    ruff 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.2" data-path="../python/xpath.html">
+            
+                <a href="../python/xpath.html">
+            
+                    
+                    xpath 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.3" data-path="../python/regular_expression.html">
+            
+                <a href="../python/regular_expression.html">
+            
+                    
+                    正则表达式相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.4" data-path="../python/django.html">
+            
+                <a href="../python/django.html">
+            
+                    
+                    Django 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.5" data-path="../python/flask.html">
+            
+                <a href="../python/flask.html">
+            
+                    
+                    Flask 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.6" data-path="../python/python.html">
+            
+                <a href="../python/python.html">
+            
+                    
+                    Python 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.7" data-path="../python/python_obfuscated_code.html">
+            
+                <a href="../python/python_obfuscated_code.html">
+            
+                    
+                    Python 代码混淆
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.8" data-path="../python/sqlalchemy.html">
+            
+                <a href="../python/sqlalchemy.html">
+            
+                    
+                    Python Sqlalchemy
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.9" data-path="../python/python_logging.html">
+            
+                <a href="../python/python_logging.html">
+            
+                    
+                    Python logging模块
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.10" data-path="../python/python_decorators.html">
+            
+                <a href="../python/python_decorators.html">
+            
+                    
+                    Python 装饰器
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.11" data-path="../python/python_file.html">
+            
+                <a href="../python/python_file.html">
+            
+                    
+                    Python 文件操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.12" data-path="../python/scrapy.html">
+            
+                <a href="../python/scrapy.html">
+            
+                    
+                    scrapy 爬虫
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.13" data-path="../python/urllib2.html">
+            
+                <a href="../python/urllib2.html">
+            
+                    
+                    urllib2 爬虫
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.14" data-path="../python/yield.html">
+            
+                <a href="../python/yield.html">
+            
+                    
+                    yield
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.15" data-path="../python/jinja2.html">
+            
+                <a href="../python/jinja2.html">
+            
+                    
+                    Jinja2 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12.16" data-path="../python/python_code_standards.html">
+            
+                <a href="../python/python_code_standards.html">
+            
+                    
+                    Python 代码规范
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13" >
+            
+                <span>
+            
+                    
+                    大数据相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.13.1" data-path="../bigdata/bigdata_deploy.html">
+            
+                <a href="../bigdata/bigdata_deploy.html">
+            
+                    
+                    大数据相关环境安装
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.2" data-path="../bigdata/hadoop.html">
+            
+                <a href="../bigdata/hadoop.html">
+            
+                    
+                    Hadoop 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.3" data-path="../bigdata/hadoop_single.html">
+            
+                <a href="../bigdata/hadoop_single.html">
+            
+                    
+                    Hadoop 单机伪分布式部署
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.4" data-path="../bigdata/hadoop_cluster.html">
+            
+                <a href="../bigdata/hadoop_cluster.html">
+            
+                    
+                    Hadoop 集群搭建
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.5" data-path="../bigdata/hive.html">
+            
+                <a href="../bigdata/hive.html">
+            
+                    
+                    Hive 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.6" data-path="../bigdata/hbase.html">
+            
+                <a href="../bigdata/hbase.html">
+            
+                    
+                    Hbase 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.7" data-path="../bigdata/spark.html">
+            
+                <a href="../bigdata/spark.html">
+            
+                    
+                    spark 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.8" data-path="../bigdata/spark_sql.html">
+            
+                <a href="../bigdata/spark_sql.html">
+            
+                    
+                    spark sql 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.9" data-path="../bigdata/storm.html">
+            
+                <a href="../bigdata/storm.html">
+            
+                    
+                    storm 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.10" data-path="../bigdata/scala.html">
+            
+                <a href="../bigdata/scala.html">
+            
+                    
+                    scala 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.11" data-path="../bigdata/sqoop.html">
+            
+                <a href="../bigdata/sqoop.html">
+            
+                    
+                    sqoop 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.12" data-path="../bigdata/flink.html">
+            
+                <a href="../bigdata/flink.html">
+            
+                    
+                    flink 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.13" data-path="../bigdata/flume.html">
+            
+                <a href="../bigdata/flume.html">
+            
+                    
+                    flume 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.14" data-path="../bigdata/elasticsearch.html">
+            
+                <a href="../bigdata/elasticsearch.html">
+            
+                    
+                    elasticsearch 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.15" data-path="../bigdata/etl.html">
+            
+                <a href="../bigdata/etl.html">
+            
+                    
+                    ETL 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.16" data-path="../bigdata/mapreduce.html">
+            
+                <a href="../bigdata/mapreduce.html">
+            
+                    
+                    mapreduce 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.17" data-path="../bigdata/numpy.html">
+            
+                <a href="../bigdata/numpy.html">
+            
+                    
+                    numpy 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.18" data-path="../bigdata/pandas.html">
+            
+                <a href="../bigdata/pandas.html">
+            
+                    
+                    pandas 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.19" data-path="../bigdata/pyhdfs.html">
+            
+                <a href="../bigdata/pyhdfs.html">
+            
+                    
+                    pyhdfs 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.20" data-path="../bigdata/reptile.html">
+            
+                <a href="../bigdata/reptile.html">
+            
+                    
+                    reptile 爬虫相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.21" data-path="../bigdata/pyecharts.html">
+            
+                <a href="../bigdata/pyecharts.html">
+            
+                    
+                    pyecharts 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.13.22" data-path="../bigdata/matplotlib.html">
+            
+                <a href="../bigdata/matplotlib.html">
+            
+                    
+                    matplotlib 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14" >
+            
+                <span>
+            
+                    
+                    机器学习相关
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.14.1" data-path="../ai/clawdbot.html">
+            
+                <a href="../ai/clawdbot.html">
+            
+                    
+                    clawdbot
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.2" data-path="../ai/langgraph.html">
+            
+                <a href="../ai/langgraph.html">
+            
+                    
+                    LangGraph
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.3" data-path="../ai/mcp_functioncall.html">
+            
+                <a href="../ai/mcp_functioncall.html">
+            
+                    
+                    MCP And Function Call
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.4" data-path="../ai/ollama_vllm.html">
+            
+                <a href="../ai/ollama_vllm.html">
+            
+                    
+                    ollama and vllm
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.5" data-path="../ai/ML.html">
+            
+                <a href="../ai/ML.html">
+            
+                    
+                    ML
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.6" data-path="../ai/tensorflow_and_keras.html">
+            
+                <a href="../ai/tensorflow_and_keras.html">
+            
+                    
+                    tensorflow 和 keras 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.7" data-path="../ai/cifar_10.html">
+            
+                <a href="../ai/cifar_10.html">
+            
+                    
+                    cifar-10 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.14.8" data-path="../ai/darknet_to_caffe.html">
+            
+                <a href="../ai/darknet_to_caffe.html">
+            
+                    
+                    Darknet to Caffe
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15" >
+            
+                <span>
+            
+                    
+                    其他
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.15.1" data-path="../other/nativefier.html">
+            
+                <a href="../other/nativefier.html">
+            
+                    
+                    Nativefier 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.2" data-path="../other/ptp.html">
+            
+                <a href="../other/ptp.html">
+            
+                    
+                    ptp 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.3" data-path="../other/xenserver.html">
+            
+                <a href="../other/xenserver.html">
+            
+                    
+                    xenserver 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.4" data-path="../other/computer_network_foundation.html">
+            
+                <a href="../other/computer_network_foundation.html">
+            
+                    
+                    计算机网络基础
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.5" data-path="../other/ovirt.html">
+            
+                <a href="../other/ovirt.html">
+            
+                    
+                    Ovirt 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.6" data-path="../other/mqtt.html">
+            
+                <a href="../other/mqtt.html">
+            
+                    
+                    MQTT 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.7" data-path="../other/kafka.html">
+            
+                <a href="../other/kafka.html">
+            
+                    
+                    Kafka 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.8" data-path="../other/pyqt5.html">
+            
+                <a href="../other/pyqt5.html">
+            
+                    
+                    PyQt5 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.9" data-path="../other/ionic_cordova.html">
+            
+                <a href="../other/ionic_cordova.html">
+            
+                    
+                    ionic 、cordova  编译 andriod
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.10" data-path="../other/cloudfoundry.html">
+            
+                <a href="../other/cloudfoundry.html">
+            
+                    
+                    cloudfoundry 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.11" data-path="../other/svn.html">
+            
+                <a href="../other/svn.html">
+            
+                    
+                    svn 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.12" data-path="../other/anaconda.html">
+            
+                <a href="../other/anaconda.html">
+            
+                    
+                    anaconda 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.13" data-path="../other/jupyter.html">
+            
+                <a href="../other/jupyter.html">
+            
+                    
+                    jupyter 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.14" data-path="../other/webdriver.html">
+            
+                <a href="../other/webdriver.html">
+            
+                    
+                    webdriver 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.15" data-path="../other/java.html">
+            
+                <a href="../other/java.html">
+            
+                    
+                    Java 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.16" data-path="../other/websocket.html">
+            
+                <a href="../other/websocket.html">
+            
+                    
+                    websocket 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.17" data-path="../other/stratos_ui.html">
+            
+                <a href="../other/stratos_ui.html">
+            
+                    
+                    stratos-ui 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.18" data-path="../other/apidoc.html">
+            
+                <a href="../other/apidoc.html">
+            
+                    
+                    apidoc 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.19" data-path="../other/keepalived.html">
+            
+                <a href="../other/keepalived.html">
+            
+                    
+                    keepalived 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.20" data-path="../other/linux_desktop_rdp.html">
+            
+                <a href="../other/linux_desktop_rdp.html">
+            
+                    
+                    Linux Desktop rdp 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.21" data-path="../other/gitbook.html">
+            
+                <a href="../other/gitbook.html">
+            
+                    
+                    GitBook 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.22" data-path="../other/github_pages.html">
+            
+                <a href="../other/github_pages.html">
+            
+                    
+                    GitHub Pages
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.23" data-path="../other/web.html">
+            
+                <a href="../other/web.html">
+            
+                    
+                    Web 相关
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.24" data-path="../other/build_atlas.html">
+            
+                <a href="../other/build_atlas.html">
+            
+                    
+                    Atlas 驱动构建
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.15.25" data-path="../other/be_mined.html">
+            
+                <a href="../other/be_mined.html">
+            
+                    
+                    记一次被挖矿
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >apisix</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="apisix">APISIX</h1>
+<h1 id="usual">usual</h1>
+<pre><code>curl -H &quot;Host: apisix.ingress.org&quot; --request GET &quot;http://192.168.0.127:32060/headers&quot;
+</code></pre><pre><code>curl -s http://10.66.117.129:9180/apisix/admin/global_rules -H &apos;X-API-KEY: edd1c9f034335f136f87ad84b625c8f1&apos; -X PUT -d &apos;{
+  &quot;id&quot;: &quot;1&quot;,
+  &quot;plugins&quot;: {
+    &quot;prometheus&quot;: {
+      &quot;prefer_name&quot;: true
+    },
+    &quot;cors&quot;: {}
+  }
+}&apos;
+</code></pre><pre><code>curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/global_rules -H &apos;X-API-Key: edd1c9f034335f136f87ad84b625c8f1&apos;|jq
+</code></pre><pre><code>curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/routes -H &apos;X-API-Key: edd1c9f034335f136f87ad84b625c8f1&apos;|jq
+</code></pre><pre><code>curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/plugins/list -H &apos;X-API-Key: edd1c9f034335f136f87ad84b625c8f1&apos;|jq
+</code></pre><pre><code>curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/global_rules/1 -H &apos;X-API-KEY: edd1c9f034335f136f87ad84b625c8f1&apos; -X DELETE
+</code></pre><pre><code>curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/global_rules -H &apos;X-API-Key: edd1c9f034335f136f87ad84b625c8f1&apos;|jq
+</code></pre><h1 id="&#x4E00;&#x3001;&#x5B89;&#x88C5;">&#x4E00;&#x3001;&#x5B89;&#x88C5;</h1>
+<h2 id="1&#x3001;chart-&#x5305;">1&#x3001;chart &#x5305;</h2>
+<pre><code>helm repo add apisix https://charts.apiseven.com
+helm repo update
+helm pull apisix/apisix-ingress-controller
+helm install apisix apisix/apisix --create-namespace --namespace ingress-apisix
+</code></pre><h2 id="2&#x3001;&#x955C;&#x50CF;">2&#x3001;&#x955C;&#x50CF;</h2>
+<pre><code>docker pull busybox:1.28
+docker pull apache/apisix:3.9.1-debian
+docker pull bitnami/etcd:3.5.10-debian-11-r2
+docker pull apache/apisix-ingress-controller:1.8.2
+docker pull apache/apisix-dashboard:3.0.1-alpine
+</code></pre><pre><code>docker save busybox:1.28 apache/apisix:3.9.1-debian bitnami/etcd:3.5.10-debian-11-r2 apache/apisix-ingress-controller:1.8.2 apache/apisix-dashboard:3.0.1-alpine |gzip &gt; ingress-apisix_3.9.1_imgs.tar.gz
+</code></pre><h2 id="3&#x3001;&#x914D;&#x7F6E;">3&#x3001;&#x914D;&#x7F6E;</h2>
+<pre><code>vim apisix/values.yaml
+
+image:
+  repository: easzlab.io.local:5000/apache/apisix
+replicaCount: 1
+nodeSelector:
+  nginx/ingress: ai
+initContainer:
+  image: easzlab.io.local:5000/busybox
+metrics:
+  serviceMonitor:
+    enabled: true
+    namespace: &quot;ingress-apisix&quot;
+    labels:
+      release: &quot;ai-kube-prometheus-stack&quot;
+  prometheus:
+    enabled: true
+etcd:
+  enabled: true
+dashboard:
+  enabled: true
+ingress-controller:
+  enabled: true
+  config:
+    apisix:
+      adminAPIVersion: &quot;v3&quot;
+</code></pre><pre><code>nodeSelector:
+  kubernetes.io/hostname: 10.13.1.12
+
+nodeSelector:
+  nginx/ingress: ai
+</code></pre><pre><code>resources: 
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 16
+    memory: 32Gi
+</code></pre><pre><code>tolerations:
+  - key: &quot;dedicated&quot;
+    operator: &quot;Equal&quot;
+    value: &quot;ingress&quot;
+    effect: &quot;NoExecute&quot;
+</code></pre><pre><code>affinity:
+   podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - nginx-ingress
+          topologyKey: kubernetes.io/hostname
+</code></pre><pre><code>vim apisix/charts/etcd/values.yaml
+
+image:
+  registry: easzlab.io.local:5000
+replicaCount: 1
+nodeSelector:
+  nginx/ingress: ai
+persistence:
+  enabled: false
+</code></pre><pre><code>vim apisix/charts/apisix-dashboard/values.yaml
+
+replicaCount: 1
+image:
+  repository: easzlab.io.local:5000/apache/apisix-dashboard
+nodeSelector:
+  nginx/ingress: ai
+</code></pre><pre><code>vim apisix/charts/apisix-ingress-controller/values.yaml
+
+replicaCount: 1
+image:
+  repository: easzlab.io.local:5000/apache/apisix-ingress-controller
+  apisix:
+    serviceNamespace: ingress-apisix
+    adminAPIVersion: &quot;v3&quot;
+initContainer:
+  image: easzlab.io.local:5000/busybox
+nodeSelector:
+  nginx/ingress: ai
+
+serviceMonitor:
+  enabled: false
+  namespace: &quot;ingress-apisix&quot;
+  labels:
+    release: &quot;ai-kube-prometheus-stack&quot;
+</code></pre><p>&#x4FEE;&#x6539;Ingress class</p>
+<pre><code>vim charts/apisix-ingress-controller/values.yaml
+</code></pre><pre><code>.Values.config.kubernetes.ingressClass
+</code></pre><pre><code> ingressClass: &quot;apisix&quot; -&gt;  ingressClass: &quot;nginx&quot;
+</code></pre><h2 id="4&#x3001;&#x90E8;&#x7F72;">4&#x3001;&#x90E8;&#x7F72;</h2>
+<pre><code>helm install -n ingress-apisix apisix .
+</code></pre><h2 id="5&#x3001;test">5&#x3001;test</h2>
+<pre><code>kubectl apply -f -&lt;&lt;EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-httpbin
+  labels:
+    app: test-httpbin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-httpbin
+  template:
+    metadata:
+      labels:
+        app: test-httpbin
+    spec:
+      containers:
+      - name: nginx
+        image: easzlab.io.local:5000/kennethreitz/httpbin
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-httpbin-svc
+  labels:
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    app: test-httpbin
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-httpbin-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: apisix.ingress.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: test-httpbin-svc
+            port:
+              number: 80
+EOF
+</code></pre><h1 id="&#x4E8C;&#x3001;ingress">&#x4E8C;&#x3001;Ingress</h1>
+<h2 id="1&#x3001;ingress">1&#x3001;ingress</h2>
+<blockquote>
+<p>vim ingress-apisix.yaml</p>
+</blockquote>
+<pre><code>apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: apisix-ingress
+spec:
+  ingressClassName: apisix
+  rules:
+    - host: apisix.ingress.org
+      http:
+        paths:
+          - backend:
+              service:
+                name: nginx1-svc
+                port:
+                  number: 80
+            path: /v1
+            pathType: Prefix
+          - backend:
+              service:
+                name: nginx2-svc
+                port:
+                  number: 80
+            path: /v2
+            pathType: Prefix
+          - backend:
+              service:
+                name: httpbin
+                port:
+                  number: 80
+            path: /get
+            pathType: Prefix
+</code></pre><h2 id="2&#x3001;apisixroute">2&#x3001;ApisixRoute</h2>
+<pre><code>apiVersion: apisix.apache.org/v2
+kind: ApisixRoute
+metadata:
+  name: httpserver-route
+spec:
+  http:
+  - name: rule1
+    match:
+      hosts:
+      - httpbin.example.com
+      paths:
+      - /*
+    backends:
+       - serviceName: httpbin
+         servicePort: 80
+</code></pre><blockquote>
+<p>&#x914D;&#x7F6E;&#x591A;&#x4E2A;&#x57DF;&#x540D;&#x548C;&#x8DEF;&#x5F84;</p>
+</blockquote>
+<pre><code>  - name: rule1
+    match:
+      hosts:
+      - local.example.com
+      - local01.example.com
+      paths:
+      - /*
+      - /api
+    backends:
+       - serviceName: httpbin
+             servicePort: 80
+</code></pre><blockquote>
+<p>regex</p>
+</blockquote>
+<pre><code>  - name: httpserver-route
+    match:
+      hosts:
+      - local.example.com
+      paths:
+      - /api*
+    backends:
+    - serviceName: httpbin
+      servicePort: 8000
+    plugins:
+    - name: proxy-rewrite 
+      enable: true
+      config: 
+        regex_uri: [&quot;^/api(/|$)(.*)&quot;, &quot;/$2&quot;]
+</code></pre><blockquote>
+<p>gzip</p>
+</blockquote>
+<pre><code>      plugins:
+        - name: gzip
+          enable: true
+</code></pre><blockquote>
+<p>http to https</p>
+</blockquote>
+<pre><code>    plugins:
+    - name: redirect
+      enable: true
+      config: 
+        http_to_https: true
+</code></pre><blockquote>
+<p>&#x57DF;&#x540D;&#x8DF3;&#x8F6C;</p>
+</blockquote>
+<pre><code>    plugins:
+    - name: redirect
+      enable: true
+      config: 
+        uri: &quot;https://local01.example.com$request_uri&quot;
+</code></pre><blockquote>
+<p>rewrite&#x8DEF;&#x5F84;&#x8DF3;&#x8F6C;&#xFF0C;/api/header -&gt; /header</p>
+</blockquote>
+<pre><code>    plugins:
+    - name: redirect
+      enable: true
+      config: 
+        regex_uri: [&quot;^/api(/|$)(.*)&quot;, &quot;/$2&quot;]
+</code></pre><pre><code>    plugins:
+    - name: proxy-rewrite 
+      enable: true
+      config: 
+        regex_uri: [&quot;^/api(/|$)(.*)&quot;, &quot;/$2&quot;]
+</code></pre><blockquote>
+<p>/header -&gt; /api/header</p>
+</blockquote>
+<pre><code>    plugins:
+    - name: proxy-rewrite 
+      enable: true
+      config: 
+        uri: /api/$uri
+</code></pre><blockquote>
+<p>&#x57FA;&#x4E8E;&#x7528;&#x6237;&#x540D;&#x548C;&#x5BC6;&#x7801;&#x8BA4;&#x8BC1;</p>
+</blockquote>
+<pre><code>apiVersion: apisix.apache.org/v2
+kind: ApisixConsumer
+metadata:
+  name: httpserver-basicauth
+spec:
+  authParameter:
+    basicAuth:
+      value:
+        username: admin
+        password: admin
+---
+apiVersion: apisix.apache.org/v2
+kind: ApisixRoute
+metadata:
+  name: httpserver-route
+spec:
+  http:
+  - name: httpserver-route
+    match:
+      hosts:
+      - local.example.com
+      paths:
+      - /*
+    backends:
+    - serviceName: httpbin
+      servicePort: 8000
+    authentication:
+      enable: true 
+      type: basicAuth
+</code></pre><pre><code>curl -i -uadmin:admin https://local.example.com/
+</code></pre><h1 id="&#x4E09;&#x3001;instance">&#x4E09;&#x3001;instance</h1>
+<pre><code>kubectl run httpbin --image kennethreitz/httpbin --port 80
+kubectl expose pod httpbin --port 80
+</code></pre><pre><code>curl --location -H &quot;Host: apisix.ingress.org&quot; --request GET &quot;http://192.168.0.127:32431/get?foo1=bar1&amp;foo2=bar2&quot;
+</code></pre><blockquote>
+<p>example-nginx.yaml</p>
+</blockquote>
+<pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment-1
+  labels:
+    app: nginx-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-1
+  template:
+    metadata:
+      labels:
+        app: nginx-1
+    spec:
+      containers:
+      - name: nginx
+        image: easzlab.io.local:5000/nginx:1.21.3
+        command: [&quot;/bin/sh&quot;, &quot;-c&quot;, &quot;mkdir /usr/share/nginx/html/v1;echo &apos;hello nginx-1&apos;&gt;/usr/share/nginx/html/v1/index.html;nginx -g &apos;daemon off;&apos;&quot;]
+        ports:
+        - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment-2
+  labels:
+    app: nginx-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-2
+  template:
+    metadata:
+      labels:
+        app: nginx-2
+    spec:
+      containers:
+      - name: nginx
+        image: easzlab.io.local:5000/nginx:1.21.3
+        command: [&quot;/bin/sh&quot;, &quot;-c&quot;, &quot;mkdir /usr/share/nginx/html/v2;echo &apos;hello nginx-2&apos;&gt;/usr/share/nginx/html/v2/index.html;nginx -g &apos;daemon off;&apos;&quot;]
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx1-svc
+  labels:
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    app: nginx-1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx2-svc
+  labels:
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    app: nginx-2
+</code></pre><p>httpbin-route.yaml</p>
+<pre><code>apiVersion: apisix.apache.org/v2
+kind: ApisixRoute
+metadata:
+  name: httpbin-route
+spec:
+  http:
+    - name: route-1
+      match:
+        hosts:
+          - httpbin.org
+        paths:
+          - /*
+      backends:
+        - serviceName: httpbin
+          servicePort: 80
+</code></pre><pre><code>curl httpbin.org:32060/headers
+</code></pre><h1 id="&#x56DB;&#x3001;&#x76D1;&#x63A7;">&#x56DB;&#x3001;&#x76D1;&#x63A7;</h1>
+<pre><code>curl -i http://$(kubectl get svc -n ingress-apisix apisix-prometheus-metrics -o jsonpath=&quot;{.spec.clusterIP}&quot;):9091/apisix/prometheus/metrics
+</code></pre><blockquote>
+<p>&#x4E3B;&#x8981;&#x6307;&#x6807;</p>
+</blockquote>
+<p><a href="https://apisix.apache.org/docs/apisix/plugins/prometheus/#using-grafana-to-graph-the-metrics" target="_blank">https://apisix.apache.org/docs/apisix/plugins/prometheus/#using-grafana-to-graph-the-metrics</a></p>
+<p><a href="https://apisix.apache.org/zh/docs/apisix/plugins/prometheus/" target="_blank">https://apisix.apache.org/zh/docs/apisix/plugins/prometheus/</a></p>
+<pre><code>apisix_http_status
+apisix_bandwidth
+apisix_http_requests_total
+apisix_nginx_http_current_connections
+</code></pre><h1 id="&#x4E94;&#x3001;annotations-and-config">&#x4E94;&#x3001;Annotations and Config</h1>
+<p><a href="https://apisix.apache.org/zh/docs/ingress-controller/concepts/annotations/" target="_blank">https://apisix.apache.org/zh/docs/ingress-controller/concepts/annotations/</a></p>
+<p><a href="https://github.com/apache/apisix/blob/release/3.3/conf/config-default.yaml" target="_blank">https://github.com/apache/apisix/blob/release/3.3/conf/config-default.yaml</a></p>
+<h1 id="&#x516D;&#x3001;&#x4F7F;&#x7528;">&#x516D;&#x3001;&#x4F7F;&#x7528;</h1>
+<h2 id="1&#x3001;dashbord">1&#x3001;dashbord</h2>
+<blockquote>
+<p>port</p>
+</blockquote>
+<pre><code>kubectl get svc -n ingress-apisix -o jsonpath=&quot;{.spec.ports[0].nodePort}&quot; apisix-dashboard
+</code></pre><blockquote>
+<p>username/password</p>
+</blockquote>
+<pre><code>admin/admin
+</code></pre><blockquote>
+<p>bug</p>
+<p><a href="https://github.com/apache/apisix-dashboard/issues/2791" target="_blank">https://github.com/apache/apisix-dashboard/issues/2791</a></p>
+<p>apisix dashboard&#x4E0E;apisix&#x7684;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x4E2D;&#x90FD;&#x914D;&#x7F6E;plugins</p>
+</blockquote>
+<h2 id="2&#x3001;gateway-&#x8FDE;&#x63A5;&#x4FE1;&#x606F;">2&#x3001;gateway &#x8FDE;&#x63A5;&#x4FE1;&#x606F;</h2>
+<pre><code>export NODE_PORT=$(kubectl get -n ingress-apisix -o jsonpath=&quot;{.spec.ports[0].nodePort}&quot; services apisix-gateway)
+export NODE_IP=$(kubectl get nodes -n ingress-apisix -o jsonpath=&quot;{.items[0].status.addresses[0].address}&quot;)
+echo http://$NODE_IP:$NODE_PORT
+</code></pre><pre><code>export NODE_PORT=$(kubectl get -n ingress-apisix -o jsonpath=&quot;{.spec.ports[0].nodePort}&quot; services apisix-gateway)
+export apisix=$(echo http://apisix.ingress.org:$NODE_PORT)
+</code></pre><h2 id="3&#x3001;&#x67E5;&#x770B;&#x5DF2;&#x6CE8;&#x518C;&#x8DEF;&#x7531;&#x4FE1;&#x606F;">3&#x3001;&#x67E5;&#x770B;&#x5DF2;&#x6CE8;&#x518C;&#x8DEF;&#x7531;&#x4FE1;&#x606F;</h2>
+<pre><code>curl &quot;http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/routes?page=1&amp;page_size=10&quot; -H &apos;X-API-KEY: edd1c9f034335f136f87ad84b625c8f1&apos; -X GET
+</code></pre><pre><code>curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/routes -H &apos;X-API-Key: edd1c9f034335f136f87ad84b625c8f1&apos;|jq
+</code></pre><h2 id="4&#x3001;api-&#x4F7F;&#x7528;">4&#x3001;API &#x4F7F;&#x7528;</h2>
+<p><a href="https://apisix.apache.org/zh/docs/apisix/admin-api/" target="_blank">admin-api</a></p>
+<p><a href="https://apisix.apache.org/zh/docs/apisix/control-api/" target="_blank">control-api</a></p>
+<pre><code>curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/global_rules -H &apos;X-API-Key: edd1c9f034335f136f87ad84b625c8f1&apos;|jq
+</code></pre><pre><code>curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/routes -H &apos;X-API-Key: edd1c9f034335f136f87ad84b625c8f1&apos;|jq
+</code></pre><pre><code>curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/plugins/list -H &apos;X-API-Key: edd1c9f034335f136f87ad84b625c8f1&apos;|jq
+</code></pre><h2 id="5&#x3001;gzip">5&#x3001;gzip</h2>
+<pre><code>_meta:
+  disable: false
+buffers.number: 32
+buffers.size: 4096
+comp_level: 5
+http_version: 1.1
+min_length: 20
+types: &apos;*&apos;
+vary: true
+</code></pre><pre><code>{
+  &quot;_meta&quot;: {
+    &quot;disable&quot;: false
+  },
+  &quot;buffers&quot;: {
+    &quot;number&quot;: 32,
+    &quot;size&quot;: 4096
+  },
+  &quot;comp_level&quot;: 5,
+  &quot;http_version&quot;: 1.1,
+  &quot;min_length&quot;: 20,
+  &quot;types&quot;: &quot;*&quot;,
+  &quot;vary&quot;: true
+}
+</code></pre><blockquote>
+<p>enable plugin</p>
+</blockquote>
+<pre><code>curl -i http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/global_rules/gzip  \
+-H &apos;X-API-KEY: edd1c9f034335f136f87ad84b625c8f1&apos; -X PUT -d &apos;
+{
+    &quot;plugins&quot;: {
+        &quot;gzip&quot;: {
+           &quot;_meta&quot;: {
+            &quot;disable&quot;: false
+          },
+          &quot;comp_level&quot;: 5,
+          &quot;http_version&quot;: 1.1,
+          &quot;min_length&quot;: 20,
+          &quot;types&quot;: &quot;*&quot;,
+          &quot;vary&quot;: true,
+          &quot;buffers&quot;: {
+               &quot;number&quot;: 32,
+             &quot;size&quot;: 4096
+          }
+        }
+    }
+}&apos;
+</code></pre><blockquote>
+<p>&#x67E5;&#x770B;</p>
+</blockquote>
+<pre><code>curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/global_rules/gzip -H &apos;X-API-Key: edd1c9f034335f136f87ad84b625c8f1&apos;|jq
+</code></pre><blockquote>
+<p>delete plugin</p>
+</blockquote>
+<pre><code>curl http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/global_rules/gzip -H &apos;X-API-KEY: edd1c9f034335f136f87ad84b625c8f1&apos; -X DELETE
+</code></pre><blockquote>
+<p>&#x9A8C;&#x8BC1;</p>
+<p>Accept-Encoding:  gzip, deflate
+Content-Encoding: gzip</p>
+</blockquote>
+<pre><code>curl apisix.ingress.org:30962/index.html -i -H &quot;Accept-Encoding: gzip&quot;
+</code></pre><blockquote>
+<p>&#x6839;&#x636E;&#x4EE3;&#x7801;&#x4E2D;&#x6240;&#x505A;&#x7684;&#x66F4;&#x6539;&#x91CD;&#x65B0;&#x52A0;&#x8F7D;&#x63D2;&#x4EF6;</p>
+</blockquote>
+<pre><code>curl http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/plugins/reload -H &apos;X-API-KEY: edd1c9f034335f136f87ad84b625c8f1&apos; -X PUT
+</code></pre><h2 id="5&#x3001;http2">5&#x3001;http2</h2>
+<blockquote>
+<p>config.yaml</p>
+</blockquote>
+<pre><code>apisix:
+  enable_http2: true
+</code></pre><h2 id="6&#x3001;header">6&#x3001;header</h2>
+<pre><code>k8s.apisix.apache.org/response-rewrite-add-header: &quot;testkey1:testval1,testkey2:testval2&quot;
+</code></pre><pre><code>k8s.apisix.apache.org/response-rewrite-set-header: &quot;testkey1:testval1,testkey2:testval2&quot;
+</code></pre><pre><code>k8s.apisix.apache.org/response-rewrite-remove-header: &quot;testkey1,testkey2&quot;
+</code></pre><h2 id="7&#x3001;upstream-timeout">7&#x3001;upstream timeout</h2>
+<pre><code>  annotations:
+    k8s.apisix.apache.org/upstream-read-timeout.: &quot;5s&quot;
+    k8s.apisix.apache.org/upstream-connect-timeout: &quot;10s&quot;
+    k8s.apisix.apache.org/upstream-send-timeout: &quot;10s&quot;
+</code></pre><h2 id="8&#x3001;http-to-https">8&#x3001;http-to-https</h2>
+<pre><code>  annotations:
+    k8s.apisix.apache.org/http-to-https: &quot;true&quot;
+</code></pre><h2 id="9&#x3001;use-regex">9&#x3001;use-regex</h2>
+<pre><code>apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: apisix-ingress
+  annotations:
+    k8s.apisix.apache.org/use-regex: &quot;true&quot;
+spec:
+  ingressClassName: apisix
+  rules:
+    - host: apisix.ingress.org
+      http:
+        paths:
+          - backend:
+              service:
+                name: nginx1-svc
+                port:
+                  number: 80
+            path: /v1/.*/action1
+            pathType: ImplementationSpecific
+</code></pre><h2 id="10&#x3001;websocket">10&#x3001;websocket</h2>
+<p>nginx</p>
+<pre><code>location / {
+    // &#x542F;&#x7528;&#x652F;&#x6301;websocket&#x8FDE;&#x63A5;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection &quot;upgrade&quot;;
+}
+</code></pre><p>annotation</p>
+<pre><code>curl http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/routes/665bd12e  \
+-H &apos;X-API-KEY: edd1c9f034335f136f87ad84b625c8f1&apos; -X PATCH -i -d &apos;
+{
+    &quot;enable_websocket&quot;: true
+}&apos;
+</code></pre><pre><code>curl http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/routes/f7c122fc  \
+-H &apos;X-API-KEY: edd1c9f034335f136f87ad84b625c8f1&apos; -X PATCH -i -d &apos;
+{
+    &quot;enable_websocket&quot;: false
+}&apos;
+</code></pre><pre><code>curl -s $(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/routes/f7c122fc -H &apos;X-API-Key: edd1c9f034335f136f87ad84b625c8f1&apos;|jq
+</code></pre><pre><code>apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: apisix-ingress
+  annotations:
+    k8s.apisix.apache.org/enable-websocket: &quot;true&quot;
+spec:
+  ingressClassName: apisix
+  rules:
+    - host: apisix.ingress.org
+      http:
+        paths:
+          - backend:
+              service:
+                name: websocket
+                port:
+                  number: 8765
+            path: /ws
+            pathType: Exact
+</code></pre><blockquote>
+<p>client</p>
+</blockquote>
+<pre><code>import asyncio
+import websockets
+
+async def main():
+  async with websockets.connect(&quot;ws://localhost:8765&quot;) as websocket:
+    message = &quot;Hello, server&quot;
+    await websocket.send(message)
+    print(f&quot;Sent: {message}&quot;)
+    response = await websocket.recv()
+    print(f&quot;Received: {response}&quot;)
+
+# asyncio.run(main()) # python3
+asyncio.get_event_loop().run_until_complete(main())
+</code></pre><blockquote>
+<p>server</p>
+</blockquote>
+<pre><code>import asyncio
+import websockets
+
+# &#x8FDE;&#x63A5;&#x5904;&#x7406;&#x5668;
+async def echo(websocket, path):
+    async for message in websocket:
+        print(message)
+        await websocket.send(message)
+
+# &#x542F;&#x52A8;&#x670D;&#x52A1;&#x5668;
+start_server = websockets.serve(echo, &quot;0.0.0.0&quot;, 8765)
+
+# &#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x4E8B;&#x4EF6;&#x5FAA;&#x73AF;&#x5E76;&#x8FD0;&#x884C;&#x670D;&#x52A1;&#x5668;
+asyncio.get_event_loop().run_until_complete(start_server)
+asyncio.get_event_loop().run_forever()
+</code></pre><pre><code>FROM python:3.12.4-alpine3.20
+
+COPY socket_server.py /opt/
+
+RUN pip install websockets -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+CMD [&quot;python&quot;, &quot;/opt/socket_server.py&quot;]
+</code></pre><pre><code>kubectl run websocket --image easzlab.io.local:5000/websocket-test:latest --port 8765
+kubectl expose pod websocket --port 8765
+</code></pre><blockquote>
+<p>postman</p>
+</blockquote>
+<pre><code>ws://apisix.ingress.org:30962/ws
+</code></pre><h2 id="11&#x3001;customize-nginx-configuration">11&#x3001;Customize Nginx configuration</h2>
+<p><a href="https://github.com/apache/apisix/blob/master/docs/zh/latest/customize-nginx-configuration.md" target="_blank">https://github.com/apache/apisix/blob/master/docs/zh/latest/customize-nginx-configuration.md</a></p>
+<p><a href="https://github.com/apache/apisix/blob/release/3.3/conf/config-default.yaml" target="_blank">https://github.com/apache/apisix/blob/release/3.3/conf/config-default.yaml</a></p>
+<p><a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#http" target="_blank">http://nginx.org/en/docs/http/ngx_http_core_module.html#http</a></p>
+<p><a href="https://nginx.org/en/docs/" target="_blank">https://nginx.org/en/docs/</a></p>
+<h2 id="12&#x3001;prometheus-&#x63D2;&#x4EF6;">12&#x3001;prometheus &#x63D2;&#x4EF6;</h2>
+<p>&#x542F;&#x7528;&#x63D2;&#x4EF6;</p>
+<pre><code>curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/global_rules -H &apos;X-API-KEY: edd1c9f034335f136f87ad84b625c8f1&apos; -X PUT -d &apos;
+{
+   &quot;id&quot;:&quot;1&quot;,
+   &quot;plugins&quot;:{
+      &quot;prometheus&quot;:{
+      }
+   }
+}&apos;
+</code></pre><pre><code>curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/global_rules -X PUT -d &apos;
+{
+    &quot;uri&quot;: &quot;/test/index.html&quot;,
+    &quot;plugins&quot;: {
+        &quot;redirect&quot;: {
+            &quot;uri&quot;: &quot;https://192.168.0.127/error&quot;,
+            &quot;ret_code&quot;: 301
+        }
+    }
+}&apos;
+</code></pre><h2 id="13&#x3001;limit-req">13&#x3001;limit-req</h2>
+<p>limit-req&#x63D2;&#x4EF6;&#x4F7F;&#x7528;<code>&#x6F0F;&#x6876;&#x7B97;&#x6CD5;</code>&#x9650;&#x5236;&#x5355;&#x4E2A;&#x5BA2;&#x6237;&#x7AEF;&#x5BF9;&#x670D;&#x52A1;&#x7684;&#x8BF7;&#x6C42;&#x901F;&#x7387;&#x3002;</p>
+<p><a href="https://apisix.apache.org/zh/docs/apisix/plugins/limit-req/" target="_blank">https://apisix.apache.org/zh/docs/apisix/plugins/limit-req/</a></p>
+<p>&#x63D2;&#x4EF6;&#x4E3B;&#x8981;&#x53C2;&#x6570;&#xFF1A;</p>
+<ul>
+<li>key&#x7528;&#x6765;&#x505A;&#x8BF7;&#x6C42;&#x8BA1;&#x6570;&#x7684;&#x4F9D;&#x636E;</li>
+<li>rate&#x8BF7;&#x6C42;&#x901F;&#x7387;&#xFF08;&#x4EE5;&#x79D2;&#x4E3A;&#x5355;&#x4F4D;&#xFF09;</li>
+<li>burst&#x652F;&#x6301;&#x7A81;&#x53D1;&#x8BF7;&#x6C42;&#x91CF;</li>
+<li>nodelay&#x4E0D;&#x5EF6;&#x8FDF;&#x7A81;&#x53D1;&#x8BF7;&#x6C42;</li>
+</ul>
+<pre><code>curl http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/routes/1 -H &apos;X-API-KEY: edd1c9f034335f136f87ad84b635c8f1&apos; -X PUT -d &apos;
+{
+    &quot;uri&quot;: &quot;/search/*&quot;,
+    &quot;plugins&quot;: {
+        &quot;limit-conn&quot;: {
+            &quot;conn&quot;: 10,
+            &quot;burst&quot;: 0,
+            &quot;default_conn_delay&quot;: 0.1,
+            &quot;rejected_code&quot;: 503,
+            &quot;key&quot;: &quot;remote_addr&quot;
+        }
+    },
+    &quot;upstream&quot;: {
+        &quot;type&quot;: &quot;roundrobin&quot;,
+        &quot;nodes&quot;: {
+            &quot;39.97.63.215:80&quot;: 1
+        }
+    }
+}&apos;
+</code></pre><h2 id="14&#x3001;limit-conn">14&#x3001;limit-conn</h2>
+<p>limit-conn&#x63D2;&#x4EF6;&#x7528;&#x4E8E;&#x9650;&#x5236;&#x5BA2;&#x6237;&#x7AEF;&#x5BF9;&#x5355;&#x4E2A;&#x670D;&#x52A1;&#x7684;&#x5E76;&#x53D1;&#x8BF7;&#x6C42;&#x6570;&#x3002;&#x5F53;&#x5BA2;&#x6237;&#x7AEF;&#x5BF9;&#x8DEF;&#x7531;&#x7684;&#x5E76;&#x53D1;&#x8BF7;&#x6C42;&#x6570;&#x8FBE;&#x5230;&#x9650;&#x5236;&#x65F6;&#xFF0C;&#x53EF;&#x4EE5;&#x8FD4;&#x56DE;&#x81EA;&#x5B9A;&#x4E49;&#x7684;&#x72B6;&#x6001;&#x7801;&#x548C;&#x54CD;&#x5E94;&#x4FE1;&#x606F;&#x3002;</p>
+<h2 id="15&#x3001;limit-count">15&#x3001;limit-count</h2>
+<p>limit-count&#x63D2;&#x4EF6;&#x4F7F;&#x7528;<code>&#x56FA;&#x5B9A;&#x7684;&#x7A97;&#x53E3;&#x7B97;&#x6CD5;</code>&#xFF0C;&#x4E3B;&#x8981;&#x7528;&#x4E8E;&#x9650;&#x5236;&#x5355;&#x4E2A;&#x5BA2;&#x6237;&#x7AEF;&#x5728;&#x6307;&#x5B9A;&#x65F6;&#x95F4;&#x8303;&#x56F4;&#x5185;&#x5BF9;&#x670D;&#x52A1;&#x7684;&#x603B;&#x8BF7;&#x6C42;&#x6570;&#xFF0C;&#x5E76;&#x4E14;&#x4F1A;&#x5728;HTTP&#x54CD;&#x5E94;&#x5934;&#x4E2D;&#x8FD4;&#x56DE;&#x5269;&#x4F59;&#x53EF;&#x4EE5;&#x8BF7;&#x6C42;&#x7684;&#x4E2A;&#x6570;&#x3002;</p>
+<h2 id="16&#x3001;synchronizing-kubernetes-resources-to-apisix">16&#x3001;synchronizing Kubernetes resources to APISIX</h2>
+<pre><code>kubectl get cm -n ingress-apisix apisix-configmap -o yaml|sed -e &apos;s/6h/30s/g&apos;|kubectl apply -f -
+kubectl get pod -n ingress-apisix -o name|grep controller|xargs kubectl delete -n ingress-apisix
+kubectl get cm -n ingress-apisix apisix-configmap -o yaml|sed -e &apos;s/30s/6h/g&apos;|kubectl apply -f -
+</code></pre><h1 id="&#x4E03;&#x3001;&#x901A;&#x8FC7;-lua-&#x5B9E;&#x73B0;&#x9650;&#x901F;-limit-rate">&#x4E03;&#x3001;&#x901A;&#x8FC7; lua &#x5B9E;&#x73B0;&#x9650;&#x901F; limit-rate</h1>
+<p><a href="https://www.daxuxu.info/blog/post/nginx-lua-jie-shao/" target="_blank">https://www.daxuxu.info/blog/post/nginx-lua-jie-shao/</a></p>
+<p><a href="https://blog.donatas.net/blog/2017/07/25/limit-bandwidth-openresty/" target="_blank">https://blog.donatas.net/blog/2017/07/25/limit-bandwidth-openresty/</a></p>
+<p><a href="https://developer.moduyun.com/article/c65f7549-169e-4544-b4d9-654bd9389bed.html" target="_blank">https://developer.moduyun.com/article/c65f7549-169e-4544-b4d9-654bd9389bed.html</a></p>
+<p><a href="https://nginx.org/en/docs/http/ngx_http_core_module.html#limit_rate" target="_blank">https://nginx.org/en/docs/http/ngx_http_core_module.html#limit_rate</a></p>
+<p><a href="https://github.com/apache/apisix/blob/master/example/apisix/plugins/3rd-party.lua" target="_blank">https://github.com/apache/apisix/blob/master/example/apisix/plugins/3rd-party.lua</a></p>
+<pre><code>local core = require(&quot;apisix.core&quot;)
+local ngx  = ngx
+local type = type
+
+local schema = {
+  type = &quot;object&quot;,
+  properties = {
+    limit_rate_after = {type =&quot;string&quot;},
+    limit_rate = {type =&quot;string&quot;}
+  },
+  required = {&quot;limit_rate_after&quot;,&quot;limit_rate&quot;},
+}
+
+local plugin_name = &quot;limit_rate&quot;
+
+local _M={
+    version = 0.1,
+    priority = 99,
+    name = plugin_name,
+    schema = schema
+}
+
+function _M.check_schema(conf)
+  return core.schema.check(schema, conf)
+end
+
+function _M.access(conf,ctx)
+    ngx.var.limit_rate_after = conf.limit_rate_after
+    ngx.var.limit_rate = conf.limit_rate
+    --return 203, conf.limit_rate_after
+end
+
+function _M.header_filter(ctx)
+    core.response.add_header(&quot;X-Custom-Header&quot;, &quot;hlyani&quot;)
+end
+
+--function _M.body_filter(ctx)
+--    core.log.warn(&quot;hit body_filter phase&quot;)
+--end
+
+function _M.log(conf, ctx)
+    core.log.warn(&quot;limit_rate_after: &quot;, conf.limit_rate_after, &quot;, limit_rate: &quot;, conf.limit_rate)
+end
+
+-- &#x6CE8;&#x518C;&#x63D2;&#x4EF6;
+return _M
+</code></pre><pre><code>kubectl cp limit-rate.lua -n ingress-apisix apisix-649cb68c96-4d8cr:/usr/local/apisix/apisix/plugins/ai.lua
+</code></pre><pre><code>kubectl exec -it -n ingress-apisix apisix-649cb68c96-4d8cr apisix reload
+</code></pre><pre><code>curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/global_rules -H &apos;X-API-KEY: edd1c9f034335f136f87ad84b625c8f1&apos; -X PUT -d &apos;
+{
+   &quot;id&quot;:&quot;1&quot;,
+   &quot;plugins&quot;:{
+      &quot;limit-rate&quot;:{
+        &quot;limit_rate&quot;: &quot;2k&quot;,
+        &quot;limit_rate_after&quot;: &quot;500k&quot;
+      }
+   }
+}&apos;
+</code></pre><pre><code>curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/global_rules -H &apos;X-API-Key: edd1c9f034335f136f87ad84b625c8f1&apos;|jq
+</code></pre><pre><code>curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/plugins/list -H &apos;X-API-Key: edd1c9f034335f136f87ad84b625c8f1&apos;|jq
+</code></pre><pre><code>curl -s http://$(kubectl get svc -n ingress-apisix apisix-admin -o jsonpath=&quot;{.spec.clusterIP}&quot;):9180/apisix/admin/plugins/list -H &apos;X-API-Key: edd1c9f034335f136f87ad84b625c8f1&apos;|jq|grep ai
+</code></pre><pre><code>kubectl edit cm -n ingress-apisix  apisix
+
+      http_server_location_configuration_snippet:      |
+        set $limit_rate 0;
+        set $limit_rate_after 0;
+</code></pre><pre><code>curl apisix.ingress.org:32060/headers -v
+</code></pre><pre><code>curl -o /dev/null  apisix.ingress.org:32060/image/jpeg
+</code></pre><pre><code>apiVersion: apisix.apache.org/v2
+kind: ApisixPluginConfig
+metadata:
+  name: limit-rate
+spec:
+  plugins:
+    - name: limit-rate
+      enable: true
+      config:
+        limit_rate: 20k
+        limit_rate_after: 500k
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-httpbin-ingress
+  annotations:
+    k8s.apisix.apache.org/plugin-config-name: limit-rate
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: apisix.ingress.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: test-httpbin-svc
+            port:
+              number: 80
+</code></pre><pre><code>apiVersion: apisix.apache.org/v2
+kind: ApisixRoute
+metadata:
+  name: test-limit-rate
+spec:
+  http:
+    - name: route
+      match:
+        hosts:
+          - apisix.ingress.org
+        paths:
+          - /
+      backends:
+        - serviceName: test-httpbin-svc
+          servicePort: 80
+      plugins:
+        - name: limit-rate
+          enable: true
+          config:
+            limit_rate: 20k
+            limit_rate_after: 500k
+</code></pre><h2 id="&#x4FEE;&#x6539;-chart-&#x5305;">&#x4FEE;&#x6539; chart &#x5305;</h2>
+<pre><code>vim apisix/templates/limit-rate.yaml
+
+{{- if .Values.apisix.customPlugins.enabled }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: limit-rate
+data:
+  limit-rate.lua: |
+    local core = require(&quot;apisix.core&quot;)
+    local ngx  = ngx
+    local type = type
+
+    local schema = {
+      type = &quot;object&quot;,
+      properties = {
+        limit_rate_after = {type =&quot;string&quot;},
+        limit_rate = {type =&quot;string&quot;}
+      },
+      required = {&quot;limit_rate_after&quot;,&quot;limit_rate&quot;},
+    }
+
+    local plugin_name = &quot;limit_rate&quot;
+
+    local _M={
+        version = 0.1,
+        priority = 1004,
+        name = plugin_name,
+        schema = schema
+    }
+
+    function _M.check_schema(conf)
+      return core.schema.check(schema, conf)
+    end
+
+    function _M.access(conf,ctx)
+        ngx.var.limit_rate_after = conf.limit_rate_after
+        ngx.var.limit_rate = conf.limit_rate
+    end
+
+    function _M.log(conf, ctx)
+        core.log.warn(&quot;limit_rate_after: &quot;, conf.limit_rate_after, &quot;, limit_rate: &quot;, conf.limit_rate)
+    end
+
+    return _M
+{{- end }}
+</code></pre><blockquote>
+<p>luaPath: &#x56E0;&#x4E3A;&#x5DF2;&#x7ECF;&#x653E;&#x5728;&#x4E86;&#x9ED8;&#x8BA4;&#x63D2;&#x4EF6;&#x76EE;&#x5F55;&#xFF0C;&#x6240;&#x4EE5;&#x53EF;&#x4EE5;&#x4E0D;&#x9700;&#x8981;&#x914D;&#x7F6E;</p>
+<p>luaPath &#x7684;&#x8DEF;&#x5F84;&#x4F1A;&#x9ED8;&#x8BA4;&#x6DFB;&#x52A0; &#x201C;/apisix/plugins&#x201D;</p>
+<p>chart comfigmap &#x903B;&#x8F91;  &#x5982;&#x679C; plugins &#x4E0D;&#x4E3A;&#x7A7A;&#xFF0C;&#x4F1A;&#x81EA;&#x52A8;&#x52A0;&#x8F7D; .Values.apisix.customPlugins.plugins&#xFF0C;&#x6240;&#x4EE5; apisix.plugins &#x4E0D;&#x7528;&#x6DFB;&#x52A0;&#x65B0;&#x52A0;&#x63D2;&#x4EF6;</p>
+</blockquote>
+<pre><code>vim apisix/values.yaml
+
+apisix:
+  plugins:
+    - &#x7565;&#x3002;&#x3002;&#x3002;
+  customPlugins:
+    enabled: true
+    #luaPath: &quot;/usr/local/apisix/?.lua&quot; # -&gt;  /usr/local/apisix/apisix/plugins/?.lua
+    luaPath: &quot;/opt/custom_plugins/?.lua&quot;
+    plugins:
+      - name: &quot;limit-rate&quot;
+        attrs: {}
+        configMap
+          name: &quot;limit-rate&quot;
+          mounts:
+            - key: &quot;limit-rate.lua&quot;
+              path: &quot;/usr/local/apisix/apisix/plugins/limit-rate.lua&quot;
+</code></pre><h1 id="&#x516B;&#x3001;wrk-&#x538B;&#x529B;&#x6D4B;&#x8BD5;">&#x516B;&#x3001;wrk &#x538B;&#x529B;&#x6D4B;&#x8BD5;</h1>
+<p><a href="https://github.com/wg/wrk/tree/master/scripts" target="_blank">https://github.com/wg/wrk/tree/master/scripts</a></p>
+<pre><code>yum -y install gcc openssl-devel git
+git clone https://github.com/wg/wrk.git wrk
+cd wrk
+make
+cp wrk /usr/bin/
+</code></pre><blockquote>
+<p>-t, --threads &#x7EBF;&#x7A0B;</p>
+<p>-c, --connections &#x8FDE;&#x63A5;&#x6570;</p>
+<p>-d, --duration &#x65F6;&#x95F4;</p>
+<p>--latency   Print latency statistics</p>
+</blockquote>
+<pre><code>wrk -t10 -c1000 -d1h --latency http://apisix.ingress.org:30962/index.html
+</code></pre><blockquote>
+<p>Avg &#x5E73;&#x5747;&#x503C;</p>
+<p>Stdev &#x6807;&#x51C6;&#x65B9;&#x5DEE;</p>
+<p>Max &#x6700;&#x5927;&#x503C;</p>
+<p>Latency &#x5EF6;&#x8FDF;</p>
+<p>Req/Sec &#x6BCF;&#x79D2;&#x8BF7;&#x6C42;&#x6570;</p>
+<p>Latency Distribution &#x5EF6;&#x8FDF;&#x5206;&#x5E03;</p>
+<p>Requests/sec &#x5E73;&#x5747;&#x6BCF;&#x79D2;&#x5904;&#x7406;&#x5B8C;&#x6210;&#x8BF7;&#x6C42;&#x4E2A;&#x6570;</p>
+<p>Transfer/sec &#x5E73;&#x5747;&#x6BCF;&#x79D2;&#x8BFB;&#x53D6;&#x6570;&#x636E;&#x91CF;</p>
+</blockquote>
+<pre><code>Running 60m test @ http://apisix.ingress.org:30962/index.html
+  10 threads and 1000 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    48.95ms   78.86ms   2.00s    90.06%
+    Req/Sec     1.69k   334.68     3.68k    68.25%
+  Latency Distribution
+     50%   23.36ms
+     75%   31.49ms
+     90%  126.79ms
+     99%  379.73ms
+  60512663 requests in 60.00m, 222.33GB read
+  Socket errors: connect 0, read 2102, write 16, timeout 27480
+  Non-2xx or 3xx responses: 36
+Requests/sec:  16808.64
+Transfer/sec:  63.24MB
+</code></pre><p><a href="https://www.nginx-cn.net/blog/testing-performance-nginx-ingress-controller-kubernetes/" target="_blank">https://www.nginx-cn.net/blog/testing-performance-nginx-ingress-controller-kubernetes/</a></p>
+<h1 id="&#x4E5D;&#x3001;faq">&#x4E5D;&#x3001;FAQ</h1>
+<p><a href="https://apisix.apache.org/zh/docs/apisix/FAQ/" target="_blank">https://apisix.apache.org/zh/docs/apisix/FAQ/</a></p>
+<h1 id="&#x5341;&#x3001;nginx&#x53C2;&#x6570;&#x4F18;&#x5316;">&#x5341;&#x3001;Nginx&#x53C2;&#x6570;&#x4F18;&#x5316;</h1>
+<p><a href="https://gist.github.com/denji/8359866" target="_blank">https://gist.github.com/denji/8359866</a></p>
+<p><a href="https://www.cloudpanel.io/blog/nginx-performance/" target="_blank">https://www.cloudpanel.io/blog/nginx-performance/</a></p>
+<p><a href="https://nginx.org/en/docs/" target="_blank">https://nginx.org/en/docs/</a></p>
+<pre><code>events {
+        use epoll;
+        worker_connections 6000;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    access_log /usr/local/nginx/logs/access.log;
+    error_log  /usr/local/nginx/logs/error.log;
+    proxy_connect_timeout    900;
+    proxy_read_timeout       900;
+    proxy_send_timeout       900;
+    proxy_cache_path /var/cache/nginx keys_zone=a_cache:10m inactive=10m max_size=10g;
+    gzip on;
+    gzip_static on;
+    gzip_buffers 40 4K;
+    gzip_comp_level 7;
+    gzip_min_length 1k;
+    gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png application/vnd.ms-fontobject font/ttf font/opentype font/x-woff image/svg+xml;
+    gzip_disable &quot;MSIE [1-6]\.&quot;;
+    gzip_vary on;
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 65;
+    types_hash_max_size 2048;
+    client_max_body_size 500M;
+}
+
+ location  / {
+    proxy_http_version 1.1;
+    proxy_set_header Host $host:$server_port;
+    proxy_set_header X-Referer $http_referer;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection &quot;Upgrade&quot;;
+    proxy_set_header Origin &quot;&quot;;
+    client_body_buffer_size 128k;
+    client_max_body_size 500M;
+    proxy_connect_timeout 90;
+    proxy_send_timeout 90;
+    proxy_read_timeout 90;
+    proxy_buffer_size 4k;
+    proxy_buffers 32 4k;
+    proxy_busy_buffers_size 64k;
+}
+</code></pre><pre><code>{
+    &quot;client-max-body-size&quot;: &quot;500m&quot;,
+    &quot;default-server-return&quot;: &quot;https://192.168.0.127/error&quot;,
+    &quot;keepalive-requests&quot;: &quot;3000&quot;,
+    &quot;keepalive-timeout&quot;: &quot;65s&quot;,
+    &quot;location-snippets&quot;: &quot;proxy_set_header Origin \&quot;\&quot;;\ngzip_static on;\nproxy_set_header Accept-Encoding gzip;\n&quot;,
+    &quot;proxy-connect-timeout&quot;: &quot;900s&quot;,
+    &quot;proxy-read-timeout&quot;: &quot;900s&quot;,
+    &quot;proxy_send_timeout&quot;: &quot;900s&quot;,
+    &quot;worker-connections&quot;: &quot;3000&quot;
+}
+</code></pre><pre><code>  nginx:
+    workerRlimitNofile: &quot;204800&quot;
+    workerConnections: &quot;204800&quot;
+    workerProcesses: auto
+    enableCPUAffinity: true
+    keepaliveTimeout: 30
+    clientMaxBodySize: 500M
+    logs:
+      enableAccessLog: false
+    configurationSnippet:
+      httpStart: |
+        access_log off;
+        open_file_cache_valid 30s;
+        open_file_cache_min_uses 2;
+        open_file_cache_errors on;
+        sendfile on;
+        tcp_nopush on;
+        tcp_nodelay on;
+        gzip on;
+        gzip_static on;
+        gzip_min_length 10240;
+        gzip_comp_level 5;
+        gzip_vary on;
+        gzip_disable msie6;
+        #gzip_proxied expired no-cache no-store private auth;
+        gzip_proxied any;
+        gzip_types
+          text/css
+          text/javascript
+          text/xml
+          text/plain
+          text/x-component
+          application/javascript
+          application/x-javascript
+          application/json
+          application/xml
+          application/rss+xml
+          application/atom+xml
+          application/vnd.ms-fontobject
+          font/truetype
+          font/opentype
+          image/svg+xml;
+        reset_timedout_connection on;
+        keepalive_requests 100000;
+        client_body_buffer_size 128k;
+        client_header_buffer_size 3m;
+      httpSrvLocation: |
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection &quot;upgrade&quot;;
+</code></pre><p>final</p>
+<pre><code>  config.yaml: |-
+    #
+    # Licensed to the Apache Software Foundation (ASF) under one or more
+    # contributor license agreements.  See the NOTICE file distributed with
+    # this work for additional information regarding copyright ownership.
+    # The ASF licenses this file to You under the Apache License, Version 2.0
+    # (the &quot;License&quot;); you may not use this file except in compliance with
+    # the License.  You may obtain a copy of the License at
+    #
+    #     http://www.apache.org/licenses/LICENSE-2.0
+    #
+    # Unless required by applicable law or agreed to in writing, software
+    # distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+    # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    # See the License for the specific language governing permissions and
+    # limitations under the License.
+    #
+    apisix:    # universal configurations
+      events:                             # Event distribution module configuration
+        module: lua-resty-events          # Sets the name of the events module used.
+                                          # Supported module: lua-resty-worker-events and lua-resty-events
+      node_listen:    # APISIX listening port
+        - 9080
+      enable_heartbeat: true
+      enable_admin: true
+      enable_admin_cors: true
+      enable_debug: false
+      extra_lua_path: /opts/custom_plugins/?.lua;
+
+      enable_control: true
+      control:
+        ip: 127.0.0.1
+        port: 9090
+
+      enable_dev_mode: false                       # Sets nginx worker_processes to 1 if set to true
+      enable_reuseport: true                       # Enable nginx SO_REUSEPORT switch if set to true.
+      enable_ipv6: true # Enable nginx IPv6 resolver
+      enable_http2: true
+      enable_server_tokens: true # Whether the APISIX version number should be shown in Server header
+
+      # proxy_protocol:                   # Proxy Protocol configuration
+      #   listen_http_port: 9181          # The port with proxy protocol for http, it differs from node_listen and admin_listen.
+      #                                   # This port can only receive http request with proxy protocol, but node_listen &amp; admin_listen
+      #                                   # can only receive http request. If you enable proxy protocol, you must use this port to
+      #                                   # receive http request with proxy protocol
+      #   listen_https_port: 9182         # The port with proxy protocol for https
+      #   enable_tcp_pp: true             # Enable the proxy protocol for tcp proxy, it works for stream_proxy.tcp option
+      #   enable_tcp_pp_to_upstream: true # Enables the proxy protocol to the upstream server
+
+      proxy_cache:                         # Proxy Caching configuration
+        cache_ttl: 10s                     # The default caching time if the upstream does not specify the cache time
+        zones:                             # The parameters of a cache
+        - name: disk_cache_one             # The name of the cache, administrator can be specify
+                                           # which cache to use by name in the admin api
+          memory_size: 50m                 # The size of shared memory, it&apos;s used to store the cache index
+          disk_size: 1G                    # The size of disk, it&apos;s used to store the cache data
+          disk_path: &quot;/tmp/disk_cache_one&quot; # The path to store the cache data
+          cache_levels: &quot;1:2&quot;              # The hierarchy levels of a cache
+      #  - name: disk_cache_two
+      #    memory_size: 50m
+      #    disk_size: 1G
+      #    disk_path: &quot;/tmp/disk_cache_two&quot;
+      #    cache_levels: &quot;1:2&quot;
+
+      router:
+        http: radixtree_host_uri  # radixtree_uri: match route by uri(base on radixtree)
+                                    # radixtree_host_uri: match route by host + uri(base on radixtree)
+                                    # radixtree_uri_with_parameter: match route by uri with parameters
+        ssl: &apos;radixtree_sni&apos;        # radixtree_sni: match route by SNI(base on radixtree)
+
+      proxy_mode: http
+      stream_proxy:                 # TCP/UDP proxy
+        tcp:                        # TCP proxy port list
+          - 9100
+        udp:                        # UDP proxy port list
+          - 9200
+      # dns_resolver:
+      #
+      #   - 127.0.0.1
+      #
+      #   - 172.20.0.10
+      #
+      #   - 114.114.114.114
+      #
+      #   - 223.5.5.5
+      #
+      #   - 1.1.1.1
+      #
+      #   - 8.8.8.8
+      #
+      dns_resolver_valid: 30
+      resolver_timeout: 5
+      ssl:
+        enable: false
+        listen:
+          - port: 9443
+            enable_http3: false
+        ssl_protocols: &quot;TLSv1.2 TLSv1.3&quot;
+        ssl_ciphers: &quot;ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA256:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA&quot;
+
+    nginx_config:    # config for render the template to genarate nginx.conf
+      error_log: &quot;/dev/stderr&quot;
+      error_log_level: &quot;warn&quot;    # warn,error
+      worker_processes: &quot;10&quot;
+      enable_cpu_affinity: true
+      worker_rlimit_nofile: 8192  # the number of files a worker process can open, should be larger than worker_connections
+      worker_shutdown_timeout: 240s
+      max_pending_timers: 16384
+      max_running_timers: 4096
+      event:
+        worker_connections: 1024
+      http:
+        lua_shared_dict: # Nginx Lua shared memory zone. Size units are m or k.
+          lrucache-lock: 100m
+          prometheus-metrics: 200m
+          worker-events: 100m
+        enable_access_log: true
+        access_log: &quot;/dev/stdout&quot;
+        access_log_format: &apos;$remote_addr - $remote_user [$time_local] $http_host \&quot;$request\&quot; $status $body_bytes_sent $request_time \&quot;$http_referer\&quot; \&quot;$http_user_agent\&quot; $upstream_addr $upstream_status $upstream_response_time \&quot;$upstream_scheme://$upstream_host$upstream_uri\&quot;&apos;
+        access_log_format_escape: default
+        keepalive_timeout: &quot;60s&quot;
+        client_max_body_size: 500M
+        client_header_timeout: 60s     # timeout for reading client request header, then 408 (Request Time-out) error is returned to the client
+        client_body_timeout: 60s       # timeout for reading client request body, then 408 (Request Time-out) error is returned to the client
+        send_timeout: 30s              # timeout for transmitting a response to the client.then the connection is closed
+        underscores_in_headers: &quot;on&quot;   # default enables the use of underscores in client request header fields
+        real_ip_header: &quot;X-Real-IP&quot;    # http://nginx.org/en/docs/http/ngx_http_realip_module.html#real_ip_header
+        real_ip_from:                  # http://nginx.org/en/docs/http/ngx_http_realip_module.html#set_real_ip_from
+          - 127.0.0.1
+          - &apos;unix:&apos;
+        upstream:
+          keepalive: 320
+          keepalive_requests: 1000
+          keepalive_timeout: 60s
+      http_configuration_snippet:      |
+        access_log on;
+        proxy_connect_timeout 900;
+        proxy_read_timeout 900;
+        proxy_send_timeout 900;
+        proxy_buffers 16 32k;
+        proxy_buffer_size 64k;
+        open_file_cache_valid 30s;
+        open_file_cache_min_uses 2;
+        open_file_cache_errors on;
+        sendfile on;
+        tcp_nopush on;
+        tcp_nodelay on;
+        gzip on;
+        gzip_static on;
+        gzip_min_length 1k;
+        gzip_buffers 16 8k;
+        gzip_comp_level 7;
+        gzip_vary on;
+        gzip_disable msie6;
+        gzip_proxied any;
+        gzip_types
+          text/css
+          text/javascript
+          text/xml
+          text/plain
+          text/x-component
+          application/javascript
+          pplication/x-javascript
+          application/json
+          application/xml
+          application/rss+xml
+          application/atom+xml
+          application/vnd.ms-fontobject
+          font/truetype
+          font/opentype
+          image/svg+xml;
+        reset_timedout_connection on;
+        keepalive_requests 1000;
+        client_body_buffer_size 128k;
+        client_header_buffer_size 3m;
+      http_server_location_configuration_snippet:      |
+        proxy_connect_timeout 900;
+        proxy_read_timeout 900;
+        proxy_send_timeout 900;
+        proxy_buffers 16 32k;
+        proxy_buffer_size 64k;
+        set $limit_rate 0;
+        set $limit_rate_after 0;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection &quot;upgrade&quot;;
+        proxy_intercept_errors on;
+        error_page 400 401 402 403 404 405 406 407 408 409 410 411 412 413 414 415 416 417 418 421 422 423 424 425 426 428 429 431 451 500 501 502 503 504 505 506 507 508 510 511 = https://10.15.200.50:58043/notebook/error;
+    plugins:    # plugin list
+      - cors
+      - proxy-rewrite
+      - limit-rate
+      - limit-conn
+      - limit-count
+      - limit-req
+      - gzip
+      - redirect
+      - response-rewrite
+      - prometheus
+      - limit-rate
+    plugin_attr:
+      prometheus:
+        export_addr:
+          ip: 0.0.0.0
+          port: 9091
+        export_uri: /apisix/prometheus/metrics
+        metric_prefix: apisix_
+
+    deployment:
+      role: traditional
+      role_traditional:
+        config_provider: etcd
+      admin:
+        allow_admin:    # http://nginx.org/en/docs/http/ngx_http_access_module.html#allow
+          - 127.0.0.1/24
+          - 0.0.0.0/0
+        #   - &quot;::/64&quot;
+        admin_listen:
+          ip: 0.0.0.0
+          port: 9180
+        # Default token when use API to call for Admin API.
+        # *NOTE*: Highly recommended to modify this value to protect APISIX&apos;s Admin API.
+        # Disabling this configuration item means that the Admin API does not
+        # require any authentication.
+        admin_key:
+          # admin: can everything for configuration data
+          - name: &quot;admin&quot;
+            key: edd1c9f034335f136f87ad84b625c8f1
+            role: admin
+          # viewer: only can view configuration data
+          - name: &quot;viewer&quot;
+            key: 4054f7cf07e344346cd3f287985e76a2
+            role: viewer
+      etcd:
+        host:                          # it&apos;s possible to define multiple etcd hosts addresses of the same etcd cluster.
+          - &quot;http://192.168.0.127:2379&quot;             # multiple etcd address
+        timeout: 30
+        watch_timeout: 50
+        resync_delay: 5
+        health_check_timeout: 10
+        startup_retry: 2
+        prefix: &quot;/apisix&quot;    # configuration prefix in etcd
+        timeout: 30    # 30 seconds
+</code></pre><h1 id="&#x5341;&#x4E00;&#x3001;default-error-return">&#x5341;&#x4E00;&#x3001;default error return</h1>
+<pre><code>      httpSrv: |
+        location = /default-server-return {
+           proxy_pass https://192.168.0.127/error;
+        }
+
+        location /error-forward/ {
+          proxy_pass https://10.15.200.50:58043;
+        }
+
+      httpSrvLocation: |
+        proxy_intercept_errors on;
+        error_page 400 401 402 403 404 405 406 407 408 409 410 411 412 413 414 415 416 417 418 421 422 423 424 425 426 428 429 431 451 500 501 502 503 504 505 506 507 508 510 511 /default-server-return;
+</code></pre><p><a href="https://github.com/apache/apisix/issues/7987" target="_blank">https://github.com/apache/apisix/issues/7987</a></p>
+<pre><code>  configurationSnippet:
+    # Based on
+    # - https://blog.adriaan.io/one-nginx-error-page-to-rule-them-all.html
+    # - https://gist.github.com/lextoumbourou/d6221deb818da4f342ea
+    httpStart: |
+      more_clear_headers Server;
+
+      map $status $status_text {
+        400 &apos;Bad Request&apos;;
+        401 &apos;Unauthorized&apos;;
+        402 &apos;Payment Required&apos;;
+        403 &apos;Forbidden&apos;;
+        404 &apos;Not Found&apos;;
+        405 &apos;Method Not Allowed&apos;;
+        406 &apos;Not Acceptable&apos;;
+        407 &apos;Proxy Authentication Required&apos;;
+        408 &apos;Request Timeout&apos;;
+        409 &apos;Conflict&apos;;
+        410 &apos;Gone&apos;;
+        411 &apos;Length Required&apos;;
+        412 &apos;Precondition Failed&apos;;
+        413 &apos;Payload Too Large&apos;;
+        414 &apos;URI Too Long&apos;;
+        415 &apos;Unsupported Media Type&apos;;
+        416 &apos;Range Not Satisfiable&apos;;
+        417 &apos;Expectation Failed&apos;;
+        418 &apos;I\&apos;m a teapot&apos;;
+        421 &apos;Misdirected Request&apos;;
+        422 &apos;Unprocessable Entity&apos;;
+        423 &apos;Locked&apos;;
+        424 &apos;Failed Dependency&apos;;
+        425 &apos;Too Early&apos;;
+        426 &apos;Upgrade Required&apos;;
+        428 &apos;Precondition Required&apos;;
+        429 &apos;Too Many Requests&apos;;
+        431 &apos;Request Header Fields Too Large&apos;;
+        451 &apos;Unavailable For Legal Reasons&apos;;
+        500 &apos;Internal Server Error&apos;;
+        501 &apos;Not Implemented&apos;;
+        502 &apos;Bad Gateway&apos;;
+        503 &apos;Service Unavailable&apos;;
+        504 &apos;Gateway Timeout&apos;;
+        505 &apos;HTTP Version Not Supported&apos;;
+        506 &apos;Variant Also Negotiates&apos;;
+        507 &apos;Insufficient Storage&apos;;
+        508 &apos;Loop Detected&apos;;
+        510 &apos;Not Extended&apos;;
+        511 &apos;Network Authentication Required&apos;;
+        default &apos;Something is wrong&apos;;
+      }
+      map $http_accept $extension {
+        default html;
+        ~*application/json json;
+      }
+    httpSrv: |
+      error_page 400 401 402 403 404 405 406 407 408 409 410 411 412 413 414 415 416 417 418 421 422 423 424 425 426 428 429 431 451 500 501 502 503 504 505 506 507 508 510 511 @error_$extension;
+
+      location @error_json {
+        types { } default_type &quot;application/json; charset=utf-8&quot;;
+        echo &apos;{&quot;error_msg&quot;: &quot;$status_text&quot;}&apos;;
+      }
+      location @error_html {
+        types { } default_type &quot;text/html; charset=utf-8&quot;;
+        echo &apos;&lt;html&gt;&lt;head&gt;&lt;title&gt;$status $status_text&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;center&gt;&lt;h1&gt;$status $status_text&lt;/h1&gt;&lt;/center&gt;&lt;/html&gt;&apos;;
+      }
+</code></pre><pre><code>      httpSrvLocation: |
+        proxy_intercept_errors on;
+        error_page 400 401 402 403 404 405 406 407 408 409 410 411 412 413 414 415 416 417 418 421 422 423 424 425 426 428 429 431 451 500 501 502 503 504 505 506 507 508 510 511 = https://192.168.0.127/error;
+</code></pre>
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="ingress.html" class="navigation navigation-prev " aria-label="Previous page: ingress">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="kubebuilder.html" class="navigation navigation-next " aria-label="Next page: kubebuilder">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"apisix","level":"1.7.8","depth":2,"next":{"title":"kubebuilder","level":"1.7.9","depth":2,"path":"notes/docker/kubebuilder.md","ref":"notes/docker/kubebuilder.md","articles":[]},"previous":{"title":"ingress","level":"1.7.7","depth":2,"path":"notes/docker/ingress.md","ref":"notes/docker/ingress.md","articles":[]},"dir":"ltr"},"config":{"plugins":["-lunr","-search","search-pro","-sharing","expandable-chapters","back-to-top-button","code","splitter","pageview-count","page-toc-button","github","hide-element"],"styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"github":{"url":"https://github.com/hlyani"},"splitter":{},"search-pro":{},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"page-toc-button":{"maxTocDepth":"2","minTocSize":"2"},"back-to-top-button":{},"pageview-count":{},"theme-default":{"styles":{"pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css","website":"styles/website.css"},"showLevel":false},"expandable-chapters":{}},"theme":"default","author":"hlyani","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"hlyani","gitbook":"*","description":"hl notes"},"file":{"path":"notes/docker/apisix.md","mtime":"2026-01-29T02:41:05.140Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2026-01-29T02:41:33.564Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search-pro/jquery.mark.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search-pro/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-expandable-chapters/expandable-chapters.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-back-to-top-button/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-code/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-splitter/splitter.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-pageview-count/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-page-toc-button/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-hide-element/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
