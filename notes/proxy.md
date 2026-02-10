@@ -113,19 +113,18 @@ EOF
 echo '{
   "registry-mirrors": ["https://docker.mirrors.ustc.edu.cn/"]
 }'  | tee /etc/docker/daemon.json
-
-systemctl daemon-reload
-systemctl restart docker
 ```
 
 ##### 其他镜像源
 
 ```
 {
-  "registry-mirrors": ["https://docker.mirrors.ustc.edu.cn/", "http://hub-mirror.c.163.com", "http://hub-mirror.c.163.com"],
-  "insecure-registries": ["registry.docker-cn.com", "docker.mirrors.ustc.edu.cn"],
-  "debug": true,
-  "experimental": true
+  "registry-mirrors": [
+    "https://docker.m.daocloud.io",
+    "https://docker.nju.edu.cn",
+    "https://dockerproxy.com",
+    "https://docker.mirrors.ustc.edu.cn"
+  ]
 }
 ```
 
@@ -211,6 +210,19 @@ docker pull quay.dockerproxy.com/username/image:tag
 docker pull quay.mirrors.ustc.edu.cn/xxx/yyy:zzz
 docker pull quay.azk8s.cn/xxx/yyy:zzz
 ```
+
+##### daocloud
+
+```
+docker pull docker.m.daocloud.io/library/nginx:latest
+```
+
+```
+docker.nju.edu.cn/library/nginx:latest
+dockerproxy.com/library/nginx:latest
+```
+
+
 
 ##### docker-wrapper
 

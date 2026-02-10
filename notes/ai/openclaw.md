@@ -1,4 +1,4 @@
-# clawdbot moltbot
+# openclaw
 
 # 一、安装 
 
@@ -15,9 +15,7 @@ docker pull node:25.5.0-alpine3.23
 ```
 
 ```
-npm install -g clawdbot@latest
-
-npm install -g moltbot@latest
+npm install -g openclaw@latest
 ```
 
 # 二、初始化
@@ -28,7 +26,7 @@ moltbot onboard
 
 配置
 
-~/.clawdbot/clawdbot.json
+~/.openclaw/openclaw.json
 
 ```
 {
@@ -78,7 +76,7 @@ moltbot onboard
       "models": {
         "local/Qwen3-30B-A3B": {}
       },
-      "workspace": "C:\\Users\\Admin\\clawd",
+      "workspace": "C:\\Users\\Admin\\openclaw",
       "compaction": {
         "mode": "safeguard"
       },
@@ -117,7 +115,7 @@ moltbot onboard
 # 三、启动
 
 ```
-clawdbot gateway --token aaa
+openclaw gateway --token aaa
 ```
 
 ```
@@ -150,11 +148,11 @@ npm list -g --depth=0
 ```
 
 ```
-clawdbot config set models.providers.local.apiKey "aa"
+openclaw config set models.providers.local.apiKey "aa"
 ```
 
 ```
-clawdbot reset --scope full --yes
+openclaw reset --scope full --yes
 ```
 
 ```
@@ -178,12 +176,12 @@ docker run -it --rm \
 -e HTTP_PROXY=http://127.0.0.1:7890 \
 -e HTTPS_PROXY=http://127.0.0.1:7890 \
 -e NODE_OPTIONS="--use-env-proxy" \
--v /hl/clawdbot/clawdbot_conf:/root/.clawdbot \
+-v /hl/openclaw/openclaw_conf:/root/.openclaw \
 -p 18789:18789 \
-clawdbot_base:1.0.0 sh
+openclaw_base:1.0.0 sh
 ```
 
 ```
-帮我安装插件，指令是：clawdbot plugins install @m1heng-clawd/feishu
+帮我安装插件，指令是：openclaw plugins install @m1heng-clawd/feishu
 ```
 
