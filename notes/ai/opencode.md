@@ -1,4 +1,6 @@
-# OpenCode
+# OpenCode & Claude Code
+
+# 一、安装
 
 ```
 npm install -g opencode-ai
@@ -6,7 +8,17 @@ opencode version
 ```
 
 ```
-mkdir -p opencode/.opencode/skills
+npx oh-my-opencode install
+```
+
+# 二、初始化
+
+## 1.项目初始化
+
+```
+mkdir workspace
+cd workspace
+mkdir -p .opencode/skills
 ```
 
 ```
@@ -19,28 +31,88 @@ cat > AGENTS.md <<'EOF'
 EOF
 ```
 
+## 2.配置初始化
 
-
-
-
-https://mp.weixin.qq.com/s/ZskCUE1JKLurMFMWDqQj6g
-
-https://mp.weixin.qq.com/s/GrKhMhBgO1ZNL_3iOgWtTA
-
-https://mp.weixin.qq.com/s/eGqDVGY65Wk_jubq5OFFzA
-
-https://mp.weixin.qq.com/s/Xu7X2LF5u2VEm5wRYhrlyg
-
-https://mp.weixin.qq.com/s/W7-olJj_QQdyYix1XP7ZeQ
-
-https://mp.weixin.qq.com/s/ZSPKiVsrOYzRaeCyB1eibA
-
-
-
-
+> C:\Users\Admin\.config\opencode/opencode.json
 
 ```
-npx oh-my-opencode install
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    "oh-my-opencode@latest"
+  ],
+  "provider": {
+    "ark": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "volcengine",
+      "options": {
+        "baseURL": "https://ark.cn-beijing.volces.com/api/coding/v3",
+        "apiKey": "xxxx"
+      },
+      "models": {
+        "ark-code-latest": {
+          "name": "ark-code-latest"
+        },
+        "doubao-seed-2.0-code": {
+          "name": "doubao-seed-2.0-code"
+        }
+      }
+    }
+  }
+}
+```
+
+
+
+# 三、Claude Code
+
+## 1.安装
+
+```
+npm install -g @anthropic-ai/claude-code
+```
+
+## 2.配置
+
+> C:\Users\Admin\.claude\settings.json
+
+```
+{
+  "autoUpdatesChannel": "latest",
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "xxxxx",
+    "ANTHROPIC_BASE_URL": "https://ark.cn-beijing.volces.com/api/coding",
+    "ANTHROPIC_MODEL": "doubao-seed-code"
+  }
+}
+```
+
+> C:\Users\Admin\.claude\.claude.json
+
+```
+{
+  "hasCompletedOnboarding": true
+}
+```
+
+# 四、其他
+
+
+
+## 1.ark-helper
+
+```
+curl -fsSL https://lf3-static.bytednsdoc.com/obj/eden-cn/ylwslo-yrh/ljhwZthlaukjlkulzlp/install.sh | sh
+```
+
+```
+ark-helper --version
+```
+
+## 2.
+
+```
+https://clawhub.ai/skills?sort=downloads
 ```
 
 
