@@ -863,6 +863,46 @@ FROM ${IMAGE} AS builder
 docker build -t a:latest -f Dockerfile --build-arg REGISTRY=image.bb.cn:5000 .
 ```
 
+## 60、构建并导出
+
+```
+FROM golang:1.26-bookworm AS builder
+
+WORKDIR /src
+
+ARG GOPROXY=https://goproxy.cn,direct
+ARG GOSUMDB=sum.golang.org
+ARG HTTP_PROXY=http://10.0.0.1:1080
+ARG HTTPS_PROXY=http://10.0.0.1:1080
+ARG NO_PROXY
+ENV GOPROXY=${GOPROXY}
+ENV GOSUMDB=${GOSUMDB}
+
+COPY go.mod go.sum ./
+RUN --mount=type=cache,target=/go/pkg/mod \
+    go mod download
+
+COPY . .
+
+ARG TARGETOS=linux
+ARG TARGETARCH=amd64
+
+RUN --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=cache,target=/root/.cache/go-build \
+    CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
+    go build -trimpath -ldflags="-s -w" \
+    -o /out/openclaw-agent-${TARGETOS}-${TARGETARCH} ./cmd/server
+
+FROM scratch AS artifact
+
+COPY --from=builder /out/ /
+```
+
+```
+# docker buildx build --platform linux/amd64 -f Dockerfile --output type=local,dest=./dist .
+docker build -f Dockerfile --target artifact -o . .
+```
+
 # 二、linux实现docker资源隔离
 
 Linux 提供的主要的 NameSpace
