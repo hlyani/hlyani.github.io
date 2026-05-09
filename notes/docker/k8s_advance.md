@@ -60,3 +60,24 @@ kubectl config set-context --current --namespace=hl
 kubens hl
 ```
 
+# 三、kubectl-node
+
+1. 安装
+
+```
+curl -LO https://github.com/kvaps/kubectl-node-shell/raw/master/kubectl-node_shell
+chmod +x ./kubectl-node_shell
+sudo mv ./kubectl-node_shell /usr/local/bin/kubectl-node_shell
+```
+
+2. 使用
+
+```
+kubectl node-shell 10.0.0.127 --image nicolaka/netshoot
+```
+
+> 10.0.0.127 为k8s的节点
+>
+> https://hub.docker.com/r/nicolaka/netshoot
+
+
