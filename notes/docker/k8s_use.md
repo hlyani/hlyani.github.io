@@ -756,6 +756,26 @@ clusterDomain: cluster.local
 ```
 kubectl config set-context --current --namespace=hl
 ```
+## 15.secret
+```
+# 查看secret类型
+kubectl get secret ragflow-env-config -o yaml | grep type
+
+# 界面查看
+kubectl get secret ragflow-env-config \
+-o jsonpath='{.data.MYSQL_PASSWORD}' | base64 -d
+
+# 批量解码查看
+kubectl get secret ragflow-env-config -o json \
+| jq -r '.data | map_values(@base64d)'
+
+# 查看所有key
+kubectl get secret ragflow-env-config -o json | jq '.data'
+
+# 修改值
+kubectl patch secret ragflow-env-config \
+-p='{"stringData":{"MYSQL_PASSWORD":"newpass123"}}'
+```
 
 # 四、证书过期
 
