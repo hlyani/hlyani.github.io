@@ -95,9 +95,33 @@ npm install -g @anthropic-ai/claude-code
 }
 ```
 
-# 四、其他
+# 四、codex
 
+> /Users/harley/.codex/config.toml
 
+> export CUSTOM_API_KEY=aaaa
+
+```
+model = "gpt-5.5"
+model_reasoning_effort = "medium"
+model_provider = "custom"
+
+[model_providers.custom]
+name = "custom"
+base_url = "https://api.aaa.com/api/v1"
+env_key = "CUSTOM_API_KEY"
+```
+
+> /Users/harley/.codex/.env
+
+```
+HTTP_PROXY=http://127.0.0.1:7890
+HTTPS_PROXY=http://127.0.0.1:7890
+ALL_PROXY=http://127.0.0.1:7890
+NO_PROXY=localhost,127.0.0.1,::1
+```
+
+# 其他
 
 ## 1.ark-helper
 
