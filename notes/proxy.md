@@ -1,4 +1,4 @@
-# proxy 相关
+# proxy
 
 # 一、linux 代理
 
@@ -97,22 +97,20 @@ systemctl daemon-reload
 systemctl restart docker
 ```
 
-##### noohub.ru
-
-```
-mkdir -p /etc/dockersudo tee /etc/docker/daemon.json <<-'EOF'
-{
-"registry-mirrors": ["https://docker.m.daocloud.io","https://huecker.io","https://dockerhub.timeweb.cloud","https://noohub.ru"]
-}
-EOF
-```
-
 ##### 中科大
 
 ```
 echo '{
   "registry-mirrors": ["https://docker.mirrors.ustc.edu.cn/"]
 }'  | tee /etc/docker/daemon.json
+```
+
+```
+# 使用中科大镜像源 
+docker pull docker.mirrors.ustc.edu.cn/library/mysql:5.7
+
+# 使用 Azure 中国镜像源
+docker pull dockerhub.azk8s.cn/library/mysql:5.7
 ```
 
 ##### 其他镜像源
@@ -128,23 +126,11 @@ echo '{
 }
 ```
 
-```
-# 使用中科大镜像源 
-docker pull docker.mirrors.ustc.edu.cn/library/mysql:5.7
-
-# 使用 Azure 中国镜像源
-docker pull dockerhub.azk8s.cn/library/mysql:5.7
-```
-
-##### dockerproxy
-
 [dockerproxy.com](dockerproxy.com)
 
 ```
 { "registry-mirrors": [ "https://dockerproxy.com" ] }
 ```
-
-##### ustc
 
 [ustc](http://mirrors.ustc.edu.cn/help/dockerhub.html)
 
@@ -153,78 +139,6 @@ docker pull dockerhub.azk8s.cn/library/mysql:5.7
   "registry-mirrors": ["https://docker.mirrors.ustc.edu.cn/"]
 }
 ```
-
-##### Docker Hub
-
-```
-docker pull stilleshan/frpc:latest
-docker pull nginx:latest
-```
-
-```
-docker pull dockerproxy.com/stilleshan/frpc:latest
-docker pull dockerproxy.com/library/nginx:latest
-```
-
-##### ghcr.io - GitHub Container Registry
-
-```
-docker pull ghcr.io/username/image:tag
-```
-
-```
-docker pull ghcr.dockerproxy.com/username/image:tag
-```
-
-##### gcr.io - Google Container Registry
-
-```
-docker pull gcr.io/username/image:tag
-```
-
-```
-docker pull gcr.dockerproxy.com/username/image:tag
-docker pull gcr.mirrors.ustc.edu.cn/xxx/yyy:zzz
-docker pull gcr.azk8s.cn/xxx/yyy:zzz
-```
-
-##### k8s.gcr.io/registry.k8s.io - Google Kubernetes
-
-```
-docker pull k8s.gcr.io/username/image:tag
-docker pull registry.k8s.io/username/image:tag
-```
-
-```
-docker pull k8s.dockerproxy.com/username/image:tag
-```
-
-##### quay.io
-
-```
-docker pull quay.io/username/image:tag
-```
-
-```
-docker pull quay.dockerproxy.com/username/image:tag
-docker pull quay.mirrors.ustc.edu.cn/xxx/yyy:zzz
-docker pull quay.azk8s.cn/xxx/yyy:zzz
-```
-
-##### daocloud
-
-```
-docker pull docker.m.daocloud.io/library/nginx:latest
-```
-
-```
-docker.nju.edu.cn/library/nginx:latest
-dockerproxy.com/library/nginx:latest
-```
-
-
-
-##### docker-wrapper
 
 [docker_wrapper](https://github.com/silenceshell/docker_wrapper)
 
@@ -238,8 +152,6 @@ cp docker-wrapper/docker-wrapper.py /usr/local/bin/
 ```
 docker-wrapper pull k8s.gcr.io/kube-apiserver:v1.14.1
 ```
-
-##### azk8spull
 
 [azk8spull](https://github.com/xuxinkun/littleTools#azk8spull)
 
@@ -323,8 +235,6 @@ Acquire::http::proxy "http://192.168.0.127:1080";
 Acquire::https::proxy "http://192.168.0.127:1080";
 ```
 
-
-
 ```
 echo 'Acquire::http::Proxy "http://192.168.0.127:1080";' > /etc/apt/apt.conf.d/proxy.conf
 echo 'Acquire::https::Proxy "http://192.168.0.127:1080";' >> /etc/apt/apt.conf.d/proxy.conf
@@ -386,5 +296,32 @@ https://hub.fastgit.org
 vim /etc/systemd/system.conf
 [Manager]
 DefaultEnvironment="http_proxy=http://proxy:port" "https_proxy=http://proxy:port"
+```
+
+# 十四、uv
+
+```
+uv add fastapi --default-index https://pypi.tuna.tsinghua.edu.cn/simple
+```
+
+> uv.toml
+
+```
+http-proxy = "http://127.0.0.1:7890"
+https-proxy = "http://127.0.0.1:7890"
+
+[[index]]
+name = "tsinghua"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true
+```
+
+> pyproject.toml
+
+```
+[[tool.uv.index]]
+name = "tsinghua"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true
 ```
 

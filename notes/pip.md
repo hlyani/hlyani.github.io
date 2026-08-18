@@ -1,4 +1,4 @@
-# pip 源相关
+# pip & uv 源相关
 
 
 # 一、清华源
@@ -90,3 +90,41 @@ pip install --download-cache https://download.pytorch.org/whl/cu118/torch-2.0.1%
 pip install --download-directory="$PIP_SDIST_INDEX" <package>
 ```
 
+# 五、uv
+
+```
+export UV_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
+```
+
+```
+uv pip install requests -i https://pypi.tuna.tsinghua.edu.cn/simple
+```
+
+```
+# pyproject.toml
+
+[[tool.uv.index]]
+name = "tuna"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true
+```
+
+```
+[[index]]
+name = "tuna"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true
+```
+
+```
+uv config list
+echo $UV_INDEX_URL
+```
+
+| **镜像**     | **URL**                                               |
+| ------------ | ----------------------------------------------------- |
+| 清华 TUNA    | `https://pypi.tuna.tsinghua.edu.cn/simple`            |
+| 阿里云       | `https://mirrors.aliyun.com/pypi/simple`              |
+| 中国科技大学 | `https://pypi.mirrors.ustc.edu.cn/simple`             |
+| 华为云       | `https://repo.huaweicloud.com/repository/pypi/simple` |
+| 腾讯云       | `https://mirrors.cloud.tencent.com/pypi/simple`       |
